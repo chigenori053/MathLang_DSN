@@ -3,12 +3,48 @@ package mathlang_dsn
 // Exact bounded rational polynomials of degree at most five.
 module Polynomial {
   import mathlang_dsn.Model
+  import mathlang_dsn.Knowledge
 
   struct Poly {
     valid: bool
     coefficients: [int]
     denominator: int
     reason: string
+    knowledge_ids: [string]
+    knowledge_sources: [string]
+    ruos: [PolyRuo]
+  }
+
+  struct PolyRuo {
+    id: int
+    source_ru: int
+    source_rus: string
+    knowledge_id: string
+    source: string
+    before_left: [int]
+    before_left_denominator: int
+    before_right: [int]
+    before_right_denominator: int
+    after: [int]
+    after_denominator: int
+    validation: string
+  }
+
+  struct Assessment {
+    status: string
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: AssessmentRuo
+  }
+
+  struct AssessmentRuo {
+    id: int
+    source_ru: int
+    source_rus: string
+    knowledge_id: string
+    source: string
+    validation: string
   }
 
   fn Abs(value: int) -> int {
@@ -54,7 +90,7 @@ module Polynomial {
   }
 
   fn Invalid(reason: string) -> Poly {
-    return Poly { valid: false, coefficients: Zeros(), denominator: 1, reason: reason }
+    return Poly { valid: false, coefficients: Zeros(), denominator: 1, reason: reason, knowledge_ids: [], knowledge_sources: [], ruos: [] }
   }
 
   fn Value(numbers: [int], divisor: int) -> Poly {
@@ -88,15 +124,45 @@ module Polynomial {
         return Invalid("RESOURCE_LIMIT")
       }
     }
-    return Poly { valid: true, coefficients: reduced, denominator: denominator, reason: "" }
+    return Poly { valid: true, coefficients: reduced, denominator: denominator, reason: "", knowledge_ids: [], knowledge_sources: [], ruos: [] }
+  }
+
+  fn Attach(value: Poly, ids: [string], sources: [string], history: [PolyRuo], rule: int) -> Poly {
+    if !value.valid {
+      return value
+    }
+    let ru = Knowledge::KRuByRule(rule)
+    if ru.id == 0 {
+      return Invalid("UNKNOWN_KNOWLEDGE")
+    }
+    return Poly { valid: true, coefficients: value.coefficients, denominator: value.denominator, reason: "", knowledge_ids: array.append(ids, ru.knowledge_id), knowledge_sources: array.append(sources, ru.source), ruos: history }
+  }
+
+  fn Transition(value: Poly, left: Poly, right: Poly, history: [PolyRuo], rule: int) -> Poly {
+    if !value.valid {
+      return value
+    }
+    let ru = Knowledge::KRuByRule(rule)
+    let active = Knowledge::KActiveOperationRus(rule)
+    let event = PolyRuo { id: history.length + 1, source_ru: ru.id, source_rus: active.name, knowledge_id: ru.knowledge_id, source: ru.source, before_left: left.coefficients, before_left_denominator: left.denominator, before_right: right.coefficients, before_right_denominator: right.denominator, after: value.coefficients, after_denominator: value.denominator, validation: "APPLIED" }
+    return Poly { valid: value.valid, coefficients: value.coefficients, denominator: value.denominator, reason: value.reason, knowledge_ids: value.knowledge_ids, knowledge_sources: value.knowledge_sources, ruos: array.append(history, event) }
+  }
+
+  fn Renumber(value: Poly) -> Poly {
+    let ordered = []
+    for event in value.ruos {
+      let item = PolyRuo { id: ordered.length + 1, source_ru: event.source_ru, source_rus: event.source_rus, knowledge_id: event.knowledge_id, source: event.source, before_left: event.before_left, before_left_denominator: event.before_left_denominator, before_right: event.before_right, before_right_denominator: event.before_right_denominator, after: event.after, after_denominator: event.after_denominator, validation: event.validation }
+      ordered = array.append(ordered, item)
+    }
+    return Poly { valid: value.valid, coefficients: value.coefficients, denominator: value.denominator, reason: value.reason, knowledge_ids: value.knowledge_ids, knowledge_sources: value.knowledge_sources, ruos: ordered }
   }
 
   fn Constant(number: int) -> Poly {
-    return Value([number, 0, 0, 0, 0, 0], 1)
+    return Attach(Value([number, 0, 0, 0, 0, 0], 1), [], [], [], 10)
   }
 
   fn Variable() -> Poly {
-    return Value([0, 1, 0, 0, 0, 0], 1)
+    return Attach(Value([0, 1, 0, 0, 0, 0], 1), [], [], [], 11)
   }
 
   fn Degree(value: Poly) -> int {
@@ -127,6 +193,10 @@ module Polynomial {
     if !y.valid {
       return y
     }
+    let rule = Knowledge::KExpressionRule(kind)
+    if rule == 0 {
+      return Invalid("UNKNOWN_KNOWLEDGE")
+    }
     if kind == 4 && Degree(x) + Degree(y) > 5 {
       return Invalid("DEGREE_LIMIT")
     }
@@ -153,10 +223,12 @@ module Polynomial {
       index = index + 1
     }
     if kind == 2 || kind == 3 || kind == 4 {
-      return Value(output, x.denominator * y.denominator)
+      let value = Attach(Value(output, x.denominator * y.denominator), array.concat(x.knowledge_ids, y.knowledge_ids), array.concat(x.knowledge_sources, y.knowledge_sources), array.concat(x.ruos, y.ruos), rule)
+      return Transition(value, x, y, value.ruos, rule)
     }
     if kind == 5 {
-      return Value(output, x.denominator * y.coefficients[0])
+      let value = Attach(Value(output, x.denominator * y.coefficients[0]), array.concat(x.knowledge_ids, y.knowledge_ids), array.concat(x.knowledge_sources, y.knowledge_sources), array.concat(x.ruos, y.ruos), rule)
+      return Transition(value, x, y, value.ruos, rule)
     }
     return Invalid("UNSUPPORTED_OPERATOR")
   }
@@ -174,7 +246,8 @@ module Polynomial {
       }
       index = index + 1
     }
-    return output
+    let value = Attach(output, base.knowledge_ids, base.knowledge_sources, base.ruos, 16)
+    return Transition(value, base, Constant(exponent), value.ruos, 16)
   }
 
   // Node kinds: 0 integer, 1 x, 2 +, 3 -, 4 *, 5 /, 6 nonnegative power.
@@ -187,6 +260,10 @@ module Polynomial {
     while index < kinds.length {
       let kind = kinds[index]
       let current = Invalid("INVALID_INPUT")
+      let operation_ru = Knowledge::KRuByRule(Knowledge::KExpressionRule(kind))
+      if operation_ru.id == 0 {
+        return Invalid("UNKNOWN_KNOWLEDGE")
+      }
       if kind == 0 {
         current = Constant(values[index])
       }
@@ -209,7 +286,7 @@ module Polynomial {
       terms = array.append(terms, current)
       index = index + 1
     }
-    return terms[terms.length - 1]
+    return Renumber(terms[terms.length - 1])
   }
 
   pub fn PolyDifferentiate(value: Poly) -> Poly {
@@ -223,7 +300,8 @@ module Polynomial {
       index = index + 1
     }
     coefficients = array.append(coefficients, 0)
-    return Value(coefficients, value.denominator)
+    let output = Attach(Value(coefficients, value.denominator), value.knowledge_ids, value.knowledge_sources, value.ruos, 17)
+    return Transition(output, value, Constant(0), output.ruos, 17)
   }
 
   pub fn PolyIntegrate(value: Poly) -> Poly {
@@ -240,7 +318,24 @@ module Polynomial {
       coefficients = array.append(coefficients, value.coefficients[index] * DivideExact(60, index + 1))
       index = index + 1
     }
-    return Value(coefficients, divisor)
+    let output = Attach(Value(coefficients, divisor), value.knowledge_ids, value.knowledge_sources, value.ruos, 18)
+    return Transition(output, value, Constant(0), output.ruos, 18)
+  }
+
+  pub fn PolyCheckExpressions(before: Poly, after: Poly) -> Assessment {
+    let item = Knowledge::KByRule(19)
+    let active = Knowledge::KActiveOperationRus(19)
+    let status = PolyAssessExpressions(before, after)
+    let instance = AssessmentRuo { id: 1, source_ru: item.rule, source_rus: active.name, knowledge_id: item.id, source: item.source, validation: status }
+    return Assessment { status: status, knowledge_id: item.id, source: item.source, active_rus: active.name, ruo: instance }
+  }
+
+  pub fn PolyCheckEquations(left: Poly, right: Poly, next_left: Poly, next_right: Poly) -> Assessment {
+    let item = Knowledge::KByRule(20)
+    let active = Knowledge::KActiveOperationRus(20)
+    let status = PolyAssessEquations(left, right, next_left, next_right)
+    let instance = AssessmentRuo { id: 1, source_ru: item.rule, source_rus: active.name, knowledge_id: item.id, source: item.source, validation: status }
+    return Assessment { status: status, knowledge_id: item.id, source: item.source, active_rus: active.name, ruo: instance }
   }
 
   pub fn PolyAssessExpressions(before: Poly, after: Poly) -> string {
@@ -319,6 +414,9 @@ module Polynomial {
     }
     if Degree(difference) > 1 {
       return Model::StatusOutcome("UNSOLVED")
+    }
+    if Degree(left) <= 1 && Degree(right) <= 1 {
+      return Model::Solve(left.coefficients[1] * right.denominator, left.coefficients[0] * right.denominator, right.coefficients[1] * left.denominator, right.coefficients[0] * left.denominator)
     }
     return Model::Solve(difference.coefficients[1], difference.coefficients[0], 0, 0)
   }

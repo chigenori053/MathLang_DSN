@@ -11,6 +11,7 @@ from pathlib import Path
 
 MODEL = Path(__file__).with_name("model.rsn")
 POLYNOMIAL = Path(__file__).with_name("polynomial.rsn")
+KNOWLEDGE = Path(__file__).with_name("knowledge.rsn")
 MANIFEST = Path(__file__).with_name("reason.toml")
 MAX_NODES = 64
 MAX_INTEGER = 1_000_000
@@ -97,6 +98,7 @@ def _run(lines: list[str], result: str) -> object:
         (workspace / "reason.toml").write_text(MANIFEST.read_text())
         (workspace / "src" / "model.rsn").write_text(MODEL.read_text())
         (workspace / "src" / "polynomial.rsn").write_text(POLYNOMIAL.read_text())
+        (workspace / "src" / "knowledge.rsn").write_text(KNOWLEDGE.read_text())
         source = "\n".join(
             ["package mathlang_dsn", "module main {", "  import mathlang_dsn.Model", "  import mathlang_dsn.Polynomial", "  calculation Request {"]
             + lines
@@ -143,7 +145,7 @@ def _polynomial_result(term: dict, operation: str | None = None) -> dict:
     coefficients = term["coefficients"]
     degree = max((index for index, value in enumerate(coefficients) if value), default=0)
     status = operation or ("CALCULATED" if degree == 0 else "SYMBOLIC")
-    output = {"schema_version": "mathlang-dsn/0.2", "status": status, "coefficients": coefficients, "denominator": term["denominator"], "degree": degree}
+    output = {"schema_version": "mathlang-dsn/0.2", "status": status, "coefficients": coefficients, "denominator": term["denominator"], "degree": degree, "knowledge_ids": term["knowledge_ids"], "knowledge_sources": term["knowledge_sources"], "ruos": term["ruos"]}
     if degree == 0:
         output["numerator"] = coefficients[0]
     if degree <= 1 and term["denominator"] == 1:
@@ -191,8 +193,8 @@ def _evaluate_calculus(expression: str, candidate: str, *, derivative_of_candida
             raise UnsupportedExpression("calculus assessment requires expressions")
         lines = [_term("source", expression), _term("candidate", candidate)]
         operand, target = ("candidate", "source") if derivative_of_candidate else ("source", "candidate")
-        result = _run(lines + [f"    let transformed = Polynomial::PolyDifferentiate({operand})"], f"Polynomial::PolyAssessExpressions(transformed, {target})")
-        return {"schema_version": "mathlang-dsn/0.2", "status": result}
+        result = _run(lines + [f"    let transformed = Polynomial::PolyDifferentiate({operand})"], f"Polynomial::PolyCheckExpressions(transformed, {target})")
+        return {"schema_version": "mathlang-dsn/0.2", **result}
     except UnsupportedExpression as exc:
         return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}
 
@@ -205,13 +207,13 @@ def evaluate(before: str, after: str) -> dict:
         if (first is None) != (second is None):
             return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": "different input kinds"}
         if first is None:
-            result = _run([_term("before", before), _term("after", after)], "Polynomial::PolyAssessExpressions(before, after)")
+            result = _run([_term("before", before), _term("after", after)], "Polynomial::PolyCheckExpressions(before, after)")
         else:
             assert second is not None
             result = _run(
                 [_term("left", first[0]), _term("right", first[1]), _term("next_left", second[0]), _term("next_right", second[1])],
-                "Polynomial::PolyAssessEquations(left, right, next_left, next_right)",
+                "Polynomial::PolyCheckEquations(left, right, next_left, next_right)",
             )
-        return {"schema_version": "mathlang-dsn/0.2", "status": result}
+        return {"schema_version": "mathlang-dsn/0.2", **result}
     except UnsupportedExpression as exc:
         return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}

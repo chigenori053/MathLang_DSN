@@ -3,6 +3,7 @@ package mathlang_dsn
 module main {
   import mathlang_dsn.Model
   import mathlang_dsn.Polynomial
+  import mathlang_dsn.Knowledge
 
   calculation SelfCheck {
     let kinds = [0, 0, 2]
@@ -25,5 +26,14 @@ module main {
     let derivative = Polynomial::PolyDifferentiate(square)
     let integral = Polynomial::PolyIntegrate(derivative)
     result = half.valid && half.coefficients[0] == 1 && half.denominator == 2 && square.valid && square.coefficients[2] == 1 && derivative.coefficients[1] == 2 && integral.coefficients[2] == 1
+  }
+
+  calculation KnowledgeSelfCheck {
+    let catalog = Knowledge::KCatalog()
+    let active = Knowledge::KActiveEquationRus(2, 6, 3, 10)
+    let equation = Model::Solve(2, 6, 3, 10)
+    let polynomial = Polynomial::PolyEvaluate([1, 0, 2, 6], [0, 1, 0, 2], [-1, -1, 0, 2], [-1, -1, 1, -1])
+    let assessment = Polynomial::PolyCheckExpressions(polynomial, polynomial)
+    result = catalog.length == 14 && Knowledge::KToRu(catalog[0]).knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && active.members.length == 2 && Knowledge::KActiveOperationRus(16).name == "PolynomialRUS" && equation.ruos.length == equation.steps.length && equation.ruos.length == 2 && equation.ruos[0].knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && equation.ruos[0].source_ru == 1 && equation.ruos[0].source_rus == active.id && equation.ruos[0].state_before == equation.steps[0].before && equation.ruos[0].state_after == equation.steps[0].after && equation.ruos[1].knowledge_id == "EQ_MOVE_LEFT_CONSTANT" && polynomial.ruos.length == 2 && polynomial.ruos[1].knowledge_id == "POLY_POWER_BOUNDED" && assessment.status == "VALID" && assessment.knowledge_id == "POLY_EXPRESSION_EQUIVALENCE"
   }
 }

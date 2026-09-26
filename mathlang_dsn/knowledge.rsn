@@ -1,0 +1,130 @@
+package mathlang_dsn
+
+// Mathematical knowledge catalogue. RU is a reusable rule; RUS is the
+// state-derived set of active rules. Execution results carry their RUOs.
+module Knowledge {
+  struct KnowledgeEntry {
+    id: string
+    source: string
+    domain: string
+    rus: string
+    rule: int
+  }
+
+  struct Ru {
+    id: int
+    knowledge_id: string
+    source: string
+    domain: string
+    rus: string
+    rule: int
+  }
+
+  struct Rus {
+    id: int
+    name: string
+    members: [int]
+  }
+
+  fn Entry(rule: int, id: string, domain: string, rus: string) -> KnowledgeEntry {
+    return KnowledgeEntry { id: id, source: "mathlang_dsn/knowledge.rsn", domain: domain, rus: rus, rule: rule }
+  }
+
+  pub fn KCatalog() -> [KnowledgeEntry] {
+    return [
+      Entry(1, "EQ_MOVE_RIGHT_VARIABLE", "EQUATION", "EquationRUS"),
+      Entry(2, "EQ_MOVE_LEFT_CONSTANT", "EQUATION", "EquationRUS"),
+      Entry(3, "EQ_SWAP_SIDES", "EQUATION", "EquationRUS"),
+      Entry(10, "POLY_INTEGER", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(11, "POLY_VARIABLE", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(12, "POLY_ADD", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(13, "POLY_SUBTRACT", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(14, "POLY_MULTIPLY", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(15, "POLY_DIVIDE_CONSTANT", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(16, "POLY_POWER_BOUNDED", "POLYNOMIAL", "PolynomialRUS"),
+      Entry(17, "POLY_DIFFERENTIATE", "CALCULUS", "CalculusRUS"),
+      Entry(18, "POLY_INTEGRATE", "CALCULUS", "CalculusRUS"),
+      Entry(19, "POLY_EXPRESSION_EQUIVALENCE", "ASSESSMENT", "AssessmentRUS"),
+      Entry(20, "POLY_EQUATION_EQUIVALENCE", "ASSESSMENT", "AssessmentRUS")
+    ]
+  }
+
+  pub fn KByRule(rule: int) -> KnowledgeEntry {
+    for item in KCatalog() {
+      if item.rule == rule {
+        return item
+      }
+    }
+    return Entry(0, "", "", "")
+  }
+
+  pub fn KToRu(item: KnowledgeEntry) -> Ru {
+    return Ru { id: item.rule, knowledge_id: item.id, source: item.source, domain: item.domain, rus: item.rus, rule: item.rule }
+  }
+
+  pub fn KRuByRule(rule: int) -> Ru {
+    return KToRu(KByRule(rule))
+  }
+
+  pub fn KRuleName(rule: int) -> string {
+    if rule == 1 {
+      return "MOVE_RIGHT_VARIABLE"
+    }
+    if rule == 2 {
+      return "MOVE_LEFT_CONSTANT"
+    }
+    if rule == 3 {
+      return "SWAP_SIDES"
+    }
+    return "UNKNOWN"
+  }
+
+  pub fn KExpressionRule(kind: int) -> int {
+    if kind == 0 {
+      return 10
+    }
+    if kind == 1 {
+      return 11
+    }
+    if kind >= 2 && kind <= 6 {
+      return kind + 10
+    }
+    return 0
+  }
+
+  pub fn KActiveOperationRus(rule: int) -> Rus {
+    if rule >= 10 && rule <= 16 {
+      return Rus { id: 2, name: "PolynomialRUS", members: [rule] }
+    }
+    if rule >= 17 && rule <= 18 {
+      return Rus { id: 3, name: "CalculusRUS", members: [rule] }
+    }
+    if rule >= 19 && rule <= 20 {
+      return Rus { id: 4, name: "AssessmentRUS", members: [rule] }
+    }
+    return Rus { id: 0, name: "", members: [] }
+  }
+
+  pub fn KActiveEquationRus(la: int, lb: int, ra: int, rb: int) -> Rus {
+    let members = []
+    if ra != 0 {
+      members = array.append(members, 1)
+    }
+    if lb != 0 {
+      members = array.append(members, 2)
+    }
+    if la == 0 && ra != 0 {
+      members = array.append(members, 3)
+    }
+    return Rus { id: 1, name: "EquationRUS", members: members }
+  }
+
+  pub fn KEquationCandidates(la: int, lb: int, ra: int, rb: int) -> [Ru] {
+    let active = KActiveEquationRus(la, lb, ra, rb)
+    let candidates = []
+    for id in active.members {
+      candidates = array.append(candidates, KRuByRule(id))
+    }
+    return candidates
+  }
+}

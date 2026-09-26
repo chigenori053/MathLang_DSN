@@ -2,6 +2,8 @@ package mathlang_dsn
 
 // MathLang_DSN mathematical inference model. Input syntax is owned by the host.
 module Model {
+  import mathlang_dsn.Knowledge
+
   struct Term {
     valid: bool
     a: int
@@ -9,11 +11,26 @@ module Model {
     reason: string
   }
 
+  struct Ruo {
+    id: int
+    source_ru: int
+    source_rus: int
+    knowledge_id: string
+    source: string
+    state_before: string
+    state_after: string
+    validation: string
+    activation_reason: string
+  }
+
   struct Step {
     rule: string
     before: string
     after: string
     validation: string
+    active_rus: string
+    candidate_ru: [int]
+    ruo: Ruo
   }
 
   struct Outcome {
@@ -22,6 +39,7 @@ module Model {
     denominator: int
     final_state: string
     steps: [Step]
+    ruos: [Ruo]
   }
 
   fn Abs(value: int) -> int {
@@ -195,13 +213,13 @@ module Model {
 
   pub fn CalculateEquation(left: Term, right: Term) -> Outcome {
     if !left.valid || !right.valid {
-      return Outcome { status: "UNSUPPORTED", numerator: 0, denominator: 1, final_state: "", steps: [] }
+      return StatusOutcome("UNSUPPORTED")
     }
     return Solve(left.a, left.b, right.a, right.b)
   }
 
   pub fn StatusOutcome(status: string) -> Outcome {
-    return Outcome { status: status, numerator: 0, denominator: 1, final_state: "", steps: [] }
+    return Outcome { status: status, numerator: 0, denominator: 1, final_state: "", steps: [], ruos: [] }
   }
 
   fn Render(la: int, lb: int, ra: int, rb: int) -> string {
@@ -228,20 +246,21 @@ module Model {
     let s_ra = ra
     let s_rb = rb
     let steps = []
+    let ruos = []
     if !Bounded(s_la, s_lb) || !Bounded(s_ra, s_rb) {
-      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps }
+      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps, ruos: ruos }
     }
     let initial_a = s_la - s_ra
     let initial_b = s_lb - s_rb
     if !Bounded(initial_a, initial_b) {
-      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps }
+      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps, ruos: ruos }
     }
     if initial_a == 0 {
       let status = "CONTRADICTION"
       if initial_b == 0 {
         status = "INFINITE_SOLUTIONS"
       }
-      return Outcome { status: status, numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+      return Outcome { status: status, numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps, ruos: ruos }
     }
     let count = 0
     while count < 3 {
@@ -253,30 +272,50 @@ module Model {
       let next_lb = s_lb
       let next_ra = s_ra
       let next_rb = s_rb
-      let rule = ""
+      let selected_ru = Knowledge::KRuByRule(0)
+      let active = Knowledge::KActiveEquationRus(s_la, s_lb, s_ra, s_rb)
+      let candidates = Knowledge::KEquationCandidates(s_la, s_lb, s_ra, s_rb)
       let best = Distance(s_la, s_lb, s_ra)
-      if s_ra != 0 && Bounded(s_la - s_ra, s_lb) && Distance(s_la - s_ra, s_lb, 0) < best {
-        next_la = s_la - s_ra
-        next_ra = 0
-        rule = "MOVE_RIGHT_VARIABLE"
-        best = Distance(next_la, next_lb, next_ra)
+      for ru in candidates {
+        let in_block = true
+        if in_block {
+          let candidate_la = s_la
+          let candidate_lb = s_lb
+          let candidate_ra = s_ra
+          let candidate_rb = s_rb
+          let applicable = false
+          if ru.rule == 1 && s_ra != 0 {
+            candidate_la = s_la - s_ra
+            candidate_ra = 0
+            applicable = true
+          }
+          if ru.rule == 2 && s_lb != 0 {
+            candidate_lb = 0
+            candidate_rb = s_rb - s_lb
+            applicable = true
+          }
+          if ru.rule == 3 && s_la == 0 && s_ra != 0 {
+            candidate_la = s_ra
+            candidate_lb = s_rb
+            candidate_ra = s_la
+            candidate_rb = s_lb
+            applicable = true
+          }
+          if applicable && Bounded(candidate_la, candidate_lb) && Bounded(candidate_ra, candidate_rb) {
+            let validation = AssessEquations(s_la, s_lb, s_ra, s_rb, candidate_la, candidate_lb, candidate_ra, candidate_rb)
+            let score = Distance(candidate_la, candidate_lb, candidate_ra)
+            if validation == "VALID" && score < best {
+              next_la = candidate_la
+              next_lb = candidate_lb
+              next_ra = candidate_ra
+              next_rb = candidate_rb
+              selected_ru = ru
+              best = score
+            }
+          }
+        }
       }
-      if s_lb != 0 && Bounded(s_ra, s_rb - s_lb) && Distance(s_la, 0, s_ra) < best {
-        next_la = s_la
-        next_lb = 0
-        next_ra = s_ra
-        next_rb = s_rb - s_lb
-        rule = "MOVE_LEFT_CONSTANT"
-        best = Distance(next_la, next_lb, next_ra)
-      }
-      if s_la == 0 && s_ra != 0 && Distance(s_ra, s_rb, s_la) < best {
-        next_la = s_ra
-        next_lb = s_rb
-        next_ra = s_la
-        next_rb = s_lb
-        rule = "SWAP_SIDES"
-      }
-      if rule == "" {
+      if selected_ru.id == 0 {
         break
       }
       let validation = AssessEquations(s_la, s_lb, s_ra, s_rb, next_la, next_lb, next_ra, next_rb)
@@ -284,7 +323,9 @@ module Model {
         break
       }
       let after = Render(next_la, next_lb, next_ra, next_rb)
-      steps = array.append(steps, Step { rule: rule, before: before, after: after, validation: validation })
+      let instance = Ruo { id: steps.length + 1, source_ru: selected_ru.id, source_rus: active.id, knowledge_id: selected_ru.knowledge_id, source: selected_ru.source, state_before: before, state_after: after, validation: validation, activation_reason: "SELECTED_BY_GOAL_DISTANCE" }
+      ruos = array.append(ruos, instance)
+      steps = array.append(steps, Step { rule: Knowledge::KRuleName(selected_ru.rule), before: before, after: after, validation: validation, active_rus: active.name, candidate_ru: active.members, ruo: instance })
       s_la = next_la
       s_lb = next_lb
       s_ra = next_ra
@@ -292,7 +333,7 @@ module Model {
       count = count + 1
     }
     if s_ra != 0 || s_lb != 0 || s_la == 0 {
-      return Outcome { status: "UNSOLVED", numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+      return Outcome { status: "UNSOLVED", numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps, ruos: ruos }
     }
     let numerator = s_rb
     let denominator = s_la
@@ -303,6 +344,6 @@ module Model {
     let divisor = Gcd(numerator, denominator)
     numerator = DivideExact(numerator, divisor)
     denominator = DivideExact(denominator, divisor)
-    return Outcome { status: "SOLVED", numerator: numerator, denominator: denominator, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+    return Outcome { status: "SOLVED", numerator: numerator, denominator: denominator, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps, ruos: ruos }
   }
 }

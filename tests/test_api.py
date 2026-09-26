@@ -46,6 +46,39 @@ class ModelIntegrationTest(unittest.TestCase):
         self.assertEqual(integrate("x^5")["status"], "RESOURCE_LIMIT")
         self.assertEqual(evaluate_derivative("sin(x)", "cos(x)")["status"], "UNVERIFIED")
 
+    def test_knowledge_rus_and_ruo_trace(self):
+        solved = calculate("2*x+6=3*x+10")
+        self.assertEqual([step["ruo"]["knowledge_id"] for step in solved["steps"]],
+                         ["EQ_MOVE_RIGHT_VARIABLE", "EQ_MOVE_LEFT_CONSTANT"])
+        self.assertEqual([step["candidate_ru"] for step in solved["steps"]], [[1, 2], [2]])
+        self.assertEqual(solved["ruos"], [step["ruo"] for step in solved["steps"]])
+        for step in solved["steps"]:
+            self.assertEqual(step["active_rus"], "EquationRUS")
+            self.assertIn(step["ruo"]["source_ru"], step["candidate_ru"])
+            self.assertEqual(step["ruo"]["source_rus"], 1)
+            self.assertEqual(step["ruo"]["source"], "mathlang_dsn/knowledge.rsn")
+            self.assertEqual((step["ruo"]["state_before"], step["ruo"]["state_after"]),
+                             (step["before"], step["after"]))
+            self.assertEqual(step["ruo"]["validation"], "VALID")
+
+        polynomial = calculate("(x+1)^2")
+        self.assertEqual([ruo["knowledge_id"] for ruo in polynomial["ruos"]],
+                         ["POLY_ADD", "POLY_POWER_BOUNDED"])
+        self.assertEqual([ruo["id"] for ruo in polynomial["ruos"]], [1, 2])
+        branched = calculate("(x+1)*(x+2)")
+        self.assertEqual([ruo["id"] for ruo in branched["ruos"]], [1, 2, 3])
+        self.assertEqual(polynomial["ruos"][-1]["after"], polynomial["coefficients"])
+        self.assertEqual(polynomial["ruos"][-1]["after_denominator"], polynomial["denominator"])
+        self.assertIn("POLY_POWER_BOUNDED", polynomial["knowledge_ids"])
+        self.assertEqual(differentiate("x^2")["ruos"][-1]["knowledge_id"], "POLY_DIFFERENTIATE")
+        self.assertEqual(integrate("x")["ruos"][-1]["knowledge_id"], "POLY_INTEGRATE")
+        assessment = evaluate("x+1", "1+x")
+        self.assertEqual((assessment["status"], assessment["knowledge_id"], assessment["active_rus"]),
+                         ("VALID", "POLY_EXPRESSION_EQUIVALENCE", "AssessmentRUS"))
+        self.assertEqual(assessment["ruo"], {
+            "id": 1, "source_ru": 19, "source_rus": "AssessmentRUS", "knowledge_id": assessment["knowledge_id"],
+            "source": assessment["source"], "validation": assessment["status"]})
+
 
 if __name__ == "__main__":
     unittest.main()

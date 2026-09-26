@@ -10,6 +10,7 @@ MathLang_DSN is a **mathematical computation and assessment model** for MathLang
 - One-variable linear equations with rational coefficients, including no solution and infinitely many solutions. Higher-degree equations are recognized but reported as `UNSOLVED`.
 - Assessment of two expressions or two equations. Polynomial expressions are compared by exact coefficients. Linear equations are compared by solution set. Higher-degree equations return `VALID` when proportionality proves the same zero set; otherwise they return `UNVERIFIED` unless a stronger proof exists.
 - A bounded, deterministic rule sequence for equation solving. Each committed transition is checked for solution-set preservation.
+- A `knowledge.rsn` catalogue for arithmetic, polynomial, calculus, equation, and assessment rules. Each rule has a stable Knowledge ID, source, RU number, and RUS family.
 
 Explicit multiplication is required (`2*x`, not `2x`). `^` and `**` both denote powers. Decimal literals, negative powers, non-polynomial functions, multivariable expressions, assumptions, matrices, and `.mlang` documents are not yet accepted by this interface. MathLang can pass normalized expression strings to the Python API. Integer literals, reduced coefficients, and denominators are limited to 1,000,000 in magnitude; expressions are limited to 64 nodes. The model does not silently interpret an unsupported expression as an incorrect mathematical step.
 
@@ -30,11 +31,11 @@ python3 -m mathlang_dsn evaluate-derivative 'x^3+2*x' '3*x^2+2'
 python3 -m mathlang_dsn evaluate-antiderivative 'x^2+1' 'x^3/3+x+7'
 ```
 
-The operations are available as Python functions in `mathlang_dsn`. They return dictionaries with `schema_version: "mathlang-dsn/0.2"`. Polynomial results include `coefficients` and `denominator`; equation results include `status`, reduced rational `numerator`/`denominator`, `final_state`, and committed `steps`. Each step contains its rule, before and after states, and validation result. Equation traces begin from the canonical denominator-cleared equation. The Python host creates an isolated temporary ReasonScript project for each call. Only parsed integer literals and fixed model calls are written to generated source; user text never becomes ReasonScript code.
+The operations are available as Python functions in `mathlang_dsn`. They return dictionaries with `schema_version: "mathlang-dsn/0.2"`. Polynomial results include `coefficients`, `denominator`, ordered `knowledge_ids`/`knowledge_sources`, and `ruos` for arithmetic or calculus operations. Each polynomial RUO records its input and output coefficients and denominators, source RU, active RUS family, Knowledge ID, source, and validation. Equation results include `status`, reduced rational `numerator`/`denominator`, `final_state`, committed `steps`, and `ruos`. Each equation step embeds the matching RUO, active RUS, candidate RUs, before and after states, and validation result. Assessment results include the assessment Knowledge ID, source, active RUS, and assessment RUO. Equation traces start from the input equation with denominators cleared when each side is linear. The Python host creates an isolated temporary ReasonScript project for each call. Only parsed integer literals and fixed model calls are written to generated source; user text never becomes ReasonScript code.
 
 ## Model boundaries
 
-MathLang owns input syntax and learning logs. This package owns expression conversion and the ReasonScript model. The model owns arithmetic, rule candidates, transition validation, and terminal classification. ReasonScript's runtime JSON trace is an implementation detail; the model's `steps` are the stable mathematical trace.
+MathLang owns input syntax and learning logs. This package owns expression conversion and the ReasonScript model. The model owns arithmetic, rule candidates, transition validation, and terminal classification. `knowledge.rsn` converts catalogue entries into RUs; equation state activates applicable RUs in `EquationRUS`, and the solver selects a validated RU for each step. Polynomial and calculus operations use the corresponding catalogued RUs. RUOs in the public result are the stable mathematical trace. They are model data, as in DSN_Test's ReasonScript structures; ReasonScript runtime counters such as `ruo_created_count` are not populated by these structures.
 
 The arithmetic evaluator works on a bounded expression DAG. Its output is a canonical rational polynomial. Equation assessment compares linear solution sets by exact integer cross products. The solver chooses among applicable equation rules using a deterministic distance measure, validates each transition, and stops at `SOLVED`, `CONTRADICTION`, `INFINITE_SOLUTIONS`, `UNSOLVED`, or `RESOURCE_LIMIT`. Rational answers are represented exactly as reduced numerator and denominator. No floating-point sampling is used to turn an unknown case into `VALID` or `INVALID`.
 
@@ -49,11 +50,12 @@ reason check
 reason build
 reason run --entry SelfCheck --json --trace=off
 reason run --entry PolynomialSelfCheck --json --trace=off
+reason run --entry KnowledgeSelfCheck --json --trace=off
 reason project-validate . --json
 python3 -m unittest discover -s tests -v
 ```
 
-Both self-check calculations must return `true` in `runtime_result.result`; a successful process exit alone does not establish that. The Python tests execute the native ReasonScript runtime through the public API.
+Each self-check calculation must return `true` in `runtime_result.result`; a successful process exit alone does not establish that. The Python tests execute the native ReasonScript runtime through the public API and check RUO links against returned results.
 
 ## Provenance and status
 
