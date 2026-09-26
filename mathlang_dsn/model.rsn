@@ -1,0 +1,304 @@
+package mathlang_dsn
+
+// MathLang_DSN mathematical inference model. Input syntax is owned by the host.
+module Model {
+  struct Term {
+    valid: bool
+    a: int
+    b: int
+    reason: string
+  }
+
+  struct Step {
+    rule: string
+    before: string
+    after: string
+    validation: string
+  }
+
+  struct Outcome {
+    status: string
+    numerator: int
+    denominator: int
+    final_state: string
+    steps: [Step]
+  }
+
+  fn Abs(value: int) -> int {
+    if value < 0 {
+      return 0 - value
+    }
+    return value
+  }
+
+  fn Bounded(a: int, b: int) -> bool {
+    return Abs(a) <= 1000000 && Abs(b) <= 1000000
+  }
+
+  fn DivideExact(numerator: int, denominator: int) -> int {
+    let remaining = Abs(numerator)
+    let divisor = Abs(denominator)
+    let quotient = 0
+    while remaining >= divisor {
+      let chunk = divisor
+      let count = 1
+      while chunk <= remaining - chunk {
+        chunk = chunk + chunk
+        count = count + count
+      }
+      remaining = remaining - chunk
+      quotient = quotient + count
+    }
+    if (numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0) {
+      return 0 - quotient
+    }
+    return quotient
+  }
+
+  fn Gcd(left: int, right: int) -> int {
+    let a = Abs(left)
+    let b = Abs(right)
+    while b != 0 {
+      let remainder = a % b
+      a = b
+      b = remainder
+    }
+    return a
+  }
+
+  fn Invalid(reason: string) -> Term {
+    return Term { valid: false, a: 0, b: 0, reason: reason }
+  }
+
+  fn Value(a: int, b: int) -> Term {
+    if !Bounded(a, b) {
+      return Invalid("RESOURCE_LIMIT")
+    }
+    return Term { valid: true, a: a, b: b, reason: "" }
+  }
+
+  fn Combine(kind: int, x: Term, y: Term) -> Term {
+    if !x.valid {
+      return x
+    }
+    if !y.valid {
+      return y
+    }
+    if kind == 2 {
+      return Value(x.a + y.a, x.b + y.b)
+    }
+    if kind == 3 {
+      return Value(x.a - y.a, x.b - y.b)
+    }
+    if kind == 4 {
+      if x.a != 0 && y.a != 0 {
+        return Invalid("NONLINEAR")
+      }
+      return Value(x.a * y.b + y.a * x.b, x.b * y.b)
+    }
+    if kind == 5 {
+      if y.a != 0 || y.b == 0 {
+        return Invalid("DIVISION_DOMAIN")
+      }
+      if x.a % y.b != 0 || x.b % y.b != 0 {
+        return Invalid("NONINTEGER_COEFFICIENT")
+      }
+      return Value(DivideExact(x.a, y.b), DivideExact(x.b, y.b))
+    }
+    return Invalid("UNSUPPORTED_OPERATOR")
+  }
+
+  // A node denotes a*x+b. Kinds: 0 integer, 1 x, 2 +, 3 -, 4 *, 5 /.
+  // Children always point to earlier nodes; arrays form a bounded DAG.
+  pub fn Evaluate(kinds: [int], values: [int], lefts: [int], rights: [int]) -> Term {
+    if kinds.length == 0 || kinds.length > 64 || values.length != kinds.length || lefts.length != kinds.length || rights.length != kinds.length {
+      return Invalid("INVALID_INPUT")
+    }
+    let terms = []
+    let index = 0
+    while index < kinds.length {
+      let kind = kinds[index]
+      let current = Invalid("INVALID_INPUT")
+      if kind == 0 {
+        current = Value(0, values[index])
+      }
+      if kind == 1 {
+        current = Value(1, 0)
+      }
+      if kind >= 2 && kind <= 5 {
+        let left = lefts[index]
+        let right = rights[index]
+        if left >= 0 && left < index && right >= 0 && right < index {
+          current = Combine(kind, terms[left], terms[right])
+        }
+      }
+      terms = array.append(terms, current)
+      index = index + 1
+    }
+    return terms[terms.length - 1]
+  }
+
+  // Compare mathematical meaning, independent of the candidate rule.
+  pub fn AssessExpressions(a1: int, b1: int, a2: int, b2: int) -> string {
+    if !Bounded(a1, b1) || !Bounded(a2, b2) {
+      return "UNVERIFIED"
+    }
+    if a1 == a2 && b1 == b2 {
+      return "VALID"
+    }
+    return "INVALID"
+  }
+
+  pub fn AssessTerms(before: Term, after: Term) -> string {
+    if !before.valid || !after.valid {
+      return "UNVERIFIED"
+    }
+    return AssessExpressions(before.a, before.b, after.a, after.b)
+  }
+
+  // Each equation is left_a*x+left_b = right_a*x+right_b.
+  pub fn AssessEquations(la: int, lb: int, ra: int, rb: int, next_la: int, next_lb: int, next_ra: int, next_rb: int) -> string {
+    if !Bounded(la, lb) || !Bounded(ra, rb) || !Bounded(next_la, next_lb) || !Bounded(next_ra, next_rb) {
+      return "UNVERIFIED"
+    }
+    let a = la - ra
+    let b = lb - rb
+    let next_a = next_la - next_ra
+    let next_b = next_lb - next_rb
+    if !Bounded(a, b) || !Bounded(next_a, next_b) {
+      return "UNVERIFIED"
+    }
+    if a == 0 && next_a == 0 {
+      if b == 0 && next_b == 0 {
+        return "VALID"
+      }
+      if b != 0 && next_b != 0 {
+        return "VALID"
+      }
+      return "INVALID"
+    }
+    if a == 0 || next_a == 0 {
+      return "INVALID"
+    }
+    if a * next_b == next_a * b {
+      return "VALID"
+    }
+    return "INVALID"
+  }
+
+  pub fn AssessEquationTerms(left: Term, right: Term, next_left: Term, next_right: Term) -> string {
+    if !left.valid || !right.valid || !next_left.valid || !next_right.valid {
+      return "UNVERIFIED"
+    }
+    return AssessEquations(left.a, left.b, right.a, right.b, next_left.a, next_left.b, next_right.a, next_right.b)
+  }
+
+  pub fn CalculateEquation(left: Term, right: Term) -> Outcome {
+    if !left.valid || !right.valid {
+      return Outcome { status: "UNSUPPORTED", numerator: 0, denominator: 1, final_state: "", steps: [] }
+    }
+    return Solve(left.a, left.b, right.a, right.b)
+  }
+
+  fn Render(la: int, lb: int, ra: int, rb: int) -> string {
+    return string.concat(string.concat(string.concat(string.concat(string.concat(string.concat(string.concat(string.from_int(la), "*x+"), string.from_int(lb)), "="), string.from_int(ra)), "*x+"), string.from_int(rb)), "")
+  }
+
+  fn Distance(la: int, lb: int, ra: int) -> int {
+    let distance = 0
+    if ra != 0 {
+      distance = distance + 1
+    }
+    if lb != 0 {
+      distance = distance + 1
+    }
+    if la == 0 {
+      distance = distance + 1
+    }
+    return distance
+  }
+
+  pub fn Solve(la: int, lb: int, ra: int, rb: int) -> Outcome {
+    let s_la = la
+    let s_lb = lb
+    let s_ra = ra
+    let s_rb = rb
+    let steps = []
+    if !Bounded(s_la, s_lb) || !Bounded(s_ra, s_rb) {
+      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps }
+    }
+    let initial_a = s_la - s_ra
+    let initial_b = s_lb - s_rb
+    if !Bounded(initial_a, initial_b) {
+      return Outcome { status: "RESOURCE_LIMIT", numerator: 0, denominator: 1, final_state: "", steps: steps }
+    }
+    if initial_a == 0 {
+      let status = "CONTRADICTION"
+      if initial_b == 0 {
+        status = "INFINITE_SOLUTIONS"
+      }
+      return Outcome { status: status, numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+    }
+    let count = 0
+    while count < 3 {
+      if s_ra == 0 && s_lb == 0 && s_la != 0 {
+        break
+      }
+      let before = Render(s_la, s_lb, s_ra, s_rb)
+      let next_la = s_la
+      let next_lb = s_lb
+      let next_ra = s_ra
+      let next_rb = s_rb
+      let rule = ""
+      let best = Distance(s_la, s_lb, s_ra)
+      if s_ra != 0 && Bounded(s_la - s_ra, s_lb) && Distance(s_la - s_ra, s_lb, 0) < best {
+        next_la = s_la - s_ra
+        next_ra = 0
+        rule = "MOVE_RIGHT_VARIABLE"
+        best = Distance(next_la, next_lb, next_ra)
+      }
+      if s_lb != 0 && Bounded(s_ra, s_rb - s_lb) && Distance(s_la, 0, s_ra) < best {
+        next_la = s_la
+        next_lb = 0
+        next_ra = s_ra
+        next_rb = s_rb - s_lb
+        rule = "MOVE_LEFT_CONSTANT"
+        best = Distance(next_la, next_lb, next_ra)
+      }
+      if s_la == 0 && s_ra != 0 && Distance(s_ra, s_rb, s_la) < best {
+        next_la = s_ra
+        next_lb = s_rb
+        next_ra = s_la
+        next_rb = s_lb
+        rule = "SWAP_SIDES"
+      }
+      if rule == "" {
+        break
+      }
+      let validation = AssessEquations(s_la, s_lb, s_ra, s_rb, next_la, next_lb, next_ra, next_rb)
+      if validation != "VALID" {
+        break
+      }
+      let after = Render(next_la, next_lb, next_ra, next_rb)
+      steps = array.append(steps, Step { rule: rule, before: before, after: after, validation: validation })
+      s_la = next_la
+      s_lb = next_lb
+      s_ra = next_ra
+      s_rb = next_rb
+      count = count + 1
+    }
+    if s_ra != 0 || s_lb != 0 || s_la == 0 {
+      return Outcome { status: "UNSOLVED", numerator: 0, denominator: 1, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+    }
+    let numerator = s_rb
+    let denominator = s_la
+    if denominator < 0 {
+      numerator = 0 - numerator
+      denominator = 0 - denominator
+    }
+    let divisor = Gcd(numerator, denominator)
+    numerator = DivideExact(numerator, divisor)
+    denominator = DivideExact(denominator, divisor)
+    return Outcome { status: "SOLVED", numerator: numerator, denominator: denominator, final_state: Render(s_la, s_lb, s_ra, s_rb), steps: steps }
+  }
+}

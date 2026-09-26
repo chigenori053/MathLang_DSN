@@ -1,0 +1,20 @@
+package mathlang_dsn
+
+module main {
+  import mathlang_dsn.Model
+
+  calculation SelfCheck {
+    let kinds = [0, 0, 2]
+    let values = [2, 3, 0]
+    let lefts = [-1, -1, 0]
+    let rights = [-1, -1, 1]
+    let sum = Model::Evaluate(kinds, values, lefts, rights)
+    let equation = Model::Solve(2, 6, 0, 12)
+    let two_moves = Model::Solve(2, 6, 3, 10)
+    let contradiction = Model::Solve(1, 1, 1, 2)
+    let identity = Model::Solve(1, 1, 1, 1)
+    let accepted = Model::AssessEquations(2, 6, 0, 12, 1, 0, 0, 3)
+    let rejected = Model::AssessEquations(2, 6, 0, 12, 1, 0, 0, 4)
+    result = sum.valid && sum.a == 0 && sum.b == 5 && equation.status == "SOLVED" && equation.numerator == 3 && equation.denominator == 1 && two_moves.status == "SOLVED" && two_moves.steps.length == 2 && contradiction.status == "CONTRADICTION" && identity.status == "INFINITE_SOLUTIONS" && accepted == "VALID" && rejected == "INVALID"
+  }
+}
