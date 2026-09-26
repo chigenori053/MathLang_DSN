@@ -200,6 +200,10 @@ module Model {
     return Solve(left.a, left.b, right.a, right.b)
   }
 
+  pub fn StatusOutcome(status: string) -> Outcome {
+    return Outcome { status: status, numerator: 0, denominator: 1, final_state: "", steps: [] }
+  }
+
   fn Render(la: int, lb: int, ra: int, rb: int) -> string {
     return string.concat(string.concat(string.concat(string.concat(string.concat(string.concat(string.concat(string.from_int(la), "*x+"), string.from_int(lb)), "="), string.from_int(ra)), "*x+"), string.from_int(rb)), "")
   }

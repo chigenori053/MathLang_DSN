@@ -1,0 +1,325 @@
+package mathlang_dsn
+
+// Exact bounded rational polynomials of degree at most five.
+module Polynomial {
+  import mathlang_dsn.Model
+
+  struct Poly {
+    valid: bool
+    coefficients: [int]
+    denominator: int
+    reason: string
+  }
+
+  fn Abs(value: int) -> int {
+    if value < 0 {
+      return 0 - value
+    }
+    return value
+  }
+
+  fn Gcd(left: int, right: int) -> int {
+    let a = Abs(left)
+    let b = Abs(right)
+    while b != 0 {
+      let remainder = a % b
+      a = b
+      b = remainder
+    }
+    return a
+  }
+
+  fn DivideExact(numerator: int, denominator: int) -> int {
+    let remaining = Abs(numerator)
+    let divisor = Abs(denominator)
+    let quotient = 0
+    while remaining >= divisor {
+      let chunk = divisor
+      let count = 1
+      while chunk <= remaining - chunk {
+        chunk = chunk + chunk
+        count = count + count
+      }
+      remaining = remaining - chunk
+      quotient = quotient + count
+    }
+    if (numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0) {
+      return 0 - quotient
+    }
+    return quotient
+  }
+
+  fn Zeros() -> [int] {
+    return [0, 0, 0, 0, 0, 0]
+  }
+
+  fn Invalid(reason: string) -> Poly {
+    return Poly { valid: false, coefficients: Zeros(), denominator: 1, reason: reason }
+  }
+
+  fn Value(numbers: [int], divisor: int) -> Poly {
+    if numbers.length != 6 || divisor == 0 {
+      return Invalid("INVALID_INPUT")
+    }
+    let denominator = divisor
+    let coefficients = numbers
+    if denominator < 0 {
+      denominator = 0 - denominator
+      let flipped = []
+      for number in coefficients {
+        flipped = array.append(flipped, 0 - number)
+      }
+      coefficients = flipped
+    }
+    let common = denominator
+    for number in coefficients {
+      common = Gcd(common, number)
+    }
+    let reduced = []
+    for number in coefficients {
+      reduced = array.append(reduced, DivideExact(number, common))
+    }
+    denominator = DivideExact(denominator, common)
+    if denominator > 1000000 {
+      return Invalid("RESOURCE_LIMIT")
+    }
+    for number in reduced {
+      if Abs(number) > 1000000 {
+        return Invalid("RESOURCE_LIMIT")
+      }
+    }
+    return Poly { valid: true, coefficients: reduced, denominator: denominator, reason: "" }
+  }
+
+  fn Constant(number: int) -> Poly {
+    return Value([number, 0, 0, 0, 0, 0], 1)
+  }
+
+  fn Variable() -> Poly {
+    return Value([0, 1, 0, 0, 0, 0], 1)
+  }
+
+  fn Degree(value: Poly) -> int {
+    let index = 5
+    while index >= 0 {
+      if value.coefficients[index] != 0 {
+        return index
+      }
+      index = index - 1
+    }
+    return 0
+  }
+
+  fn ProductCoefficient(x: Poly, y: Poly, target: int) -> int {
+    let total = 0
+    let index = 0
+    while index <= target {
+      total = total + x.coefficients[index] * y.coefficients[target - index]
+      index = index + 1
+    }
+    return total
+  }
+
+  fn Combine(kind: int, x: Poly, y: Poly) -> Poly {
+    if !x.valid {
+      return x
+    }
+    if !y.valid {
+      return y
+    }
+    if kind == 4 && Degree(x) + Degree(y) > 5 {
+      return Invalid("DEGREE_LIMIT")
+    }
+    if kind == 5 && (Degree(y) != 0 || y.coefficients[0] == 0) {
+      return Invalid("DIVISION_DOMAIN")
+    }
+    let output = []
+    let index = 0
+    while index < 6 {
+      let coefficient = 0
+      if kind == 2 {
+        coefficient = x.coefficients[index] * y.denominator + y.coefficients[index] * x.denominator
+      }
+      if kind == 3 {
+        coefficient = x.coefficients[index] * y.denominator - y.coefficients[index] * x.denominator
+      }
+      if kind == 4 {
+        coefficient = ProductCoefficient(x, y, index)
+      }
+      if kind == 5 {
+        coefficient = x.coefficients[index] * y.denominator
+      }
+      output = array.append(output, coefficient)
+      index = index + 1
+    }
+    if kind == 2 || kind == 3 || kind == 4 {
+      return Value(output, x.denominator * y.denominator)
+    }
+    if kind == 5 {
+      return Value(output, x.denominator * y.coefficients[0])
+    }
+    return Invalid("UNSUPPORTED_OPERATOR")
+  }
+
+  fn Power(base: Poly, exponent: int) -> Poly {
+    if exponent < 0 || exponent > 5 {
+      return Invalid("EXPONENT_LIMIT")
+    }
+    let output = Constant(1)
+    let index = 0
+    while index < exponent {
+      output = Combine(4, output, base)
+      if !output.valid {
+        return output
+      }
+      index = index + 1
+    }
+    return output
+  }
+
+  // Node kinds: 0 integer, 1 x, 2 +, 3 -, 4 *, 5 /, 6 nonnegative power.
+  pub fn PolyEvaluate(kinds: [int], values: [int], lefts: [int], rights: [int]) -> Poly {
+    if kinds.length == 0 || kinds.length > 64 || values.length != kinds.length || lefts.length != kinds.length || rights.length != kinds.length {
+      return Invalid("INVALID_INPUT")
+    }
+    let terms = []
+    let index = 0
+    while index < kinds.length {
+      let kind = kinds[index]
+      let current = Invalid("INVALID_INPUT")
+      if kind == 0 {
+        current = Constant(values[index])
+      }
+      if kind == 1 {
+        current = Variable()
+      }
+      if kind >= 2 && kind <= 5 {
+        let left = lefts[index]
+        let right = rights[index]
+        if left >= 0 && left < index && right >= 0 && right < index {
+          current = Combine(kind, terms[left], terms[right])
+        }
+      }
+      if kind == 6 {
+        let left = lefts[index]
+        if left >= 0 && left < index {
+          current = Power(terms[left], values[index])
+        }
+      }
+      terms = array.append(terms, current)
+      index = index + 1
+    }
+    return terms[terms.length - 1]
+  }
+
+  pub fn PolyDifferentiate(value: Poly) -> Poly {
+    if !value.valid {
+      return value
+    }
+    let coefficients = []
+    let index = 1
+    while index < 6 {
+      coefficients = array.append(coefficients, value.coefficients[index] * index)
+      index = index + 1
+    }
+    coefficients = array.append(coefficients, 0)
+    return Value(coefficients, value.denominator)
+  }
+
+  pub fn PolyIntegrate(value: Poly) -> Poly {
+    if !value.valid {
+      return value
+    }
+    if value.coefficients[5] != 0 {
+      return Invalid("DEGREE_LIMIT")
+    }
+    let divisor = value.denominator * 60
+    let coefficients = [0]
+    let index = 0
+    while index < 5 {
+      coefficients = array.append(coefficients, value.coefficients[index] * DivideExact(60, index + 1))
+      index = index + 1
+    }
+    return Value(coefficients, divisor)
+  }
+
+  pub fn PolyAssessExpressions(before: Poly, after: Poly) -> string {
+    if !before.valid || !after.valid {
+      return "UNVERIFIED"
+    }
+    if before.denominator != after.denominator {
+      return "INVALID"
+    }
+    let index = 0
+    while index < 6 {
+      if before.coefficients[index] != after.coefficients[index] {
+        return "INVALID"
+      }
+      index = index + 1
+    }
+    return "VALID"
+  }
+
+  pub fn PolyAssessEquations(left: Poly, right: Poly, next_left: Poly, next_right: Poly) -> string {
+    if !left.valid || !right.valid || !next_left.valid || !next_right.valid {
+      return "UNVERIFIED"
+    }
+    let first = Combine(3, left, right)
+    let second = Combine(3, next_left, next_right)
+    if !first.valid || !second.valid {
+      return "UNVERIFIED"
+    }
+    if Degree(first) <= 1 && Degree(second) <= 1 {
+      if first.denominator != 1 || second.denominator != 1 {
+        let a = first.coefficients[1] * second.denominator
+        let b = first.coefficients[0] * second.denominator
+        let c = second.coefficients[1] * first.denominator
+        let d = second.coefficients[0] * first.denominator
+        if Abs(a) > 1000000 || Abs(b) > 1000000 || Abs(c) > 1000000 || Abs(d) > 1000000 {
+          return "UNVERIFIED"
+        }
+        return Model::AssessEquations(a, b, 0, 0, c, d, 0, 0)
+      }
+      return Model::AssessEquations(first.coefficients[1], first.coefficients[0], 0, 0, second.coefficients[1], second.coefficients[0], 0, 0)
+    }
+    // Proportional polynomials have identical zero sets. Other pairs need a
+    // root-set proof; coefficient inequality alone cannot reject them.
+    let anchor = -1
+    let index = 0
+    while index < 6 {
+      if first.coefficients[index] != 0 || second.coefficients[index] != 0 {
+        anchor = index
+        break
+      }
+      index = index + 1
+    }
+    if anchor < 0 {
+      return "VALID"
+    }
+    if first.coefficients[anchor] == 0 || second.coefficients[anchor] == 0 {
+      return "UNVERIFIED"
+    }
+    index = 0
+    while index < 6 {
+      if first.coefficients[index] * second.coefficients[anchor] != second.coefficients[index] * first.coefficients[anchor] {
+        return "UNVERIFIED"
+      }
+      index = index + 1
+    }
+    return "VALID"
+  }
+
+  pub fn PolySolveEquation(left: Poly, right: Poly) {
+    if !left.valid || !right.valid {
+      return Model::StatusOutcome("UNSUPPORTED")
+    }
+    let difference = Combine(3, left, right)
+    if !difference.valid {
+      return Model::StatusOutcome("RESOURCE_LIMIT")
+    }
+    if Degree(difference) > 1 {
+      return Model::StatusOutcome("UNSOLVED")
+    }
+    return Model::Solve(difference.coefficients[1], difference.coefficients[0], 0, 0)
+  }
+}

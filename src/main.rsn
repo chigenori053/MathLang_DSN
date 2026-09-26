@@ -2,6 +2,7 @@ package mathlang_dsn
 
 module main {
   import mathlang_dsn.Model
+  import mathlang_dsn.Polynomial
 
   calculation SelfCheck {
     let kinds = [0, 0, 2]
@@ -16,5 +17,13 @@ module main {
     let accepted = Model::AssessEquations(2, 6, 0, 12, 1, 0, 0, 3)
     let rejected = Model::AssessEquations(2, 6, 0, 12, 1, 0, 0, 4)
     result = sum.valid && sum.a == 0 && sum.b == 5 && equation.status == "SOLVED" && equation.numerator == 3 && equation.denominator == 1 && two_moves.status == "SOLVED" && two_moves.steps.length == 2 && contradiction.status == "CONTRADICTION" && identity.status == "INFINITE_SOLUTIONS" && accepted == "VALID" && rejected == "INVALID"
+  }
+
+  calculation PolynomialSelfCheck {
+    let half = Polynomial::PolyEvaluate([0, 0, 5], [1, 2, 0], [-1, -1, 0], [-1, -1, 1])
+    let square = Polynomial::PolyEvaluate([1, 0, 2, 6], [0, 1, 0, 2], [-1, -1, 0, 2], [-1, -1, 1, -1])
+    let derivative = Polynomial::PolyDifferentiate(square)
+    let integral = Polynomial::PolyIntegrate(derivative)
+    result = half.valid && half.coefficients[0] == 1 && half.denominator == 2 && square.valid && square.coefficients[2] == 1 && derivative.coefficients[1] == 2 && integral.coefficients[2] == 1
   }
 }

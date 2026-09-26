@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 
 MODEL = Path(__file__).with_name("model.rsn")
+POLYNOMIAL = Path(__file__).with_name("polynomial.rsn")
 MANIFEST = Path(__file__).with_name("reason.toml")
 MAX_NODES = 64
 MAX_INTEGER = 1_000_000
@@ -33,7 +34,7 @@ def _split_equation(source: str) -> tuple[str, str] | None:
 
 def _encode(source: str) -> tuple[list[int], list[int], list[int], list[int]]:
     try:
-        tree = ast.parse(source.strip(), mode="eval").body
+        tree = ast.parse(source.strip().replace("^", "**"), mode="eval").body
     except SyntaxError as exc:
         raise UnsupportedExpression("invalid expression syntax") from exc
     kinds: list[int] = []
@@ -67,7 +68,12 @@ def _encode(source: str) -> tuple[list[int], list[int], list[int], list[int]]:
             left = visit(node.left)
             right = visit(node.right)
             return append(OPERATORS[type(node.op)], left=left, right=right)
-        raise UnsupportedExpression("supported syntax: integers, x, +, -, *, /, parentheses")
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
+            if not isinstance(node.right, ast.Constant) or type(node.right.value) is not int or not 0 <= node.right.value <= 5:
+                raise UnsupportedExpression("integer exponents must be between 0 and 5")
+            base = visit(node.left)
+            return append(6, value=node.right.value, left=base)
+        raise UnsupportedExpression("supported syntax: integers, x, +, -, *, /, powers 0..5, parentheses")
 
     visit(tree)
     return kinds, values, lefts, rights
@@ -79,7 +85,7 @@ def _literal(values: list[int]) -> str:
 
 def _term(name: str, source: str) -> str:
     arrays = _encode(source)
-    return f"    let {name} = Model::Evaluate(" + ", ".join(_literal(a) for a in arrays) + ")"
+    return f"    let {name} = Polynomial::PolyEvaluate(" + ", ".join(_literal(a) for a in arrays) + ")"
 
 
 def _run(lines: list[str], result: str) -> object:
@@ -90,8 +96,9 @@ def _run(lines: list[str], result: str) -> object:
         (workspace / "src").mkdir()
         (workspace / "reason.toml").write_text(MANIFEST.read_text())
         (workspace / "src" / "model.rsn").write_text(MODEL.read_text())
+        (workspace / "src" / "polynomial.rsn").write_text(POLYNOMIAL.read_text())
         source = "\n".join(
-            ["package mathlang_dsn", "module main {", "  import mathlang_dsn.Model", "  calculation Request {"]
+            ["package mathlang_dsn", "module main {", "  import mathlang_dsn.Model", "  import mathlang_dsn.Polynomial", "  calculation Request {"]
             + lines
             + [f"    result = {result}", "  }", "}", ""]
         )
@@ -115,20 +122,79 @@ def _unwrap(value: object) -> object:
 
 
 def calculate(expression: str) -> dict:
-    """Calculate an integer affine expression or solve a linear equation."""
+    """Calculate a bounded rational polynomial or solve a linear equation."""
     try:
         equation = _split_equation(expression)
         if equation is None:
             term = _run([_term("term", expression)], "term")
             if not term["valid"]:
-                return {"schema_version": "mathlang-dsn/0.1", "status": "UNSUPPORTED", "reason": term["reason"]}
-            status = "CALCULATED" if term["a"] == 0 else "SYMBOLIC"
-            return {"schema_version": "mathlang-dsn/0.1", "status": status, "coefficient": term["a"], "constant": term["b"]}
+                return {"schema_version": "mathlang-dsn/0.2", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
+            return _polynomial_result(term)
         left, right = equation
-        outcome = _run([_term("left", left), _term("right", right)], "Model::CalculateEquation(left, right)")
-        return {"schema_version": "mathlang-dsn/0.1", **outcome}
+        outcome = _run([_term("left", left), _term("right", right)], "Polynomial::PolySolveEquation(left, right)")
+        return {"schema_version": "mathlang-dsn/0.2", **outcome}
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.1", "status": "UNSUPPORTED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+
+
+def _polynomial_result(term: dict, operation: str | None = None) -> dict:
+    if not term["valid"]:
+        return {"schema_version": "mathlang-dsn/0.2", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
+    coefficients = term["coefficients"]
+    degree = max((index for index, value in enumerate(coefficients) if value), default=0)
+    status = operation or ("CALCULATED" if degree == 0 else "SYMBOLIC")
+    output = {"schema_version": "mathlang-dsn/0.2", "status": status, "coefficients": coefficients, "denominator": term["denominator"], "degree": degree}
+    if degree == 0:
+        output["numerator"] = coefficients[0]
+    if degree <= 1 and term["denominator"] == 1:
+        output.update(coefficient=coefficients[1], constant=coefficients[0])
+    if operation == "INTEGRATED":
+        output["integration_constant"] = "C"
+    return output
+
+
+def differentiate(expression: str) -> dict:
+    """Differentiate a bounded polynomial exactly with respect to x."""
+    try:
+        if _split_equation(expression) is not None:
+            raise UnsupportedExpression("differentiation requires an expression")
+        term = _run([_term("term", expression)], "Polynomial::PolyDifferentiate(term)")
+        return _polynomial_result(term, "DIFFERENTIATED")
+    except UnsupportedExpression as exc:
+        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+
+
+def integrate(expression: str) -> dict:
+    """Find an exact indefinite integral of a bounded polynomial."""
+    try:
+        if _split_equation(expression) is not None:
+            raise UnsupportedExpression("integration requires an expression")
+        term = _run([_term("term", expression)], "Polynomial::PolyIntegrate(term)")
+        return _polynomial_result(term, "INTEGRATED")
+    except UnsupportedExpression as exc:
+        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+
+
+def evaluate_derivative(expression: str, candidate: str) -> dict:
+    """Check a proposed polynomial derivative by exact coefficients."""
+    return _evaluate_calculus(expression, candidate, derivative_of_candidate=False)
+
+
+def evaluate_antiderivative(expression: str, candidate: str) -> dict:
+    """Check an antiderivative by differentiating the candidate."""
+    return _evaluate_calculus(expression, candidate, derivative_of_candidate=True)
+
+
+def _evaluate_calculus(expression: str, candidate: str, *, derivative_of_candidate: bool) -> dict:
+    try:
+        if _split_equation(expression) is not None or _split_equation(candidate) is not None:
+            raise UnsupportedExpression("calculus assessment requires expressions")
+        lines = [_term("source", expression), _term("candidate", candidate)]
+        operand, target = ("candidate", "source") if derivative_of_candidate else ("source", "candidate")
+        result = _run(lines + [f"    let transformed = Polynomial::PolyDifferentiate({operand})"], f"Polynomial::PolyAssessExpressions(transformed, {target})")
+        return {"schema_version": "mathlang-dsn/0.2", "status": result}
+    except UnsupportedExpression as exc:
+        return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}
 
 
 def evaluate(before: str, after: str) -> dict:
@@ -137,15 +203,15 @@ def evaluate(before: str, after: str) -> dict:
         first = _split_equation(before)
         second = _split_equation(after)
         if (first is None) != (second is None):
-            return {"schema_version": "mathlang-dsn/0.1", "status": "UNVERIFIED", "reason": "different input kinds"}
+            return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": "different input kinds"}
         if first is None:
-            result = _run([_term("before", before), _term("after", after)], "Model::AssessTerms(before, after)")
+            result = _run([_term("before", before), _term("after", after)], "Polynomial::PolyAssessExpressions(before, after)")
         else:
             assert second is not None
             result = _run(
                 [_term("left", first[0]), _term("right", first[1]), _term("next_left", second[0]), _term("next_right", second[1])],
-                "Model::AssessEquationTerms(left, right, next_left, next_right)",
+                "Polynomial::PolyAssessEquations(left, right, next_left, next_right)",
             )
-        return {"schema_version": "mathlang-dsn/0.1", "status": result}
+        return {"schema_version": "mathlang-dsn/0.2", "status": result}
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.1", "status": "UNVERIFIED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}
