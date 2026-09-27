@@ -1,5 +1,30 @@
 # MathLang_DSN
 
+## Problem intent aware validation (bounded Rust layer)
+
+`mirp::intent` stores `Problem` and `ProblemIntent` separately from `SemanticState`: sourced
+quadratic givens, sourced constraints, a MIRP semantic target, the requested
+operation and output type, method constraints, and completion criteria. A
+`ReasoningContext` evaluates a candidate as five independent dimensions and
+returns sourced elimination records and educational error evidence. Accepted
+transitions retain the same intent while applying a MIRP `SemanticDelta`.
+
+The executable contract currently proves exact integer-root quadratic cases
+with coefficients of magnitude at most 1,000,000. A correct root subset remains
+mathematically valid but incomplete. An excluded root is recorded with the
+constraint and its provenance. Different solution methods are allowed unless a
+method is required. A method label is an attestation by the adapter, not proof
+that a particular algorithm was executed. Non-integral roots, non-quadratic
+equations, other operation intents, and unsupported mathematical claims preserve
+`UNKNOWN` where proof is unavailable. Structured polynomial coefficients and
+exact expansion of algebra syntax trees are the checked semantics; display
+strings are never used as a correctness oracle.
+
+`mirp/tests/intent.rs` checks 10 groups × 20 parameterized algebra cases, then
+repeats the matrix three times. The supplied specification ends midway through
+its mandatory acceptance gate, so this is a bounded implementation and does
+not claim full stage acceptance or Mathematics III/C coverage.
+
 ## MIRP Foundation v0.1
 
 The `mirp/` Rust crate owns MIRP's typed objects, scoped entity bindings,

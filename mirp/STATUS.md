@@ -1,5 +1,17 @@
 # MIRP Foundation v0.1 status
 
+Problem intent aware assessment has been added as a separate Rust layer in
+`src/intent.rs`. Its initial exact contract is integer-root quadratic algebra.
+The 200-case, 10-group matrix in `tests/intent.rs` covers validity, relevance,
+alignment, method compliance, completion, partial answers, alternative methods,
+wrong targets, constraints, and unknown completion. This does not change the
+frozen `mirp/0.1-si2` state schema. The supplied intent specification is
+truncated in its final acceptance-gate list, and the broader curriculum and
+method-execution proof remain outside this bounded stage.
+The intent matrix passed in three consecutive test processes. The full Rust
+suite, Clippy with warnings denied, formatting check, existing Python API
+suite (9 tests), ReasonScript project validation, and whitespace check passed.
+
 The bounded Foundation architecture is implemented. Occurrence integrity is
 finalized in schema `mirp/0.1-si2`; the prior frozen `mirp/0.1-si` schema needed
 an incompatible field addition and is rejected on load, as is `mirp/1.0`.

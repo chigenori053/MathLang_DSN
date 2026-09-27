@@ -8,6 +8,7 @@ use std::fmt;
 use std::fs;
 use std::path::Path;
 
+pub mod intent;
 pub mod memory;
 pub mod session;
 
