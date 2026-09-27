@@ -1,0 +1,506 @@
+package mathlang_dsn
+
+// Bounded exact calculations for selected Japanese junior-high topics.
+module JuniorHigh {
+  import mathlang_dsn.Knowledge
+
+  struct Evidence {
+    id: int
+    source_ru: int
+    source_rus: string
+    knowledge_id: string
+    source: string
+    curriculum_source: string
+    validation: string
+    inputs: [int]
+    outputs: [int]
+  }
+
+  struct Rational {
+    numerator: int
+    denominator: int
+  }
+
+  struct Root {
+    numerator: int
+    radical_coefficient: int
+    radicand: int
+    denominator: int
+  }
+
+  struct NumberResult {
+    status: string
+    factors: [int]
+    outside: int
+    inside: int
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct QuadraticResult {
+    status: string
+    discriminant: int
+    roots: [Root]
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct SystemResult {
+    status: string
+    x: Rational
+    y: Rational
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct RationalResult {
+    status: string
+    value: Rational
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct GeometryResult {
+    status: string
+    angle_sum: int
+    length_outside: int
+    length_inside: int
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct DataResult {
+    status: string
+    count: int
+    mean: Rational
+    median: Rational
+    lower_quartile: Rational
+    upper_quartile: Rational
+    range: int
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  struct SimilarityResult {
+    status: string
+    length_ratio: Rational
+    area_ratio: Rational
+    volume_ratio: Rational
+    knowledge_id: string
+    source: string
+    active_rus: string
+    ruo: Evidence
+  }
+
+  fn Abs(value: int) -> int {
+    if value < 0 {
+      return 0 - value
+    }
+    return value
+  }
+
+  fn Gcd(left: int, right: int) -> int {
+    let a = Abs(left)
+    let b = Abs(right)
+    while b != 0 {
+      let rem = a % b
+      a = b
+      b = rem
+    }
+    return a
+  }
+
+  fn DivideExact(numerator: int, denominator: int) -> int {
+    let remaining = Abs(numerator)
+    let divisor = Abs(denominator)
+    let quotient = 0
+    while remaining >= divisor {
+      let chunk = divisor
+      let count = 1
+      while chunk <= remaining - chunk {
+        chunk = chunk + chunk
+        count = count + count
+      }
+      remaining = remaining - chunk
+      quotient = quotient + count
+    }
+    if (numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0) {
+      return 0 - quotient
+    }
+    return quotient
+  }
+
+  fn Fraction(numerator: int, denominator: int) -> Rational {
+    if denominator == 0 {
+      return Rational { numerator: 0, denominator: 1 }
+    }
+    let divisor = Gcd(numerator, denominator)
+    let n = DivideExact(numerator, divisor)
+    let d = DivideExact(denominator, divisor)
+    if d < 0 {
+      n = 0 - n
+      d = 0 - d
+    }
+    return Rational { numerator: n, denominator: d }
+  }
+
+  fn Event(rule: int, status: string, inputs: [int], outputs: [int]) -> Evidence {
+    let item = Knowledge::KRuByRule(rule)
+    let active = Knowledge::KActiveOperationRus(rule)
+    return Evidence { id: 1, source_ru: item.id, source_rus: active.name, knowledge_id: item.knowledge_id, source: item.source, curriculum_source: item.curriculum_source, validation: status, inputs: inputs, outputs: outputs }
+  }
+
+  pub fn JPrimeFactors(value: int) -> NumberResult {
+    let status = "CALCULATED"
+    let factors = []
+    if value < 2 || value > 1000000 {
+      status = "UNSUPPORTED"
+    } else {
+      let remaining = value
+      let divisor = 2
+      while divisor * divisor <= remaining {
+        if remaining % divisor == 0 {
+          factors = array.append(factors, divisor)
+          remaining = DivideExact(remaining, divisor)
+        } else {
+          divisor = divisor + 1
+        }
+      }
+      if remaining > 1 {
+        factors = array.append(factors, remaining)
+      }
+    }
+    let event = Event(21, status, [value], factors)
+    return NumberResult { status: status, factors: factors, outside: 0, inside: 0, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JSimplifySqrt(value: int) -> NumberResult {
+    let status = "CALCULATED"
+    let outside = 1
+    let inside = value
+    if value < 0 || value > 200000000 {
+      status = "UNSUPPORTED"
+      outside = 0
+      inside = 0
+    } else {
+      if value == 0 {
+        outside = 0
+        inside = 1
+      } else {
+        let factor = 2
+        while factor * factor <= inside {
+          let square = factor * factor
+          if inside % square == 0 {
+            outside = outside * factor
+            inside = DivideExact(inside, square)
+          } else {
+            factor = factor + 1
+          }
+        }
+      }
+    }
+    let event = Event(22, status, [value], [outside, inside])
+    return NumberResult { status: status, factors: [], outside: outside, inside: inside, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  fn MakeRoot(base: int, radical: int, radicand: int, denominator: int) -> Root {
+    let numerator = base
+    let coefficient = radical
+    if radicand == 1 {
+      numerator = numerator + coefficient
+      coefficient = 0
+    }
+    let common = Gcd(Gcd(numerator, coefficient), denominator)
+    numerator = DivideExact(numerator, common)
+    coefficient = DivideExact(coefficient, common)
+    let d = DivideExact(denominator, common)
+    if d < 0 {
+      numerator = 0 - numerator
+      coefficient = 0 - coefficient
+      d = 0 - d
+    }
+    return Root { numerator: numerator, radical_coefficient: coefficient, radicand: radicand, denominator: d }
+  }
+
+  pub fn JSolveQuadratic(a: int, b: int, c: int) -> QuadraticResult {
+    let status = "SOLVED"
+    let discriminant = 0
+    let roots = []
+    if a == 0 || Abs(a) > 10000 || Abs(b) > 10000 || Abs(c) > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      discriminant = b * b - 4 * a * c
+      if discriminant < 0 {
+        status = "NO_REAL_ROOTS"
+      } else {
+        if discriminant > 200000000 {
+          status = "RESOURCE_LIMIT"
+        } else {
+          let simplified = JSimplifySqrt(discriminant)
+          let first = MakeRoot(0 - b, simplified.outside, simplified.inside, 2 * a)
+          roots = array.append(roots, first)
+          if discriminant > 0 {
+            roots = array.append(roots, MakeRoot(0 - b, 0 - simplified.outside, simplified.inside, 2 * a))
+          }
+        }
+      }
+    }
+    let outputs = [discriminant]
+    let index = 0
+    while index < roots.length {
+      let root = roots[index]
+      outputs = array.concat(outputs, [root.numerator, root.radical_coefficient, root.radicand, root.denominator])
+      index = index + 1
+    }
+    let event = Event(23, status, [a, b, c], outputs)
+    return QuadraticResult { status: status, discriminant: discriminant, roots: roots, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JQuadraticFromPolynomial(coefficients: [int]) -> QuadraticResult {
+    if coefficients.length != 6 || coefficients[3] != 0 || coefficients[4] != 0 || coefficients[5] != 0 {
+      let event = Event(23, "UNSUPPORTED", coefficients, [])
+      return QuadraticResult { status: "UNSUPPORTED", discriminant: 0, roots: [], knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+    }
+    return JSolveQuadratic(coefficients[2], coefficients[1], coefficients[0])
+  }
+
+  // a*x+b*y=c, d*x+e*y=f.
+  pub fn JSolveSystem(a: int, b: int, c: int, d: int, e: int, f: int) -> SystemResult {
+    let status = "SOLVED"
+    let x = Fraction(0, 1)
+    let y = Fraction(0, 1)
+    if Abs(a) > 10000 || Abs(b) > 10000 || Abs(c) > 10000 || Abs(d) > 10000 || Abs(e) > 10000 || Abs(f) > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      let determinant = a * e - b * d
+      let x_numerator = c * e - b * f
+      let y_numerator = a * f - c * d
+      if determinant == 0 {
+        status = "INFINITE_SOLUTIONS"
+        if x_numerator != 0 || y_numerator != 0 || (a == 0 && b == 0 && c != 0) || (d == 0 && e == 0 && f != 0) {
+          status = "CONTRADICTION"
+        }
+      } else {
+        x = Fraction(x_numerator, determinant)
+        y = Fraction(y_numerator, determinant)
+      }
+    }
+    let event = Event(24, status, [a, b, c, d, e, f], [x.numerator, x.denominator, y.numerator, y.denominator])
+    return SystemResult { status: status, x: x, y: y, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  // Coefficients are in ascending power order; x is an exact rational.
+  pub fn JFunctionValue(coefficients: [int], polynomial_denominator: int, x_numerator: int, x_denominator: int) -> RationalResult {
+    let status = "CALCULATED"
+    let value = Fraction(0, 1)
+    if coefficients.length != 6 || polynomial_denominator <= 0 || polynomial_denominator > 1000000 || x_denominator <= 0 || x_denominator > 20 || Abs(x_numerator) > 20 {
+      status = "UNSUPPORTED"
+    } else {
+      let index = 0
+      while index < 6 {
+        if Abs(coefficients[index]) > 1000000 {
+          status = "UNSUPPORTED"
+          break
+        }
+        index = index + 1
+      }
+      if status == "CALCULATED" {
+        let numerator = coefficients[5]
+        let denominator = 1
+        index = 4
+        while index >= 0 {
+          numerator = numerator * x_numerator + coefficients[index] * denominator * x_denominator
+          denominator = denominator * x_denominator
+          if Abs(numerator) > 1000000000 || denominator > 1000000000 {
+            status = "RESOURCE_LIMIT"
+            break
+          }
+          index = index - 1
+        }
+        if status == "CALCULATED" {
+          value = Fraction(numerator, denominator * polynomial_denominator)
+        }
+      }
+    }
+    let event = Event(25, status, array.concat(coefficients, [polynomial_denominator, x_numerator, x_denominator]), [value.numerator, value.denominator])
+    return RationalResult { status: status, value: value, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JFunctionFromPolynomial(valid: bool, coefficients: [int], polynomial_denominator: int, x_numerator: int, x_denominator: int) -> RationalResult {
+    if !valid {
+      let event = Event(25, "UNSUPPORTED", array.concat(coefficients, [polynomial_denominator, x_numerator, x_denominator]), [])
+      return RationalResult { status: "UNSUPPORTED", value: Fraction(0, 1), knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+    }
+    return JFunctionValue(coefficients, polynomial_denominator, x_numerator, x_denominator)
+  }
+
+  pub fn JInverseProportion(a_numerator: int, a_denominator: int, x_numerator: int, x_denominator: int) -> RationalResult {
+    let status = "CALCULATED"
+    let value = Fraction(0, 1)
+    if a_denominator <= 0 || x_denominator <= 0 || x_numerator == 0 || Abs(a_numerator) > 10000 || a_denominator > 10000 || Abs(x_numerator) > 10000 || x_denominator > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      value = Fraction(a_numerator * x_denominator, a_denominator * x_numerator)
+    }
+    let event = Event(30, status, [a_numerator, a_denominator, x_numerator, x_denominator], [value.numerator, value.denominator])
+    return RationalResult { status: status, value: value, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JPolygonAngleSum(sides: int) -> GeometryResult {
+    let status = "CALCULATED"
+    let angle_sum = 0
+    if sides < 3 || sides > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      angle_sum = (sides - 2) * 180
+    }
+    let event = Event(26, status, [sides], [angle_sum])
+    return GeometryResult { status: status, angle_sum: angle_sum, length_outside: 0, length_inside: 0, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JHypotenuse(first: int, second: int) -> GeometryResult {
+    let status = "CALCULATED"
+    let outside = 0
+    let inside = 0
+    if first <= 0 || second <= 0 || first > 10000 || second > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      let simplified = JSimplifySqrt(first * first + second * second)
+      outside = simplified.outside
+      inside = simplified.inside
+    }
+    let event = Event(27, status, [first, second], [outside, inside])
+    return GeometryResult { status: status, angle_sum: 0, length_outside: outside, length_inside: inside, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JSimilarityRatios(first: int, second: int) -> SimilarityResult {
+    let status = "CALCULATED"
+    let length_ratio = Fraction(0, 1)
+    let area_ratio = Fraction(0, 1)
+    let volume_ratio = Fraction(0, 1)
+    if first <= 0 || second <= 0 || first > 1000 || second > 1000 {
+      status = "UNSUPPORTED"
+    } else {
+      length_ratio = Fraction(first, second)
+      area_ratio = Fraction(first * first, second * second)
+      volume_ratio = Fraction(first * first * first, second * second * second)
+    }
+    let outputs = [length_ratio.numerator, length_ratio.denominator, area_ratio.numerator, area_ratio.denominator, volume_ratio.numerator, volume_ratio.denominator]
+    let event = Event(31, status, [first, second], outputs)
+    return SimilarityResult { status: status, length_ratio: length_ratio, area_ratio: area_ratio, volume_ratio: volume_ratio, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JCircleAngle(central_angle: int) -> RationalResult {
+    let status = "CALCULATED"
+    let value = Fraction(0, 1)
+    if central_angle <= 0 || central_angle >= 360 {
+      status = "UNSUPPORTED"
+    } else {
+      value = Fraction(central_angle, 2)
+    }
+    let event = Event(33, status, [central_angle], [value.numerator, value.denominator])
+    return RationalResult { status: status, value: value, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  fn Kth(values: [int], rank: int) -> int {
+    let index = 0
+    while index < values.length {
+      let candidate = values[index]
+      let lower = 0
+      let equal = 0
+      let probe = 0
+      while probe < values.length {
+        if values[probe] < candidate {
+          lower = lower + 1
+        }
+        if values[probe] == candidate {
+          equal = equal + 1
+        }
+        probe = probe + 1
+      }
+      if lower <= rank && rank < lower + equal {
+        return candidate
+      }
+      index = index + 1
+    }
+    return 0
+  }
+
+  fn Middle(values: [int], start: int, length: int) -> Rational {
+    if length % 2 == 1 {
+      return Fraction(Kth(values, start + DivideExact(length, 2)), 1)
+    }
+    let upper = start + DivideExact(length, 2)
+    return Fraction(Kth(values, upper - 1) + Kth(values, upper), 2)
+  }
+
+  pub fn JDataSummary(values: [int]) -> DataResult {
+    let status = "CALCULATED"
+    let mean = Fraction(0, 1)
+    let median = Fraction(0, 1)
+    let lower = Fraction(0, 1)
+    let upper = Fraction(0, 1)
+    let spread = 0
+    if values.length < 2 || values.length > 64 {
+      status = "UNSUPPORTED"
+    } else {
+      let total = 0
+      let index = 0
+      while index < values.length {
+        if Abs(values[index]) > 1000000 {
+          status = "UNSUPPORTED"
+          break
+        }
+        total = total + values[index]
+        index = index + 1
+      }
+      if status == "CALCULATED" {
+        mean = Fraction(total, values.length)
+        median = Middle(values, 0, values.length)
+        let half = DivideExact(values.length, 2)
+        lower = Middle(values, 0, half)
+        upper = Middle(values, values.length - half, half)
+        spread = Kth(values, values.length - 1) - Kth(values, 0)
+      }
+    }
+    let outputs = [values.length, mean.numerator, mean.denominator, median.numerator, median.denominator, lower.numerator, lower.denominator, upper.numerator, upper.denominator, spread]
+    let event = Event(28, status, values, outputs)
+    return DataResult { status: status, count: values.length, mean: mean, median: median, lower_quartile: lower, upper_quartile: upper, range: spread, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JClassicalProbability(favorable: int, total: int) -> RationalResult {
+    let status = "CALCULATED"
+    let value = Fraction(0, 1)
+    if favorable < 0 || total <= 0 || favorable > total || total > 1000000 {
+      status = "UNSUPPORTED"
+    } else {
+      value = Fraction(favorable, total)
+    }
+    let event = Event(29, status, [favorable, total], [value.numerator, value.denominator])
+    return RationalResult { status: status, value: value, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  pub fn JRelativeFrequency(count: int, total: int) -> RationalResult {
+    let status = "CALCULATED"
+    let value = Fraction(0, 1)
+    if count < 0 || total <= 0 || count > total || total > 1000000 {
+      status = "UNSUPPORTED"
+    } else {
+      value = Fraction(count, total)
+    }
+    let event = Event(32, status, [count, total], [value.numerator, value.denominator])
+    return RationalResult { status: status, value: value, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+}

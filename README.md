@@ -2,17 +2,34 @@
 
 MathLang_DSN is a **mathematical computation and assessment model** for MathLang. It is not a programming language. ReasonScript implements the deterministic model; a small Python host accepts expressions and returns JSON. The design follows the state, activation, transition, and validation cycle explored in [DSN_Test](https://github.com/chigenori053/DSN_Test). No DSN_Test source code is copied into this repository.
 
-## Current scope (0.2)
+## Current scope (0.3)
 
 - Exact rational arithmetic using `+`, `-`, `*`, `/`, integer powers 0–5, and parentheses.
 - One-variable rational polynomials in `x` through degree five. Results use a reduced common denominator and coefficients in ascending power order.
 - Exact polynomial differentiation, indefinite integration through degree four, derivative assessment, and antiderivative assessment. The integration constant is reported separately.
-- One-variable linear equations with rational coefficients, including no solution and infinitely many solutions. Higher-degree equations are recognized but reported as `UNSOLVED`.
+- One-variable linear equations with rational coefficients, including no solution and infinitely many solutions. `calculate` reports higher-degree equations as `UNSOLVED`; `solve_quadratic` separately handles bounded quadratic equations with exact real radical roots.
 - Assessment of two expressions or two equations. Polynomial expressions are compared by exact coefficients. Linear equations are compared by solution set. Higher-degree equations return `VALID` when proportionality proves the same zero set; otherwise they return `UNVERIFIED` unless a stronger proof exists.
 - A bounded, deterministic rule sequence for equation solving. Each committed transition is checked for solution-set preservation.
 - A `knowledge.rsn` catalogue for arithmetic, polynomial, calculus, equation, and assessment rules. Each rule has a stable Knowledge ID, source, RU number, and RUS family.
 
-Explicit multiplication is required (`2*x`, not `2x`). `^` and `**` both denote powers. Decimal literals, negative powers, non-polynomial functions, multivariable expressions, assumptions, matrices, and `.mlang` documents are not yet accepted by this interface. MathLang can pass normalized expression strings to the Python API. Integer literals, reduced coefficients, and denominators are limited to 1,000,000 in magnitude; expressions are limited to 64 nodes. The model does not silently interpret an unsupported expression as an incorrect mathematical step.
+Explicit multiplication is required (`2*x`, not `2x`). `^` and `**` both denote powers. Decimal literals, negative powers, general non-polynomial expressions, symbolic multivariable expressions, assumptions, matrices, and `.mlang` documents are not yet accepted by the expression interface. Structured middle-school operations below take integer or rational parameters instead. MathLang can pass normalized expression strings to the Python API. Integer literals, reduced coefficients, and denominators are limited to 1,000,000 in magnitude; expressions are limited to 64 nodes. The model does not silently interpret an unsupported expression as an incorrect mathematical step.
+
+## Japanese junior-high Knowledge
+
+The 13 new Knowledge entries (`JH_*`, IDs 21–33) map to selected calculations in the four areas of the [Japanese junior-high mathematics curriculum](https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf). Together with the previous 14 entries, the catalogue contains 27 rules. This is **partial curriculum coverage**; each operation has a bounded input contract and an `UNSUPPORTED` or `RESOURCE_LIMIT` outcome outside it.
+
+| Area | New Knowledge | Public operations |
+| --- | --- | --- |
+| Numbers and expressions | Prime factorization; exact square-root simplification; quadratic formula; two-variable linear systems | `prime_factors`, `simplify_sqrt`, `solve_quadratic`, `solve_system` |
+| Functions | Exact polynomial value at a rational input; inverse proportion `y=a/x` | `function_value`, `inverse_proportion` |
+| Geometry | Polygon interior-angle sum; Pythagorean hypotenuse; similarity length/area/volume ratios; inscribed angle from central angle | `polygon_angle_sum`, `hypotenuse`, `similarity_ratios`, `circle_angle` |
+| Data | Mean, median, quartiles and range; probability for equally likely cases; relative frequency | `data_summary`, `classical_probability`, `relative_frequency` |
+
+`solve_quadratic("x^2-2=0")` returns two roots in the exact form `(numerator + radical_coefficient*sqrt(radicand))/denominator`; only **real** roots are returned. `data_summary` splits sorted data into lower and upper halves, excluding the middle item when the count is odd, then takes each half's median. Geometry functions require their named assumptions: simple polygons, right triangles, similar figures, and an inscribed angle subtending the supplied central angle. `classical_probability` assumes equally likely outcomes.
+
+Current operation limits: factor inputs up to 1,000,000; square-root inputs up to 200,000,000; quadratic integer coefficients up to 10,000 in magnitude and discriminant up to 200,000,000; system coefficients up to 10,000; function input numerator and denominator up to 20; polygon sides up to 10,000; right-triangle legs up to 10,000; similarity ratio components up to 1,000; data sets of 2–64 integers each within ±1,000,000; and probability/frequency totals up to 1,000,000. Inputs outside these contracts return `UNSUPPORTED` or `RESOURCE_LIMIT`.
+
+The public APIs do not yet parse systems written as two equations, construct or interpret diagrams, prove congruence or similarity, factor symbolic polynomials into factors, solve general word problems, process histograms or box plots, or infer probability from a described experiment. These remain outside the implemented Knowledge despite being part of the curriculum.
 
 ## Requirements and use
 
@@ -29,9 +46,22 @@ python3 -m mathlang_dsn differentiate 'x^3+2*x'
 python3 -m mathlang_dsn integrate 'x^2+1'
 python3 -m mathlang_dsn evaluate-derivative 'x^3+2*x' '3*x^2+2'
 python3 -m mathlang_dsn evaluate-antiderivative 'x^2+1' 'x^3/3+x+7'
+python3 -m mathlang_dsn prime-factors 360
+python3 -m mathlang_dsn simplify-sqrt 72
+python3 -m mathlang_dsn solve-quadratic 'x^2-2=0'
+python3 -m mathlang_dsn solve-system 1 1 5 1 -1 1
+python3 -m mathlang_dsn function-value '(x+1)^2' 3 2
+python3 -m mathlang_dsn inverse-proportion 6 1 2
+python3 -m mathlang_dsn polygon-angle-sum 5
+python3 -m mathlang_dsn hypotenuse 3 4
+python3 -m mathlang_dsn similarity-ratios 2 3
+python3 -m mathlang_dsn circle-angle 90
+python3 -m mathlang_dsn data-summary 1 2 3 4 5 6
+python3 -m mathlang_dsn classical-probability 2 6
+python3 -m mathlang_dsn relative-frequency 3 12
 ```
 
-The operations are available as Python functions in `mathlang_dsn`. They return dictionaries with `schema_version: "mathlang-dsn/0.2"`. Polynomial results include `coefficients`, `denominator`, ordered `knowledge_ids`/`knowledge_sources`, and `ruos` for arithmetic or calculus operations. Each polynomial RUO records its input and output coefficients and denominators, source RU, active RUS family, Knowledge ID, source, and validation. Equation results include `status`, reduced rational `numerator`/`denominator`, `final_state`, committed `steps`, and `ruos`. Each equation step embeds the matching RUO, active RUS, candidate RUs, before and after states, and validation result. Assessment results include the assessment Knowledge ID, source, active RUS, and assessment RUO. Equation traces start from the input equation with denominators cleared when each side is linear. The Python host creates an isolated temporary ReasonScript project for each call. Only parsed integer literals and fixed model calls are written to generated source; user text never becomes ReasonScript code.
+The operations are available as Python functions in `mathlang_dsn`. They return dictionaries with `schema_version: "mathlang-dsn/0.3"`. Polynomial results include `coefficients`, `denominator`, ordered `knowledge_ids`/`knowledge_sources`, and `ruos` for arithmetic or calculus operations. Each polynomial RUO records its input and output coefficients and denominators, source RU, active RUS family, Knowledge ID, source, and application status. Equation results include `status`, reduced rational `numerator`/`denominator`, `final_state`, committed `steps`, and `ruos`. Each equation step embeds the matching RUO, active RUS, candidate RUs, before and after states, and validation result. Assessment and junior-high results include their Knowledge ID, source, active RUS, and a RUO; junior-high RUOs also record integer inputs and outputs. Equation traces start from the input equation with denominators cleared when each side is linear. The Python host creates an isolated temporary ReasonScript project for each call. Only parsed integer literals and fixed model calls are written to generated source; user text never becomes ReasonScript code.
 
 ## Model boundaries
 
@@ -41,7 +71,7 @@ The arithmetic evaluator works on a bounded expression DAG. Its output is a cano
 
 ## Coverage plan
 
-The goal is to cover mathematics taught through graduate study, but coverage is accepted by **domain and proof contract**, rather than by school level. The next independent domains are complex arithmetic, multivariable polynomials, linear algebra, then bounded transcendental calculus. Each domain needs exact representation, stated assumptions, positive and negative cases, transition checks, and a documented `UNVERIFIED` boundary before it is exposed as supported. General integration, limits, differential equations, and advanced algebra remain outside the validated 0.2 scope.
+The goal is to cover mathematics taught through graduate study, but coverage is accepted by **domain and proof contract**, rather than by school level. Finish the remaining middle-school contracts before claiming full junior-high coverage; later domains include complex arithmetic, multivariable polynomials, linear algebra, and bounded transcendental calculus. Each domain needs exact representation, stated assumptions, positive and negative cases, transition checks, and a documented `UNVERIFIED` boundary before it is exposed as supported. General integration, limits, differential equations, and advanced algebra remain outside the validated 0.3 scope.
 
 ## Validation
 
@@ -51,6 +81,7 @@ reason build
 reason run --entry SelfCheck --json --trace=off
 reason run --entry PolynomialSelfCheck --json --trace=off
 reason run --entry KnowledgeSelfCheck --json --trace=off
+reason run --entry JuniorHighSelfCheck --json --trace=off
 reason project-validate . --json
 python3 -m unittest discover -s tests -v
 ```
@@ -59,4 +90,4 @@ Each self-check calculation must return `true` in `runtime_result.result`; a suc
 
 ## Provenance and status
 
-This project is informed by the locally developed DSN_Test prototype and by [MathLang](https://github.com/chigenori053/mathlang). It is a focused new implementation, not a release of DSN_Test. DSN_Test currently has no license file in its checkout, so its source is not redistributed here. The model uses ReasonScript as a required runtime and is licensed under Apache-2.0, matching MathLang. Version 0.2 does not claim the broader capabilities reported by DSN_Test.
+This project is informed by the locally developed DSN_Test prototype and by [MathLang](https://github.com/chigenori053/mathlang). It is a focused new implementation, not a release of DSN_Test. DSN_Test currently has no license file in its checkout, so its source is not redistributed here. The model uses ReasonScript as a required runtime and is licensed under Apache-2.0, matching MathLang. Version 0.3 does not claim the broader capabilities reported by DSN_Test.

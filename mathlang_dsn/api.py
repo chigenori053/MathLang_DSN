@@ -12,6 +12,7 @@ from pathlib import Path
 MODEL = Path(__file__).with_name("model.rsn")
 POLYNOMIAL = Path(__file__).with_name("polynomial.rsn")
 KNOWLEDGE = Path(__file__).with_name("knowledge.rsn")
+JUNIOR_HIGH = Path(__file__).with_name("junior_high.rsn")
 MANIFEST = Path(__file__).with_name("reason.toml")
 MAX_NODES = 64
 MAX_INTEGER = 1_000_000
@@ -99,8 +100,9 @@ def _run(lines: list[str], result: str) -> object:
         (workspace / "src" / "model.rsn").write_text(MODEL.read_text())
         (workspace / "src" / "polynomial.rsn").write_text(POLYNOMIAL.read_text())
         (workspace / "src" / "knowledge.rsn").write_text(KNOWLEDGE.read_text())
+        (workspace / "src" / "junior_high.rsn").write_text(JUNIOR_HIGH.read_text())
         source = "\n".join(
-            ["package mathlang_dsn", "module main {", "  import mathlang_dsn.Model", "  import mathlang_dsn.Polynomial", "  calculation Request {"]
+            ["package mathlang_dsn", "module main {", "  import mathlang_dsn.Model", "  import mathlang_dsn.Polynomial", "  import mathlang_dsn.JuniorHigh", "  calculation Request {"]
             + lines
             + [f"    result = {result}", "  }", "}", ""]
         )
@@ -130,22 +132,22 @@ def calculate(expression: str) -> dict:
         if equation is None:
             term = _run([_term("term", expression)], "term")
             if not term["valid"]:
-                return {"schema_version": "mathlang-dsn/0.2", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
+                return {"schema_version": "mathlang-dsn/0.3", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
             return _polynomial_result(term)
         left, right = equation
         outcome = _run([_term("left", left), _term("right", right)], "Polynomial::PolySolveEquation(left, right)")
-        return {"schema_version": "mathlang-dsn/0.2", **outcome}
+        return {"schema_version": "mathlang-dsn/0.3", **outcome}
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": str(exc)}
 
 
 def _polynomial_result(term: dict, operation: str | None = None) -> dict:
     if not term["valid"]:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "RESOURCE_LIMIT" if term["reason"] in {"RESOURCE_LIMIT", "DEGREE_LIMIT"} else "UNSUPPORTED", "reason": term["reason"]}
     coefficients = term["coefficients"]
     degree = max((index for index, value in enumerate(coefficients) if value), default=0)
     status = operation or ("CALCULATED" if degree == 0 else "SYMBOLIC")
-    output = {"schema_version": "mathlang-dsn/0.2", "status": status, "coefficients": coefficients, "denominator": term["denominator"], "degree": degree, "knowledge_ids": term["knowledge_ids"], "knowledge_sources": term["knowledge_sources"], "ruos": term["ruos"]}
+    output = {"schema_version": "mathlang-dsn/0.3", "status": status, "coefficients": coefficients, "denominator": term["denominator"], "degree": degree, "knowledge_ids": term["knowledge_ids"], "knowledge_sources": term["knowledge_sources"], "ruos": term["ruos"]}
     if degree == 0:
         output["numerator"] = coefficients[0]
     if degree <= 1 and term["denominator"] == 1:
@@ -163,7 +165,7 @@ def differentiate(expression: str) -> dict:
         term = _run([_term("term", expression)], "Polynomial::PolyDifferentiate(term)")
         return _polynomial_result(term, "DIFFERENTIATED")
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": str(exc)}
 
 
 def integrate(expression: str) -> dict:
@@ -174,7 +176,7 @@ def integrate(expression: str) -> dict:
         term = _run([_term("term", expression)], "Polynomial::PolyIntegrate(term)")
         return _polynomial_result(term, "INTEGRATED")
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "UNSUPPORTED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": str(exc)}
 
 
 def evaluate_derivative(expression: str, candidate: str) -> dict:
@@ -194,9 +196,9 @@ def _evaluate_calculus(expression: str, candidate: str, *, derivative_of_candida
         lines = [_term("source", expression), _term("candidate", candidate)]
         operand, target = ("candidate", "source") if derivative_of_candidate else ("source", "candidate")
         result = _run(lines + [f"    let transformed = Polynomial::PolyDifferentiate({operand})"], f"Polynomial::PolyCheckExpressions(transformed, {target})")
-        return {"schema_version": "mathlang-dsn/0.2", **result}
+        return {"schema_version": "mathlang-dsn/0.3", **result}
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNVERIFIED", "reason": str(exc)}
 
 
 def evaluate(before: str, after: str) -> dict:
@@ -205,7 +207,7 @@ def evaluate(before: str, after: str) -> dict:
         first = _split_equation(before)
         second = _split_equation(after)
         if (first is None) != (second is None):
-            return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": "different input kinds"}
+            return {"schema_version": "mathlang-dsn/0.3", "status": "UNVERIFIED", "reason": "different input kinds"}
         if first is None:
             result = _run([_term("before", before), _term("after", after)], "Polynomial::PolyCheckExpressions(before, after)")
         else:
@@ -214,6 +216,100 @@ def evaluate(before: str, after: str) -> dict:
                 [_term("left", first[0]), _term("right", first[1]), _term("next_left", second[0]), _term("next_right", second[1])],
                 "Polynomial::PolyCheckEquations(left, right, next_left, next_right)",
             )
-        return {"schema_version": "mathlang-dsn/0.2", **result}
+        return {"schema_version": "mathlang-dsn/0.3", **result}
     except UnsupportedExpression as exc:
-        return {"schema_version": "mathlang-dsn/0.2", "status": "UNVERIFIED", "reason": str(exc)}
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNVERIFIED", "reason": str(exc)}
+
+
+def _junior_call(function: str, *values: int) -> dict:
+    if any(type(value) is not int for value in values):
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": "integer inputs required"}
+    if any(abs(value) > 1_000_000_000 for value in values):
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": "integer input exceeds limit"}
+    outcome = _run([], f"JuniorHigh::{function}({', '.join(map(str, values))})")
+    return {"schema_version": "mathlang-dsn/0.3", **outcome}
+
+
+def prime_factors(value: int) -> dict:
+    """Factor a positive integer into primes, in ascending order."""
+    return _junior_call("JPrimeFactors", value)
+
+
+def simplify_sqrt(value: int) -> dict:
+    """Write sqrt(n) as outside*sqrt(inside), exactly."""
+    return _junior_call("JSimplifySqrt", value)
+
+
+def solve_quadratic(equation: str) -> dict:
+    """Solve a bounded quadratic equation over the reals with exact surds."""
+    try:
+        sides = _split_equation(equation)
+        if sides is None:
+            raise UnsupportedExpression("quadratic equation requires equality")
+        lines = [_term("left", sides[0]), _term("right", sides[1]), "    let difference = Polynomial::PolyDifference(left, right)"]
+        outcome = _run(lines, "JuniorHigh::JQuadraticFromPolynomial(difference.coefficients)")
+        return {"schema_version": "mathlang-dsn/0.3", **outcome}
+    except UnsupportedExpression as exc:
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": str(exc)}
+
+
+def solve_system(a: int, b: int, c: int, d: int, e: int, f: int) -> dict:
+    """Solve a*x+b*y=c and d*x+e*y=f exactly."""
+    return _junior_call("JSolveSystem", a, b, c, d, e, f)
+
+
+def function_value(expression: str, x_numerator: int, x_denominator: int = 1) -> dict:
+    """Evaluate a polynomial at a bounded rational x."""
+    if type(x_numerator) is not int or type(x_denominator) is not int or abs(x_numerator) > 1_000_000_000 or abs(x_denominator) > 1_000_000_000:
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": "integer inputs required"}
+    try:
+        if _split_equation(expression) is not None:
+            raise UnsupportedExpression("function evaluation requires an expression")
+        lines = [_term("term", expression)]
+        outcome = _run(lines, f"JuniorHigh::JFunctionFromPolynomial(term.valid, term.coefficients, term.denominator, {x_numerator}, {x_denominator})")
+        return {"schema_version": "mathlang-dsn/0.3", **outcome}
+    except UnsupportedExpression as exc:
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": str(exc)}
+
+
+def polygon_angle_sum(sides: int) -> dict:
+    """Find the interior angle sum of a polygon in degrees."""
+    return _junior_call("JPolygonAngleSum", sides)
+
+
+def hypotenuse(first: int, second: int) -> dict:
+    """Find the exact hypotenuse from positive integer legs."""
+    return _junior_call("JHypotenuse", first, second)
+
+
+def data_summary(values: list[int]) -> dict:
+    """Find exact mean, median, quartiles, and range for integer data."""
+    if not isinstance(values, list) or len(values) > 64 or any(type(value) is not int or abs(value) > 1_000_000_000 for value in values):
+        return {"schema_version": "mathlang-dsn/0.3", "status": "UNSUPPORTED", "reason": "integer list required"}
+    outcome = _run([], f"JuniorHigh::JDataSummary({_literal(values)})")
+    return {"schema_version": "mathlang-dsn/0.3", **outcome}
+
+
+def classical_probability(favorable: int, total: int) -> dict:
+    """Compute favorable/total for equally likely outcomes."""
+    return _junior_call("JClassicalProbability", favorable, total)
+
+
+def inverse_proportion(a_numerator: int, a_denominator: int, x_numerator: int, x_denominator: int = 1) -> dict:
+    """Evaluate y=a/x for rational a and nonzero rational x."""
+    return _junior_call("JInverseProportion", a_numerator, a_denominator, x_numerator, x_denominator)
+
+
+def similarity_ratios(first: int, second: int) -> dict:
+    """Calculate length, area, and volume ratios from a positive scale ratio."""
+    return _junior_call("JSimilarityRatios", first, second)
+
+
+def relative_frequency(count: int, total: int) -> dict:
+    """Calculate a frequency ratio from observed counts."""
+    return _junior_call("JRelativeFrequency", count, total)
+
+
+def circle_angle(central_angle: int) -> dict:
+    """Calculate an inscribed angle from its corresponding central angle."""
+    return _junior_call("JCircleAngle", central_angle)

@@ -4,6 +4,7 @@ module main {
   import mathlang_dsn.Model
   import mathlang_dsn.Polynomial
   import mathlang_dsn.Knowledge
+  import mathlang_dsn.JuniorHigh
 
   calculation SelfCheck {
     let kinds = [0, 0, 2]
@@ -34,6 +35,23 @@ module main {
     let equation = Model::Solve(2, 6, 3, 10)
     let polynomial = Polynomial::PolyEvaluate([1, 0, 2, 6], [0, 1, 0, 2], [-1, -1, 0, 2], [-1, -1, 1, -1])
     let assessment = Polynomial::PolyCheckExpressions(polynomial, polynomial)
-    result = catalog.length == 14 && Knowledge::KToRu(catalog[0]).knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && active.members.length == 2 && Knowledge::KActiveOperationRus(16).name == "PolynomialRUS" && equation.ruos.length == equation.steps.length && equation.ruos.length == 2 && equation.ruos[0].knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && equation.ruos[0].source_ru == 1 && equation.ruos[0].source_rus == active.id && equation.ruos[0].state_before == equation.steps[0].before && equation.ruos[0].state_after == equation.steps[0].after && equation.ruos[1].knowledge_id == "EQ_MOVE_LEFT_CONSTANT" && polynomial.ruos.length == 2 && polynomial.ruos[1].knowledge_id == "POLY_POWER_BOUNDED" && assessment.status == "VALID" && assessment.knowledge_id == "POLY_EXPRESSION_EQUIVALENCE"
+    result = catalog.length == 27 && Knowledge::KToRu(catalog[0]).knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && active.members.length == 2 && Knowledge::KActiveOperationRus(16).name == "PolynomialRUS" && equation.ruos.length == equation.steps.length && equation.ruos.length == 2 && equation.ruos[0].knowledge_id == "EQ_MOVE_RIGHT_VARIABLE" && equation.ruos[0].source_ru == 1 && equation.ruos[0].source_rus == active.id && equation.ruos[0].state_before == equation.steps[0].before && equation.ruos[0].state_after == equation.steps[0].after && equation.ruos[1].knowledge_id == "EQ_MOVE_LEFT_CONSTANT" && polynomial.ruos.length == 2 && polynomial.ruos[1].knowledge_id == "POLY_POWER_BOUNDED" && assessment.status == "VALID" && assessment.knowledge_id == "POLY_EXPRESSION_EQUIVALENCE"
+  }
+
+  calculation JuniorHighSelfCheck {
+    let factors = JuniorHigh::JPrimeFactors(360)
+    let radical = JuniorHigh::JSimplifySqrt(72)
+    let quadratic = JuniorHigh::JSolveQuadratic(1, 0, -2)
+    let system = JuniorHigh::JSolveSystem(1, 1, 5, 1, -1, 1)
+    let function_value = JuniorHigh::JFunctionValue([1, 2, 1, 0, 0, 0], 1, 2, 1)
+    let polygon = JuniorHigh::JPolygonAngleSum(5)
+    let triangle = JuniorHigh::JHypotenuse(3, 4)
+    let data = JuniorHigh::JDataSummary([1, 2, 3, 4, 5, 6])
+    let probability = JuniorHigh::JClassicalProbability(2, 6)
+    let inverse = JuniorHigh::JInverseProportion(6, 1, 2, 1)
+    let similarity = JuniorHigh::JSimilarityRatios(2, 3)
+    let frequency = JuniorHigh::JRelativeFrequency(3, 12)
+    let circle = JuniorHigh::JCircleAngle(90)
+    result = factors.factors.length == 6 && radical.outside == 6 && radical.inside == 2 && quadratic.status == "SOLVED" && quadratic.roots.length == 2 && quadratic.roots[0].radicand == 2 && system.x.numerator == 3 && system.y.numerator == 2 && function_value.value.numerator == 9 && polygon.angle_sum == 540 && triangle.length_outside == 5 && data.median.numerator == 7 && data.median.denominator == 2 && probability.value.numerator == 1 && probability.value.denominator == 3 && inverse.value.numerator == 3 && similarity.area_ratio.numerator == 4 && similarity.volume_ratio.denominator == 27 && frequency.value.denominator == 4 && circle.value.numerator == 45
   }
 }

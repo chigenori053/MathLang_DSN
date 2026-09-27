@@ -1,11 +1,11 @@
 [package]
 name = "MathLang_DSN"
 identifier = "mathlang_dsn"
-version = "0.2.0"
+version = "0.3.0"
 
 [project]
 name = "MathLang_DSN"
-version = "0.2.0"
+version = "0.3.0"
 reason_version = "0.5.6.2"
 
 [source]

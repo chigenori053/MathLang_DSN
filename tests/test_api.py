@@ -1,6 +1,11 @@
 import unittest
 
-from mathlang_dsn import calculate, differentiate, evaluate, evaluate_antiderivative, evaluate_derivative, integrate
+from mathlang_dsn import (calculate, circle_angle, classical_probability, data_summary,
+                          differentiate, evaluate, evaluate_antiderivative,
+                          evaluate_derivative, function_value, hypotenuse,
+                          integrate, inverse_proportion, polygon_angle_sum,
+                          prime_factors, relative_frequency, similarity_ratios,
+                          simplify_sqrt, solve_quadratic, solve_system)
 
 
 class ModelIntegrationTest(unittest.TestCase):
@@ -78,6 +83,62 @@ class ModelIntegrationTest(unittest.TestCase):
         self.assertEqual(assessment["ruo"], {
             "id": 1, "source_ru": 19, "source_rus": "AssessmentRUS", "knowledge_id": assessment["knowledge_id"],
             "source": assessment["source"], "validation": assessment["status"]})
+
+
+class JuniorHighIntegrationTest(unittest.TestCase):
+    def test_number_and_equation_knowledge(self):
+        self.assertEqual(prime_factors(360)["factors"], [2, 2, 2, 3, 3, 5])
+        self.assertEqual((simplify_sqrt(72)["outside"], simplify_sqrt(72)["inside"]), (6, 2))
+        self.assertEqual((simplify_sqrt(0)["outside"], simplify_sqrt(0)["inside"]), (0, 1))
+        roots = solve_quadratic("x^2-2=0")
+        self.assertEqual((roots["status"], roots["discriminant"]), ("SOLVED", 8))
+        self.assertEqual([(root["numerator"], root["radical_coefficient"], root["radicand"], root["denominator"])
+                          for root in roots["roots"]], [(0, 1, 2, 1), (0, -1, 2, 1)])
+        self.assertEqual(solve_quadratic("2*x^2-3*x+1=0")["roots"], [
+            {"numerator": 1, "radical_coefficient": 0, "radicand": 1, "denominator": 1},
+            {"numerator": 1, "radical_coefficient": 0, "radicand": 1, "denominator": 2}])
+        self.assertEqual(solve_quadratic("x^2+1=0")["status"], "NO_REAL_ROOTS")
+        self.assertEqual(solve_quadratic("x^2+2*x+1=0")["roots"][0]["numerator"], -1)
+        self.assertEqual(solve_quadratic("x^3=0")["status"], "UNSUPPORTED")
+        self.assertEqual(solve_quadratic("10000*x^2-10000=0")["status"], "RESOURCE_LIMIT")
+        solved = solve_system(1, 1, 5, 1, -1, 1)
+        self.assertEqual((solved["x"], solved["y"]), ({"numerator": 3, "denominator": 1}, {"numerator": 2, "denominator": 1}))
+        self.assertEqual(solve_system(1, 1, 1, 2, 2, 2)["status"], "INFINITE_SOLUTIONS")
+        self.assertEqual(solve_system(0, 0, 1, 0, 0, 2)["status"], "CONTRADICTION")
+        self.assertEqual(solve_system(2, 3, 1, 1, -1, 0)["x"], {"numerator": 1, "denominator": 5})
+
+    def test_function_and_geometry_knowledge(self):
+        value = function_value("(x+1)^2", 3, 2)
+        self.assertEqual(value["value"], {"numerator": 25, "denominator": 4})
+        self.assertEqual(inverse_proportion(6, 1, 2)["value"], {"numerator": 3, "denominator": 1})
+        self.assertEqual(inverse_proportion(6, 1, 0)["status"], "UNSUPPORTED")
+        self.assertEqual(polygon_angle_sum(5)["angle_sum"], 540)
+        self.assertEqual((hypotenuse(1, 1)["length_outside"], hypotenuse(1, 1)["length_inside"]), (1, 2))
+        similarity = similarity_ratios(2, 3)
+        self.assertEqual((similarity["length_ratio"], similarity["area_ratio"], similarity["volume_ratio"]),
+                         ({"numerator": 2, "denominator": 3}, {"numerator": 4, "denominator": 9}, {"numerator": 8, "denominator": 27}))
+        self.assertEqual(circle_angle(90)["value"], {"numerator": 45, "denominator": 1})
+        self.assertEqual(circle_angle(360)["status"], "UNSUPPORTED")
+
+    def test_data_and_provenance(self):
+        data = data_summary([6, 1, 4, 2, 5, 3])
+        self.assertEqual((data["mean"], data["median"], data["lower_quartile"], data["upper_quartile"], data["range"]),
+                         ({"numerator": 7, "denominator": 2}, {"numerator": 7, "denominator": 2},
+                          {"numerator": 2, "denominator": 1}, {"numerator": 5, "denominator": 1}, 5))
+        self.assertEqual(data_summary([1, 2, 3, 4, 5])["lower_quartile"], {"numerator": 3, "denominator": 2})
+        self.assertEqual(classical_probability(2, 6)["value"], {"numerator": 1, "denominator": 3})
+        self.assertEqual(relative_frequency(3, 12)["value"], {"numerator": 1, "denominator": 4})
+        self.assertEqual(classical_probability(7, 6)["status"], "UNSUPPORTED")
+        self.assertEqual(prime_factors(360)["ruo"]["outputs"], [2, 2, 2, 3, 3, 5])
+        self.assertEqual(solve_quadratic("x^2-2=0")["ruo"]["inputs"], [1, 0, -2])
+        for outcome in (prime_factors(360), solve_quadratic("x^2-2=0"), solve_system(1, 1, 5, 1, -1, 1),
+                        function_value("x^2", 2), polygon_angle_sum(5), data):
+            self.assertEqual(outcome["ruo"]["knowledge_id"], outcome["knowledge_id"])
+            self.assertEqual(outcome["ruo"]["source_rus"], outcome["active_rus"])
+            self.assertEqual(outcome["ruo"]["validation"], outcome["status"])
+            self.assertIn("mext.go.jp", outcome["ruo"]["curriculum_source"])
+            self.assertTrue(outcome["ruo"]["inputs"])
+            self.assertTrue(outcome["ruo"]["outputs"])
 
 
 if __name__ == "__main__":

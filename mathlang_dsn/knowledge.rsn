@@ -6,6 +6,7 @@ module Knowledge {
   struct KnowledgeEntry {
     id: string
     source: string
+    curriculum_source: string
     domain: string
     rus: string
     rule: int
@@ -15,6 +16,7 @@ module Knowledge {
     id: int
     knowledge_id: string
     source: string
+    curriculum_source: string
     domain: string
     rus: string
     rule: int
@@ -27,7 +29,11 @@ module Knowledge {
   }
 
   fn Entry(rule: int, id: string, domain: string, rus: string) -> KnowledgeEntry {
-    return KnowledgeEntry { id: id, source: "mathlang_dsn/knowledge.rsn", domain: domain, rus: rus, rule: rule }
+    let curriculum_source = ""
+    if rule >= 21 && rule <= 33 {
+      curriculum_source = "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    }
+    return KnowledgeEntry { id: id, source: "mathlang_dsn/knowledge.rsn", curriculum_source: curriculum_source, domain: domain, rus: rus, rule: rule }
   }
 
   pub fn KCatalog() -> [KnowledgeEntry] {
@@ -45,7 +51,20 @@ module Knowledge {
       Entry(17, "POLY_DIFFERENTIATE", "CALCULUS", "CalculusRUS"),
       Entry(18, "POLY_INTEGRATE", "CALCULUS", "CalculusRUS"),
       Entry(19, "POLY_EXPRESSION_EQUIVALENCE", "ASSESSMENT", "AssessmentRUS"),
-      Entry(20, "POLY_EQUATION_EQUIVALENCE", "ASSESSMENT", "AssessmentRUS")
+      Entry(20, "POLY_EQUATION_EQUIVALENCE", "ASSESSMENT", "AssessmentRUS"),
+      Entry(21, "JH_PRIME_FACTORIZATION", "NUMBER", "JuniorNumberRUS"),
+      Entry(22, "JH_SQUARE_ROOT_SIMPLIFY", "NUMBER", "JuniorNumberRUS"),
+      Entry(23, "JH_QUADRATIC_FORMULA", "EQUATION", "JuniorEquationRUS"),
+      Entry(24, "JH_LINEAR_SYSTEM", "EQUATION", "JuniorEquationRUS"),
+      Entry(25, "JH_FUNCTION_VALUE", "FUNCTION", "JuniorFunctionRUS"),
+      Entry(26, "JH_POLYGON_ANGLE_SUM", "GEOMETRY", "JuniorGeometryRUS"),
+      Entry(27, "JH_PYTHAGOREAN", "GEOMETRY", "JuniorGeometryRUS"),
+      Entry(28, "JH_DATA_QUARTILES", "DATA", "JuniorDataRUS"),
+      Entry(29, "JH_CLASSICAL_PROBABILITY", "DATA", "JuniorDataRUS"),
+      Entry(30, "JH_INVERSE_PROPORTION", "FUNCTION", "JuniorFunctionRUS"),
+      Entry(31, "JH_SIMILARITY_RATIOS", "GEOMETRY", "JuniorGeometryRUS"),
+      Entry(32, "JH_RELATIVE_FREQUENCY", "DATA", "JuniorDataRUS"),
+      Entry(33, "JH_CIRCLE_ANGLE", "GEOMETRY", "JuniorGeometryRUS")
     ]
   }
 
@@ -59,7 +78,7 @@ module Knowledge {
   }
 
   pub fn KToRu(item: KnowledgeEntry) -> Ru {
-    return Ru { id: item.rule, knowledge_id: item.id, source: item.source, domain: item.domain, rus: item.rus, rule: item.rule }
+    return Ru { id: item.rule, knowledge_id: item.id, source: item.source, curriculum_source: item.curriculum_source, domain: item.domain, rus: item.rus, rule: item.rule }
   }
 
   pub fn KRuByRule(rule: int) -> Ru {
@@ -101,6 +120,21 @@ module Knowledge {
     }
     if rule >= 19 && rule <= 20 {
       return Rus { id: 4, name: "AssessmentRUS", members: [rule] }
+    }
+    if rule >= 21 && rule <= 22 {
+      return Rus { id: 5, name: "JuniorNumberRUS", members: [rule] }
+    }
+    if rule >= 23 && rule <= 24 {
+      return Rus { id: 6, name: "JuniorEquationRUS", members: [rule] }
+    }
+    if rule == 25 || rule == 30 {
+      return Rus { id: 7, name: "JuniorFunctionRUS", members: [rule] }
+    }
+    if (rule >= 26 && rule <= 27) || rule == 31 || rule == 33 {
+      return Rus { id: 8, name: "JuniorGeometryRUS", members: [rule] }
+    }
+    if (rule >= 28 && rule <= 29) || rule == 32 {
+      return Rus { id: 9, name: "JuniorDataRUS", members: [rule] }
     }
     return Rus { id: 0, name: "", members: [] }
   }

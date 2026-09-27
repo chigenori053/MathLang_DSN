@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mathlang-dsn"
-version = "0.2.0"
+version = "0.3.0"
 description = "Deterministic mathematical inference model for MathLang"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,4 +17,4 @@ mathlang-dsn = "mathlang_dsn.__main__:main"
 packages = ["mathlang_dsn"]
 
 [tool.setuptools.package-data]
-mathlang_dsn = ["model.rsn", "polynomial.rsn", "knowledge.rsn", "reason.toml"]
+mathlang_dsn = ["model.rsn", "polynomial.rsn", "knowledge.rsn", "junior_high.rsn", "reason.toml"]

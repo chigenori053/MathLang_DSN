@@ -420,4 +420,8 @@ module Polynomial {
     }
     return Model::Solve(difference.coefficients[1], difference.coefficients[0], 0, 0)
   }
+
+  pub fn PolyDifference(left: Poly, right: Poly) -> Poly {
+    return Combine(3, left, right)
+  }
 }
