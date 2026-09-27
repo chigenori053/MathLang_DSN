@@ -48,7 +48,14 @@ fn core_delta_identity_conflict_and_unknown() {
         )
         .unwrap();
     assert_eq!(state.status, Status::Conflict);
-    assert_eq!(state.conflicts(), vec![[first.clone(), second.clone()]]);
+    let mut expected = [
+        state.get_occurrence(&first).unwrap().id().to_owned(),
+        state.get_occurrence(&second).unwrap().id().to_owned(),
+    ];
+    expected.sort();
+    let mut conflict = state.conflicts().remove(0);
+    conflict.sort();
+    assert_eq!(conflict, expected);
     assert_eq!(
         state.value_of(&x).unwrap_err().category,
         "MirpConflictError"
@@ -81,7 +88,7 @@ fn relation_modality_and_validation() {
     let p = Provenance::input("natural_language", "A may not be B");
     let a = state.bind("A", "n", "global", "OBJECT", p.clone()).unwrap();
     let b = state.bind("B", "n", "global", "OBJECT", p.clone()).unwrap();
-    let relation = Relation {
+    let mut relation = Object::Relation(Relation {
         common: Common::new(
             stable_id("relation", &[&a, &b, "IS_A"]),
             Status::Known,
@@ -93,15 +100,16 @@ fn relation_modality_and_validation() {
         arguments: vec![],
         polarity: Polarity::Negative,
         modality: Modality::Possible,
-    };
+    });
+    relation.normalize_identity("relation");
     state
         .apply(SemanticDelta {
-            added: vec![Object::Relation(relation)],
+            added: vec![relation],
             ..Default::default()
         })
         .unwrap();
     assert!(state.canonical().unwrap().contains("\"POSSIBLE\""));
-    let invalid = Relation {
+    let mut invalid = Object::Relation(Relation {
         common: Common::new("bad".into(), Status::Known, p),
         relation_type: "BAD.IS_A".into(),
         source: "missing".into(),
@@ -109,11 +117,12 @@ fn relation_modality_and_validation() {
         arguments: vec![],
         polarity: Polarity::Positive,
         modality: Modality::Asserted,
-    };
+    });
+    invalid.normalize_identity("invalid");
     assert_eq!(
         state
             .apply(SemanticDelta {
-                added: vec![Object::Relation(invalid)],
+                added: vec![invalid],
                 ..Default::default()
             })
             .unwrap_err()
@@ -164,9 +173,11 @@ fn dependency_cycle_and_missing_reference_are_rejected() {
         .unwrap();
     let b = state.bind("b", "n", "global", "VARIABLE", p).unwrap();
     let before = state.clone();
+    let a_occurrence = state.get(&a).unwrap().occurrence_id().to_owned();
+    let b_occurrence = state.get(&b).unwrap().occurrence_id().to_owned();
     let mut dependencies = BTreeMap::new();
-    dependencies.insert(a.clone(), vec![b.clone()]);
-    dependencies.insert(b, vec![a]);
+    dependencies.insert(a_occurrence.clone(), vec![b_occurrence.clone()]);
+    dependencies.insert(b_occurrence, vec![a_occurrence]);
     assert_eq!(
         state
             .apply(SemanticDelta {
@@ -216,35 +227,56 @@ fn call_result_representation_requires_a_real_call_dependency() {
     let argument = state
         .bind("x", "lesson", "global", "VARIABLE", input.clone())
         .unwrap();
-    let call_id = stable_id("call", &[&target, &argument, "apply"]);
-    let call = Call {
-        common: Common::new(call_id.clone(), Status::Known, input.clone()),
+    let mut call = Object::Call(Call {
+        common: Common::new(String::new(), Status::Known, input.clone()),
         target,
         operation: "apply".into(),
         arguments: vec![argument],
-        call_id: call_id.clone(),
-    };
+        call_id: String::new(),
+    });
+    call.normalize_identity("call");
+    let call_id = call.id().to_owned();
+    let call_occurrence_id = call.occurrence_id().to_owned();
+    if let Object::Call(inner) = &mut call {
+        inner.call_id = call_id.clone();
+    }
+    let mut second_call = call.clone();
+    second_call.normalize_identity("another invocation");
+    let second_call_occurrence = second_call.occurrence_id().to_owned();
+    assert_eq!(second_call.id(), call.id());
+    assert_ne!(second_call_occurrence, call_occurrence_id);
     state
         .apply(SemanticDelta {
-            added: vec![Object::Call(call)],
+            added: vec![call, second_call],
             ..Default::default()
         })
         .unwrap();
-    let result_id = stable_id("call-result", &[&call_id]);
-    let result = CallResult {
+    let mut result = Object::CallResult(CallResult {
         common: Common::new(
-            result_id.clone(),
+            String::new(),
             Status::Derived,
-            input.derived(vec![call_id.clone()], "call result"),
+            input.derived(vec![call_occurrence_id.clone()], "call result"),
         ),
         call_id: call_id.clone(),
+        call_occurrence_id: call_occurrence_id.clone(),
         value: Value::Integer(7),
-    };
+    });
+    result.normalize_identity("result");
+    let result_id = result.occurrence_id().to_owned();
+    let mut second_result = result.clone();
+    if let Object::CallResult(inner) = &mut second_result {
+        inner.call_occurrence_id = second_call_occurrence.clone();
+        inner.common.provenance.parent_occurrence_ids = vec![second_call_occurrence.clone()];
+    }
+    second_result.normalize_identity("result");
+    let second_result_occurrence = second_result.occurrence_id().to_owned();
+    assert_eq!(second_result.id(), result.id());
+    assert_ne!(second_result_occurrence, result_id);
     let before = state.clone();
     assert_eq!(
         state
             .apply(SemanticDelta {
-                added: vec![Object::CallResult(result.clone())],
+                added: vec![result.clone()],
                 ..Default::default()
             })
             .unwrap_err()
@@ -254,12 +286,22 @@ fn call_result_representation_requires_a_real_call_dependency() {
     assert_eq!(state, before);
     state
         .apply(SemanticDelta {
-            added: vec![Object::CallResult(result)],
-            dependencies: BTreeMap::from([(result_id.clone(), vec![call_id.clone()])]),
+            added: vec![result, second_result],
+            dependencies: BTreeMap::from([
+                (result_id.clone(), vec![call_occurrence_id]),
+                (
+                    second_result_occurrence.clone(),
+                    vec![second_call_occurrence],
+                ),
+            ]),
             ..Default::default()
         })
         .unwrap();
     assert!(matches!(state.get(&result_id), Some(Object::CallResult(_))));
+    assert!(matches!(
+        state.get(&second_result_occurrence),
+        Some(Object::CallResult(_))
+    ));
     assert!(state.canonical().unwrap().contains("CALL_RESULT"));
 }
 

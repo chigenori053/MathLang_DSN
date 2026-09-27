@@ -139,28 +139,39 @@ impl MemorySpace {
             ));
         }
         let mut state = stored.state.clone();
-        for object in &mut state.objects {
-            object.common_mut().provenance.memory_id = Some(memory_id.into());
-        }
+        let occurrence_ids: Vec<String> = state
+            .objects
+            .iter()
+            .map(|object| object.occurrence_id().into())
+            .collect();
+        let semantic_ids: Vec<String> = state
+            .objects
+            .iter()
+            .map(|object| object.id().into())
+            .collect();
         let mut provenance = Provenance::input("memory_retrieval", memory_id);
         provenance.memory_id = Some(memory_id.into());
-        let evidence = Evidence {
-            common: Common::new(
-                stable_id("memory-retrieval", &[memory_id, &canonical]),
-                Status::Known,
-                provenance,
-            ),
+        provenance.parent_occurrence_ids = occurrence_ids.clone();
+        let mut evidence = Object::Evidence(Evidence {
+            common: Common::new(String::new(), Status::Known, provenance),
             evidence_type: "MEMORY_RETRIEVAL".into(),
             source: "MemorySpace".into(),
-            supports: state
-                .objects
-                .iter()
-                .map(|object| object.id().into())
-                .collect(),
+            supports: semantic_ids.clone(),
             contradicts: vec![],
-        };
+        });
+        evidence.common_mut().metadata.insert(
+            "retrieved_occurrence_ids".into(),
+            serde_json::json!(occurrence_ids),
+        );
+        evidence.common_mut().metadata.insert(
+            "retrieved_semantic_ids".into(),
+            serde_json::json!(semantic_ids),
+        );
+        evidence.normalize_identity(memory_id);
+        let dependencies = BTreeMap::from([(evidence.occurrence_id().to_owned(), occurrence_ids)]);
         state.apply(SemanticDelta {
-            added: vec![Object::Evidence(evidence)],
+            added: vec![evidence],
+            dependencies,
             ..Default::default()
         })?;
         Ok(state)

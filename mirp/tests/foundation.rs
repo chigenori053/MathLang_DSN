@@ -39,6 +39,14 @@ fn cross_domain_reasoning_and_restart() {
         .clone();
     let y_fact = second[0].result_id.clone().unwrap();
     assert!(session.state.dependencies[&y_fact].contains(&x_fact));
+    assert!(session
+        .state
+        .get_occurrence(&y_fact)
+        .unwrap()
+        .common()
+        .provenance
+        .parent_occurrence_ids
+        .contains(&x_fact));
     let third = session
         .apply_input(Domain::Code, "if y > 6:\n    result = y")
         .unwrap();
@@ -55,6 +63,14 @@ fn cross_domain_reasoning_and_restart() {
         .clone();
     let result_fact = third[0].result_id.clone().unwrap();
     assert!(session.state.dependencies[&result_fact].contains(&y_fact));
+    assert!(session
+        .state
+        .get_occurrence(&result_fact)
+        .unwrap()
+        .common()
+        .provenance
+        .parent_occurrence_ids
+        .contains(&y_fact));
     assert_eq!(
         session.state.value_of(&result).unwrap().unwrap().0,
         &Value::Integer(7)
@@ -319,6 +335,7 @@ fn copied_memory_codec_restores_mirp_after_restart() {
     let derived = session
         .apply_input(Domain::Mathematics, "y = x + 2")
         .unwrap();
+    let original = session.state.clone();
     let mut memory = MemorySpace::new();
     memory
         .store("lesson-1", &session.state, &derived[0].ruos)
@@ -336,13 +353,15 @@ fn copied_memory_codec_restores_mirp_after_restart() {
         state.value_of(&y.common.id).unwrap().unwrap().0,
         &Value::Integer(7)
     );
-    assert!(state
-        .objects
-        .iter()
-        .all(|object| object.common().provenance.memory_id.as_deref() == Some("lesson-1")));
+    for object in &original.objects {
+        let restored = state.get_occurrence(object.occurrence_id()).unwrap();
+        assert_eq!(restored.id(), object.id());
+        assert_eq!(restored.common().provenance, object.common().provenance);
+    }
     assert!(state.objects.iter().any(|object| matches!(object,
         Object::Evidence(evidence) if evidence.evidence_type == "MEMORY_RETRIEVAL"
-            && evidence.source == "MemorySpace" && evidence.supports.contains(&y.common.id))));
+            && evidence.source == "MemorySpace" && evidence.supports.contains(&y.common.id)
+            && evidence.common.provenance.memory_id.as_deref() == Some("lesson-1"))));
 }
 
 #[test]

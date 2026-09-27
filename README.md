@@ -14,6 +14,14 @@ their execution is a later RU family. Memory retrieval adds explicit evidence
 while retaining source provenance and the memory ID. The status and acceptance
 boundary are documented in `mirp/STATUS.md`.
 
+In the identity-separated state format, `Common.id` is a source-independent
+Semantic ID and `Common.occurrence_id` identifies one assertion or derivation.
+Object references form the semantic graph; `SemanticState.dependencies` and
+`Provenance.parent_occurrence_ids` form the occurrence-level derivation graph.
+Two source histories can share semantic IDs while their complete canonical
+`.mirp` files differ. The current format is `mirp/0.1-si`; older `mirp/1.0`
+development snapshots are rejected and must be regenerated.
+
 ```sh
 cargo test --offline --manifest-path mirp/Cargo.toml
 cargo run --offline --manifest-path mirp/Cargo.toml -- /tmp/lesson.mirp lesson global nl 'x is five.'
