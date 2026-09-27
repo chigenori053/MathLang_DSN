@@ -264,6 +264,27 @@ pub struct Event {
     pub effects: Vec<String>,
 }
 
+/// A semantic operation request. Execution is reserved for a later RU family.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct Call {
+    #[serde(flatten)]
+    pub common: Common,
+    pub target: String,
+    pub operation: String,
+    #[serde(default)]
+    pub arguments: Vec<String>,
+    pub call_id: String,
+}
+
+/// An observed result of a Call. Its status is in `common.status`.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct CallResult {
+    #[serde(flatten)]
+    pub common: Common,
+    pub call_id: String,
+    pub value: Value,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Evidence {
     #[serde(flatten)]
@@ -297,6 +318,8 @@ pub enum Object {
     Expression(Expression),
     Condition(Condition),
     Event(Event),
+    Call(Call),
+    CallResult(CallResult),
     Evidence(Evidence),
     Hypothesis(Hypothesis),
 }
@@ -310,6 +333,8 @@ impl Object {
             Self::Expression(x) => &x.common,
             Self::Condition(x) => &x.common,
             Self::Event(x) => &x.common,
+            Self::Call(x) => &x.common,
+            Self::CallResult(x) => &x.common,
             Self::Evidence(x) => &x.common,
             Self::Hypothesis(x) => &x.common,
         }
@@ -323,6 +348,8 @@ impl Object {
             Self::Expression(x) => &mut x.common,
             Self::Condition(x) => &mut x.common,
             Self::Event(x) => &mut x.common,
+            Self::Call(x) => &mut x.common,
+            Self::CallResult(x) => &mut x.common,
             Self::Evidence(x) => &mut x.common,
             Self::Hypothesis(x) => &mut x.common,
         }
@@ -594,6 +621,16 @@ impl SemanticState {
         if ids.len() != self.objects.len() {
             return Err(error("MirpConflictError", "duplicate ID", None));
         }
+        let expected_status = if !self.conflicts().is_empty() {
+            Status::Conflict
+        } else if self.objects.is_empty() {
+            Status::Unknown
+        } else {
+            Status::Known
+        };
+        if self.status != expected_status {
+            return Err(error("MirpValidationError", "state status", None));
+        }
         let mut bindings = BTreeMap::new();
         for item in &self.objects {
             if let Object::Entity(entity) = item {
@@ -617,6 +654,10 @@ impl SemanticState {
             if common.id.is_empty()
                 || common.provenance.source_type.is_empty()
                 || common.provenance.source_id.is_empty()
+                || common
+                    .provenance
+                    .source_span
+                    .is_some_and(|[start, end]| start > end)
                 || !common.confidence.is_finite()
                 || !(0.0..=1.0).contains(&common.confidence)
             {
@@ -627,7 +668,10 @@ impl SemanticState {
             }
             match item {
                 Object::Entity(x)
-                    if x.entity_type.is_empty() || x.namespace.is_empty() || x.scope.is_empty() =>
+                    if x.entity_type.is_empty()
+                        || x.label.is_empty()
+                        || x.namespace.is_empty()
+                        || x.scope.is_empty() =>
                 {
                     return Err(error("MirpTypeError", &common.id, source))
                 }
@@ -685,6 +729,33 @@ impl SemanticState {
                         .chain(x.effects.iter())
                     {
                         require(&ids, reference, source)?;
+                    }
+                }
+                Object::Call(x) => {
+                    if x.call_id != x.common.id || x.operation.is_empty() {
+                        return Err(error("MirpValidationError", "invalid call", source));
+                    }
+                    for reference in std::iter::once(&x.target).chain(x.arguments.iter()) {
+                        require(&ids, reference, source)?;
+                    }
+                }
+                Object::CallResult(x) => {
+                    if !matches!(self.get(&x.call_id), Some(Object::Call(_))) {
+                        return Err(error("MirpReferenceError", &x.call_id, source));
+                    }
+                    if !x.value.validate() {
+                        return Err(error("MirpTypeError", "invalid call result", source));
+                    }
+                    if !self
+                        .dependencies
+                        .get(&x.common.id)
+                        .is_some_and(|parents| parents.contains(&x.call_id))
+                    {
+                        return Err(error(
+                            "MirpValidationError",
+                            "call result dependency",
+                            source,
+                        ));
                     }
                 }
                 Object::Evidence(x) => {

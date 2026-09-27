@@ -1,6 +1,6 @@
 # MathLang_DSN
 
-## MIRP foundation (experimental)
+## MIRP Foundation v0.1
 
 The `mirp/` Rust crate owns MIRP's typed objects, scoped entity bindings,
 validation, canonical JSON, semantic deltas, conflict and unknown states, and
@@ -9,6 +9,10 @@ adapters build one `SemanticState`. Arithmetic uses the existing ReasonScript
 polynomial RU/RUS/RUO path; integer comparisons use a ReasonScript comparison
 RU selected through `Knowledge::KMirpComparisonRus`. The Rust bridge invokes
 ReasonScript directly; the existing Python API remains for the 0.3 interface.
+CALL and RESULT are typed MIRP representations with a validated dependency;
+their execution is a later RU family. Memory retrieval adds explicit evidence
+while retaining source provenance and the memory ID. The status and acceptance
+boundary are documented in `mirp/STATUS.md`.
 
 ```sh
 cargo test --offline --manifest-path mirp/Cargo.toml

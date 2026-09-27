@@ -1,6 +1,9 @@
 //! Persistent MIRP snapshots with DSN_Test's native ReasonScript memory codec.
 
-use crate::{session::run_reason_source, stable_id, MirpError, SemanticState, VERSION};
+use crate::{
+    session::run_reason_source, stable_id, Common, Evidence, MirpError, Object, Provenance,
+    SemanticDelta, SemanticState, Status, VERSION,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as Json;
 use std::collections::BTreeMap;
@@ -139,7 +142,27 @@ impl MemorySpace {
         for object in &mut state.objects {
             object.common_mut().provenance.memory_id = Some(memory_id.into());
         }
-        state.validate()?;
+        let mut provenance = Provenance::input("memory_retrieval", memory_id);
+        provenance.memory_id = Some(memory_id.into());
+        let evidence = Evidence {
+            common: Common::new(
+                stable_id("memory-retrieval", &[memory_id, &canonical]),
+                Status::Known,
+                provenance,
+            ),
+            evidence_type: "MEMORY_RETRIEVAL".into(),
+            source: "MemorySpace".into(),
+            supports: state
+                .objects
+                .iter()
+                .map(|object| object.id().into())
+                .collect(),
+            contradicts: vec![],
+        };
+        state.apply(SemanticDelta {
+            added: vec![Object::Evidence(evidence)],
+            ..Default::default()
+        })?;
         Ok(state)
     }
 
@@ -199,6 +222,29 @@ mod tests {
             .state
             .goals
             .push("changed".into());
+        assert!(memory.retrieve("m").is_err());
+    }
+
+    #[test]
+    fn malformed_trace_and_invalid_state_are_rejected() {
+        let mut state = SemanticState::default();
+        let provenance = Provenance::input("test", "x=1");
+        let x = state
+            .bind("x", "n", "global", "VARIABLE", provenance.clone())
+            .unwrap();
+        state
+            .assert_value(&x, Value::Integer(1), provenance, Status::Known)
+            .unwrap();
+        let trace = serde_json::json!({"source_ru": 12, "source_rus": "PolynomialRUS", "knowledge_id": "POLY_ADD"});
+        let mut memory = MemorySpace::new();
+        memory.store("m", &state, &[trace]).unwrap();
+        let packet = memory.entries["m"].packet.clone();
+        memory.entries.get_mut("m").unwrap().packet["ru_codes"] = serde_json::json!([]);
+        assert!(memory.retrieve("m").is_err());
+        memory.entries.get_mut("m").unwrap().packet = packet;
+        memory.entries.get_mut("m").unwrap().state.objects[0]
+            .common_mut()
+            .confidence = 2.0;
         assert!(memory.retrieve("m").is_err());
     }
 }

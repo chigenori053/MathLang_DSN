@@ -44,6 +44,8 @@ fn cross_domain_reasoning_and_restart() {
         .unwrap();
     assert_eq!(third[0].result, Some(Value::Integer(7)));
     assert_eq!(third[0].ruos[0]["source_rus"], "ComparisonRUS");
+    assert!(session.state.objects.iter().any(|object| matches!(object,
+        Object::Condition(condition) if condition.truth == Truth::True)));
     let result = session
         .state
         .resolve("result", "lesson", "global")
@@ -79,6 +81,8 @@ fn code_scope_and_unknown_are_preserved() {
         .unwrap();
     assert_eq!(result[0].status, Status::Unknown);
     assert_eq!(result[0].result, Some(Value::Unknown));
+    assert!(session.state.objects.iter().any(|object| matches!(object,
+        Object::Condition(condition) if condition.truth == Truth::Unknown)));
     assert!(session
         .state
         .resolve("result", "lesson", "function_a")
@@ -146,6 +150,39 @@ fn three_fresh_runs_have_byte_identical_mirp() {
     }
     assert_eq!(outputs[0], outputs[1]);
     assert_eq!(outputs[1], outputs[2]);
+}
+
+#[test]
+fn cross_domain_runtime_generalizes_beyond_reference_numbers() {
+    let mut session = Session::new("lesson", "global");
+    session
+        .apply_input(Domain::NaturalLanguage, "a is four.")
+        .unwrap();
+    let arithmetic = session
+        .apply_input(Domain::Mathematics, "b = a * 3")
+        .unwrap();
+    assert_eq!(arithmetic[0].result, Some(Value::Integer(12)));
+    assert_eq!(arithmetic[0].ruos[0]["source_rus"], "PolynomialRUS");
+    let branch = session
+        .apply_input(Domain::Code, "if b <= 12:\n    output = b")
+        .unwrap();
+    assert_eq!(branch[0].result, Some(Value::Integer(12)));
+    assert_eq!(branch[0].ruos[0]["source_rus"], "ComparisonRUS");
+    let false_branch = session
+        .apply_input(Domain::Code, "if b < 12:\n    skipped = b")
+        .unwrap();
+    assert_eq!(false_branch[0].result, Some(Value::Boolean(false)));
+    assert!(session
+        .state
+        .resolve("skipped", "lesson", "global")
+        .is_some());
+    let skipped_id = &session
+        .state
+        .resolve("skipped", "lesson", "global")
+        .unwrap()
+        .common
+        .id;
+    assert!(session.state.value_of(skipped_id).unwrap().is_none());
 }
 
 #[test]
@@ -303,6 +340,9 @@ fn copied_memory_codec_restores_mirp_after_restart() {
         .objects
         .iter()
         .all(|object| object.common().provenance.memory_id.as_deref() == Some("lesson-1")));
+    assert!(state.objects.iter().any(|object| matches!(object,
+        Object::Evidence(evidence) if evidence.evidence_type == "MEMORY_RETRIEVAL"
+            && evidence.source == "MemorySpace" && evidence.supports.contains(&y.common.id))));
 }
 
 #[test]

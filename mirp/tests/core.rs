@@ -205,3 +205,81 @@ fn set_value_has_deterministic_order() {
         .unwrap();
     assert_eq!(first.canonical().unwrap(), second.canonical().unwrap());
 }
+
+#[test]
+fn call_result_representation_requires_a_real_call_dependency() {
+    let mut state = SemanticState::default();
+    let input = Provenance::input("code", "f(x)");
+    let target = state
+        .bind("f", "lesson", "global", "FUNCTION", input.clone())
+        .unwrap();
+    let argument = state
+        .bind("x", "lesson", "global", "VARIABLE", input.clone())
+        .unwrap();
+    let call_id = stable_id("call", &[&target, &argument, "apply"]);
+    let call = Call {
+        common: Common::new(call_id.clone(), Status::Known, input.clone()),
+        target,
+        operation: "apply".into(),
+        arguments: vec![argument],
+        call_id: call_id.clone(),
+    };
+    state
+        .apply(SemanticDelta {
+            added: vec![Object::Call(call)],
+            ..Default::default()
+        })
+        .unwrap();
+    let result_id = stable_id("call-result", &[&call_id]);
+    let result = CallResult {
+        common: Common::new(
+            result_id.clone(),
+            Status::Derived,
+            input.derived(vec![call_id.clone()], "call result"),
+        ),
+        call_id: call_id.clone(),
+        value: Value::Integer(7),
+    };
+    let before = state.clone();
+    assert_eq!(
+        state
+            .apply(SemanticDelta {
+                added: vec![Object::CallResult(result.clone())],
+                ..Default::default()
+            })
+            .unwrap_err()
+            .category,
+        "MirpValidationError"
+    );
+    assert_eq!(state, before);
+    state
+        .apply(SemanticDelta {
+            added: vec![Object::CallResult(result)],
+            dependencies: BTreeMap::from([(result_id.clone(), vec![call_id.clone()])]),
+            ..Default::default()
+        })
+        .unwrap();
+    assert!(matches!(state.get(&result_id), Some(Object::CallResult(_))));
+    assert!(state.canonical().unwrap().contains("CALL_RESULT"));
+}
+
+#[test]
+fn loaded_state_rejects_inconsistent_status_and_provenance() {
+    let mut state = SemanticState::default();
+    let provenance = Provenance::input("test", "x");
+    state
+        .bind("x", "n", "global", "VARIABLE", provenance)
+        .unwrap();
+    let mut tampered = state.clone();
+    tampered.status = Status::Unknown;
+    assert_eq!(
+        tampered.validate().unwrap_err().category,
+        "MirpValidationError"
+    );
+    let mut tampered = state;
+    tampered.objects[0].common_mut().provenance.source_span = Some([2, 1]);
+    assert_eq!(
+        tampered.validate().unwrap_err().category,
+        "MirpValidationError"
+    );
+}
