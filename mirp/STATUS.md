@@ -1,10 +1,10 @@
 # MIRP Foundation v0.1 status
 
-The bounded Foundation architecture is implemented and **MIRP Foundation v0.1
-is FROZEN**. The identity-separated
-serialized schema is `mirp/0.1-si`. Existing `mirp/1.0` development snapshots
-are rejected and must be regenerated. The mandatory gates establish
-**MIRP Foundation v0.1 PASS** within the bounded input contract below.
+The bounded Foundation architecture is implemented. Occurrence integrity is
+finalized in schema `mirp/0.1-si2`; the prior frozen `mirp/0.1-si` schema needed
+an incompatible field addition and is rejected on load, as is `mirp/1.0`.
+Old development snapshots must be regenerated. The mandatory gates establish
+**MIRP Foundation v0.1 PASS / FROZEN** within the bounded input contract below.
 
 | Specification phase | Status | Evidence / remaining work |
 | --- | --- | --- |
@@ -25,10 +25,13 @@ preserves original object occurrences and provenance. Retrieval evidence carries
 the `memory_id`, retrieved semantic IDs, and retrieved occurrence IDs.
 
 `Common.id` is the canonical Semantic ID; `Common.occurrence_id` is the distinct
-source occurrence. Object references use Semantic IDs, while
+source occurrence. `Common.occurrence_key` persists the local discriminator.
+Validation recomputes both IDs from serialized meaning, source, sorted parent
+occurrences, and key. Object references use Semantic IDs, while
 `SemanticState.dependencies` and `Provenance.parent_occurrence_ids` use
-Occurrence IDs. Complete canonical states include both layers, so equivalent
-semantic graphs with different source histories may serialize differently.
+Occurrence IDs and must agree exactly. Complete canonical states include both
+layers, so equivalent semantic graphs with different source histories may
+serialize differently.
 This identity, state, provenance, and persistence layout is the Foundation v0.1
 freeze boundary; further changes require a schema version or migration.
 
@@ -43,7 +46,7 @@ cross-domain continuation, persistence, MemorySpace integrity, and CALL / RESULT
 representation. The bounded input grammar and remaining MIRP v1.0 work are
 described in `README.md`.
 
-Verification result: Rust tests passed three consecutive runs (28 tests per
+Verification result: Rust tests passed three consecutive runs (32 tests per
 run), the existing Python API regression suite passed three consecutive runs
 (9 tests per run), and three ReasonScript project validations produced identical
 canonical output and passed. `cargo clippy --offline --manifest-path mirp/Cargo.toml
@@ -51,7 +54,9 @@ canonical output and passed. `cargo clippy --offline --manifest-path mirp/Cargo.
 and `git diff --check` also passed. `tests/identity.rs` covers same-meaning
 cross-domain facts, commutative expressions, symmetric equality, directed
 relations, repeated assertions, true conflicts, UNKNOWN, persistence, memory
-retrieval, and immutable occurrence meaning. Existing tests cover CALL / RESULT
-and cross-domain occurrence-level provenance. The runtime source has no
+retrieval, immutable occurrence meaning, occurrence ID tamper rejection,
+immutable parents and keys, repeated input keys, and three-run key determinism.
+Existing tests cover CALL / RESULT and cross-domain occurrence-level provenance.
+The runtime source has no
 fixture-string answer branches; a second cross-domain arithmetic and comparison
 case exercises different identifiers and numbers.

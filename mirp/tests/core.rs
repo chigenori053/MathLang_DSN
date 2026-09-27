@@ -89,11 +89,7 @@ fn relation_modality_and_validation() {
     let a = state.bind("A", "n", "global", "OBJECT", p.clone()).unwrap();
     let b = state.bind("B", "n", "global", "OBJECT", p.clone()).unwrap();
     let mut relation = Object::Relation(Relation {
-        common: Common::new(
-            stable_id("relation", &[&a, &b, "IS_A"]),
-            Status::Known,
-            p.clone(),
-        ),
+        common: Common::unidentified(Status::Known, p.clone()),
         relation_type: "SEMANTIC.IS_A".into(),
         source: a,
         target: b,
@@ -110,7 +106,7 @@ fn relation_modality_and_validation() {
         .unwrap();
     assert!(state.canonical().unwrap().contains("\"POSSIBLE\""));
     let mut invalid = Object::Relation(Relation {
-        common: Common::new("bad".into(), Status::Known, p),
+        common: Common::unidentified(Status::Known, p),
         relation_type: "BAD.IS_A".into(),
         source: "missing".into(),
         target: "missing".into(),
@@ -228,7 +224,7 @@ fn call_result_representation_requires_a_real_call_dependency() {
         .bind("x", "lesson", "global", "VARIABLE", input.clone())
         .unwrap();
     let mut call = Object::Call(Call {
-        common: Common::new(String::new(), Status::Known, input.clone()),
+        common: Common::unidentified(Status::Known, input.clone()),
         target,
         operation: "apply".into(),
         arguments: vec![argument],
@@ -252,8 +248,7 @@ fn call_result_representation_requires_a_real_call_dependency() {
         })
         .unwrap();
     let mut result = Object::CallResult(CallResult {
-        common: Common::new(
-            String::new(),
+        common: Common::unidentified(
             Status::Derived,
             input.derived(vec![call_occurrence_id.clone()], "call result"),
         ),

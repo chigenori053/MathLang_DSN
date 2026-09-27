@@ -153,7 +153,7 @@ impl MemorySpace {
         provenance.memory_id = Some(memory_id.into());
         provenance.parent_occurrence_ids = occurrence_ids.clone();
         let mut evidence = Object::Evidence(Evidence {
-            common: Common::new(String::new(), Status::Known, provenance),
+            common: Common::unidentified(Status::Known, provenance),
             evidence_type: "MEMORY_RETRIEVAL".into(),
             source: "MemorySpace".into(),
             supports: semantic_ids.clone(),
@@ -167,7 +167,7 @@ impl MemorySpace {
             "retrieved_semantic_ids".into(),
             serde_json::json!(semantic_ids),
         );
-        evidence.normalize_identity(memory_id);
+        evidence.normalize_identity(&format!("memory-retrieval:{memory_id}"));
         let dependencies = BTreeMap::from([(evidence.occurrence_id().to_owned(), occurrence_ids)]);
         state.apply(SemanticDelta {
             added: vec![evidence],

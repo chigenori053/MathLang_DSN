@@ -11,7 +11,7 @@ use std::path::Path;
 pub mod memory;
 pub mod session;
 
-pub const VERSION: &str = "mirp/0.1-si";
+pub const VERSION: &str = "mirp/0.1-si2";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MirpError {
@@ -179,6 +179,8 @@ pub struct Common {
     pub id: String,
     /// One observation or derivation of this meaning.
     pub occurrence_id: String,
+    /// Persisted local discriminator used to recompute `occurrence_id`.
+    pub occurrence_key: String,
     pub status: Status,
     pub provenance: Provenance,
     pub confidence: f64,
@@ -187,11 +189,26 @@ pub struct Common {
 }
 
 impl Common {
-    pub fn new(id: String, status: Status, provenance: Provenance) -> Self {
-        let occurrence_id = occurrence_id(&id, &provenance, "");
+    pub fn new(id: String, occurrence_key: String, status: Status, provenance: Provenance) -> Self {
+        let mut provenance = provenance;
+        provenance.parent_occurrence_ids = canonical_parents(&provenance.parent_occurrence_ids);
+        let occurrence_id = occurrence_id(&id, &provenance, &occurrence_key);
         Self {
             id,
             occurrence_id,
+            occurrence_key,
+            status,
+            provenance,
+            confidence: 1.0,
+            metadata: BTreeMap::new(),
+        }
+    }
+
+    pub fn unidentified(status: Status, provenance: Provenance) -> Self {
+        Self {
+            id: String::new(),
+            occurrence_id: String::new(),
+            occurrence_key: String::new(),
             status,
             provenance,
             confidence: 1.0,
@@ -200,8 +217,16 @@ impl Common {
     }
 }
 
-fn occurrence_id(semantic_id: &str, provenance: &Provenance, local_index: &str) -> String {
+fn canonical_parents(parents: &[String]) -> Vec<String> {
+    let mut canonical = parents.to_vec();
+    canonical.sort();
+    canonical.dedup();
+    canonical
+}
+
+fn occurrence_id(semantic_id: &str, provenance: &Provenance, occurrence_key: &str) -> String {
     let span = serde_json::to_string(&provenance.source_span).expect("span serializes");
+    let parents = canonical_parents(&provenance.parent_occurrence_ids);
     stable_id(
         "occurrence",
         &[
@@ -209,8 +234,8 @@ fn occurrence_id(semantic_id: &str, provenance: &Provenance, local_index: &str) 
             &provenance.source_type,
             &provenance.source_id,
             &span,
-            &provenance.parent_occurrence_ids.join("|"),
-            local_index,
+            &serde_json::to_string(&parents).expect("parents serialize"),
+            occurrence_key,
         ],
     )
 }
@@ -449,12 +474,14 @@ impl Object {
         stable_id(kind, &[&content.to_string()])
     }
 
-    pub fn normalize_identity(&mut self, local_index: &str) {
+    pub fn normalize_identity(&mut self, occurrence_key: &str) {
         let semantic_id = self.semantic_id();
-        let occurrence_id = occurrence_id(&semantic_id, &self.common().provenance, local_index);
+        let parents = canonical_parents(&self.common().provenance.parent_occurrence_ids);
         let common = self.common_mut();
+        common.provenance.parent_occurrence_ids = parents;
         common.id = semantic_id;
-        common.occurrence_id = occurrence_id;
+        common.occurrence_key = occurrence_key.into();
+        common.occurrence_id = occurrence_id(&common.id, &common.provenance, occurrence_key);
     }
 }
 
@@ -532,14 +559,14 @@ impl SemanticState {
             return Ok(entity.common.id.clone());
         }
         let mut entity = Object::Entity(Entity {
-            common: Common::new(String::new(), Status::Known, provenance),
+            common: Common::unidentified(Status::Known, provenance),
             entity_type: kind.into(),
             label: name.into(),
             namespace: namespace.into(),
             scope: scope.into(),
             aliases: vec![],
         });
-        entity.normalize_identity("");
+        entity.normalize_identity("entity");
         let id = entity.id().to_owned();
         self.apply(SemanticDelta {
             added: vec![entity],
@@ -579,14 +606,23 @@ impl SemanticState {
         status: Status,
     ) -> Result<String, MirpError> {
         let value = value.normalized();
+        let previous_assertions = self
+            .objects
+            .iter()
+            .filter(|object| {
+                matches!(object, Object::Attribute(attribute)
+                if attribute.subject == subject
+                    && attribute.key == "VALUE")
+            })
+            .count();
         let mut attribute = Object::Attribute(Attribute {
-            common: Common::new(String::new(), status, provenance.clone()),
+            common: Common::unidentified(status, provenance.clone()),
             subject: subject.into(),
             key: "VALUE".into(),
             value,
             polarity: Polarity::Positive,
         });
-        attribute.normalize_identity(&self.version.to_string());
+        attribute.normalize_identity(&format!("assertion:{previous_assertions}"));
         let occurrence = attribute.occurrence_id().to_owned();
         let dependencies = BTreeMap::from([(occurrence.clone(), provenance.parent_occurrence_ids)]);
         self.apply(SemanticDelta {
@@ -667,8 +703,8 @@ impl SemanticState {
                 .position(|old| old.occurrence_id() == item.occurrence_id())
                 .ok_or_else(|| {
                     error(
-                        "MirpReferenceError",
-                        item.id(),
+                        "MirpValidationError",
+                        "updated occurrence not found",
                         Some(&item.common().provenance.source_id),
                     )
                 })?;
@@ -682,9 +718,12 @@ impl SemanticState {
             let old = next.objects[index].common();
             let new = item.common();
             if old.id != new.id
+                || old.occurrence_key != new.occurrence_key
                 || old.provenance.source_type != new.provenance.source_type
                 || old.provenance.source_id != new.provenance.source_id
                 || old.provenance.source_span != new.provenance.source_span
+                || canonical_parents(&old.provenance.parent_occurrence_ids)
+                    != canonical_parents(&new.provenance.parent_occurrence_ids)
             {
                 return Err(error(
                     "MirpValidationError",
@@ -768,6 +807,7 @@ impl SemanticState {
             let source = Some(common.provenance.source_id.as_str());
             if common.id.is_empty()
                 || common.occurrence_id.is_empty()
+                || common.occurrence_key.is_empty()
                 || common.id != item.semantic_id()
                 || common.provenance.source_type.is_empty()
                 || common.provenance.source_id.is_empty()
@@ -779,6 +819,31 @@ impl SemanticState {
                 || !(0.0..=1.0).contains(&common.confidence)
             {
                 return Err(error("MirpValidationError", common.id.clone(), source));
+            }
+            if common.provenance.parent_occurrence_ids
+                != canonical_parents(&common.provenance.parent_occurrence_ids)
+                || common.occurrence_id
+                    != occurrence_id(&common.id, &common.provenance, &common.occurrence_key)
+            {
+                return Err(error(
+                    "MirpValidationError",
+                    "occurrence identity mismatch",
+                    source,
+                ));
+            }
+            let dependency_parents = self
+                .dependencies
+                .get(&common.occurrence_id)
+                .map(Vec::as_slice)
+                .unwrap_or_default();
+            if dependency_parents != canonical_parents(dependency_parents)
+                || dependency_parents != common.provenance.parent_occurrence_ids
+            {
+                return Err(error(
+                    "MirpValidationError",
+                    "dependency and provenance disagree",
+                    source,
+                ));
             }
             for parent in &common.provenance.parent_occurrence_ids {
                 require(&occurrences, parent, source)?;

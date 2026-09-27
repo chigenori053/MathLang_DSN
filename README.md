@@ -18,9 +18,12 @@ In the identity-separated state format, `Common.id` is a source-independent
 Semantic ID and `Common.occurrence_id` identifies one assertion or derivation.
 Object references form the semantic graph; `SemanticState.dependencies` and
 `Provenance.parent_occurrence_ids` form the occurrence-level derivation graph.
+Each object persists an `occurrence_key`, so both IDs can be recomputed and
+validated when a state is loaded. An existing occurrence cannot change its
+meaning, origin, key, or parent set through `SemanticDelta.updated`.
 Two source histories can share semantic IDs while their complete canonical
-`.mirp` files differ. The current format is `mirp/0.1-si`; older `mirp/1.0`
-development snapshots are rejected and must be regenerated.
+`.mirp` files differ. The current format is `mirp/0.1-si2`; older `mirp/0.1-si`
+and `mirp/1.0` snapshots are rejected and must be regenerated.
 
 ```sh
 cargo test --offline --manifest-path mirp/Cargo.toml

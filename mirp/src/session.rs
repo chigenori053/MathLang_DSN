@@ -315,6 +315,28 @@ impl Session {
         })
     }
 
+    fn input_context(&self, domain: &str, source: &str) -> (Provenance, String) {
+        let provenance = Provenance::input(domain, source);
+        let next = self
+            .state
+            .objects
+            .iter()
+            .filter(|object| object.common().provenance.source_id == provenance.source_id)
+            .filter_map(|object| {
+                object
+                    .common()
+                    .occurrence_key
+                    .strip_prefix("input:")?
+                    .split(':')
+                    .next()?
+                    .parse::<usize>()
+                    .ok()
+            })
+            .max()
+            .map_or(0, |index| index + 1);
+        (provenance, format!("input:{next}:"))
+    }
+
     pub fn apply_input(
         &mut self,
         domain: Domain,
@@ -377,11 +399,7 @@ impl Session {
             }
             Err(original) => return Err(original),
         };
-        let mut provenance = Provenance::input(domain.name(), source);
-        provenance.source_id = stable_id(
-            "source",
-            &[domain.name(), source, &self.state.version.to_string()],
-        );
+        let (provenance, occurrence_prefix) = self.input_context(domain.name(), source);
         let mut results = vec![];
         for (index, statement) in statements.iter().enumerate() {
             let target = self.state.bind(
@@ -394,19 +412,22 @@ impl Session {
             let expression = self.build(
                 &statement.expression,
                 &provenance,
-                &format!("{index}:value"),
+                &format!("{occurrence_prefix}{index}:value"),
             )?;
             let condition = if let Some(condition) = &statement.condition {
-                let reference =
-                    self.build(condition, &provenance, &format!("{index}:condition"))?;
+                let reference = self.build(
+                    condition,
+                    &provenance,
+                    &format!("{occurrence_prefix}{index}:condition"),
+                )?;
                 let mut object = Object::Condition(Condition {
-                    common: Common::new(String::new(), Status::Unknown, provenance.clone()),
+                    common: Common::unidentified(Status::Unknown, provenance.clone()),
                     expression: reference,
                     expected_truth: Truth::True,
                     truth: Truth::Unknown,
                     dependencies: vec![],
                 });
-                object.normalize_identity(&format!("{index}:condition"));
+                object.normalize_identity(&format!("{occurrence_prefix}{index}:condition"));
                 let id = object.id().to_owned();
                 self.state.apply(SemanticDelta {
                     added: vec![object],
@@ -417,7 +438,7 @@ impl Session {
                 None
             };
             let mut event = Object::Event(Event {
-                common: Common::new(String::new(), Status::Known, provenance.clone()),
+                common: Common::unidentified(Status::Known, provenance.clone()),
                 event_type: "PROGRAM.ASSIGNS".into(),
                 actor: None,
                 target: Some(target),
@@ -426,7 +447,7 @@ impl Session {
                 preconditions: condition.into_iter().collect(),
                 effects: vec![],
             });
-            event.normalize_identity(&format!("{index}:event"));
+            event.normalize_identity(&format!("{occurrence_prefix}{index}:event"));
             let id = event.occurrence_id().to_owned();
             self.state.apply(SemanticDelta {
                 added: vec![event],
@@ -450,23 +471,19 @@ impl Session {
             return Err(error("MirpUnsupportedError", "Stage2A relation form", None));
         }
         let relation = &relations[0];
-        let mut provenance = Provenance::input(domain.name(), source);
-        provenance.source_id = stable_id(
-            "source",
-            &[domain.name(), source, &self.state.version.to_string()],
-        );
+        let (provenance, occurrence_prefix) = self.input_context(domain.name(), source);
         let left = self.build(
             &parse_expression(required_str(relation, "lhs")?)?,
             &provenance,
-            "relation.0",
+            &format!("{occurrence_prefix}relation.0"),
         )?;
         let right = self.build(
             &parse_expression(required_str(relation, "rhs")?)?,
             &provenance,
-            "relation.1",
+            &format!("{occurrence_prefix}relation.1"),
         )?;
         let mut object = Object::Relation(Relation {
-            common: Common::new(String::new(), Status::Known, provenance),
+            common: Common::unidentified(Status::Known, provenance),
             relation_type: comparison_name(required_str(relation, "type")?)?.into(),
             source: left,
             target: right,
@@ -474,7 +491,7 @@ impl Session {
             polarity: Polarity::Positive,
             modality: Modality::Asserted,
         });
-        object.normalize_identity("relation");
+        object.normalize_identity(&format!("{occurrence_prefix}relation"));
         let id = object.occurrence_id().to_owned();
         self.state.apply(SemanticDelta {
             added: vec![object],
@@ -515,11 +532,7 @@ impl Session {
         let primitives = doc["primitives"]
             .as_array()
             .ok_or_else(|| error("MirpParseError", "NLSRV primitives", None))?;
-        let mut provenance = Provenance::input("nlsrv_japanese", source);
-        provenance.source_id = stable_id(
-            "source",
-            &["nlsrv_japanese", source, &self.state.version.to_string()],
-        );
+        let (provenance, occurrence_prefix) = self.input_context("nlsrv_japanese", source);
         let mut bindings = BTreeMap::new();
         for primitive in primitives {
             if primitive["kind"] == "ENTITY" {
@@ -546,7 +559,7 @@ impl Session {
                 .get(required_str(primitive, "subject")?)
                 .ok_or_else(|| error("MirpReferenceError", original, Some(&provenance.source_id)))?
                 .clone();
-            let mut common = Common::new(String::new(), Status::Known, provenance.clone());
+            let mut common = Common::unidentified(Status::Known, provenance.clone());
             common
                 .metadata
                 .insert("source_span".into(), primitive["source_span"].clone());
@@ -675,7 +688,7 @@ impl Session {
                     ))
                 }
             };
-            object.normalize_identity(original);
+            object.normalize_identity(&format!("{occurrence_prefix}nlsrv:{original}"));
             last = Some(object.occurrence_id().to_string());
             self.state.apply(SemanticDelta {
                 added: vec![object],
@@ -693,7 +706,7 @@ impl Session {
                             Some(&provenance.source_id),
                         )
                     })?;
-                let mut common = Common::new(String::new(), Status::Known, provenance.clone());
+                let mut common = Common::unidentified(Status::Known, provenance.clone());
                 common
                     .metadata
                     .insert("surface".into(), binding["surface"].clone());
@@ -713,7 +726,7 @@ impl Session {
                     supports: vec![target.clone()],
                     contradicts: vec![],
                 });
-                evidence.normalize_identity(&format!("binding:{index}"));
+                evidence.normalize_identity(&format!("{occurrence_prefix}nlsrv-binding:{index}"));
                 self.state.apply(SemanticDelta {
                     added: vec![evidence],
                     ..Default::default()
@@ -764,11 +777,7 @@ impl Session {
                 None,
             ));
         }
-        let mut provenance = Provenance::input("natural_language", source);
-        provenance.source_id = stable_id(
-            "source",
-            &["natural_language", source, &self.state.version.to_string()],
-        );
+        let (provenance, occurrence_prefix) = self.input_context("natural_language", source);
         let a = self.state.bind(
             left,
             &self.namespace,
@@ -793,13 +802,13 @@ impl Session {
                 provenance.clone(),
             )?;
             let mut condition = Object::Condition(Condition {
-                common: Common::new(String::new(), Status::Unknown, provenance.clone()),
+                common: Common::unidentified(Status::Unknown, provenance.clone()),
                 expression: entity,
                 expected_truth: Truth::True,
                 truth: Truth::Unknown,
                 dependencies: vec![],
             });
-            condition.normalize_identity("condition");
+            condition.normalize_identity(&format!("{occurrence_prefix}condition"));
             let condition_id = condition.id().to_owned();
             self.state.apply(SemanticDelta {
                 added: vec![condition],
@@ -813,7 +822,7 @@ impl Session {
             modality
         };
         let mut relation = Object::Relation(Relation {
-            common: Common::new(String::new(), Status::Known, provenance),
+            common: Common::unidentified(Status::Known, provenance),
             relation_type: "SEMANTIC.IS_A".into(),
             source: a,
             target: b,
@@ -821,7 +830,7 @@ impl Session {
             polarity,
             modality,
         });
-        relation.normalize_identity("relation");
+        relation.normalize_identity(&format!("{occurrence_prefix}relation"));
         let id = relation.occurrence_id().to_owned();
         self.state.apply(SemanticDelta {
             added: vec![relation],
@@ -874,7 +883,7 @@ impl Session {
                 let left = self.build(left, provenance, &format!("{path}.0"))?;
                 let right = self.build(right, provenance, &format!("{path}.1"))?;
                 let mut expression = Object::Expression(Expression {
-                    common: Common::new(String::new(), Status::Known, provenance.clone()),
+                    common: Common::unidentified(Status::Known, provenance.clone()),
                     operator: operator.clone(),
                     operands: vec![left, right],
                     result: None,
@@ -895,12 +904,20 @@ impl Session {
             Some(Object::Event(event)) => event.clone(),
             _ => return Err(error("MirpReferenceError", event_id, None)),
         };
+        let input_prefix = event
+            .common
+            .occurrence_key
+            .strip_prefix("input:")
+            .and_then(|key| key.split_once(':'))
+            .map(|(index, _)| format!("input:{index}:"))
+            .ok_or_else(|| error("MirpValidationError", "event occurrence key", None))?;
         let mut ruos = vec![];
         let mut parents = vec![event_id.to_owned()];
         for condition_id in &event.preconditions {
             let condition = match self.state.objects.iter().find(|object| {
                 object.id() == condition_id
                     && object.common().provenance.source_id == event.common.provenance.source_id
+                    && object.common().occurrence_key.starts_with(&input_prefix)
             }) {
                 Some(Object::Condition(condition)) => condition.clone(),
                 _ => unreachable!(),
@@ -947,6 +964,7 @@ impl Session {
         if let Some(expression) = self.state.objects.iter().find(|object| {
             object.id() == event.inputs[0]
                 && object.common().provenance.source_id == event.common.provenance.source_id
+                && object.common().occurrence_key.starts_with(&input_prefix)
         }) {
             parents.push(expression.occurrence_id().to_owned());
         }
@@ -974,8 +992,7 @@ impl Session {
                 .id()
                 .to_owned();
             let mut evidence = Object::Evidence(Evidence {
-                common: Common::new(
-                    String::new(),
+                common: Common::unidentified(
                     Status::Derived,
                     event
                         .common
@@ -991,9 +1008,12 @@ impl Session {
                 .common_mut()
                 .metadata
                 .insert("ruos".into(), Json::Array(ruos.clone()));
-            evidence.normalize_identity(event_id);
+            evidence.normalize_identity(&format!("runtime-evidence:{event_id}"));
+            let dependencies =
+                BTreeMap::from([(evidence.occurrence_id().to_owned(), vec![result_id.clone()])]);
             self.state.apply(SemanticDelta {
                 added: vec![evidence],
+                dependencies,
                 ..Default::default()
             })?;
         }

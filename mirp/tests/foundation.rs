@@ -39,6 +39,16 @@ fn cross_domain_reasoning_and_restart() {
         .clone();
     let y_fact = second[0].result_id.clone().unwrap();
     assert!(session.state.dependencies[&y_fact].contains(&x_fact));
+    assert_eq!(
+        session.state.dependencies[&y_fact],
+        session
+            .state
+            .get_occurrence(&y_fact)
+            .unwrap()
+            .common()
+            .provenance
+            .parent_occurrence_ids
+    );
     assert!(session
         .state
         .get_occurrence(&y_fact)
@@ -379,6 +389,7 @@ fn memory_bridge_continues_reasoning_in_new_processes() {
     let derived = session
         .apply_input(Domain::Mathematics, "y = x + 2")
         .unwrap();
+    let original = session.state.clone();
     session.state.save(&state_path).unwrap();
     std::fs::write(
         &trace_path,
@@ -416,6 +427,15 @@ fn memory_bridge_continues_reasoning_in_new_processes() {
         );
     }
     let resumed = SemanticState::load(&restored_path).unwrap();
+    for object in &original.objects {
+        let restored = resumed.get_occurrence(object.occurrence_id()).unwrap();
+        assert_eq!(restored.id(), object.id());
+        assert_eq!(
+            restored.common().occurrence_key,
+            object.common().occurrence_key
+        );
+        assert_eq!(restored.common().provenance, object.common().provenance);
+    }
     let result = resumed.resolve("result", "lesson", "global").unwrap();
     assert_eq!(
         resumed.value_of(&result.common.id).unwrap().unwrap().0,
