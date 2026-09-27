@@ -85,6 +85,18 @@ module Knowledge {
     return KToRu(KByRule(rule))
   }
 
+  // MIRP extension is kept separate to preserve the 27-entry v0.3 catalogue.
+  pub fn KMirpComparisonRu() -> Ru {
+    return KToRu(Entry(34, "MIRP_INTEGER_COMPARISON", "COMPARISON", "ComparisonRUS"))
+  }
+
+  pub fn KMirpComparisonRus(operator: int) -> Rus {
+    if operator >= 0 && operator <= 5 {
+      return Rus { id: 10, name: "ComparisonRUS", members: [34] }
+    }
+    return Rus { id: 10, name: "ComparisonRUS", members: [] }
+  }
+
   pub fn KRuleName(rule: int) -> string {
     if rule == 1 {
       return "MOVE_RIGHT_VARIABLE"

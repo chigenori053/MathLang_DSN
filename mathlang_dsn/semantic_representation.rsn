@@ -1,0 +1,47 @@
+package mathlang_dsn
+
+// Extended semantic CR. Legacy CR remains unchanged; runtime lowering is explicit.
+module Semantic_representation {
+  struct Primitive {
+    id: string
+    kind: string
+    type: string
+    label: string
+    subject: string
+    agent: string
+    source: string
+    object: string
+    target: string
+    value: string
+    polarity: string
+    modality: string
+    temporal_context: string
+    source_sentence: int
+    source_span: string
+    source_index: int
+  }
+  struct ReferenceBinding {
+    surface: string
+    target_entity_id: string
+    confidence: string
+    status: string
+    source_sentence: int
+  }
+  struct SemanticCR {
+    status: string
+    primitives: [Primitive]
+    bindings: [ReferenceBinding]
+  }
+  pub fn EmptySemanticCR() -> SemanticCR {
+    return SemanticCR { status: "RESOLVED", primitives: [], bindings: [] }
+  }
+  pub fn PrimitiveOf(id: string, kind: string, type: string, label: string, subject: string, agent: string, source: string, object: string, target: string, value: string, polarity: string, modality: string, temporal_context: string, source_sentence: int, source_span: string, source_index: int) -> Primitive {
+    return Primitive { id: id, kind: kind, type: type, label: label, subject: subject, agent: agent, source: source, object: object, target: target, value: value, polarity: polarity, modality: modality, temporal_context: temporal_context, source_sentence: source_sentence, source_span: source_span, source_index: source_index }
+  }
+  pub fn SemanticDocument(status: string, primitives: [Primitive], bindings: [ReferenceBinding]) -> SemanticCR {
+    return SemanticCR { status: status, primitives: primitives, bindings: bindings }
+  }
+  pub fn BindingOf(surface: string, target_entity_id: string, confidence: string, status: string, source_sentence: int) -> ReferenceBinding {
+    return ReferenceBinding { surface: surface, target_entity_id: target_entity_id, confidence: confidence, status: status, source_sentence: source_sentence }
+  }
+}

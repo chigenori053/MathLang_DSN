@@ -5,6 +5,10 @@ module main {
   import mathlang_dsn.Polynomial
   import mathlang_dsn.Knowledge
   import mathlang_dsn.JuniorHigh
+  import mathlang_dsn.Japanese_semantic_adapter
+  import mathlang_dsn.Memory_codec_f4
+  import mathlang_dsn.Math_adapter_stage2a
+  import mathlang_dsn.Code_adapter_stage2a
 
   calculation SelfCheck {
     let kinds = [0, 0, 2]
@@ -53,5 +57,22 @@ module main {
     let frequency = JuniorHigh::JRelativeFrequency(3, 12)
     let circle = JuniorHigh::JCircleAngle(90)
     result = factors.factors.length == 6 && radical.outside == 6 && radical.inside == 2 && quadratic.status == "SOLVED" && quadratic.roots.length == 2 && quadratic.roots[0].radicand == 2 && system.x.numerator == 3 && system.y.numerator == 2 && function_value.value.numerator == 9 && polygon.angle_sum == 540 && triangle.length_outside == 5 && data.median.numerator == 7 && data.median.denominator == 2 && probability.value.numerator == 1 && probability.value.denominator == 3 && inverse.value.numerator == 3 && similarity.area_ratio.numerator == 4 && similarity.volume_ratio.denominator == 27 && frequency.value.denominator == 4 && circle.value.numerator == 45
+  }
+
+  calculation MirpSelfCheck {
+    let greater = Model::CompareIntegers(7, 6, 2)
+    let unknown_rule = Model::CompareIntegers(7, 6, 9)
+    result = greater.status == "APPLIED" && greater.value && greater.ruo.source_ru == 34 && greater.ruo.source_rus == "ComparisonRUS" && unknown_rule.status == "UNSUPPORTED"
+  }
+
+  calculation MirpImportedAdaptersSelfCheck {
+    let semantic = Japanese_semantic_adapter::AdaptJapaneseSemantic("太郎は学生である。")
+    let unit = Memory_codec_f4::New("memory-1", ["RU"], ["RUS"], ["RUO"], [], [], "goal", "KNOWN", "", "v1", "source", 0, 0)
+    let packet = Memory_codec_f4::Encode(unit, "DICTIONARY")
+    let saved = Memory_codec_f4::Store(Memory_codec_f4::EmptySpace(), packet)
+    let restored = Memory_codec_f4::Retrieve(saved, "memory-1")
+    let math = Math_adapter_stage2a::AdaptMath("x:=5")
+    let code = Code_adapter_stage2a::AdaptCode("if(y>6){result=y;}")
+    result = semantic.status == "RESOLVED" && semantic.primitives.length > 0 && restored.valid && restored.unit.memory_id == "memory-1" && math.assignments.length == 1 && code.conditions.length == 1
   }
 }

@@ -1,0 +1,151 @@
+package mathlang_dsn
+
+// Stage 2A representation only. No Knowledge, RUS, or reasoning dependency.
+module Common_representation_cr {
+  struct Operation {
+    type: string
+    lhs: string
+    rhs: string
+    result: string
+  }
+  struct Relation {
+    type: string
+    lhs: string
+    rhs: string
+  }
+  struct Assignment {
+    target: string
+    value: string
+  }
+  struct Condition {
+    predicate: Relation
+    consequence: Assignment
+  }
+  struct Call {
+    function_id: string
+    first_argument: string
+    second_argument: string
+    result_target: string
+  }
+  struct CR {
+    entities: [string]
+    variables: [string]
+    values: [string]
+    operations: [Operation]
+    relations: [Relation]
+    assignments: [Assignment]
+    conditions: [Condition]
+    constraints: [Relation]
+    state: [Assignment]
+    goal: [Relation]
+    calls: [Call]
+    metadata: string
+  }
+
+  pub fn Empty() -> CR {
+    return CR { entities: [], variables: [], values: [], operations: [], relations: [], assignments: [], conditions: [], constraints: [], state: [], goal: [], calls: [], metadata: "" }
+  }
+
+  pub fn Invalid() -> CR {
+    return CR { entities: [], variables: [], values: [], operations: [], relations: [], assignments: [], conditions: [], constraints: [], state: [], goal: [], calls: [], metadata: "PARSE_FAILURE" }
+  }
+
+  pub fn MakeRelation(type: string, lhs: string, rhs: string) -> Relation {
+    return Relation { type: type, lhs: lhs, rhs: rhs }
+  }
+  pub fn MakeAssignment(target: string, value: string) -> Assignment {
+    return Assignment { target: target, value: value }
+  }
+
+  fn IsDigit(character: string) -> bool {
+    return character == "0" || character == "1" || character == "2" || character == "3" || character == "4" || character == "5" || character == "6" || character == "7" || character == "8" || character == "9"
+  }
+  fn IsValue(atom: string) -> bool {
+    let length = string.length(atom)
+    if length == 0 {
+      return false
+    }
+    let start = 0
+    if string.slice(atom, 0, 1) == "-" {
+      start = 1
+    }
+    if start == length {
+      return false
+    }
+    while start < length {
+      if !IsDigit(string.slice(atom, start, start + 1)) {
+        return false
+      }
+      start = start + 1
+    }
+    return true
+  }
+  fn Has(items: [string], item: string) -> bool {
+    for value in items {
+      if value == item {
+        return true
+      }
+    }
+    return false
+  }
+  fn Build(operations: [Operation], relations: [Relation], assignments: [Assignment], conditions: [Condition], state: [Assignment]) -> CR {
+    return CR { entities: [], variables: [], values: [], operations: operations, relations: relations, assignments: assignments, conditions: conditions, constraints: [], state: state, goal: [], calls: [], metadata: "" }
+  }
+  fn Register(cr: CR, atom: string) -> CR {
+    let variables = cr.variables
+    let values = cr.values
+    if atom != "" && atom != "_tmp" {
+      if IsValue(atom) {
+        if !Has(values, atom) {
+          values = array.append(values, atom)
+        }
+      } else {
+        if !Has(variables, atom) {
+          variables = array.append(variables, atom)
+        }
+      }
+    }
+    return CR { entities: cr.entities, variables: variables, values: values, operations: cr.operations, relations: cr.relations, assignments: cr.assignments, conditions: cr.conditions, constraints: cr.constraints, state: cr.state, goal: cr.goal, calls: cr.calls, metadata: cr.metadata }
+  }
+
+  pub fn AssignmentCR(target: string, value: string) -> CR {
+    let cr = Build([], [], [MakeAssignment(target, value)], [], [])
+    return Register(Register(cr, target), value)
+  }
+  pub fn StateCR(target: string, value: string) -> CR {
+    let cr = Build([], [], [], [], [MakeAssignment(target, value)])
+    return Register(Register(cr, target), value)
+  }
+  pub fn GoalCR(target: string) -> CR {
+    let cr = CR { entities: [], variables: [], values: [], operations: [], relations: [], assignments: [], conditions: [], constraints: [], state: [], goal: [MakeRelation("GOAL", target, "")], calls: [], metadata: "" }
+    return Register(cr, target)
+  }
+  pub fn RelationCR(type: string, lhs: string, rhs: string) -> CR {
+    let cr = Build([], [MakeRelation(type, lhs, rhs)], [], [], [])
+    return Register(Register(cr, lhs), rhs)
+  }
+  pub fn ArithmeticCR(type: string, lhs: string, rhs: string, result: string) -> CR {
+    let cr = Build([Operation { type: type, lhs: lhs, rhs: rhs, result: "_tmp" }], [MakeRelation("EQUAL", "_tmp", result)], [], [], [])
+    return Register(Register(Register(cr, lhs), rhs), result)
+  }
+  pub fn ArithmeticUpdateCR(type: string, lhs: string, rhs: string, target: string) -> CR {
+    let cr = Build([Operation { type: type, lhs: lhs, rhs: rhs, result: "_tmp" }], [], [], [], [MakeAssignment(target, "_tmp")])
+    return Register(Register(Register(cr, lhs), rhs), target)
+  }
+  pub fn BooleanCR(type: string, first_type: string, first_lhs: string, first_rhs: string, second_type: string, second_lhs: string, second_rhs: string) -> CR {
+    let cr = Build([], [MakeRelation(first_type, first_lhs, first_rhs), MakeRelation(second_type, second_lhs, second_rhs), MakeRelation(type, "REL_1", "REL_2")], [], [], [])
+    return Register(Register(Register(Register(cr, first_lhs), first_rhs), second_lhs), second_rhs)
+  }
+  pub fn ConditionalCR(type: string, lhs: string, rhs: string, target: string, value: string) -> CR {
+    let cr = Build([], [], [], [Condition { predicate: MakeRelation(type, lhs, rhs), consequence: MakeAssignment(target, value) }], [])
+    return Register(Register(Register(Register(cr, lhs), rhs), target), value)
+  }
+  pub fn SequenceCR(first_target: string, first_value: string, second_target: string, second_value: string) -> CR {
+    let cr = Build([], [], [MakeAssignment(first_target, first_value), MakeAssignment(second_target, second_value)], [], [])
+    return Register(Register(Register(Register(cr, first_target), first_value), second_target), second_value)
+  }
+  pub fn CallCR(function_id: string, first: string, second: string, target: string) -> CR {
+    let cr = CR { entities: [], variables: [], values: [], operations: [], relations: [], assignments: [], conditions: [], constraints: [], state: [], goal: [], calls: [Call { function_id: function_id, first_argument: first, second_argument: second, result_target: target }], metadata: "" }
+    return Register(Register(Register(cr, first), second), target)
+  }
+}

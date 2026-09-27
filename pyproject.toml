@@ -17,4 +17,4 @@ mathlang-dsn = "mathlang_dsn.__main__:main"
 packages = ["mathlang_dsn"]
 
 [tool.setuptools.package-data]
-mathlang_dsn = ["model.rsn", "polynomial.rsn", "knowledge.rsn", "junior_high.rsn", "reason.toml"]
+mathlang_dsn = ["model.rsn", "polynomial.rsn", "knowledge.rsn", "junior_high.rsn", "cr_surface.rsn", "semantic_representation.rsn", "japanese_semantic_adapter.rsn", "memory_codec_f4.rsn", "common_representation_cr.rsn", "math_adapter_stage2a.rsn", "code_adapter_stage2a.rsn", "reason.toml"]

@@ -1,0 +1,256 @@
+package mathlang_dsn
+
+// Native structural MemoryUnit codec. Python zlib packets remain test oracles.
+module Memory_codec_f4 {
+  struct MemoryUnit {
+    memory_id: string
+    selected_ru: [string]
+    selected_rus: [string]
+    executed_ruo: [string]
+    relations: [string]
+    context: [string]
+    stored_goal: string
+    stored_status: string
+    stored_concept: string
+    knowledge_version: string
+    provenance: string
+    logical_sequence: int
+    usage_count: int
+  }
+  struct Packet {
+    memory_id: string
+    mode: string
+    dictionary: [string]
+    ru_codes: [int]
+    rus_codes: [int]
+    ruo_codes: [int]
+    raw_ru: [string]
+    raw_rus: [string]
+    raw_ruo: [string]
+    relations: [string]
+    context: [string]
+    stored_goal: string
+    stored_status: string
+    stored_concept: string
+    knowledge_version: string
+    provenance: string
+    logical_sequence: int
+    usage_count: int
+  }
+  struct Space {
+    packets: [Packet]
+  }
+  struct Decoded {
+    valid: bool
+    unit: MemoryUnit
+  }
+  struct QuantizedPacket {
+    structure: Packet
+    numeric_state: [float]
+    step: float
+  }
+  struct QuantizedDecoded {
+    valid: bool
+    unit: MemoryUnit
+    numeric_state: [float]
+  }
+  struct CodecMetricRow {
+    raw: MemoryUnit
+    numeric_state: [float]
+    lossless: Packet
+    dictionary: Packet
+    quantized: QuantizedPacket
+  }
+  pub fn MetricRow(unit: MemoryUnit, numeric_state: [float]) -> CodecMetricRow {
+    return CodecMetricRow { raw: unit, numeric_state: numeric_state,
+      lossless: Encode(unit, "LOSSLESS"),
+      dictionary: Encode(unit, "DICTIONARY"),
+      quantized: EncodeQuantized(unit, numeric_state) }
+  }
+
+  pub fn New(memory_id: string, ru: [string], rus: [string], ruo: [string],
+    relations: [string], context: [string], goal: string, status: string,
+    concept: string, knowledge_version: string, provenance: string,
+    logical_sequence: int, usage_count: int) -> MemoryUnit {
+    return MemoryUnit { memory_id: memory_id, selected_ru: ru, selected_rus: rus,
+      executed_ruo: ruo, relations: relations, context: context,
+      stored_goal: goal, stored_status: status, stored_concept: concept,
+      knowledge_version: knowledge_version, provenance: provenance,
+      logical_sequence: logical_sequence, usage_count: usage_count }
+  }
+  fn NameIndex(names: [string], value: string) -> int {
+    let i = 0
+    while i < names.length {
+      if names[i] == value {
+        return i
+      }
+      i = i + 1
+    }
+    return -1
+  }
+  fn AddNames(names: [string], values: [string]) -> [string] {
+    let output = names
+    for value in values {
+      if NameIndex(output, value) < 0 {
+        output = array.append(output, value)
+      }
+    }
+    return output
+  }
+  fn Codes(names: [string], values: [string]) -> [int] {
+    let output = []
+    for value in values {
+      output = array.append(output, NameIndex(names, value))
+    }
+    return output
+  }
+  fn Expand(names: [string], codes: [int]) -> [string] {
+    let output = []
+    let position = 0
+    while position < codes.length {
+      let code = codes[position]
+      if code < 0 || code >= names.length {
+        return []
+      }
+      output = array.append(output, names[code])
+      position = position + 1
+    }
+    return output
+  }
+  pub fn Encode(unit: MemoryUnit, mode: string) -> Packet {
+    let names = []
+    let ru_codes = []
+    let rus_codes = []
+    let ruo_codes = []
+    let raw_ru = unit.selected_ru
+    let raw_rus = unit.selected_rus
+    let raw_ruo = unit.executed_ruo
+    if mode == "DICTIONARY" {
+      names = AddNames(AddNames(AddNames([], unit.selected_ru), unit.selected_rus), unit.executed_ruo)
+      ru_codes = Codes(names, unit.selected_ru)
+      rus_codes = Codes(names, unit.selected_rus)
+      ruo_codes = Codes(names, unit.executed_ruo)
+      raw_ru = []
+      raw_rus = []
+      raw_ruo = []
+    }
+    return Packet { memory_id: unit.memory_id, mode: mode, dictionary: names,
+      ru_codes: ru_codes, rus_codes: rus_codes, ruo_codes: ruo_codes,
+      raw_ru: raw_ru, raw_rus: raw_rus, raw_ruo: raw_ruo,
+      relations: unit.relations, context: unit.context,
+      stored_goal: unit.stored_goal, stored_status: unit.stored_status,
+      stored_concept: unit.stored_concept, knowledge_version: unit.knowledge_version,
+      provenance: unit.provenance, logical_sequence: unit.logical_sequence,
+      usage_count: unit.usage_count }
+  }
+  pub fn FromSerialized(memory_id: string, mode: string, dictionary: [string],
+    ru_codes: [int], rus_codes: [int], ruo_codes: [int], raw_ru: [string],
+    raw_rus: [string], raw_ruo: [string], relations: [string], context: [string],
+    stored_goal: string, stored_status: string, stored_concept: string,
+    knowledge_version: string, provenance: string, logical_sequence: int,
+    usage_count: int) -> Packet {
+    return Packet { memory_id: memory_id, mode: mode, dictionary: dictionary,
+      ru_codes: ru_codes, rus_codes: rus_codes, ruo_codes: ruo_codes,
+      raw_ru: raw_ru, raw_rus: raw_rus, raw_ruo: raw_ruo,
+      relations: relations, context: context, stored_goal: stored_goal,
+      stored_status: stored_status, stored_concept: stored_concept,
+      knowledge_version: knowledge_version, provenance: provenance,
+      logical_sequence: logical_sequence, usage_count: usage_count }
+  }
+  pub fn Decode(packet: Packet) -> Decoded {
+    let ru = packet.raw_ru
+    let rus = packet.raw_rus
+    let ruo = packet.raw_ruo
+    if packet.mode == "DICTIONARY" {
+      ru = Expand(packet.dictionary, packet.ru_codes)
+      rus = Expand(packet.dictionary, packet.rus_codes)
+      ruo = Expand(packet.dictionary, packet.ruo_codes)
+    }
+    let valid = (packet.mode == "LOSSLESS" || packet.mode == "DICTIONARY") && packet.memory_id != "" && packet.knowledge_version != "" && ru.length > 0 && ru.length == rus.length && ru.length == ruo.length
+    for name in ru {
+      if name == "" {
+        valid = false
+      }
+    }
+    for name in rus {
+      if name == "" {
+        valid = false
+      }
+    }
+    for name in ruo {
+      if name == "" {
+        valid = false
+      }
+    }
+    let unit = New(packet.memory_id, ru, rus, ruo, packet.relations, packet.context,
+      packet.stored_goal, packet.stored_status, packet.stored_concept,
+      packet.knowledge_version, packet.provenance,
+      packet.logical_sequence, packet.usage_count)
+    return Decoded { valid: valid, unit: unit }
+  }
+  pub fn EmptySpace() -> Space { return Space { packets: [] } }
+  pub fn Store(space: Space, packet: Packet) -> Space {
+    let packets = []
+    for existing in space.packets {
+      if existing.memory_id != packet.memory_id {
+        packets = array.append(packets, existing)
+      }
+    }
+    return Space { packets: array.append(packets, packet) }
+  }
+  pub fn CorruptCode(packet: Packet) -> Packet {
+    return Packet { memory_id: packet.memory_id, mode: packet.mode,
+      dictionary: packet.dictionary, ru_codes: array.append(packet.ru_codes, 999999),
+      rus_codes: packet.rus_codes, ruo_codes: packet.ruo_codes,
+      raw_ru: packet.raw_ru, raw_rus: packet.raw_rus, raw_ruo: packet.raw_ruo,
+      relations: packet.relations, context: packet.context,
+      stored_goal: packet.stored_goal, stored_status: packet.stored_status,
+      stored_concept: packet.stored_concept, knowledge_version: packet.knowledge_version,
+      provenance: packet.provenance, logical_sequence: packet.logical_sequence,
+      usage_count: packet.usage_count }
+  }
+  pub fn Retrieve(space: Space, memory_id: string) -> Decoded {
+    for packet in space.packets {
+      if packet.memory_id == memory_id {
+        return Decode(packet)
+      }
+    }
+    return Decoded { valid: false, unit: New("", [], [], [], [], [], "", "", "", "", "", 0, 0) }
+  }
+  // Feature numerics are normalized to [0,1]. Ten bisections bound absolute
+  // error to 1/2048; all structural identities use the dictionary packet.
+  fn Quantize01(value: float) -> float {
+    let low = 0.0
+    let high = 1.0
+    let i = 0
+    while i < 10 {
+      let middle = (low + high) / 2.0
+      if value < middle {
+        high = middle
+      } else {
+        low = middle
+      }
+      i = i + 1
+    }
+    return (low + high) / 2.0
+  }
+  pub fn EncodeQuantized(unit: MemoryUnit, numeric_state: [float]) -> QuantizedPacket {
+    let quantized = []
+    for value in numeric_state {
+      quantized = array.append(quantized, Quantize01(value))
+    }
+    return QuantizedPacket { structure: Encode(unit, "DICTIONARY"),
+      numeric_state: quantized, step: 0.0009765625 }
+  }
+  pub fn DecodeQuantized(packet: QuantizedPacket) -> QuantizedDecoded {
+    let structural = Decode(packet.structure)
+    let valid = structural.valid && packet.step == 0.0009765625
+    for value in packet.numeric_state {
+      if value < 0.0 || value > 1.0 {
+        valid = false
+      }
+    }
+    return QuantizedDecoded { valid: valid, unit: structural.unit,
+      numeric_state: packet.numeric_state }
+  }
+}

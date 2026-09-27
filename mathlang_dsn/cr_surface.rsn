@@ -1,0 +1,100 @@
+package mathlang_dsn
+
+// Character-level helpers shared by the three direct surface parsers.
+module Cr_surface {
+  pub fn Len(text: string) -> int {
+    return string.length(text)
+  }
+  pub fn Slice(text: string, first: int, last: int) -> string {
+    if first < 0 || first >= last || first >= Len(text) {
+      return ""
+    }
+    let end = last
+    if end > Len(text) {
+      end = Len(text)
+    }
+    return string.slice(text, first, end)
+  }
+  pub fn Find(text: string, needle: string) -> int {
+    let index = 0
+    let limit = Len(text) - Len(needle)
+    while index <= limit {
+      if Slice(text, index, index + Len(needle)) == needle {
+        return index
+      }
+      index = index + 1
+    }
+    return -1
+  }
+  pub fn Left(text: string, position: int) -> string {
+    return Slice(text, 0, position)
+  }
+  pub fn Right(text: string, position: int, delimiter: string) -> string {
+    return Slice(text, position + Len(delimiter), Len(text))
+  }
+  fn Blank(c: string) -> bool {
+    return c == " " || c == "　" || c == "\n" || c == "\t"
+  }
+  pub fn Strip(text: string) -> string {
+    let start = 0
+    let end = Len(text)
+    while start < end && Blank(Slice(text, start, start + 1)) {
+      start = start + 1
+    }
+    while end > start && Blank(Slice(text, end - 1, end)) {
+      end = end - 1
+    }
+    return Slice(text, start, end)
+  }
+  pub fn Compact(text: string) -> string {
+    let output = ""
+    let index = 0
+    while index < Len(text) {
+      let c = Slice(text, index, index + 1)
+      if c != " " && c != "　" && c != "\n" && c != "\t" {
+        output = string.concat(output, c)
+      }
+      index = index + 1
+    }
+    return output
+  }
+  pub fn EndsWith(text: string, suffix: string) -> bool {
+    if Len(text) < Len(suffix) {
+      return false
+    }
+    return Slice(text, Len(text) - Len(suffix), Len(text)) == suffix
+  }
+  pub fn DropSuffix(text: string, suffix: string) -> string {
+    if EndsWith(text, suffix) {
+      return Slice(text, 0, Len(text) - Len(suffix))
+    }
+    return text
+  }
+  pub fn BeginsWith(text: string, prefix: string) -> bool {
+    if Len(text) < Len(prefix) {
+      return false
+    }
+    return Slice(text, 0, Len(prefix)) == prefix
+  }
+  pub fn DropPrefix(text: string, prefix: string) -> string {
+    if BeginsWith(text, prefix) {
+      return Slice(text, Len(prefix), Len(text))
+    }
+    return text
+  }
+  pub fn IsAtom(text: string) -> bool {
+    if text == "" {
+      return false
+    }
+    let index = 0
+    let valid = true
+    while index < Len(text) {
+      let c = Slice(text, index, index + 1)
+      if c == " " || c == ";" || c == ":" || c == "=" || c == "{" || c == "}" || c == "(" || c == ")" || c == ">" || c == "<" || c == "!" || c == "+" || c == "*" || c == "/" {
+        valid = false
+      }
+      index = index + 1
+    }
+    return valid
+  }
+}

@@ -1,0 +1,524 @@
+package mathlang_dsn
+
+// Bounded Japanese surface reader. It records meaning; it never evaluates a goal.
+module Japanese_semantic_adapter {
+  import mathlang_dsn.Cr_surface
+  import mathlang_dsn.Semantic_representation
+
+  fn Id(doc, label: string) -> string {
+    for item in doc.primitives {
+      let same_entity: bool = item.kind == "ENTITY" && item.label == label
+      if same_entity {
+        return item.id
+      }
+    }
+    return ""
+  }
+  fn EntityCount(doc) -> int {
+    let count = 0
+    for item in doc.primitives {
+      let entity: bool = item.kind == "ENTITY"
+      if entity {
+        count = count + 1
+      }
+    }
+    return count
+  }
+  fn Male(label: string) -> bool {
+    return label == "太郎" || label == "次郎" || label == "健一"
+  }
+  fn Female(label: string) -> bool {
+    return label == "花子" || label == "美咲"
+  }
+  fn Person(label: string) -> bool {
+    return Male(label) || Female(label) || label == "人"
+  }
+  fn Numeric(value: string) -> bool {
+    if value == "" {
+      return false
+    }
+    let index = 0
+    let length = Cr_surface::Len(value)
+    while index < length {
+      let character = Cr_surface::Slice(value, index, index + 1)
+      let digit: bool = character == "0" || character == "1" || character == "2" || character == "3" || character == "4" || character == "5" || character == "6" || character == "7" || character == "8" || character == "9"
+      if !digit {
+        return false
+      }
+      index = index + 1
+    }
+    return true
+  }
+  fn AddEntity(doc, label: string, sentence: int, source: string) {
+    let already: bool = label == "" || Id(doc, label) != ""
+    if already {
+      return doc
+    }
+    let kind = "OBJECT"
+    let is_person: bool = Person(label)
+    if is_person {
+      kind = "PERSON"
+    }
+    let id = string.concat("ENTITY_", string.from_int(EntityCount(doc) + 1))
+    let item = Semantic_representation::PrimitiveOf(id, "ENTITY", kind, label, "", "", "", "", "", "", "POSITIVE", "ASSERTED", "UNKNOWN", sentence, label, Cr_surface::Find(source, label))
+    return Semantic_representation::SemanticDocument(doc.status, array.append(doc.primitives, item), doc.bindings)
+  }
+  fn AddFact(doc, kind: string, type: string, subject: string, object: string, target: string, value: string, polarity: string, modality: string, temporal: string, sentence: int, span: string, source: string) {
+    let id = string.concat(kind, string.concat("_", string.from_int(doc.primitives.length + 1)))
+    let agent = ""
+    let source_entity = ""
+    let target_entity = target
+    if kind == "EVENT" {
+      agent = subject
+      if type == "RECEIVE" {
+        source_entity = target
+        target_entity = ""
+      }
+    }
+    let item = Semantic_representation::PrimitiveOf(id, kind, type, "", subject, agent, source_entity, object, target_entity, value, polarity, modality, temporal, sentence, span, Cr_surface::Find(source, span))
+    return Semantic_representation::SemanticDocument(doc.status, array.append(doc.primitives, item), doc.bindings)
+  }
+  fn SetStatus(doc, status: string) {
+    return Semantic_representation::SemanticDocument(status, doc.primitives, doc.bindings)
+  }
+  fn AddBinding(doc, surface: string, target: string, status: string, sentence: int) {
+    let binding = Semantic_representation::BindingOf(surface, target, "EXPLICIT", status, sentence)
+    return Semantic_representation::SemanticDocument(doc.status, doc.primitives, array.append(doc.bindings, binding))
+  }
+  fn ResolvePronoun(doc, label: string, sentence: int) -> [string] {
+    if label != "彼" && label != "彼女" && label != "それ" {
+      return [Id(doc, label), "RESOLVED"]
+    }
+    let target = ""
+    let matches = 0
+    for item in doc.primitives {
+      let entity: bool = item.kind == "ENTITY"
+      if entity {
+        let eligible: bool = (label == "それ" && item.type == "OBJECT") || (label == "彼" && Male(item.label)) || (label == "彼女" && Female(item.label))
+        if eligible {
+          target = item.id
+          matches = matches + 1
+        }
+      }
+    }
+    if matches == 1 {
+      return [target, "RESOLVED"]
+    }
+    if matches > 1 {
+      return ["", "AMBIGUOUS"]
+    }
+    return ["", "UNKNOWN"]
+  }
+  fn TimePrefix(text: string) -> [string] {
+    let yesterday: bool = Cr_surface::BeginsWith(text, "昨日、")
+    if yesterday {
+      return [Cr_surface::DropPrefix(text, "昨日、"), "YESTERDAY"]
+    }
+    let today: bool = Cr_surface::BeginsWith(text, "今日、")
+    if today {
+      return [Cr_surface::DropPrefix(text, "今日、"), "TODAY"]
+    }
+    let tomorrow: bool = Cr_surface::BeginsWith(text, "明日、")
+    if tomorrow {
+      return [Cr_surface::DropPrefix(text, "明日、"), "TOMORROW"]
+    }
+    let earlier: bool = Cr_surface::BeginsWith(text, "以前、")
+    if earlier {
+      return [Cr_surface::DropPrefix(text, "以前、"), "BEFORE"]
+    }
+    let later: bool = Cr_surface::BeginsWith(text, "後で、")
+    if later {
+      return [Cr_surface::DropPrefix(text, "後で、"), "AFTER"]
+    }
+    let now: bool = Cr_surface::BeginsWith(text, "今、")
+    if now {
+      return [Cr_surface::DropPrefix(text, "今、"), "NOW"]
+    }
+    let past: bool = Cr_surface::BeginsWith(text, "過去に、")
+    if past {
+      return [Cr_surface::DropPrefix(text, "過去に、"), "PAST"]
+    }
+    let present: bool = Cr_surface::BeginsWith(text, "現在、")
+    if present {
+      return [Cr_surface::DropPrefix(text, "現在、"), "PRESENT"]
+    }
+    let future: bool = Cr_surface::BeginsWith(text, "将来、")
+    if future {
+      return [Cr_surface::DropPrefix(text, "将来、"), "FUTURE"]
+    }
+    return [text, "UNKNOWN"]
+  }
+  fn ModalitySuffix(text: string) -> [string] {
+    let possible: bool = Cr_surface::EndsWith(text, "かもしれない")
+    if possible {
+      return [Cr_surface::DropSuffix(text, "かもしれない"), "POSSIBLE"]
+    }
+    let possibility: bool = Cr_surface::EndsWith(text, "可能性がある")
+    if possibility {
+      return [Cr_surface::DropSuffix(text, "可能性がある"), "POSSIBLE"]
+    }
+    let probable: bool = Cr_surface::EndsWith(text, "はずである")
+    if probable {
+      return [Cr_surface::DropSuffix(text, "はずである"), "PROBABLE"]
+    }
+    let required: bool = Cr_surface::EndsWith(text, "必要がある")
+    if required {
+      return [Cr_surface::DropSuffix(text, "必要がある"), "REQUIRED"]
+    }
+    return [text, "ASSERTED"]
+  }
+  fn Predicate(text: string) -> [string] {
+    let negative: bool = Cr_surface::EndsWith(text, "ではない")
+    if negative {
+      return [Cr_surface::DropSuffix(text, "ではない"), "NEGATIVE"]
+    }
+    let asserted: bool = Cr_surface::EndsWith(text, "である")
+    if asserted {
+      return [Cr_surface::DropSuffix(text, "である"), "POSITIVE"]
+    }
+    let short: bool = Cr_surface::EndsWith(text, "だ")
+    if short {
+      return [Cr_surface::DropSuffix(text, "だ"), "POSITIVE"]
+    }
+    let negative_state: bool = Cr_surface::EndsWith(text, "ていない")
+    if negative_state {
+      return [Cr_surface::DropSuffix(text, "ていない"), "NEGATIVE"]
+    }
+    let positive_state: bool = Cr_surface::EndsWith(text, "ている")
+    if positive_state {
+      return [Cr_surface::DropSuffix(text, "ている"), "POSITIVE"]
+    }
+    return ["", "UNKNOWN"]
+  }
+  fn CanonicalProperty(surface: string) -> string {
+    if surface == "凍っ" {
+      return "FROZEN"
+    }
+    if surface == "開い" {
+      return "OPEN"
+    }
+    if surface == "閉じ" {
+      return "CLOSED"
+    }
+    if surface == "濡れ" {
+      return "WET"
+    }
+    return surface
+  }
+  fn EventParts(body: string) -> [string] {
+    let to = Cr_surface::Find(body, "に")
+    let object = Cr_surface::Find(body, "を")
+    let gave: bool = Cr_surface::EndsWith(body, "渡した") || Cr_surface::EndsWith(body, "渡す")
+    if gave && to > 0 && object > to + 1 {
+      return ["GIVE", Cr_surface::Left(body, to), Cr_surface::Slice(body, to + 1, object), "TARGET", "POSITIVE", "ASSERTED"]
+    }
+    if gave && object > 0 && to > object + 1 {
+      return ["GIVE", Cr_surface::Slice(body, object + 1, to), Cr_surface::Left(body, object), "TARGET", "POSITIVE", "ASSERTED"]
+    }
+    let from = Cr_surface::Find(body, "から")
+    let received: bool = Cr_surface::EndsWith(body, "受け取った") || Cr_surface::EndsWith(body, "受け取る")
+    if received && from > 0 && object > from + 2 {
+      return ["RECEIVE", Cr_surface::Left(body, from), Cr_surface::Slice(body, from + 2, object), "SOURCE", "POSITIVE", "ASSERTED"]
+    }
+    let bought: bool = Cr_surface::EndsWith(body, "を買った")
+    if bought {
+      return ["BUY", "", Cr_surface::DropSuffix(body, "を買った"), "", "POSITIVE", "ASSERTED"]
+    }
+    let read: bool = Cr_surface::EndsWith(body, "を読んだ")
+    if read {
+      return ["READ", "", Cr_surface::DropSuffix(body, "を読んだ"), "", "POSITIVE", "ASSERTED"]
+    }
+    let received_simple: bool = Cr_surface::EndsWith(body, "受け取った") && Cr_surface::Find(body, "を") > 0
+    if received_simple {
+      return ["RECEIVE", "", Cr_surface::DropSuffix(body, "受け取った"), "", "POSITIVE", "ASSERTED"]
+    }
+    let does: bool = Cr_surface::EndsWith(body, "をする")
+    if does {
+      return [Cr_surface::DropSuffix(body, "をする"), "", "", "", "POSITIVE", "ASSERTED"]
+    }
+    let does_not: bool = Cr_surface::EndsWith(body, "をしない")
+    if does_not {
+      return [Cr_surface::DropSuffix(body, "をしない"), "", "", "", "NEGATIVE", "ASSERTED"]
+    }
+    let permitted: bool = Cr_surface::EndsWith(body, "をしてよい")
+    if permitted {
+      return [Cr_surface::DropSuffix(body, "をしてよい"), "", "", "", "POSITIVE", "PERMITTED"]
+    }
+    let required: bool = Cr_surface::EndsWith(body, "をしなければならない")
+    if required {
+      return [Cr_surface::DropSuffix(body, "をしなければならない"), "", "", "", "POSITIVE", "REQUIRED"]
+    }
+    let impossible: bool = Cr_surface::EndsWith(body, "ことができない")
+    if impossible {
+      let action = Cr_surface::DropSuffix(body, "ことができない")
+      action = Cr_surface::DropSuffix(action, "をする")
+      return [action, "", "", "", "NEGATIVE", "IMPOSSIBLE"]
+    }
+    return ["", "", "", "", "", ""]
+  }
+  fn CauseOrCondition(doc, text: string, source: string, temporal: string, sentence: int) {
+    let cause_marker = "ので"
+    let cause = Cr_surface::Find(text, cause_marker)
+    if cause < 0 {
+      cause_marker = "のため"
+      cause = Cr_surface::Find(text, cause_marker)
+    }
+    if cause < 0 {
+      cause_marker = "によって"
+      cause = Cr_surface::Find(text, cause_marker)
+    }
+    if cause > 0 {
+      let before = Cr_surface::Left(text, cause)
+      let after = Cr_surface::Right(text, cause, cause_marker)
+      let rain: bool = before == "雨が降った" || before == "雨"
+      let wet: bool = Cr_surface::EndsWith(after, "が濡れた")
+      if rain && wet {
+        let road = Cr_surface::DropSuffix(after, "が濡れた")
+        let current = AddEntity(doc, road, sentence, source)
+        let event_id = string.concat("EVENT_", string.from_int(current.primitives.length + 1))
+        let with_event = AddFact(current, "EVENT", "RAIN", "", "", "", "", "POSITIVE", "ASSERTED", temporal, sentence, before, source)
+        let state_id = string.concat("STATE_", string.from_int(with_event.primitives.length + 1))
+        let with_state = AddFact(with_event, "STATE", "WET", Id(with_event, road), "", "", "true", "POSITIVE", "ASSERTED", temporal, sentence, after, source)
+        return AddFact(with_state, "RELATION", "CAUSAL.CAUSES", event_id, state_id, "", "", "POSITIVE", "ASSERTED", temporal, sentence, text, source)
+      }
+      return SetStatus(doc, "UNSUPPORTED")
+    }
+    let condition_marker = "なら"
+    let condition = Cr_surface::Find(text, condition_marker)
+    if condition < 0 {
+      condition_marker = "の場合"
+      condition = Cr_surface::Find(text, condition_marker)
+    }
+    if condition < 0 {
+      condition_marker = "であれば"
+      condition = Cr_surface::Find(text, condition_marker)
+    }
+    if condition > 0 {
+      let before = Cr_surface::Left(text, condition)
+      let after = Cr_surface::Right(text, condition, condition_marker)
+      let threshold = Cr_surface::Find(before, "が")
+      let below: bool = Cr_surface::EndsWith(before, "度未満")
+      let possible: bool = Cr_surface::EndsWith(after, "可能性がある")
+      let freezes: bool = Cr_surface::EndsWith(Cr_surface::DropSuffix(after, "可能性がある"), "が凍る")
+      if threshold > 0 && below && possible && freezes {
+        let variable = Cr_surface::Left(before, threshold)
+        let limit = Cr_surface::DropSuffix(Cr_surface::Right(before, threshold, "が"), "度未満")
+        let consequence = Cr_surface::DropSuffix(Cr_surface::DropSuffix(after, "可能性がある"), "が凍る")
+        let first = AddEntity(doc, variable, sentence, source)
+        let second = AddEntity(first, consequence, sentence, source)
+        return AddFact(second, "CONDITION", "LESS_THAN", Id(second, variable), Id(second, consequence), "FROZEN", limit, "POSITIVE", "POSSIBLE", temporal, sentence, text, source)
+      }
+      return SetStatus(doc, "UNSUPPORTED")
+    }
+    return SetStatus(doc, "UNSUPPORTED")
+  }
+  fn Sentence(doc, raw: string, index: int) {
+    let current = doc
+    let timed = TimePrefix(Cr_surface::Strip(raw))
+    let modal = ModalitySuffix(timed[0])
+    let text = modal[0]
+    let temporal = timed[1]
+    let modality = modal[1]
+    let question: bool = Cr_surface::EndsWith(text, "は？")
+    if question {
+      let question_body = Cr_surface::DropSuffix(text, "は？")
+      let of = Cr_surface::Find(question_body, "の")
+      if of > 0 {
+        let person = Cr_surface::Left(question_body, of)
+        let property = Cr_surface::Right(question_body, of, "の")
+        let with_entity = AddEntity(current, person, index, raw)
+        let with_goal = AddFact(with_entity, "GOAL", "ATTRIBUTE", Id(with_entity, person), "", property, "", "UNKNOWN", "UNCERTAIN", temporal, index, raw, raw)
+        return SetStatus(with_goal, "UNKNOWN")
+      }
+      return SetStatus(current, "UNSUPPORTED")
+    }
+    let causal: bool = Cr_surface::Find(timed[0], "ので") >= 0 || Cr_surface::Find(timed[0], "のため") >= 0 || Cr_surface::Find(timed[0], "によって") >= 0
+    let obligation: bool = Cr_surface::EndsWith(timed[0], "なければならない")
+    let conditional: bool = !obligation && (Cr_surface::Find(timed[0], "なら") >= 0 || Cr_surface::Find(timed[0], "の場合") >= 0 || Cr_surface::Find(timed[0], "であれば") >= 0)
+    if causal || conditional {
+      return CauseOrCondition(current, timed[0], raw, temporal, index)
+    }
+    let attachment = Cr_surface::Find(text, "を持った")
+    let saw: bool = Cr_surface::EndsWith(text, "を見た")
+    if attachment > 0 && saw {
+      let instrument = Cr_surface::Left(text, attachment)
+      let person = Cr_surface::DropSuffix(Cr_surface::Right(text, attachment, "を持った"), "を見た")
+      current = AddEntity(current, instrument, index, raw)
+      current = AddEntity(current, person, index, raw)
+      return SetStatus(current, "AMBIGUOUS")
+    }
+    let has = Cr_surface::Find(text, "には")
+    let has_form: bool = has > 0 && Cr_surface::EndsWith(text, "がある")
+    if has_form {
+      let holder = Cr_surface::Left(text, has)
+      let object = Cr_surface::DropSuffix(Cr_surface::Right(text, has, "には"), "がある")
+      current = AddEntity(current, holder, index, raw)
+      current = AddEntity(current, object, index, raw)
+      return AddFact(current, "RELATION", "SEMANTIC.HAS", Id(current, holder), Id(current, object), "", "", "POSITIVE", modality, temporal, index, raw, raw)
+    }
+    let split = Cr_surface::Find(text, "は")
+    if split < 0 {
+      let agent_split = Cr_surface::Find(text, "が")
+      if agent_split > 0 {
+        let agent = Cr_surface::Left(text, agent_split)
+        let action = EventParts(Cr_surface::Right(text, agent_split, "が"))
+        if action[0] != "" && action[2] == "" {
+          current = AddEntity(current, agent, index, raw)
+          return AddFact(current, "EVENT", action[0], Id(current, agent), "", "", "", action[4], action[5], temporal, index, raw, raw)
+        }
+      }
+      let parked: bool = Cr_surface::EndsWith(text, "が駐車している")
+      if parked {
+        let vehicle = Cr_surface::DropSuffix(text, "が駐車している")
+        let color = ""
+        let red: bool = Cr_surface::BeginsWith(vehicle, "赤い")
+        if red {
+          color = "RED"
+          vehicle = Cr_surface::DropPrefix(vehicle, "赤い")
+        }
+        let blue: bool = Cr_surface::BeginsWith(vehicle, "青い")
+        if blue {
+          color = "BLUE"
+          vehicle = Cr_surface::DropPrefix(vehicle, "青い")
+        }
+        current = AddEntity(current, vehicle, index, raw)
+        if color != "" {
+          current = AddFact(current, "ATTRIBUTE", "COLOR", Id(current, vehicle), "", "", color, "POSITIVE", "ASSERTED", temporal, index, raw, raw)
+        }
+        return AddFact(current, "STATE", "PARKED", Id(current, vehicle), "", "", "true", "POSITIVE", "ASSERTED", temporal, index, raw, raw)
+      }
+      return SetStatus(current, "UNSUPPORTED")
+    }
+    let surface = Cr_surface::Left(text, split)
+    let body = Cr_surface::Right(text, split, "は")
+    let subject = surface
+    if surface != "彼" && surface != "彼女" && surface != "それ" {
+      current = AddEntity(current, surface, index, raw)
+    }
+    let resolved = ResolvePronoun(current, subject, index)
+    let subject_id = resolved[0]
+    if surface == "彼" || surface == "彼女" || surface == "それ" {
+      current = AddBinding(current, surface, subject_id, resolved[1], index)
+      if resolved[1] != "RESOLVED" {
+        return SetStatus(current, resolved[1])
+      }
+    }
+    let possession = Cr_surface::Find(body, "を持っている")
+    if possession < 0 {
+      possession = Cr_surface::Find(body, "を所有している")
+    }
+    if possession < 0 {
+      let has_quantity: bool = Cr_surface::EndsWith(body, "個持っている")
+      if has_quantity {
+        possession = Cr_surface::Len(Cr_surface::DropSuffix(body, "持っている"))
+      }
+    }
+    if possession >= 0 {
+      let object = Cr_surface::Left(body, possession)
+      let quantity = ""
+      let quantity_split = Cr_surface::Find(object, "を")
+      if quantity_split > 0 {
+        quantity = Cr_surface::Right(object, quantity_split, "を")
+        object = Cr_surface::Left(object, quantity_split)
+      }
+      current = AddEntity(current, object, index, raw)
+      if quantity != "" {
+        let unit: bool = Cr_surface::EndsWith(quantity, "個")
+        if !unit {
+          return SetStatus(current, "UNSUPPORTED")
+        }
+        let count = Cr_surface::DropSuffix(quantity, "個")
+        let numeric: bool = Numeric(count)
+        if !numeric {
+          return SetStatus(current, "INVALID")
+        }
+        current = AddFact(current, "QUANTITY", "COUNT", Id(current, object), "", "個", count, "POSITIVE", modality, temporal, index, quantity, raw)
+      }
+      return AddFact(current, "RELATION", "SEMANTIC.HAS", subject_id, Id(current, object), "", quantity, "POSITIVE", modality, temporal, index, raw, raw)
+    }
+    let located = Cr_surface::Find(body, "に")
+    let is_there: bool = Cr_surface::EndsWith(body, "にいる") || Cr_surface::EndsWith(body, "にある")
+    if located > 0 && is_there {
+      let place = Cr_surface::Left(body, located)
+      current = AddEntity(current, place, index, raw)
+      return AddFact(current, "RELATION", "SEMANTIC.LOCATED_AT", subject_id, Id(current, place), "", "", "POSITIVE", modality, temporal, index, raw, raw)
+    }
+    let event = EventParts(body)
+    if event[0] != "" {
+      let participant = event[1]
+      let object = event[2]
+      let quantity = ""
+      let amount = Cr_surface::Find(object, "を")
+      if amount > 0 {
+        quantity = Cr_surface::Right(object, amount, "を")
+        object = Cr_surface::Left(object, amount)
+      }
+      let object_first: bool = participant != "" && object != "" && object != "それ" && Cr_surface::Find(body, object) < Cr_surface::Find(body, participant)
+      if object_first {
+        current = AddEntity(current, object, index, raw)
+      }
+      if participant != "" {
+        current = AddEntity(current, participant, index, raw)
+      }
+      if object != "それ" && !object_first {
+        current = AddEntity(current, object, index, raw)
+      }
+      let object_id = Id(current, object)
+      if object == "それ" {
+        let reference = ResolvePronoun(current, object, index)
+        object_id = reference[0]
+        current = AddBinding(current, object, object_id, reference[1], index)
+        if reference[1] != "RESOLVED" {
+          return SetStatus(current, reference[1])
+        }
+      }
+      let target = Id(current, participant)
+      if quantity != "" {
+        let unit: bool = Cr_surface::EndsWith(quantity, "個")
+        if !unit {
+          return SetStatus(current, "UNSUPPORTED")
+        }
+        quantity = Cr_surface::DropSuffix(quantity, "個")
+        let numeric: bool = Numeric(quantity)
+        if !numeric {
+          return SetStatus(current, "INVALID")
+        }
+        current = AddFact(current, "QUANTITY", "COUNT", object_id, "", "個", quantity, "POSITIVE", modality, temporal, index, raw, raw)
+      }
+      let event_modality = modality
+      if event[5] != "ASSERTED" {
+        event_modality = event[5]
+      }
+      return AddFact(current, "EVENT", event[0], subject_id, object_id, target, quantity, event[4], event_modality, temporal, index, raw, raw)
+    }
+    let predicate = Predicate(body)
+    if predicate[0] != "" {
+      return AddFact(current, "STATE", CanonicalProperty(predicate[0]), subject_id, "", "", "true", predicate[1], modality, temporal, index, raw, raw)
+    }
+    return SetStatus(current, "UNSUPPORTED")
+  }
+  pub fn AdaptJapaneseSemantic(surface: string) {
+    let doc = Semantic_representation::EmptySemanticCR()
+    let rest = Cr_surface::Strip(surface)
+    let index = 1
+    while rest != "" {
+      let stop = Cr_surface::Find(rest, "。")
+      if stop < 0 {
+        doc = Sentence(doc, rest, index)
+        rest = ""
+      } else {
+        let part = Cr_surface::Left(rest, stop)
+        if part != "" {
+          doc = Sentence(doc, part, index)
+          index = index + 1
+        }
+        rest = Cr_surface::Right(rest, stop, "。")
+      }
+      let stopped: bool = doc.status != "RESOLVED"
+      if stopped {
+        return doc
+      }
+    }
+    return doc
+  }
+}

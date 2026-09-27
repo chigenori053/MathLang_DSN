@@ -1,6 +1,41 @@
 # MathLang_DSN
 
-MathLang_DSN is a **mathematical computation and assessment model** for MathLang. It is not a programming language. ReasonScript implements the deterministic model; a small Python host accepts expressions and returns JSON. The design follows the state, activation, transition, and validation cycle explored in [DSN_Test](https://github.com/chigenori053/DSN_Test). No DSN_Test source code is copied into this repository.
+## MIRP foundation (experimental)
+
+The `mirp/` Rust crate owns MIRP's typed objects, scoped entity bindings,
+validation, canonical JSON, semantic deltas, conflict and unknown states, and
+`.mirp` persistence. The bounded natural-language, Japanese, mathematics, and code
+adapters build one `SemanticState`. Arithmetic uses the existing ReasonScript
+polynomial RU/RUS/RUO path; integer comparisons use a ReasonScript comparison
+RU selected through `Knowledge::KMirpComparisonRus`. The Rust bridge invokes
+ReasonScript directly; the existing Python API remains for the 0.3 interface.
+
+```sh
+cargo test --offline --manifest-path mirp/Cargo.toml
+cargo run --offline --manifest-path mirp/Cargo.toml -- /tmp/lesson.mirp lesson global nl 'x is five.'
+cargo run --offline --manifest-path mirp/Cargo.toml -- /tmp/lesson.mirp lesson global math 'y = x + 2'
+cargo run --offline --manifest-path mirp/Cargo.toml -- /tmp/lesson.mirp lesson global code $'if y > 6:\n    result = y'
+cargo run --offline --manifest-path mirp/Cargo.toml -- /tmp/story.mirp story global ja '太郎は学生である。'
+```
+
+The three commands run in separate processes. The final state contains a
+dependency path from the natural-language `x` fact through the mathematical
+`y` result and the code condition to `result = 7`. The implemented text
+adapters intentionally accept a small fragment: numeric `name is number`
+facts; named `is`, `is not`, `may be`, `must be`, and `If X, A is B` relations;
+integer arithmetic assignments; and simple code assignments with a
+single-level `if`. The copied DSN_Test Stage 2A math and code adapters add
+bounded assignment, relation, arithmetic equality, and conditional forms.
+The copied DSN_Test Japanese semantic adapter adds its
+bounded Japanese entity, state, quantity, and event forms. Its output enters
+the same Rust `SemanticState`. The copied ReasonScript MemorySpace codec stores
+the RU/RUS/RUO trace alongside a versioned Rust state snapshot. Unsupported
+syntax returns an explicit error. General equations/functions/matrices, calls
+and control flow, geometry observations, and full MemorySpace retention policy
+are not yet implemented. The Rust schema can represent several of these structures,
+but MIRP v1.0 acceptance is not claimed for them.
+
+MathLang_DSN is a **mathematical computation and assessment model** for MathLang. It is not a programming language. ReasonScript implements the deterministic model; a small Python host accepts expressions and returns JSON. The design follows the state, activation, transition, and validation cycle explored in [DSN_Test](https://github.com/chigenori053/DSN_Test). MIRP now includes selected DSN_Test ReasonScript modules with the project owner's authorization; see `mirp/DSN_TEST_IMPORTS.md`.
 
 ## Current scope (0.3)
 
@@ -90,4 +125,4 @@ Each self-check calculation must return `true` in `runtime_result.result`; a suc
 
 ## Provenance and status
 
-This project is informed by the locally developed DSN_Test prototype and by [MathLang](https://github.com/chigenori053/mathlang). It is a focused new implementation, not a release of DSN_Test. DSN_Test currently has no license file in its checkout, so its source is not redistributed here. The model uses ReasonScript as a required runtime and is licensed under Apache-2.0, matching MathLang. Version 0.3 does not claim the broader capabilities reported by DSN_Test.
+This project is informed by the locally developed DSN_Test prototype and by [MathLang](https://github.com/chigenori053/mathlang). It is a focused new implementation, not a release of DSN_Test. Selected ReasonScript files were imported from DSN_Test with the project owner's authorization and are listed in `mirp/DSN_TEST_IMPORTS.md`. The model uses ReasonScript as a required runtime and is licensed under Apache-2.0, matching MathLang. Version 0.3 does not claim the broader capabilities reported by DSN_Test.

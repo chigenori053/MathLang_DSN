@@ -1,0 +1,144 @@
+package mathlang_dsn
+
+module Math_adapter_stage2a {
+  import mathlang_dsn.Common_representation_cr
+  import mathlang_dsn.Cr_surface
+
+  fn Parts(text: string, symbol: string, kind: string) -> [string] {
+    let position = Cr_surface::Find(text, symbol)
+    if position < 0 {
+      return ["", "", ""]
+    }
+    let lhs = Cr_surface::Left(text, position)
+    let rhs = Cr_surface::Right(text, position, symbol)
+    if !Cr_surface::IsAtom(lhs) || !Cr_surface::IsAtom(rhs) {
+      return ["", "", ""]
+    }
+    return [kind, lhs, rhs]
+  }
+  pub fn RelationParts(text: string) -> [string] {
+    let parts = Parts(text, ">=", "GREATER_EQUAL")
+    if parts[0] != "" {
+      return parts
+    }
+    parts = Parts(text, "<=", "LESS_EQUAL")
+    if parts[0] != "" {
+      return parts
+    }
+    parts = Parts(text, "!=", "NOT_EQUAL")
+    if parts[0] != "" {
+      return parts
+    }
+    parts = Parts(text, ">", "GREATER_THAN")
+    if parts[0] != "" {
+      return parts
+    }
+    parts = Parts(text, "<", "LESS_THAN")
+    if parts[0] != "" {
+      return parts
+    }
+    return Parts(text, "=", "EQUAL")
+  }
+  fn AssignmentParts(text: string) -> [string] {
+    let position = Cr_surface::Find(text, ":=")
+    if position < 0 {
+      return ["", ""]
+    }
+    let target = Cr_surface::Left(text, position)
+    let value = Cr_surface::Right(text, position, ":=")
+    if !Cr_surface::IsAtom(target) || !Cr_surface::IsAtom(value) {
+      return ["", ""]
+    }
+    return [target, value]
+  }
+  fn ArithmeticParts(text: string) -> [string] {
+    let operators = ["+", "-", "*", "/"]
+    let kinds = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
+    let index = 0
+    while index < operators.length {
+      let position = Cr_surface::Find(text, operators[index])
+      if position > 0 {
+        let lhs = Cr_surface::Left(text, position)
+        let rhs = Cr_surface::Right(text, position, operators[index])
+        if Cr_surface::IsAtom(lhs) && Cr_surface::IsAtom(rhs) {
+          return [kinds[index], lhs, rhs]
+        }
+      }
+      index = index + 1
+    }
+    return ["", "", ""]
+  }
+  pub fn AdaptMath(surface: string) {
+    let text = Cr_surface::Compact(surface)
+    if text == "" {
+      return Common_representation_cr::Invalid()
+    }
+    let implication = Cr_surface::Find(text, "⇒")
+    if implication >= 0 {
+      let predicate = RelationParts(Cr_surface::Left(text, implication))
+      let action = AssignmentParts(Cr_surface::Right(text, implication, "⇒"))
+      if predicate[0] == "" || action[0] == "" {
+        return Common_representation_cr::Invalid()
+      }
+      return Common_representation_cr::ConditionalCR(predicate[0], predicate[1], predicate[2], action[0], action[1])
+    }
+    let conjunction = Cr_surface::Find(text, "∧")
+    let disjunction = Cr_surface::Find(text, "∨")
+    if conjunction >= 0 || disjunction >= 0 {
+      let position = conjunction
+      let symbol = "∧"
+      let kind = "AND"
+      if position < 0 {
+        position = disjunction
+        symbol = "∨"
+        kind = "OR"
+      }
+      let first = RelationParts(Cr_surface::Left(text, position))
+      let second = RelationParts(Cr_surface::Right(text, position, symbol))
+      if first[0] == "" || second[0] == "" {
+        return Common_representation_cr::Invalid()
+      }
+      return Common_representation_cr::BooleanCR(kind, first[0], first[1], first[2], second[0], second[1], second[2])
+    }
+    let separator = Cr_surface::Find(text, ";")
+    if separator >= 0 {
+      let first = AssignmentParts(Cr_surface::Left(text, separator))
+      let second = AssignmentParts(Cr_surface::Right(text, separator, ";"))
+      if first[0] == "" || second[0] == "" {
+        return Common_representation_cr::Invalid()
+      }
+      return Common_representation_cr::SequenceCR(first[0], first[1], second[0], second[1])
+    }
+    let state_form: bool = Cr_surface::BeginsWith(text, "state(")
+    if state_form {
+      let close = Cr_surface::Find(text, ")=")
+      if close < 0 {
+        return Common_representation_cr::Invalid()
+      }
+      let target = Cr_surface::Slice(text, 6, close)
+      let value = Cr_surface::Right(text, close, ")=")
+      if !Cr_surface::IsAtom(target) || !Cr_surface::IsAtom(value) {
+        return Common_representation_cr::Invalid()
+      }
+      return Common_representation_cr::StateCR(target, value)
+    }
+    let assignment = AssignmentParts(text)
+    if assignment[0] != "" {
+      return Common_representation_cr::AssignmentCR(assignment[0], assignment[1])
+    }
+    let equality = Cr_surface::Find(text, "=")
+    if equality >= 0 {
+      let lhs = Cr_surface::Left(text, equality)
+      let rhs = Cr_surface::Right(text, equality, "=")
+      let operation = ArithmeticParts(lhs)
+      if operation[0] != "" && Cr_surface::IsAtom(rhs) {
+        return Common_representation_cr::ArithmeticCR(operation[0], operation[1], operation[2], rhs)
+      }
+    }
+    let relation = RelationParts(text)
+    if relation[0] == "" {
+      return Common_representation_cr::Invalid()
+    }
+    return Common_representation_cr::RelationCR(relation[0], relation[1], relation[2])
+  }
+}

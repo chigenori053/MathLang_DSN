@@ -42,6 +42,59 @@ module Model {
     ruos: [Ruo]
   }
 
+  struct ComparisonRuo {
+    id: int
+    source_ru: int
+    source_rus: string
+    knowledge_id: string
+    source: string
+    left: int
+    right: int
+    operator: int
+    result: bool
+    validation: string
+  }
+
+  struct ComparisonOutcome {
+    status: string
+    value: bool
+    ruo: ComparisonRuo
+  }
+
+  // MIRP comparison RU: 0 ==, 1 !=, 2 >, 3 <, 4 >=, 5 <=.
+  pub fn CompareIntegers(left: int, right: int, operator: int) -> ComparisonOutcome {
+    let active = Knowledge::KMirpComparisonRus(operator)
+    let ru = Knowledge::KMirpComparisonRu()
+    let supported = Bounded(left, right) && active.members.length == 1
+    let value = false
+    if supported {
+      if operator == 0 {
+        value = left == right
+      }
+      if operator == 1 {
+        value = left != right
+      }
+      if operator == 2 {
+        value = left > right
+      }
+      if operator == 3 {
+        value = left < right
+      }
+      if operator == 4 {
+        value = left >= right
+      }
+      if operator == 5 {
+        value = left <= right
+      }
+    }
+    let status = "APPLIED"
+    if !supported {
+      status = "UNSUPPORTED"
+    }
+    let trace = ComparisonRuo { id: 1, source_ru: ru.id, source_rus: active.name, knowledge_id: ru.knowledge_id, source: ru.source, left: left, right: right, operator: operator, result: value, validation: status }
+    return ComparisonOutcome { status: status, value: value, ruo: trace }
+  }
+
   fn Abs(value: int) -> int {
     if value < 0 {
       return 0 - value
