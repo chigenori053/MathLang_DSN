@@ -12,13 +12,13 @@ pub struct Polynomial {
 }
 
 impl Polynomial {
-    fn at(&self, x: i64) -> i128 {
+    pub(crate) fn at(&self, x: i64) -> i128 {
         let [c, b, a] = self.coefficients.map(i128::from);
         let x = i128::from(x);
         a * x * x + b * x + c
     }
 
-    fn supported(&self) -> bool {
+    pub(crate) fn supported(&self) -> bool {
         self.coefficients
             .iter()
             .all(|x| x.unsigned_abs() <= 1_000_000)
@@ -37,7 +37,7 @@ pub enum AlgebraExpression {
 }
 
 impl AlgebraExpression {
-    fn coefficients(&self) -> Option<[i128; 3]> {
+    pub(crate) fn coefficients(&self) -> Option<[i128; 3]> {
         fn add(a: [i128; 3], b: [i128; 3], sign: i128) -> Option<[i128; 3]> {
             Some([
                 a[0].checked_add(sign.checked_mul(b[0])?)?,
@@ -102,7 +102,7 @@ pub enum ConstraintKind {
 }
 
 impl ConstraintKind {
-    fn accepts(&self, x: i64) -> bool {
+    pub(crate) fn accepts(&self, x: i64) -> bool {
         match self {
             Self::GreaterThan(n) => x > *n,
             Self::GreaterOrEqual(n) => x >= *n,
@@ -686,7 +686,7 @@ fn equation_matches_history(
 }
 
 /// Exact integer roots only. A non-integral or irrational root preserves UNKNOWN completion.
-fn integer_quadratic_roots(poly: &Polynomial) -> Option<Vec<i64>> {
+pub(crate) fn integer_quadratic_roots(poly: &Polynomial) -> Option<Vec<i64>> {
     if !poly.supported() {
         return None;
     }

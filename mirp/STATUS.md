@@ -1,5 +1,10 @@
 # MIRP Foundation v0.1 status
 
+The separate ProblemIntent Foundation Completion layer is implemented in
+`src/pif/`. Its five tickets and bounded validation verdict are documented in
+`PIF_TICKETS.md` and `PIF_REPORT.md`. The frozen `mirp/0.1-si2` state schema is
+unchanged.
+
 Problem intent aware assessment has been added as a separate Rust layer in
 `src/intent.rs`. Its initial exact contract is integer-root quadratic algebra.
 The 200-case, 10-group matrix in `tests/intent.rs` covers validity, relevance,

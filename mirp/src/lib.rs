@@ -10,6 +10,7 @@ use std::path::Path;
 
 pub mod intent;
 pub mod memory;
+pub mod pif;
 pub mod session;
 
 pub const VERSION: &str = "mirp/0.1-si2";

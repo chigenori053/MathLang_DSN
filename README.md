@@ -1,5 +1,14 @@
 # MathLang_DSN
 
+## ProblemIntent Foundation Completion
+
+The versioned `mirp::pif` layer constructs bounded English and Japanese
+problem intents, validates goal graphs, keeps the problem definition immutable,
+and evaluates executed quadratic reasoning with evidence-bearing method traces.
+It is separate from the frozen `mirp/0.1-si2` state format. The five implementation
+tickets are in `mirp/PIF_TICKETS.md`; the 400-case validation matrix, metrics,
+determinism evidence, and supported boundary are in `mirp/PIF_REPORT.md`.
+
 ## Problem intent aware validation (bounded Rust layer)
 
 `mirp::intent` stores `Problem` and `ProblemIntent` separately from `SemanticState`: sourced
