@@ -1,0 +1,1115 @@
+[
+  {
+    "knowledge_id": "EQ_MOVE_RIGHT_VARIABLE",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "linear"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of EQ_MOVE_RIGHT_VARIABLE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "SOLVE_EQUATION"
+    ],
+    "applicable_rus": [
+      "EquationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 1
+  },
+  {
+    "knowledge_id": "EQ_MOVE_LEFT_CONSTANT",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "linear"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of EQ_MOVE_LEFT_CONSTANT",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "SOLVE_EQUATION"
+    ],
+    "applicable_rus": [
+      "EquationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 2
+  },
+  {
+    "knowledge_id": "EQ_SWAP_SIDES",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "linear"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of EQ_SWAP_SIDES",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "SOLVE_EQUATION"
+    ],
+    "applicable_rus": [
+      "EquationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 3
+  },
+  {
+    "knowledge_id": "POLY_INTEGER",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_INTEGER",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 10
+  },
+  {
+    "knowledge_id": "POLY_VARIABLE",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_VARIABLE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 11
+  },
+  {
+    "knowledge_id": "POLY_ADD",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_ADD",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 12
+  },
+  {
+    "knowledge_id": "POLY_SUBTRACT",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_SUBTRACT",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 13
+  },
+  {
+    "knowledge_id": "POLY_MULTIPLY",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_MULTIPLY",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 14
+  },
+  {
+    "knowledge_id": "POLY_DIVIDE_CONSTANT",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_DIVIDE_CONSTANT",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 15
+  },
+  {
+    "knowledge_id": "POLY_POWER_BOUNDED",
+    "category": "ALGEBRA",
+    "subcategory": "POLYNOMIAL",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_POWER_BOUNDED",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE"
+    ],
+    "applicable_rus": [
+      "PolynomialRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "POLYNOMIAL",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 16
+  },
+  {
+    "knowledge_id": "POLY_DIFFERENTIATE",
+    "category": "CALCULUS",
+    "subcategory": "CALCULUS",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_DIFFERENTIATE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "DIFFERENTIATE"
+    ],
+    "applicable_rus": [
+      "CalculusRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "CALCULUS",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 17
+  },
+  {
+    "knowledge_id": "POLY_INTEGRATE",
+    "category": "CALCULUS",
+    "subcategory": "CALCULUS",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "polynomial"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_INTEGRATE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "INTEGRATE"
+    ],
+    "applicable_rus": [
+      "CalculusRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "CALCULUS",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 18
+  },
+  {
+    "knowledge_id": "POLY_EXPRESSION_EQUIVALENCE",
+    "category": "LOGIC",
+    "subcategory": "ASSESSMENT",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "equivalence"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_EXPRESSION_EQUIVALENCE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "VERIFY_IDENTITY"
+    ],
+    "applicable_rus": [
+      "AssessmentRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "ASSESSMENT",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 19
+  },
+  {
+    "knowledge_id": "POLY_EQUATION_EQUIVALENCE",
+    "category": "LOGIC",
+    "subcategory": "ASSESSMENT",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "equivalence"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of POLY_EQUATION_EQUIVALENCE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "VERIFY_IDENTITY"
+    ],
+    "applicable_rus": [
+      "AssessmentRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "ASSESSMENT",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 20
+  },
+  {
+    "knowledge_id": "JH_PRIME_FACTORIZATION",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "NUMBER",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_PRIME_FACTORIZATION",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "FACTOR_INTEGER"
+    ],
+    "applicable_rus": [
+      "JuniorNumberRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "NUMBER",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 21
+  },
+  {
+    "knowledge_id": "JH_SQUARE_ROOT_SIMPLIFY",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "NUMBER",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_SQUARE_ROOT_SIMPLIFY",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "SIMPLIFY_RADICAL"
+    ],
+    "applicable_rus": [
+      "JuniorNumberRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "NUMBER",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 22
+  },
+  {
+    "knowledge_id": "JH_QUADRATIC_FORMULA",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "quadratic"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_QUADRATIC_FORMULA",
+    "constraints": [
+      "INTEGER_COEFFICIENTS",
+      "NONZERO_QUADRATIC"
+    ],
+    "dependencies": [
+      "POLY_EQUATION_EQUIVALENCE"
+    ],
+    "applicable_goals": [
+      "SOLVE_EQUATION"
+    ],
+    "applicable_rus": [
+      "JuniorEquationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 23
+  },
+  {
+    "knowledge_id": "JH_LINEAR_SYSTEM",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "linear_system"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_LINEAR_SYSTEM",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "SOLVE_SYSTEM"
+    ],
+    "applicable_rus": [
+      "JuniorEquationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 24
+  },
+  {
+    "knowledge_id": "JH_FUNCTION_VALUE",
+    "category": "FUNCTION",
+    "subcategory": "FUNCTION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "function"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_FUNCTION_VALUE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "EVALUATE_FUNCTION"
+    ],
+    "applicable_rus": [
+      "JuniorFunctionRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "FUNCTION",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 25
+  },
+  {
+    "knowledge_id": "JH_POLYGON_ANGLE_SUM",
+    "category": "GEOMETRY",
+    "subcategory": "GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "geometry"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_POLYGON_ANGLE_SUM",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "FIND_ANGLE"
+    ],
+    "applicable_rus": [
+      "JuniorGeometryRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "GEOMETRY",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 26
+  },
+  {
+    "knowledge_id": "JH_PYTHAGOREAN",
+    "category": "GEOMETRY",
+    "subcategory": "GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "geometry"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_PYTHAGOREAN",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "FIND_LENGTH"
+    ],
+    "applicable_rus": [
+      "JuniorGeometryRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "GEOMETRY",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 27
+  },
+  {
+    "knowledge_id": "JH_DATA_QUARTILES",
+    "category": "STATISTICS",
+    "subcategory": "DATA",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_DATA_QUARTILES",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "ANALYZE_DATA"
+    ],
+    "applicable_rus": [
+      "JuniorDataRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "DATA",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 28
+  },
+  {
+    "knowledge_id": "JH_CLASSICAL_PROBABILITY",
+    "category": "STATISTICS",
+    "subcategory": "DATA",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_CLASSICAL_PROBABILITY",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "CALCULATE_PROBABILITY"
+    ],
+    "applicable_rus": [
+      "JuniorDataRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "DATA",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 29
+  },
+  {
+    "knowledge_id": "JH_INVERSE_PROPORTION",
+    "category": "FUNCTION",
+    "subcategory": "FUNCTION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "function"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_INVERSE_PROPORTION",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "EVALUATE_FUNCTION"
+    ],
+    "applicable_rus": [
+      "JuniorFunctionRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "FUNCTION",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 30
+  },
+  {
+    "knowledge_id": "JH_SIMILARITY_RATIOS",
+    "category": "GEOMETRY",
+    "subcategory": "GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "geometry"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_SIMILARITY_RATIOS",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "FIND_LENGTH"
+    ],
+    "applicable_rus": [
+      "JuniorGeometryRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "GEOMETRY",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 31
+  },
+  {
+    "knowledge_id": "JH_RELATIVE_FREQUENCY",
+    "category": "STATISTICS",
+    "subcategory": "DATA",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_RELATIVE_FREQUENCY",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "ANALYZE_DATA"
+    ],
+    "applicable_rus": [
+      "JuniorDataRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "DATA",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 32
+  },
+  {
+    "knowledge_id": "JH_CIRCLE_ANGLE",
+    "category": "GEOMETRY",
+    "subcategory": "GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "geometry"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_CIRCLE_ANGLE",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "FIND_ANGLE"
+    ],
+    "applicable_rus": [
+      "JuniorGeometryRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "JUNIOR_HIGH",
+    "activation_metadata": {
+      "legacy_domain": "GEOMETRY",
+      "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
+    },
+    "runtime_rule_id": 33
+  },
+  {
+    "knowledge_id": "MIRP_INTEGER_COMPARISON",
+    "category": "LOGIC",
+    "subcategory": "COMPARISON",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of MIRP_INTEGER_COMPARISON",
+    "constraints": [],
+    "dependencies": [],
+    "applicable_goals": [
+      "COMPARE"
+    ],
+    "applicable_rus": [
+      "ComparisonRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "COMPARISON",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 34
+  },
+  {
+    "knowledge_id": "JH_QUADRATIC_INTEGER_FACTOR",
+    "category": "EQUATION",
+    "subcategory": "EQUATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "quadratic"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "validated result of JH_QUADRATIC_INTEGER_FACTOR",
+    "constraints": [
+      "INTEGER_COEFFICIENTS",
+      "NONZERO_QUADRATIC"
+    ],
+    "dependencies": [
+      "POLY_MULTIPLY",
+      "POLY_EQUATION_EQUIVALENCE"
+    ],
+    "applicable_goals": [
+      "FACTOR_EXPRESSION"
+    ],
+    "applicable_rus": [
+      "QuadraticFactorizationRUS"
+    ],
+    "priority": 0,
+    "provenance": {
+      "source_type": "legacy_knowledge",
+      "source_id": "mathlang_dsn/knowledge.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "UNSPECIFIED",
+    "activation_metadata": {
+      "legacy_domain": "EQUATION",
+      "curriculum_source": ""
+    },
+    "runtime_rule_id": 35
+  }
+]

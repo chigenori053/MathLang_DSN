@@ -9,6 +9,7 @@ use std::fs;
 use std::path::Path;
 
 pub mod intent;
+pub mod knowledge;
 pub mod memory;
 pub mod native;
 pub mod pif;

@@ -1,8 +1,10 @@
 //! Persistent MIRP snapshots with DSN_Test's native ReasonScript memory codec.
 
 use crate::{
-    session::run_reason_source, stable_id, Common, Evidence, MirpError, Object, Provenance,
-    SemanticDelta, SemanticState, Status, VERSION,
+    knowledge::{KnowledgeQuery, KnowledgeQueryResult, KnowledgeSpace, KnowledgeUnit},
+    session::run_reason_source,
+    stable_id, Common, Evidence, MirpError, Object, Provenance, SemanticDelta, SemanticState,
+    Status, VERSION,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value as Json;
@@ -24,14 +26,58 @@ struct Stored {
     packet: Json,
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MemorySpace {
     entries: BTreeMap<String, Stored>,
+    #[serde(default = "KnowledgeSpace::legacy")]
+    knowledge_space: KnowledgeSpace,
+}
+
+impl Default for MemorySpace {
+    fn default() -> Self {
+        Self {
+            entries: BTreeMap::new(),
+            knowledge_space: KnowledgeSpace::legacy(),
+        }
+    }
 }
 
 impl MemorySpace {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn with_knowledge_space(mut knowledge_space: KnowledgeSpace) -> Result<Self, MirpError> {
+        knowledge_space
+            .validate_and_reindex()
+            .map_err(|message| error("MirpValidationError", message))?;
+        Ok(Self {
+            entries: BTreeMap::new(),
+            knowledge_space,
+        })
+    }
+
+    pub fn knowledge_space(&self) -> &KnowledgeSpace {
+        &self.knowledge_space
+    }
+
+    pub fn get_knowledge(&self, knowledge_id: &str) -> Option<&KnowledgeUnit> {
+        self.knowledge_space.get(knowledge_id)
+    }
+
+    /// Compatibility bridge for ReasonScript's numeric KByRule interface.
+    pub fn legacy_by_rule(&self, runtime_rule_id: i64) -> Option<&KnowledgeUnit> {
+        self.knowledge_space.by_rule(runtime_rule_id)
+    }
+
+    pub fn register_knowledge(&mut self, units: Vec<KnowledgeUnit>) -> Result<(), MirpError> {
+        self.knowledge_space
+            .register_batch(units)
+            .map_err(|message| error("MirpValidationError", message))
+    }
+
+    pub fn query_knowledge(&self, query: &KnowledgeQuery) -> KnowledgeQueryResult {
+        self.knowledge_space.query(query)
     }
 
     pub fn store(
@@ -190,8 +236,12 @@ impl MemorySpace {
     pub fn load(path: impl AsRef<Path>) -> Result<Self, MirpError> {
         let text =
             fs::read_to_string(path).map_err(|exc| error("MirpParseError", exc.to_string()))?;
-        let memory: Self =
+        let mut memory: Self =
             serde_json::from_str(&text).map_err(|exc| error("MirpParseError", exc.to_string()))?;
+        memory
+            .knowledge_space
+            .validate_and_reindex()
+            .map_err(|message| error("MirpValidationError", message))?;
         for id in memory.entries.keys() {
             memory.retrieve(id)?;
         }

@@ -68,6 +68,8 @@ module Knowledge {
     ]
   }
 
+  // Legacy compatibility API. New MIRP native selection queries MemorySpace
+  // KnowledgeSpace before dispatching the selected Rule ID here.
   pub fn KByRule(rule: int) -> KnowledgeEntry {
     if rule == 35 {
       return Entry(35, "JH_QUADRATIC_INTEGER_FACTOR", "EQUATION", "QuadraticFactorizationRUS")

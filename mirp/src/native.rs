@@ -1,5 +1,9 @@
 //! ProblemIntent to native ReasonScript reasoning, with MIRP as mathematical state.
 use crate::intent::{integer_quadratic_roots, ConstraintKind, Method, Polynomial};
+use crate::knowledge::{
+    Applicability, ApplicabilityEngine, KnowledgeActivation, KnowledgeQuery, KnowledgeQueryResult,
+};
+use crate::memory::MemorySpace;
 use crate::pif::{
     parse_problem, CriterionKind, CriterionStatus, GoalKind, GoalStatus, IntentRuntimeState,
     IntentStatus, MethodEvidence, ProblemDefinition,
@@ -57,6 +61,7 @@ pub struct NativeTrace {
     pub ruo_ref: String,
     pub ruo: Json,
     pub state_ref: String,
+    pub knowledge_ref: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -92,6 +97,15 @@ pub struct MathLangResult {
     pub problem_evaluation: ProblemEvaluation,
     pub trace: Vec<NativeTrace>,
     pub evidence: Vec<IntentEvidence>,
+    pub knowledge_decisions: Vec<KnowledgeDecision>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct KnowledgeDecision {
+    pub query: KnowledgeQuery,
+    pub retrieval: KnowledgeQueryResult,
+    pub applicability: Vec<(String, Applicability)>,
+    pub activation: Option<KnowledgeActivation>,
 }
 
 pub struct MathProblemContext {
@@ -103,6 +117,9 @@ pub struct MathProblemContext {
     plan: ReasoningPlan,
     trace: Vec<NativeTrace>,
     evidence: Vec<IntentEvidence>,
+    memory: MemorySpace,
+    knowledge_decisions: Vec<KnowledgeDecision>,
+    active_knowledge: Option<KnowledgeActivation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -127,7 +144,15 @@ impl MathProblemContext {
 
     pub fn new(
         definition: ProblemDefinition,
+        semantic_state: SemanticState,
+    ) -> Result<Self, String> {
+        Self::with_memory(definition, semantic_state, MemorySpace::new())
+    }
+
+    pub fn with_memory(
+        definition: ProblemDefinition,
         mut semantic_state: SemanticState,
+        memory: MemorySpace,
     ) -> Result<Self, String> {
         definition.intent().validate(&semantic_state)?;
         let intent = definition.intent();
@@ -230,6 +255,9 @@ impl MathProblemContext {
             plan,
             trace: vec![],
             evidence: vec![],
+            memory,
+            knowledge_decisions: vec![],
+            active_knowledge: None,
         };
         if let Some(coefficients) = recognized {
             context.native_step(
@@ -263,6 +291,66 @@ impl MathProblemContext {
     pub fn history(&self) -> &[ReasoningTransition] {
         &self.history
     }
+    pub fn knowledge_decisions(&self) -> &[KnowledgeDecision] {
+        &self.knowledge_decisions
+    }
+
+    fn select_knowledge(
+        &mut self,
+        strategy: &Strategy,
+        poly: &Polynomial,
+    ) -> Option<KnowledgeActivation> {
+        let equation_id = self
+            .semantic_state
+            .resolve("equation", "pini", &self.plan.problem_id)?
+            .common
+            .id
+            .clone();
+        let query = KnowledgeQuery {
+            domain: "EQUATION".into(),
+            goal: match strategy {
+                Strategy::Factorization => "FACTOR_EXPRESSION",
+                Strategy::QuadraticFormula => "SOLVE_EQUATION",
+            }
+            .into(),
+            symbols: vec!["quadratic".into()],
+            relations: vec![],
+            required_properties: vec![],
+            constraints: if poly.coefficients[2] != 0
+                && poly.coefficients.iter().all(|n| n.unsigned_abs() <= 10_000)
+            {
+                vec!["INTEGER_COEFFICIENTS".into(), "NONZERO_QUADRATIC".into()]
+            } else {
+                vec![]
+            },
+            semantic_state_refs: vec![equation_id],
+            limit: 8,
+        };
+        let retrieval = self.memory.query_knowledge(&query);
+        let mut applicability = vec![];
+        let mut activation = None;
+        for candidate in &retrieval.candidates {
+            let unit = self.memory.get_knowledge(&candidate.knowledge_id)?;
+            let verdict = ApplicabilityEngine::evaluate(
+                unit,
+                candidate,
+                &query,
+                &self.semantic_state,
+                |id| self.memory.get_knowledge(id).is_some(),
+            );
+            if verdict == Applicability::Applicable && activation.is_none() {
+                activation = KnowledgeActivation::from_applicable(unit, &self.semantic_state);
+            }
+            applicability.push((candidate.knowledge_id.clone(), verdict));
+        }
+        self.knowledge_decisions.push(KnowledgeDecision {
+            query,
+            retrieval,
+            applicability,
+            activation: activation.clone(),
+        });
+        activation
+    }
 
     fn native_step(&mut self, ru: &str, rus: &str, output: Json) -> NativeTrace {
         let ruo = json!({"source": "MathLang_DSN/native", "ru": ru, "rus": rus, "output": output});
@@ -275,6 +363,10 @@ impl MathProblemContext {
             ),
             ruo,
             state_ref: self.semantic_state.version.to_string(),
+            knowledge_ref: self
+                .active_knowledge
+                .as_ref()
+                .map(|a| a.knowledge_id.clone()),
         };
         self.trace.push(trace.clone());
         trace
@@ -467,6 +559,13 @@ impl MathProblemContext {
         mirp.common_mut()
             .metadata
             .insert("native_trace".into(), json!(evidence));
+        if let Some(active) = &self.active_knowledge {
+            let mut applied = active.clone();
+            applied.result_state = Some((self.semantic_state.version + 1).to_string());
+            mirp.common_mut()
+                .metadata
+                .insert("knowledge_activation".into(), json!(applied));
+        }
         mirp.normalize_identity(&format!("native-evidence:{label}"));
         let evidence_occurrence = mirp.occurrence_id().to_owned();
         let evidence_parents = mirp.common().provenance.parent_occurrence_ids.clone();
@@ -480,6 +579,12 @@ impl MathProblemContext {
                 ..Default::default()
             })
             .map_err(|e| e.to_string())?;
+        if let Some(active) = &mut self.active_knowledge {
+            active.result_state = Some(self.semantic_state.version.to_string());
+            if let Some(decision) = self.knowledge_decisions.last_mut() {
+                decision.activation = Some(active.clone());
+            }
+        }
         self.evidence.push(evidence);
         Ok(())
     }
@@ -506,14 +611,41 @@ impl MathProblemContext {
             Some(Method::QuadraticFormula) => Strategy::QuadraticFormula,
             _ => Strategy::Factorization,
         });
-        let source = match strategy {
-            Strategy::Factorization => format!("JuniorHigh::JFactorQuadratic({a}, {b}, {c})"),
-            Strategy::QuadraticFormula => format!("JuniorHigh::JSolveQuadratic({a}, {b}, {c})"),
+        let Some(activation) = self.select_knowledge(&strategy, &poly) else {
+            let result = self.result(
+                None,
+                ReasoningStatus::Unsupported,
+                "UNKNOWN",
+                "UNKNOWN",
+                "UNKNOWN",
+            );
+            return Ok(self.finish(result));
+        };
+        self.active_knowledge = Some(activation.clone());
+        let source = match activation.selected_ru {
+            35 => format!("JuniorHigh::JFactorQuadratic({a}, {b}, {c})"),
+            23 => format!("JuniorHigh::JSolveQuadratic({a}, {b}, {c})"),
+            _ => {
+                let result = self.result(
+                    None,
+                    ReasoningStatus::Unsupported,
+                    "UNKNOWN",
+                    "UNKNOWN",
+                    "UNKNOWN",
+                );
+                return Ok(self.finish(result));
+            }
         };
         let output = run_reason_source(&source, &[]).map_err(|e| e.to_string())?;
         let ruo = output.get("ruo").cloned().ok_or("missing native RUO")?;
         let ru_ref = ruo["knowledge_id"].as_str().ok_or("missing RU")?.to_owned();
         let rus_ref = ruo["source_rus"].as_str().ok_or("missing RUS")?.to_owned();
+        if ruo["source_ru"].as_i64() != Some(activation.selected_ru)
+            || ru_ref != activation.knowledge_id
+            || rus_ref != activation.selected_rus
+        {
+            return Err("ReasonScript RUO does not match activated Knowledge".into());
+        }
         let ruo_ref = stable_id(
             "ruo",
             &[&serde_json::to_string(&ruo).unwrap(), &self.plan.problem_id],
@@ -524,7 +656,14 @@ impl MathProblemContext {
             ruo_ref,
             ruo,
             state_ref: self.semantic_state.version.to_string(),
+            knowledge_ref: Some(activation.knowledge_id),
         };
+        if let Some(active) = &mut self.active_knowledge {
+            active.ruo_ref = Some(trace.ruo_ref.clone());
+        }
+        if let Some(decision) = self.knowledge_decisions.last_mut() {
+            decision.activation = self.active_knowledge.clone();
+        }
         self.reasoning_runtime.selected_ru = Some(trace.ru_ref.clone());
         self.reasoning_runtime.active_rus = Some(trace.rus_ref.clone());
         self.trace.push(trace.clone());
@@ -776,6 +915,7 @@ impl MathProblemContext {
             },
             trace: self.trace.clone(),
             evidence: self.evidence.clone(),
+            knowledge_decisions: self.knowledge_decisions.clone(),
         }
     }
 }
@@ -789,7 +929,15 @@ fn root_set(roots: &[i64]) -> Value {
 }
 
 pub fn solve_problem(text: &str) -> Result<(MathLangResult, SemanticState, ReasoningPlan), String> {
-    let mut context = MathProblemContext::parse(text)?;
+    solve_problem_with_memory(text, MemorySpace::new())
+}
+
+pub fn solve_problem_with_memory(
+    text: &str,
+    memory: MemorySpace,
+) -> Result<(MathLangResult, SemanticState, ReasoningPlan), String> {
+    let parsed = parse_problem(text)?;
+    let mut context = MathProblemContext::with_memory(parsed.definition, parsed.state, memory)?;
     let result = context.execute(None)?;
     Ok((result, context.semantic_state, context.plan))
 }
