@@ -10,6 +10,7 @@ use std::path::Path;
 
 pub mod intent;
 pub mod memory;
+pub mod native;
 pub mod pif;
 pub mod session;
 

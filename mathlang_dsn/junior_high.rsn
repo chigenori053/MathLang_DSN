@@ -268,6 +268,29 @@ module JuniorHigh {
     return QuadraticResult { status: status, discriminant: discriminant, roots: roots, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
   }
 
+  // Native bounded integer-root factorization RU. A candidate is emitted only
+  // after substitution validates it against the input equation.
+  pub fn JFactorQuadratic(a: int, b: int, c: int) -> QuadraticResult {
+    let status = "FACTORED"
+    let roots = []
+    if a == 0 || Abs(a) > 10000 || Abs(b) > 10000 || Abs(c) > 10000 {
+      status = "UNSUPPORTED"
+    } else {
+      let x = 0 - 100
+      while x <= 100 {
+        if a * x * x + b * x + c == 0 {
+          roots = array.append(roots, Root { numerator: x, radical_coefficient: 0, radicand: 0, denominator: 1 })
+        }
+        x = x + 1
+      }
+      if roots.length == 0 {
+        status = "UNKNOWN"
+      }
+    }
+    let event = Event(35, status, [a, b, c], [])
+    return QuadraticResult { status: status, discriminant: b * b - 4 * a * c, roots: roots, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
   pub fn JQuadraticFromPolynomial(coefficients: [int]) -> QuadraticResult {
     if coefficients.length != 6 || coefficients[3] != 0 || coefficients[4] != 0 || coefficients[5] != 0 {
       let event = Event(23, "UNSUPPORTED", coefficients, [])

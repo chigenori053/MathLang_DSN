@@ -69,6 +69,9 @@ module Knowledge {
   }
 
   pub fn KByRule(rule: int) -> KnowledgeEntry {
+    if rule == 35 {
+      return Entry(35, "JH_QUADRATIC_INTEGER_FACTOR", "EQUATION", "QuadraticFactorizationRUS")
+    }
     for item in KCatalog() {
       if item.rule == rule {
         return item
@@ -124,6 +127,9 @@ module Knowledge {
   }
 
   pub fn KActiveOperationRus(rule: int) -> Rus {
+    if rule == 35 {
+      return Rus { id: 11, name: "QuadraticFactorizationRUS", members: [35] }
+    }
     if rule >= 10 && rule <= 16 {
       return Rus { id: 2, name: "PolynomialRUS", members: [rule] }
     }

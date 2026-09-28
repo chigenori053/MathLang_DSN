@@ -14,6 +14,19 @@ fn main() {
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("solve-problem") {
+        if args.len() != 3 {
+            return Err("usage: mirp solve-problem <problem>".into());
+        }
+        let (result, semantic_state, plan) = mathlang_mirp::native::solve_problem(&args[2])?;
+        println!(
+            "{}",
+            serde_json::to_string(&serde_json::json!({
+                "result": result, "plan": plan, "semantic_state": semantic_state
+            }))?
+        );
+        return Ok(());
+    }
     if args.get(1).map(String::as_str) == Some("memory-store") {
         if args.len() != 6 {
             return Err(

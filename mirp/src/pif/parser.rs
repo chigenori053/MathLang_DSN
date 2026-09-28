@@ -109,6 +109,8 @@ pub fn parse_problem(text: &str) -> Result<ParseOutcome, String> {
         };
         let (body, method) = if let Some(math) = body.strip_suffix(" using factorization") {
             (math.trim(), Some(Method::Factorization))
+        } else if let Some(math) = body.strip_suffix(" using quadratic formula") {
+            (math.trim(), Some(Method::QuadraticFormula))
         } else if let Some(math) = body.strip_suffix(" 因数分解を用いて") {
             (math.trim(), Some(Method::Factorization))
         } else {
@@ -334,7 +336,18 @@ fn tokenize(text: &str) -> Result<Vec<String>, String> {
                 i += 1;
             }
             tokens.push(chars[start..i].iter().collect());
+        } else if chars[i] == '²' {
+            tokens.push("^".into());
+            tokens.push("2".into());
+            i += 1;
         } else if "x+-*()^".contains(chars[i]) {
+            if chars[i] == 'x'
+                && tokens
+                    .last()
+                    .is_some_and(|previous: &String| previous.parse::<i64>().is_ok())
+            {
+                tokens.push("*".into());
+            }
             tokens.push(chars[i].to_string());
             i += 1;
         } else {
