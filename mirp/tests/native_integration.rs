@@ -100,10 +100,9 @@ fn mandatory_520_case_matrix() {
         checks += 1;
         let result = context.execute(None).unwrap();
         // D: RU selection
-        assert!(result
-            .trace
-            .iter()
-            .any(|t| t.ru_ref == "JH_QUADRATIC_INTEGER_FACTOR"));
+        assert!(result.trace.iter().any(|t| t.knowledge_ref.as_deref()
+            == Some("JH_QUADRATIC_INTEGER_FACTOR")
+            && t.ru_ref.starts_with("ru:")));
         checks += 1;
         // E: RUS construction
         assert!(result
@@ -228,10 +227,9 @@ fn status_separation_and_strategy_fallback() {
     let result = no_real.execute(None).unwrap();
     assert_eq!(result.status, ReasoningStatus::Complete);
     assert_eq!(result.answer, Some(vec![]));
-    assert!(result
-        .trace
-        .iter()
-        .any(|t| t.ru_ref == "JH_QUADRATIC_FORMULA"));
+    assert!(result.trace.iter().any(|t| t.knowledge_ref.as_deref()
+        == Some("JH_QUADRATIC_FORMULA")
+        && t.ru_ref.starts_with("ru:")));
 
     let mut unsupported = MathProblemContext::parse("Factor x^2 - 5*x + 6.").unwrap();
     assert_eq!(

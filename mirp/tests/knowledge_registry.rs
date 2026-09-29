@@ -1,3 +1,4 @@
+use mathlang_mirp::capability::RuntimeCapabilityRegistry;
 use mathlang_mirp::knowledge::{
     ActivationClass, Applicability, ApplicabilityEngine, KnowledgeActivation, KnowledgeQuery,
     KnowledgeSpace,
@@ -36,7 +37,7 @@ fn problem(i: i64) -> String {
 }
 
 #[test]
-fn mandatory_640_case_matrix() {
+fn mandatory_800_check_matrix() {
     let mut checks = 0;
     for i in 0..40_i64 {
         let mut memory = MemorySpace::new();
@@ -125,6 +126,36 @@ fn mandatory_640_case_matrix() {
             Applicability::Applicable
         );
         checks += 1;
+        // Registry lookup is ordered and independent of Knowledge ID.
+        let registry = RuntimeCapabilityRegistry::quadratic();
+        assert!(
+            registry.get("FACTOR_QUADRATIC_INTEGER").is_some()
+                && registry.get("MISSING_CAPABILITY").is_none()
+                && registry.ids().collect::<Vec<_>>()
+                    == ["FACTOR_QUADRATIC_INTEGER", "SOLVE_QUADRATIC"]
+        );
+        checks += 1;
+        // A new Knowledge activates without a numeric Rule ID.
+        let new_activation = KnowledgeActivation::from_applicable(&unit, &state).unwrap();
+        assert_eq!(new_activation.legacy_runtime_rule_id, None);
+        checks += 1;
+        // The same capability resolves for every new Knowledge identity.
+        assert_eq!(
+            new_activation.capability_id,
+            registry
+                .get(&new_activation.capability_id)
+                .unwrap()
+                .capability_id()
+        );
+        checks += 1;
+        // Retrieval and activation are stable after a KnowledgeSpace round trip.
+        let path =
+            std::env::temp_dir().join(format!("knowledge-matrix-{}-{i}.json", std::process::id()));
+        memory.save(&path).unwrap();
+        let loaded = MemorySpace::load(&path).unwrap();
+        std::fs::remove_file(path).unwrap();
+        assert_eq!(loaded.query_knowledge(&q), retrieval);
+        checks += 1;
         // K: RUS activation
         let legacy = memory.get_knowledge("JH_QUADRATIC_INTEGER_FACTOR").unwrap();
         assert_eq!(
@@ -160,7 +191,7 @@ fn mandatory_640_case_matrix() {
                         .get("knowledge_activation")
                         .is_some_and(
                             |value| value["knowledge_id"] == "JH_QUADRATIC_INTEGER_FACTOR"
-                                && value["selected_ru"] == 35
+                                && value["capability_id"] == "FACTOR_QUADRATIC_INTEGER"
                                 && value["ruo_ref"].is_string()
                                 && value["result_state"].is_string()
                         ),
@@ -171,12 +202,12 @@ fn mandatory_640_case_matrix() {
         let selected = &result.knowledge_decisions[0].activation.as_ref().unwrap();
         assert_eq!(
             (
-                selected.selected_ru,
+                selected.legacy_runtime_rule_id,
                 selected.knowledge_id.as_str(),
                 selected.selected_rus.as_str()
             ),
             (
-                35,
+                Some(35),
                 "JH_QUADRATIC_INTEGER_FACTOR",
                 "QuadraticFactorizationRUS"
             )
@@ -210,7 +241,7 @@ fn mandatory_640_case_matrix() {
         );
         checks += 1;
     }
-    assert_eq!(checks, 640);
+    assert_eq!(checks, 800);
 }
 
 #[test]
@@ -297,7 +328,7 @@ fn native_runtime_requires_retrieved_applicable_knowledge() {
 
 #[test]
 fn indexed_retrieval_reduces_candidate_space_at_scale() {
-    for total in [100, 1_000, 10_000] {
+    for total in [100, 1_000, 10_000, 50_000] {
         let seed = MemorySpace::new();
         let mut space = KnowledgeSpace::empty();
         let template = seed.get_knowledge("JH_QUADRATIC_INTEGER_FACTOR").unwrap();
@@ -353,7 +384,7 @@ fn indexed_retrieval_reduces_candidate_space_at_scale() {
             result.candidates.len(),
             applicable,
             result.candidates.len(),
-            result.candidates.len() as f64 / total as f64
+            result.retrieval_trace.examined as f64 / total as f64
         );
     }
 }

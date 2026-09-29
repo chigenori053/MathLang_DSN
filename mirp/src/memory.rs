@@ -97,16 +97,19 @@ impl MemorySpace {
         let mut sequences = vec![];
         let mut executions = vec![];
         for ruo in ruos {
-            let rule = ruo["source_ru"]
-                .as_i64()
-                .ok_or_else(|| error("MirpValidationError", "RUO source_ru"))?;
-            let sequence = ruo["source_rus"]
+            let rule = ruo["ru_ref"]
                 .as_str()
-                .ok_or_else(|| error("MirpValidationError", "RUO source_rus"))?;
+                .map(str::to_owned)
+                .or_else(|| ruo["source_ru"].as_i64().map(|id| id.to_string()))
+                .ok_or_else(|| error("MirpValidationError", "RUO ru_ref"))?;
+            let sequence = ruo["rus_ref"]
+                .as_str()
+                .or_else(|| ruo["source_rus"].as_str())
+                .ok_or_else(|| error("MirpValidationError", "RUO rus_ref"))?;
             let execution = ruo["knowledge_id"]
                 .as_str()
                 .ok_or_else(|| error("MirpValidationError", "RUO knowledge_id"))?;
-            rules.push(rule.to_string());
+            rules.push(rule);
             sequences.push(sequence.to_string());
             executions.push(execution.to_string());
         }

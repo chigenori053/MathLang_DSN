@@ -35,7 +35,10 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 1
+    "runtime_rule_id": 1,
+    "capabilities": [
+      "TRANSFORM_EQUATION"
+    ]
   },
   {
     "knowledge_id": "EQ_MOVE_LEFT_CONSTANT",
@@ -73,7 +76,10 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 2
+    "runtime_rule_id": 2,
+    "capabilities": [
+      "TRANSFORM_EQUATION"
+    ]
   },
   {
     "knowledge_id": "EQ_SWAP_SIDES",
@@ -111,7 +117,10 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 3
+    "runtime_rule_id": 3,
+    "capabilities": [
+      "TRANSFORM_EQUATION"
+    ]
   },
   {
     "knowledge_id": "POLY_INTEGER",
@@ -149,7 +158,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 10
+    "runtime_rule_id": 10,
+    "capabilities": [
+      "CREATE_CONSTANT_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_VARIABLE",
@@ -187,7 +199,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 11
+    "runtime_rule_id": 11,
+    "capabilities": [
+      "CREATE_VARIABLE_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_ADD",
@@ -225,7 +240,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 12
+    "runtime_rule_id": 12,
+    "capabilities": [
+      "ADD_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_SUBTRACT",
@@ -263,7 +281,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 13
+    "runtime_rule_id": 13,
+    "capabilities": [
+      "SUBTRACT_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_MULTIPLY",
@@ -301,7 +322,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 14
+    "runtime_rule_id": 14,
+    "capabilities": [
+      "MULTIPLY_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_DIVIDE_CONSTANT",
@@ -339,7 +363,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 15
+    "runtime_rule_id": 15,
+    "capabilities": [
+      "DIVIDE_POLYNOMIAL_CONSTANT"
+    ]
   },
   {
     "knowledge_id": "POLY_POWER_BOUNDED",
@@ -377,7 +404,10 @@
       "legacy_domain": "POLYNOMIAL",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 16
+    "runtime_rule_id": 16,
+    "capabilities": [
+      "POWER_POLYNOMIAL_BOUNDED"
+    ]
   },
   {
     "knowledge_id": "POLY_DIFFERENTIATE",
@@ -415,7 +445,10 @@
       "legacy_domain": "CALCULUS",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 17
+    "runtime_rule_id": 17,
+    "capabilities": [
+      "DIFFERENTIATE_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_INTEGRATE",
@@ -453,7 +486,10 @@
       "legacy_domain": "CALCULUS",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 18
+    "runtime_rule_id": 18,
+    "capabilities": [
+      "INTEGRATE_POLYNOMIAL"
+    ]
   },
   {
     "knowledge_id": "POLY_EXPRESSION_EQUIVALENCE",
@@ -491,7 +527,10 @@
       "legacy_domain": "ASSESSMENT",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 19
+    "runtime_rule_id": 19,
+    "capabilities": [
+      "VERIFY_POLYNOMIAL_EQUIVALENCE"
+    ]
   },
   {
     "knowledge_id": "POLY_EQUATION_EQUIVALENCE",
@@ -529,7 +568,10 @@
       "legacy_domain": "ASSESSMENT",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 20
+    "runtime_rule_id": 20,
+    "capabilities": [
+      "VERIFY_EQUATION_EQUIVALENCE"
+    ]
   },
   {
     "knowledge_id": "JH_PRIME_FACTORIZATION",
@@ -567,7 +609,10 @@
       "legacy_domain": "NUMBER",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 21
+    "runtime_rule_id": 21,
+    "capabilities": [
+      "FACTOR_INTEGER"
+    ]
   },
   {
     "knowledge_id": "JH_SQUARE_ROOT_SIMPLIFY",
@@ -605,7 +650,10 @@
       "legacy_domain": "NUMBER",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 22
+    "runtime_rule_id": 22,
+    "capabilities": [
+      "SIMPLIFY_RADICAL"
+    ]
   },
   {
     "knowledge_id": "JH_QUADRATIC_FORMULA",
@@ -648,7 +696,10 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 23
+    "runtime_rule_id": 23,
+    "capabilities": [
+      "SOLVE_QUADRATIC"
+    ]
   },
   {
     "knowledge_id": "JH_LINEAR_SYSTEM",
@@ -686,7 +737,10 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 24
+    "runtime_rule_id": 24,
+    "capabilities": [
+      "SOLVE_LINEAR_SYSTEM"
+    ]
   },
   {
     "knowledge_id": "JH_FUNCTION_VALUE",
@@ -724,7 +778,10 @@
       "legacy_domain": "FUNCTION",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 25
+    "runtime_rule_id": 25,
+    "capabilities": [
+      "EVALUATE_FUNCTION"
+    ]
   },
   {
     "knowledge_id": "JH_POLYGON_ANGLE_SUM",
@@ -762,7 +819,10 @@
       "legacy_domain": "GEOMETRY",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 26
+    "runtime_rule_id": 26,
+    "capabilities": [
+      "POLYGON_ANGLE_SUM"
+    ]
   },
   {
     "knowledge_id": "JH_PYTHAGOREAN",
@@ -800,7 +860,10 @@
       "legacy_domain": "GEOMETRY",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 27
+    "runtime_rule_id": 27,
+    "capabilities": [
+      "APPLY_PYTHAGOREAN"
+    ]
   },
   {
     "knowledge_id": "JH_DATA_QUARTILES",
@@ -838,7 +901,10 @@
       "legacy_domain": "DATA",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 28
+    "runtime_rule_id": 28,
+    "capabilities": [
+      "CALCULATE_QUARTILES"
+    ]
   },
   {
     "knowledge_id": "JH_CLASSICAL_PROBABILITY",
@@ -876,7 +942,10 @@
       "legacy_domain": "DATA",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 29
+    "runtime_rule_id": 29,
+    "capabilities": [
+      "CALCULATE_CLASSICAL_PROBABILITY"
+    ]
   },
   {
     "knowledge_id": "JH_INVERSE_PROPORTION",
@@ -914,7 +983,10 @@
       "legacy_domain": "FUNCTION",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 30
+    "runtime_rule_id": 30,
+    "capabilities": [
+      "EVALUATE_INVERSE_PROPORTION"
+    ]
   },
   {
     "knowledge_id": "JH_SIMILARITY_RATIOS",
@@ -952,7 +1024,10 @@
       "legacy_domain": "GEOMETRY",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 31
+    "runtime_rule_id": 31,
+    "capabilities": [
+      "APPLY_SIMILARITY_RATIOS"
+    ]
   },
   {
     "knowledge_id": "JH_RELATIVE_FREQUENCY",
@@ -990,7 +1065,10 @@
       "legacy_domain": "DATA",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 32
+    "runtime_rule_id": 32,
+    "capabilities": [
+      "CALCULATE_RELATIVE_FREQUENCY"
+    ]
   },
   {
     "knowledge_id": "JH_CIRCLE_ANGLE",
@@ -1028,7 +1106,10 @@
       "legacy_domain": "GEOMETRY",
       "curriculum_source": "https://www.mext.go.jp/component/a_menu/education/micro_detail/__icsFiles/afieldfile/2019/03/18/1387018_004.pdf"
     },
-    "runtime_rule_id": 33
+    "runtime_rule_id": 33,
+    "capabilities": [
+      "CIRCLE_ANGLE_THEOREM"
+    ]
   },
   {
     "knowledge_id": "MIRP_INTEGER_COMPARISON",
@@ -1066,7 +1147,10 @@
       "legacy_domain": "COMPARISON",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 34
+    "runtime_rule_id": 34,
+    "capabilities": [
+      "COMPARE_INTEGER"
+    ]
   },
   {
     "knowledge_id": "JH_QUADRATIC_INTEGER_FACTOR",
@@ -1110,6 +1194,9 @@
       "legacy_domain": "EQUATION",
       "curriculum_source": ""
     },
-    "runtime_rule_id": 35
+    "runtime_rule_id": 35,
+    "capabilities": [
+      "FACTOR_QUADRATIC_INTEGER"
+    ]
   }
 ]

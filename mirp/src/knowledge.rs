@@ -43,10 +43,13 @@ pub struct KnowledgeUnit {
     pub dependencies: Vec<String>,
     pub applicable_goals: Vec<String>,
     pub applicable_rus: Vec<String>,
+    #[serde(default)]
+    pub capabilities: Vec<String>,
     pub priority: i32,
     pub provenance: Provenance,
     pub curriculum_level: String,
     pub activation_metadata: BTreeMap<String, serde_json::Value>,
+    #[serde(default)]
     pub runtime_rule_id: Option<i64>,
 }
 
@@ -70,7 +73,7 @@ impl KnowledgeUnit {
             ]
             .contains(&self.knowledge_type.as_str())
             || self.conclusion.is_empty()
-            || self.applicable_rus.is_empty()
+            || (self.applicable_rus.is_empty() && !self.capabilities.is_empty())
             || self.provenance.source_id.is_empty()
             || self.provenance.source_type.is_empty()
             || self.curriculum_level.is_empty()
@@ -88,6 +91,7 @@ impl KnowledgeUnit {
             &self.dependencies,
             &self.applicable_goals,
             &self.applicable_rus,
+            &self.capabilities,
         ] {
             if values.iter().any(String::is_empty)
                 || values.iter().collect::<BTreeSet<_>>().len() != values.len()
@@ -96,6 +100,25 @@ impl KnowledgeUnit {
                     "invalid or duplicate feature: {}",
                     self.knowledge_id
                 ));
+            }
+        }
+        if self.capabilities.iter().any(|id| !valid_id(id)) {
+            return Err(format!("invalid capability ID: {}", self.knowledge_id));
+        }
+        if let Some(conflicts) = self.activation_metadata.get("conflicts_with") {
+            let Some(ids) = conflicts.as_array() else {
+                return Err("invalid conflicts_with".into());
+            };
+            let ids: Option<Vec<&str>> = ids.iter().map(serde_json::Value::as_str).collect();
+            let Some(ids) = ids else {
+                return Err("invalid conflicts_with".into());
+            };
+            if ids
+                .iter()
+                .any(|id| !valid_id(id) || *id == self.knowledge_id)
+                || ids.iter().collect::<BTreeSet<_>>().len() != ids.len()
+            {
+                return Err("invalid conflicts_with".into());
             }
         }
         Ok(())
@@ -107,6 +130,13 @@ impl KnowledgeUnit {
             &[&serde_json::to_string(self).expect("KnowledgeUnit serializes")],
         )
     }
+}
+
+fn valid_id(id: &str) -> bool {
+    !id.is_empty()
+        && id
+            .chars()
+            .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == '_')
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -168,11 +198,38 @@ impl KnowledgeSpace {
         self.categories.clear();
         self.goals.clear();
         self.rules.clear();
+        // Older persisted catalogs predate capabilities. The bundled data is the migration table.
+        let legacy_capabilities: BTreeMap<i64, Vec<String>> =
+            serde_json::from_str::<Vec<KnowledgeUnit>>(include_str!("../knowledge/legacy.json"))
+                .expect("bundled legacy knowledge is JSON")
+                .into_iter()
+                .filter_map(|unit| unit.runtime_rule_id.map(|rule| (rule, unit.capabilities)))
+                .collect();
+        for unit in self.units.values_mut() {
+            if unit.capabilities.is_empty() {
+                if let Some(rule) = unit.runtime_rule_id {
+                    if let Some(capabilities) = legacy_capabilities.get(&rule) {
+                        unit.capabilities = capabilities.clone();
+                    }
+                }
+            }
+        }
         for (id, unit) in &self.units {
             unit.validate()?;
             for dependency in &unit.dependencies {
                 if !self.units.contains_key(dependency) {
                     return Err(format!("missing dependency: {dependency}"));
+                }
+            }
+            if let Some(conflicts) = unit
+                .activation_metadata
+                .get("conflicts_with")
+                .and_then(serde_json::Value::as_array)
+            {
+                for conflict in conflicts {
+                    if !self.units.contains_key(conflict.as_str().unwrap()) {
+                        return Err(format!("missing conflicting Knowledge: {conflict}"));
+                    }
                 }
             }
             if let Some(rule) = unit.runtime_rule_id {
@@ -453,21 +510,41 @@ pub struct KnowledgeActivation {
     pub knowledge_occurrence: String,
     pub source_state: String,
     pub selected_rus: String,
-    pub selected_ru: i64,
+    pub capability_id: String,
+    pub activation_id: String,
     pub ruo_ref: Option<String>,
     pub result_state: Option<String>,
+    pub legacy_runtime_rule_id: Option<i64>,
 }
 
 impl KnowledgeActivation {
     pub fn from_applicable(unit: &KnowledgeUnit, state: &SemanticState) -> Option<Self> {
+        Self::for_capability(unit, state, unit.capabilities.first()?)
+    }
+
+    pub fn for_capability(
+        unit: &KnowledgeUnit,
+        state: &SemanticState,
+        capability_id: &str,
+    ) -> Option<Self> {
+        if !unit.capabilities.iter().any(|id| id == capability_id) {
+            return None;
+        }
+        let source_state = stable_id("state", &[&state.canonical().ok()?]);
+        let knowledge_occurrence = unit.occurrence_id();
         Some(Self {
             knowledge_id: unit.knowledge_id.clone(),
-            knowledge_occurrence: unit.occurrence_id(),
-            source_state: stable_id("state", &[&state.canonical().ok()?]),
+            knowledge_occurrence: knowledge_occurrence.clone(),
+            source_state: source_state.clone(),
             selected_rus: unit.applicable_rus.first()?.clone(),
-            selected_ru: unit.runtime_rule_id?,
+            capability_id: capability_id.into(),
+            activation_id: stable_id(
+                "activation",
+                &[&knowledge_occurrence, capability_id, &source_state],
+            ),
             ruo_ref: None,
             result_state: None,
+            legacy_runtime_rule_id: unit.runtime_rule_id,
         })
     }
 }

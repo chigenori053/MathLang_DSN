@@ -1,4 +1,5 @@
 //! ProblemIntent to native ReasonScript reasoning, with MIRP as mathematical state.
+use crate::capability::{CapabilityRequest, RuntimeCapabilityRegistry};
 use crate::intent::{integer_quadratic_roots, ConstraintKind, Method, Polynomial};
 use crate::knowledge::{
     Applicability, ApplicabilityEngine, KnowledgeActivation, KnowledgeQuery, KnowledgeQueryResult,
@@ -8,7 +9,6 @@ use crate::pif::{
     parse_problem, CriterionKind, CriterionStatus, GoalKind, GoalStatus, IntentRuntimeState,
     IntentStatus, MethodEvidence, ProblemDefinition,
 };
-use crate::session::run_reason_source;
 use crate::{
     stable_id, Common, Evidence as MirpEvidence, Modality, Object, Polarity, Provenance, Relation,
     SemanticDelta, SemanticState, Status, Value,
@@ -120,6 +120,7 @@ pub struct MathProblemContext {
     memory: MemorySpace,
     knowledge_decisions: Vec<KnowledgeDecision>,
     active_knowledge: Option<KnowledgeActivation>,
+    capabilities: RuntimeCapabilityRegistry,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -258,6 +259,7 @@ impl MathProblemContext {
             memory,
             knowledge_decisions: vec![],
             active_knowledge: None,
+            capabilities: RuntimeCapabilityRegistry::quadratic(),
         };
         if let Some(coefficients) = recognized {
             context.native_step(
@@ -295,14 +297,19 @@ impl MathProblemContext {
         &self.knowledge_decisions
     }
 
+    pub fn capabilities_mut(&mut self) -> &mut RuntimeCapabilityRegistry {
+        &mut self.capabilities
+    }
+
     fn select_knowledge(
         &mut self,
         strategy: &Strategy,
         poly: &Polynomial,
-    ) -> Option<KnowledgeActivation> {
+    ) -> Result<Option<KnowledgeActivation>, String> {
         let equation_id = self
             .semantic_state
-            .resolve("equation", "pini", &self.plan.problem_id)?
+            .resolve("equation", "pini", &self.plan.problem_id)
+            .ok_or("CAPABILITY_INPUT_INVALID: equation missing")?
             .common
             .id
             .clone();
@@ -328,9 +335,11 @@ impl MathProblemContext {
         };
         let retrieval = self.memory.query_knowledge(&query);
         let mut applicability = vec![];
-        let mut activation = None;
         for candidate in &retrieval.candidates {
-            let unit = self.memory.get_knowledge(&candidate.knowledge_id)?;
+            let unit = self
+                .memory
+                .get_knowledge(&candidate.knowledge_id)
+                .ok_or("KNOWLEDGE_NOT_FOUND")?;
             let verdict = ApplicabilityEngine::evaluate(
                 unit,
                 candidate,
@@ -338,18 +347,83 @@ impl MathProblemContext {
                 &self.semantic_state,
                 |id| self.memory.get_knowledge(id).is_some(),
             );
-            if verdict == Applicability::Applicable && activation.is_none() {
-                activation = KnowledgeActivation::from_applicable(unit, &self.semantic_state);
-            }
             applicability.push((candidate.knowledge_id.clone(), verdict));
         }
+        let selected_id = applicability
+            .iter()
+            .find(|(id, verdict)| {
+                *verdict == Applicability::Applicable
+                    && self
+                        .memory
+                        .get_knowledge(id)
+                        .is_some_and(|unit| !unit.capabilities.is_empty())
+            })
+            .map(|(id, _)| id.clone());
         self.knowledge_decisions.push(KnowledgeDecision {
-            query,
+            query: query.clone(),
             retrieval,
             applicability,
-            activation: activation.clone(),
+            activation: None,
         });
-        activation
+        let Some(selected_id) = selected_id else {
+            return Ok(None);
+        };
+        let unit = self
+            .memory
+            .get_knowledge(&selected_id)
+            .ok_or("KNOWLEDGE_NOT_FOUND")?;
+        let decision = self.knowledge_decisions.last().unwrap();
+        let selected_class = decision
+            .retrieval
+            .candidates
+            .iter()
+            .find(|candidate| candidate.knowledge_id == selected_id)
+            .unwrap()
+            .activation_class
+            .clone();
+        for (other_id, verdict) in &decision.applicability {
+            if *verdict != Applicability::Applicable || *other_id == selected_id {
+                continue;
+            }
+            let other = self
+                .memory
+                .get_knowledge(other_id)
+                .ok_or("KNOWLEDGE_NOT_FOUND")?;
+            let other_class = decision
+                .retrieval
+                .candidates
+                .iter()
+                .find(|candidate| candidate.knowledge_id == *other_id)
+                .unwrap()
+                .activation_class
+                .clone();
+            let conflicts = |a: &crate::knowledge::KnowledgeUnit, b: &str| {
+                a.activation_metadata
+                    .get("conflicts_with")
+                    .and_then(Json::as_array)
+                    .is_some_and(|ids| ids.iter().any(|id| id.as_str() == Some(b)))
+            };
+            if other.priority == unit.priority
+                && other_class == selected_class
+                && (conflicts(unit, other_id) || conflicts(other, &selected_id))
+            {
+                return Err("KNOWLEDGE_CONFLICT".into());
+            }
+        }
+        let capability_id = unit
+            .capabilities
+            .iter()
+            .find(|id| {
+                self.capabilities
+                    .get(id)
+                    .is_some_and(|executor| executor.supports_goal(&query.goal))
+            })
+            .ok_or_else(|| format!("CAPABILITY_NOT_FOUND: {}", unit.capabilities.join(",")))?;
+        let activation =
+            KnowledgeActivation::for_capability(unit, &self.semantic_state, capability_id)
+                .ok_or("RUS_NOT_AVAILABLE")?;
+        self.knowledge_decisions.last_mut().unwrap().activation = Some(activation.clone());
+        Ok(Some(activation))
     }
 
     fn native_step(&mut self, ru: &str, rus: &str, output: Json) -> NativeTrace {
@@ -559,6 +633,23 @@ impl MathProblemContext {
         mirp.common_mut()
             .metadata
             .insert("native_trace".into(), json!(evidence));
+        if trace.ruo["source"] == "MathLang_DSN/knowledge-runtime" {
+            mirp.common_mut().metadata.insert(
+                "knowledge_runtime".into(),
+                json!({
+                    "knowledge_id": trace.ruo["knowledge_id"],
+                    "knowledge_occurrence": trace.ruo["knowledge_occurrence"],
+                    "activation_id": trace.ruo["activation_id"],
+                    "capability_id": trace.ruo["capability_id"],
+                    "ru_ref": trace.ru_ref,
+                    "rus_ref": trace.rus_ref,
+                    "ruo_ref": trace.ruo_ref,
+                    "source_state": trace.ruo["source_state"],
+                    "result_state": (self.semantic_state.version + 1).to_string(),
+                    "dependency_knowledge_refs": trace.ruo["dependency_knowledge_refs"],
+                }),
+            );
+        }
         if let Some(active) = &self.active_knowledge {
             let mut applied = active.clone();
             applied.result_state = Some((self.semantic_state.version + 1).to_string());
@@ -605,47 +696,120 @@ impl MathProblemContext {
             return Ok(self.finish(result));
         }
         let poly = self.equation()?;
-        let [c, b, a] = poly.coefficients;
+        let a = poly.coefficients[2];
         let automatic_selection = selected.is_none();
         let strategy = selected.unwrap_or(match self.plan.required_method {
             Some(Method::QuadraticFormula) => Strategy::QuadraticFormula,
             _ => Strategy::Factorization,
         });
-        let Some(activation) = self.select_knowledge(&strategy, &poly) else {
-            let result = self.result(
-                None,
-                ReasoningStatus::Unsupported,
-                "UNKNOWN",
-                "UNKNOWN",
-                "UNKNOWN",
-            );
-            return Ok(self.finish(result));
-        };
-        self.active_knowledge = Some(activation.clone());
-        let source = match activation.selected_ru {
-            35 => format!("JuniorHigh::JFactorQuadratic({a}, {b}, {c})"),
-            23 => format!("JuniorHigh::JSolveQuadratic({a}, {b}, {c})"),
-            _ => {
-                let result = self.result(
+        let activation = match self.select_knowledge(&strategy, &poly) {
+            Ok(Some(activation)) => activation,
+            outcome => {
+                let conflict = matches!(&outcome, Err(error) if error == "KNOWLEDGE_CONFLICT");
+                let mut result = self.result(
                     None,
-                    ReasoningStatus::Unsupported,
+                    if conflict {
+                        ReasoningStatus::Conflict
+                    } else {
+                        ReasoningStatus::Unsupported
+                    },
                     "UNKNOWN",
                     "UNKNOWN",
                     "UNKNOWN",
                 );
+                result
+                    .problem_evaluation
+                    .primary_errors
+                    .push(match outcome {
+                        Err(error) => error,
+                        _ => "NO_APPLICABLE_KNOWLEDGE".into(),
+                    });
                 return Ok(self.finish(result));
             }
         };
-        let output = run_reason_source(&source, &[]).map_err(|e| e.to_string())?;
-        let ruo = output.get("ruo").cloned().ok_or("missing native RUO")?;
-        let ru_ref = ruo["knowledge_id"].as_str().ok_or("missing RU")?.to_owned();
-        let rus_ref = ruo["source_rus"].as_str().ok_or("missing RUS")?.to_owned();
-        if ruo["source_ru"].as_i64() != Some(activation.selected_ru)
-            || ru_ref != activation.knowledge_id
-            || rus_ref != activation.selected_rus
+        self.active_knowledge = Some(activation.clone());
+        let executor = self
+            .capabilities
+            .get(&activation.capability_id)
+            .ok_or("CAPABILITY_NOT_FOUND")?;
+        if stable_id(
+            "state",
+            &[&self.semantic_state.canonical().map_err(|e| e.to_string())?],
+        ) != activation.source_state
         {
-            return Err("ReasonScript RUO does not match activated Knowledge".into());
+            return Err("RUO_STATE_MISMATCH".into());
         }
+        executor.validate(&activation, &self.semantic_state)?;
+        let query = &self
+            .knowledge_decisions
+            .last()
+            .ok_or("NO_APPLICABLE_KNOWLEDGE")?
+            .query;
+        let request = CapabilityRequest {
+            problem_id: self.plan.problem_id.clone(),
+            goal_ref: self.plan.goal_ref.clone(),
+            knowledge_id: activation.knowledge_id.clone(),
+            knowledge_occurrence: activation.knowledge_occurrence.clone(),
+            capability_id: activation.capability_id.clone(),
+            rus_ref: activation.selected_rus.clone(),
+            semantic_state_refs: query.semantic_state_refs.clone(),
+            constraints: query.constraints.clone(),
+        };
+        let output = executor.execute(&request, &self.semantic_state)?;
+        if output.ru_ref
+            != stable_id(
+                "ru",
+                &[
+                    &activation.knowledge_id,
+                    &activation.capability_id,
+                    &activation.source_state,
+                ],
+            )
+        {
+            return Err("CAPABILITY_OUTPUT_INVALID".into());
+        }
+        if output.rus_ref != activation.selected_rus {
+            return Err("RUO_STATE_MISMATCH".into());
+        }
+        let unit = self
+            .memory
+            .get_knowledge(&activation.knowledge_id)
+            .ok_or("KNOWLEDGE_NOT_FOUND")?;
+        let mut ruo = json!({
+            "source": "MathLang_DSN/knowledge-runtime",
+            "knowledge_id": activation.knowledge_id,
+            "knowledge_occurrence": activation.knowledge_occurrence,
+            "activation_id": activation.activation_id,
+            "capability_id": activation.capability_id,
+            "ru_ref": output.ru_ref,
+            "rus_ref": output.rus_ref,
+            "source_state": activation.source_state,
+            "result": output.output,
+            "status": output.status,
+            "execution_metadata": output.execution_metadata,
+            "provenance": unit.provenance,
+            "dependency_knowledge_refs": unit.dependencies,
+        });
+        if let Some(rule) = activation.legacy_runtime_rule_id {
+            ruo["legacy_runtime_rule_id"] = json!(rule);
+        }
+        if ruo["knowledge_id"] != request.knowledge_id {
+            return Err("RUO_KNOWLEDGE_MISMATCH".into());
+        }
+        if ruo["capability_id"] != request.capability_id {
+            return Err("RUO_CAPABILITY_MISMATCH".into());
+        }
+        if ruo["source_state"] != activation.source_state {
+            return Err("RUO_STATE_MISMATCH".into());
+        }
+        let ru_ref = ruo["ru_ref"]
+            .as_str()
+            .ok_or("CAPABILITY_OUTPUT_INVALID")?
+            .to_owned();
+        let rus_ref = ruo["rus_ref"]
+            .as_str()
+            .ok_or("CAPABILITY_OUTPUT_INVALID")?
+            .to_owned();
         let ruo_ref = stable_id(
             "ruo",
             &[&serde_json::to_string(&ruo).unwrap(), &self.plan.problem_id],
@@ -656,7 +820,7 @@ impl MathProblemContext {
             ruo_ref,
             ruo,
             state_ref: self.semantic_state.version.to_string(),
-            knowledge_ref: Some(activation.knowledge_id),
+            knowledge_ref: Some(activation.knowledge_id.clone()),
         };
         if let Some(active) = &mut self.active_knowledge {
             active.ruo_ref = Some(trace.ruo_ref.clone());
@@ -669,7 +833,10 @@ impl MathProblemContext {
         self.trace.push(trace.clone());
         let mut roots = vec![];
         let mut all_integral = true;
-        for root in output["roots"].as_array().ok_or("invalid roots")? {
+        for root in trace.ruo["result"]["roots"]
+            .as_array()
+            .ok_or("CAPABILITY_OUTPUT_INVALID")?
+        {
             let numerator = root["numerator"].as_i64().ok_or("invalid numerator")?;
             let radical = root["radical_coefficient"]
                 .as_i64()
@@ -683,7 +850,7 @@ impl MathProblemContext {
         }
         roots.sort();
         roots.dedup();
-        let native_status = output["status"].as_str().unwrap_or("UNKNOWN");
+        let native_status = trace.ruo["status"].as_str().unwrap_or("UNKNOWN");
         if native_status == "UNSUPPORTED" || native_status == "RESOURCE_LIMIT" {
             let result = self.result(
                 None,
@@ -716,7 +883,8 @@ impl MathProblemContext {
             );
             return Ok(self.finish(result));
         }
-        let factor_validation = if strategy == Strategy::Factorization {
+        let is_factorization = activation.capability_id == "FACTOR_QUADRATIC_INTEGER";
+        let factor_validation = if is_factorization {
             Some(self.native_step(
                 "FactorValidationRU",
                 "QuadraticFactorizationRUS",
@@ -725,7 +893,7 @@ impl MathProblemContext {
         } else {
             None
         };
-        if strategy == Strategy::Factorization {
+        if is_factorization {
             let factors = std::iter::once(a)
                 .chain(roots.iter().copied())
                 .map(Value::Integer)
@@ -761,11 +929,13 @@ impl MathProblemContext {
             json!({"answer": filtered}),
         );
         self.record("solution_set", root_set(&filtered), &answer_trace)?;
-        let executed_ru = &trace.ru_ref;
-        let method = match (&self.plan.required_method, executed_ru.as_str()) {
+        let method = match (
+            &self.plan.required_method,
+            activation.capability_id.as_str(),
+        ) {
             (None, _)
-            | (Some(Method::Factorization), "JH_QUADRATIC_INTEGER_FACTOR")
-            | (Some(Method::QuadraticFormula), "JH_QUADRATIC_FORMULA") => "SATISFIED",
+            | (Some(Method::Factorization), "FACTOR_QUADRATIC_INTEGER")
+            | (Some(Method::QuadraticFormula), "SOLVE_QUADRATIC") => "SATISFIED",
             _ => "VIOLATION",
         };
         let complete =
@@ -780,9 +950,11 @@ impl MathProblemContext {
     }
 
     fn finish(&mut self, result: MathLangResult) -> MathLangResult {
-        let execution = result.trace.iter().rev().find(|step| {
-            step.ru_ref == "JH_QUADRATIC_INTEGER_FACTOR" || step.ru_ref == "JH_QUADRATIC_FORMULA"
-        });
+        let execution = result
+            .trace
+            .iter()
+            .rev()
+            .find(|step| step.ruo["source"] == "MathLang_DSN/knowledge-runtime");
         let transition_id = stable_id(
             "native-transition",
             &[
@@ -793,7 +965,7 @@ impl MathProblemContext {
             ],
         );
         if let Some(execution) = execution {
-            let strategy = if execution.ru_ref == "JH_QUADRATIC_INTEGER_FACTOR" {
+            let strategy = if execution.ruo["capability_id"] == "FACTOR_QUADRATIC_INTEGER" {
                 Method::Factorization
             } else {
                 Method::QuadraticFormula
