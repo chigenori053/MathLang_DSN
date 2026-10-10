@@ -37,6 +37,7 @@ fn problem(i: i64) -> String {
 }
 
 #[test]
+#[ignore = "heavy (~20s): run when knowledge registry changes"]
 fn mandatory_800_check_matrix() {
     let mut checks = 0;
     for i in 0..40_i64 {

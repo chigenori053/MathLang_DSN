@@ -54,6 +54,12 @@ freeze boundary; further changes require a schema version or migration.
 
 The imported DSN_Test modules are listed in `DSN_TEST_IMPORTS.md`. Its older `mirp.rsn` was intentionally excluded because it defines a different schema.
 
+Test tiers: the default `cargo test` runs the fast suite (~6s). Three heavy
+matrices are `#[ignore]`d (520-case native pipeline ~90s, 20-input
+cross-process knowledge ~30s, 800-check registry ~20s); run them with
+`cargo test --release -- --ignored` before release or when the native
+pipeline, knowledge registry, or persistence changes.
+
 Verification commands: `cargo test --offline --manifest-path mirp/Cargo.toml`,
 `reason project-validate . --json`, and
 `python3 -m unittest discover -s tests -q`. The Foundation suite covers core

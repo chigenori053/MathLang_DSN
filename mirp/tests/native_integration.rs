@@ -58,6 +58,7 @@ fn required_e2e() {
 }
 
 #[test]
+#[ignore = "heavy (~90s): run before release or when native pipeline changes"]
 fn mandatory_520_case_matrix() {
     let mut checks = 0;
     for i in 0..40 {

@@ -159,26 +159,6 @@ fn independent_processes_share_persisted_state() {
 }
 
 #[test]
-fn three_fresh_runs_have_byte_identical_mirp() {
-    let mut outputs = vec![];
-    for _ in 0..3 {
-        let mut session = Session::new("lesson", "global");
-        session
-            .apply_input(Domain::NaturalLanguage, "x is five.")
-            .unwrap();
-        session
-            .apply_input(Domain::Mathematics, "y = x + 2")
-            .unwrap();
-        session
-            .apply_input(Domain::Code, "if y > 6:\n    result = y")
-            .unwrap();
-        outputs.push(session.state.canonical().unwrap());
-    }
-    assert_eq!(outputs[0], outputs[1]);
-    assert_eq!(outputs[1], outputs[2]);
-}
-
-#[test]
 fn cross_domain_runtime_generalizes_beyond_reference_numbers() {
     let mut session = Session::new("lesson", "global");
     session

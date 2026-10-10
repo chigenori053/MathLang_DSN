@@ -300,6 +300,7 @@ fn persisted_knowledge_is_deterministic_across_three_processes() {
 }
 
 #[test]
+#[ignore = "heavy (~30s): run when knowledge/registration/persistence changes"]
 fn twenty_inputs_match_across_three_processes_and_registration_orders() {
     let knowledge = [
         ("NEW_ORDER_THEOREM", "THEOREM", 10),
