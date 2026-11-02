@@ -1,0 +1,1557 @@
+[
+  {
+    "knowledge_id": "IR_RET_K02",
+    "obligation": {
+      "id": "RET_K02",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "s",
+          {
+            "Function": [
+              "Nat",
+              "Real"
+            ]
+          },
+          {
+            "ForAll": [
+              "i",
+              "Nat",
+              {
+                "ForAll": [
+                  "j",
+                  "Nat",
+                  {
+                    "ForAll": [
+                      "x",
+                      "Real",
+                      {
+                        "Implies": [
+                          {
+                            "LogicalNot": {
+                              "Equality": [
+                                {
+                                  "Variable": "j"
+                                },
+                                {
+                                  "Variable": "i"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "Equality": [
+                              {
+                                "Apply": [
+                                  {
+                                    "Update": [
+                                      {
+                                        "Variable": "s"
+                                      },
+                                      {
+                                        "Variable": "i"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "Variable": "j"
+                                  }
+                                ]
+                              },
+                              {
+                                "Apply": [
+                                  {
+                                    "Variable": "s"
+                                  },
+                                  {
+                                    "Variable": "j"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_K02"
+  },
+  {
+    "knowledge_id": "IR_RET_K03",
+    "obligation": {
+      "id": "RET_K03",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "s",
+          {
+            "Function": [
+              "Nat",
+              "Real"
+            ]
+          },
+          {
+            "ForAll": [
+              "i",
+              "Nat",
+              {
+                "ForAll": [
+                  "x",
+                  "Real",
+                  {
+                    "Equality": [
+                      {
+                        "Apply": [
+                          {
+                            "Update": [
+                              {
+                                "Variable": "s"
+                              },
+                              {
+                                "Variable": "i"
+                              },
+                              {
+                                "Variable": "x"
+                              }
+                            ]
+                          },
+                          {
+                            "Variable": "i"
+                          }
+                        ]
+                      },
+                      {
+                        "Variable": "x"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_K03"
+  },
+  {
+    "knowledge_id": "IR_RET_K04",
+    "obligation": {
+      "id": "RET_K04",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "s",
+          {
+            "Function": [
+              "Nat",
+              "Real"
+            ]
+          },
+          {
+            "LogicalNot": {
+              "Equality": [
+                {
+                  "Apply": [
+                    {
+                      "Update": [
+                        {
+                          "Update": [
+                            {
+                              "Variable": "s"
+                            },
+                            {
+                              "Constant": {
+                                "Natural": 0
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "One": "Real"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "Constant": {
+                            "Natural": 0
+                          }
+                        },
+                        {
+                          "Add": [
+                            {
+                              "Constant": {
+                                "One": "Real"
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "One": "Real"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Constant": {
+                        "Natural": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Apply": [
+                    {
+                      "Update": [
+                        {
+                          "Update": [
+                            {
+                              "Variable": "s"
+                            },
+                            {
+                              "Constant": {
+                                "Natural": 0
+                              }
+                            },
+                            {
+                              "Add": [
+                                {
+                                  "Constant": {
+                                    "One": "Real"
+                                  }
+                                },
+                                {
+                                  "Constant": {
+                                    "One": "Real"
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Constant": {
+                            "Natural": 0
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "One": "Real"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Constant": {
+                        "Natural": 0
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_K04"
+  },
+  {
+    "knowledge_id": "IR_RET_K06",
+    "obligation": {
+      "id": "RET_K06",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "LogicalNot": {
+          "Exists": [
+            "s",
+            {
+              "Function": [
+                "Nat",
+                "Real"
+              ]
+            },
+            {
+              "LogicalAnd": [
+                {
+                  "Equality": [
+                    {
+                      "Apply": [
+                        {
+                          "Variable": "s"
+                        },
+                        {
+                          "Constant": {
+                            "Natural": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Constant": {
+                        "Zero": "Real"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Equality": [
+                    {
+                      "Apply": [
+                        {
+                          "Variable": "s"
+                        },
+                        {
+                          "Constant": {
+                            "Natural": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Constant": {
+                        "One": "Real"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_K06"
+  },
+  {
+    "knowledge_id": "IR_RET_K12",
+    "obligation": {
+      "id": "RET_K12",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "LogicalNot": {
+          "Exists": [
+            "f",
+            {
+              "Function": [
+                "Real",
+                "Real"
+              ]
+            },
+            {
+              "LogicalAnd": [
+                {
+                  "ForAll": [
+                    "x",
+                    "Real",
+                    {
+                      "Equality": [
+                        {
+                          "Apply": [
+                            {
+                              "Variable": "f"
+                            },
+                            {
+                              "Variable": "x"
+                            }
+                          ]
+                        },
+                        {
+                          "Variable": "x"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Equality": [
+                    {
+                      "Apply": [
+                        {
+                          "Variable": "f"
+                        },
+                        {
+                          "Constant": {
+                            "Zero": "Real"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Constant": {
+                        "One": "Real"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_K12"
+  },
+  {
+    "knowledge_id": "IR_RET_R04",
+    "obligation": {
+      "id": "RET_R04",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "a",
+          {
+            "Vector": [
+              "Real",
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "b",
+              {
+                "Vector": [
+                  "Real",
+                  {
+                    "Fixed": 2
+                  }
+                ]
+              },
+              {
+                "Implies": [
+                  {
+                    "LogicalAnd": [
+                      {
+                        "Equality": [
+                          {
+                            "TensorIndex": [
+                              {
+                                "Variable": "a"
+                              },
+                              [
+                                0
+                              ]
+                            ]
+                          },
+                          {
+                            "Constant": {
+                              "Zero": "Real"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "Equality": [
+                          {
+                            "TensorIndex": [
+                              {
+                                "Variable": "b"
+                              },
+                              [
+                                0
+                              ]
+                            ]
+                          },
+                          {
+                            "Constant": {
+                              "Zero": "Real"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Equality": [
+                      {
+                        "TensorIndex": [
+                          {
+                            "Add": [
+                              {
+                                "Variable": "a"
+                              },
+                              {
+                                "Variable": "b"
+                              }
+                            ]
+                          },
+                          [
+                            0
+                          ]
+                        ]
+                      },
+                      {
+                        "Constant": {
+                          "Zero": "Real"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_R04"
+  },
+  {
+    "knowledge_id": "IR_RET_E03",
+    "obligation": {
+      "id": "RET_E03",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "p",
+          {
+            "LinearOperator": [
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              },
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              }
+            ]
+          },
+          {
+            "Equality": [
+              {
+                "Apply": [
+                  {
+                    "Variable": "p"
+                  },
+                  {
+                    "Constant": {
+                      "Zero": {
+                        "HilbertSpace": {
+                          "Fixed": 2
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "Constant": {
+                  "Zero": {
+                    "HilbertSpace": {
+                      "Fixed": 2
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_E03"
+  },
+  {
+    "knowledge_id": "IR_RET_E04",
+    "obligation": {
+      "id": "RET_E04",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "p",
+          {
+            "LinearOperator": [
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              },
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "x",
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              },
+              {
+                "ForAll": [
+                  "y",
+                  {
+                    "HilbertSpace": {
+                      "Fixed": 2
+                    }
+                  },
+                  {
+                    "ForAll": [
+                      "z",
+                      {
+                        "HilbertSpace": {
+                          "Fixed": 2
+                        }
+                      },
+                      {
+                        "Implies": [
+                          {
+                            "LogicalAnd": [
+                              {
+                                "Equality": [
+                                  {
+                                    "Variable": "y"
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "p"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "Equality": [
+                                  {
+                                    "Variable": "z"
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "p"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "Equality": [
+                              {
+                                "Variable": "y"
+                              },
+                              {
+                                "Variable": "z"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_E04"
+  },
+  {
+    "knowledge_id": "IR_RET_R10",
+    "obligation": {
+      "id": "RET_R10",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "a",
+          "Proposition",
+          {
+            "ForAll": [
+              "b",
+              "Proposition",
+              {
+                "Implies": [
+                  {
+                    "Implies": [
+                      {
+                        "Variable": "a"
+                      },
+                      {
+                        "Variable": "b"
+                      }
+                    ]
+                  },
+                  {
+                    "Implies": [
+                      {
+                        "Variable": "a"
+                      },
+                      {
+                        "Variable": "b"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_R10"
+  },
+  {
+    "knowledge_id": "IR_RET_C08",
+    "obligation": {
+      "id": "RET_C08",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "LogicalNot": {
+          "Exists": [
+            "a",
+            "Real",
+            {
+              "LogicalAnd": [
+                {
+                  "Equality": [
+                    {
+                      "Variable": "a"
+                    },
+                    {
+                      "Constant": {
+                        "Zero": "Real"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Equality": [
+                    {
+                      "Variable": "a"
+                    },
+                    {
+                      "Constant": {
+                        "One": "Real"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_C08"
+  },
+  {
+    "knowledge_id": "IR_RET_I03_NEC",
+    "obligation": {
+      "id": "RET_I03_NEC",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "p",
+          {
+            "Function": [
+              "Real",
+              "Real"
+            ]
+          },
+          {
+            "ForAll": [
+              "f",
+              {
+                "Function": [
+                  "Real",
+                  "Real"
+                ]
+              },
+              {
+                "ForAll": [
+                  "g",
+                  {
+                    "Function": [
+                      "Real",
+                      "Real"
+                    ]
+                  },
+                  {
+                    "Implies": [
+                      {
+                        "ForAll": [
+                          "x",
+                          "Real",
+                          {
+                            "Equality": [
+                              {
+                                "Apply": [
+                                  {
+                                    "Variable": "p"
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "f"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "Apply": [
+                                  {
+                                    "Variable": "g"
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "p"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "ForAll": [
+                          "x",
+                          "Real",
+                          {
+                            "ForAll": [
+                              "y",
+                              "Real",
+                              {
+                                "Implies": [
+                                  {
+                                    "Equality": [
+                                      {
+                                        "Apply": [
+                                          {
+                                            "Variable": "p"
+                                          },
+                                          {
+                                            "Variable": "x"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "Apply": [
+                                          {
+                                            "Variable": "p"
+                                          },
+                                          {
+                                            "Variable": "y"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "Equality": [
+                                      {
+                                        "Apply": [
+                                          {
+                                            "Variable": "p"
+                                          },
+                                          {
+                                            "Apply": [
+                                              {
+                                                "Variable": "f"
+                                              },
+                                              {
+                                                "Variable": "x"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "Apply": [
+                                          {
+                                            "Variable": "p"
+                                          },
+                                          {
+                                            "Apply": [
+                                              {
+                                                "Variable": "f"
+                                              },
+                                              {
+                                                "Variable": "y"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_I03_NEC"
+  },
+  {
+    "knowledge_id": "IR_RET_I03_OBSTRUCTION",
+    "obligation": {
+      "id": "RET_I03_OBSTRUCTION",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "p",
+          {
+            "Function": [
+              "Real",
+              "Real"
+            ]
+          },
+          {
+            "ForAll": [
+              "f",
+              {
+                "Function": [
+                  "Real",
+                  "Real"
+                ]
+              },
+              {
+                "ForAll": [
+                  "x",
+                  "Real",
+                  {
+                    "ForAll": [
+                      "y",
+                      "Real",
+                      {
+                        "Implies": [
+                          {
+                            "LogicalAnd": [
+                              {
+                                "Equality": [
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "p"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "p"
+                                      },
+                                      {
+                                        "Variable": "y"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "LogicalNot": {
+                                  "Equality": [
+                                    {
+                                      "Apply": [
+                                        {
+                                          "Variable": "p"
+                                        },
+                                        {
+                                          "Apply": [
+                                            {
+                                              "Variable": "f"
+                                            },
+                                            {
+                                              "Variable": "x"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Apply": [
+                                        {
+                                          "Variable": "p"
+                                        },
+                                        {
+                                          "Apply": [
+                                            {
+                                              "Variable": "f"
+                                            },
+                                            {
+                                              "Variable": "y"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "LogicalNot": {
+                              "Exists": [
+                                "g",
+                                {
+                                  "Function": [
+                                    "Real",
+                                    "Real"
+                                  ]
+                                },
+                                {
+                                  "ForAll": [
+                                    "z",
+                                    "Real",
+                                    {
+                                      "Equality": [
+                                        {
+                                          "Apply": [
+                                            {
+                                              "Variable": "p"
+                                            },
+                                            {
+                                              "Apply": [
+                                                {
+                                                  "Variable": "f"
+                                                },
+                                                {
+                                                  "Variable": "z"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "Apply": [
+                                            {
+                                              "Variable": "g"
+                                            },
+                                            {
+                                              "Apply": [
+                                                {
+                                                  "Variable": "p"
+                                                },
+                                                {
+                                                  "Variable": "z"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_I03_OBSTRUCTION"
+  },
+  {
+    "knowledge_id": "IR_RET_M1_ZERO_ADD",
+    "obligation": {
+      "id": "RET_M1_ZERO_ADD",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "x",
+          {
+            "Vector": [
+              "Real",
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          {
+            "Equality": [
+              {
+                "Add": [
+                  {
+                    "Variable": "x"
+                  },
+                  {
+                    "Constant": {
+                      "Zero": {
+                        "Vector": [
+                          "Real",
+                          {
+                            "Fixed": 2
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "Variable": "x"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M1_ZERO_ADD"
+  },
+  {
+    "knowledge_id": "IR_RET_M2_INNER_ZERO",
+    "obligation": {
+      "id": "RET_M2_INNER_ZERO",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "x",
+          {
+            "HilbertSpace": {
+              "Fixed": 2
+            }
+          },
+          {
+            "Equality": [
+              {
+                "InnerProduct": [
+                  {
+                    "Variable": "x"
+                  },
+                  {
+                    "Constant": {
+                      "Zero": {
+                        "HilbertSpace": {
+                          "Fixed": 2
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "Constant": {
+                  "Zero": "Complex"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M2_INNER_ZERO"
+  },
+  {
+    "knowledge_id": "IR_RET_M3_ZERO",
+    "obligation": {
+      "id": "RET_M3_ZERO",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "a",
+          {
+            "Vector": [
+              "Real",
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          {
+            "Equality": [
+              {
+                "TensorIndex": [
+                  {
+                    "TensorProduct": [
+                      {
+                        "Variable": "a"
+                      },
+                      {
+                        "Constant": {
+                          "Zero": {
+                            "Vector": [
+                              "Real",
+                              {
+                                "Fixed": 2
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              },
+              {
+                "Constant": {
+                  "Zero": "Real"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M3_ZERO"
+  },
+  {
+    "knowledge_id": "IR_RET_M4_TRACE",
+    "obligation": {
+      "id": "RET_M4_TRACE",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "ForAll": [
+          "rho",
+          {
+            "DensityOperator": {
+              "Fixed": 2
+            }
+          },
+          {
+            "Equality": [
+              {
+                "Trace": {
+                  "Variable": "rho"
+                }
+              },
+              {
+                "Constant": {
+                  "One": "Complex"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_TRACE"
+  },
+  {
+    "knowledge_id": "IR_RET_M4_ZERO_PSD",
+    "obligation": {
+      "id": "RET_M4_ZERO_PSD",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "PositiveSemidefinite": {
+          "Constant": {
+            "Zero": {
+              "Matrix": [
+                "Complex",
+                {
+                  "Fixed": 2
+                },
+                {
+                  "Fixed": 2
+                }
+              ]
+            }
+          }
+        }
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_ZERO_PSD"
+  },
+  {
+    "knowledge_id": "IR_RET_M4_ZERO_TRACE",
+    "obligation": {
+      "id": "RET_M4_ZERO_TRACE",
+      "model_id": "USM-V02-RETEST",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Trace": {
+              "Constant": {
+                "Zero": {
+                  "Matrix": [
+                    "Complex",
+                    {
+                      "Fixed": 2
+                    },
+                    {
+                      "Fixed": 2
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "Constant": {
+              "Zero": "Complex"
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {},
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "MathLang_DSN MathIR + Lean4 + Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_ZERO_TRACE"
+  }
+]

@@ -1,0 +1,2 @@
+tests/FalseDivision.lean:3:29: error: unsolved goals
+⊢ False

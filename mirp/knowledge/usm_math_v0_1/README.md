@@ -1,0 +1,40 @@
+# USM 数理Knowledge — 段階別パック v0.1
+
+高校数学まで → 大学数学 → 専門領域の順に、検査済みの数理命題を整備したデータパック。
+
+- [整備レポート](reports/knowledge_preparation.ja.md)
+- [全Knowledge索引](catalogue/INDEX.ja.md)
+- [機械可読な登録台帳](catalogue/knowledge_registry.json)
+- [検証・登録集計](verification/final_summary.json)
+
+| 段階 | 数理命題 | IR検索ビュー | ファイル |
+|---|---:|---:|---|
+| 1: 高校数学までの基礎 | 61 | 3 | `catalogue/stage1_high_school.json` |
+| 2: 大学数学 | 76 | 14 | `catalogue/stage2_university.json` |
+| 3: 専門領域・USM | 61 | 1 | `catalogue/stage3_specialist.json` |
+| 合計 | 198 | 18 | 216件の新規KnowledgeUnit |
+
+既存29件を含む全245件は `catalogue/all_with_legacy.json`、登録・保存・再読込済みのKnowledgeSpaceは `catalogue/memoryspace.json`。18ビューは既存命題の検索用表現であり、独立の数学知識として二重計上しない。旧証明3件は別証明のaliasとして保持した。
+
+対象はUSM検証向けの基礎初版。高校・大学数学の全課程の網羅や、USM全71項目の自動解決を宣言するものではない。
+
+## 検証
+
+Lean 4.35.0 / Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`。
+本プロジェクトと、隣接する `USM_Math_Verification` の証明を使用する。
+
+```sh
+./verify.sh
+/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang knowledge inspect catalogue/all_with_legacy.json --format json > verification/native_knowledge_inspect.json
+python3 verification/validate_catalogue.py
+```
+
+`checks/`は既存のMathLang_DSN登録・保存・planner・GKE APIを呼ぶ回帰確認用コード。新しい推論器・学習器・証明探索器は実装していない。Rust依存は `checks/Cargo.lock` に固定し、offlineで構築する。
+
+## 利用範囲
+
+MathLang_DSNの `KnowledgeSpace::register_batch`、`MemorySpace::load`、`gke-infer` で明示的に読み込む。既定CLIの `proof plan` が使用するlegacyカタログは自動的には切り替わらない。
+
+GKEの条件付き規則は3件。入力事実と型・解釈が正しいという前提の適用であり、GKEのDERIVEDをLeanのPROVEDと同一視しない。全ての登録命題が汎用GKE規則になっているわけではない。
+
+ステージ別JSONは、その前の段階の依存を含めて登録する。単独で利用する場合は累積版 `all_with_legacy.json` を使う。

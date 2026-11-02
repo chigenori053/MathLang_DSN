@@ -1,0 +1,6972 @@
+[
+  {
+    "knowledge_id": "IR_RET_K02",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_K02",
+    "statement": "∀ (v_s : ℕ → ℝ) (v_i v_j : ℕ) (v_x : ℝ), ¬v_j = v_i → Function.update v_s v_i v_x v_j = v_s v_j",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "v_s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "v_i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "v_j",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "¬v_j = v_i",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_K03",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_K03",
+    "statement": "∀ (v_s : ℕ → ℝ) (v_i : ℕ) (v_x : ℝ), Function.update v_s v_i v_x v_i = v_x",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "v_s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "v_i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_K04",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_K04",
+    "statement": "∀ (v_s : ℕ → ℝ),\n  ¬Function.update (Function.update v_s 0 1) 0 (1 + 1) 0 = Function.update (Function.update v_s 0 (1 + 1)) 0 1 0",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "v_s",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_K06",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_K06",
+    "statement": "¬∃ v_s, v_s 0 = 0 ∧ v_s 0 = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_K12",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_K12",
+    "statement": "¬∃ v_f, (∀ (v_x : ℝ), v_f v_x = v_x) ∧ v_f 0 = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_R04",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_R04",
+    "statement": "∀ (v_a v_b : Fin 2 → ℝ), v_a 0 = 0 ∧ v_b 0 = 0 → (v_a + v_b) 0 = 0",
+    "typed_binders": [
+      {
+        "type": "Fin 2 → ℝ",
+        "name": "v_a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin 2 → ℝ",
+        "name": "v_b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "v_a 0 = 0 ∧ v_b 0 = 0",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_E03",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_E03",
+    "statement": "∀ (v_p : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)), v_p 0 = 0",
+    "typed_binders": [
+      {
+        "type": "EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)",
+        "name": "v_p",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_E04",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_E04",
+    "statement": "∀ (v_p : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) (v_x v_y v_z : EuclideanSpace ℂ (Fin 2)),\n  v_y = v_p v_x ∧ v_z = v_p v_x → v_y = v_z",
+    "typed_binders": [
+      {
+        "type": "EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)",
+        "name": "v_p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "EuclideanSpace ℂ (Fin 2)",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "EuclideanSpace ℂ (Fin 2)",
+        "name": "v_y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "EuclideanSpace ℂ (Fin 2)",
+        "name": "v_z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "v_y = v_p v_x ∧ v_z = v_p v_x",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_R10",
+    "stage": 1,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_R10",
+    "statement": "∀ (v_a v_b : Prop), (v_a → v_b) → v_a → v_b",
+    "typed_binders": [
+      {
+        "type": "Prop",
+        "name": "v_a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Prop",
+        "name": "v_b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "v_a → v_b",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "v_a",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_C08",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_C08",
+    "statement": "¬∃ v_a, v_a = 0 ∧ v_a = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_I03_NEC",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_I03_NEC",
+    "statement": "∀ (v_p v_f v_g : ℝ → ℝ),\n  (∀ (v_x : ℝ), v_p (v_f v_x) = v_g (v_p v_x)) → ∀ (v_x v_y : ℝ), v_p v_x = v_p v_y → v_p (v_f v_x) = v_p (v_f v_y)",
+    "typed_binders": [
+      {
+        "type": "ℝ → ℝ",
+        "name": "v_p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ → ℝ",
+        "name": "v_f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ → ℝ",
+        "name": "v_g",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "∀ (v_x : ℝ), v_p (v_f v_x) = v_g (v_p v_x)",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "ℝ",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v_y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "v_p v_x = v_p v_y",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_I03_OBSTRUCTION",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_I03_OBSTRUCTION",
+    "statement": "∀ (v_p v_f : ℝ → ℝ) (v_x v_y : ℝ),\n  v_p v_x = v_p v_y ∧ ¬v_p (v_f v_x) = v_p (v_f v_y) → ¬∃ v_g, ∀ (v_z : ℝ), v_p (v_f v_z) = v_g (v_p v_z)",
+    "typed_binders": [
+      {
+        "type": "ℝ → ℝ",
+        "name": "v_p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ → ℝ",
+        "name": "v_f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v_y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "v_p v_x = v_p v_y ∧ ¬v_p (v_f v_x) = v_p (v_f v_y)",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M1_ZERO_ADD",
+    "stage": 1,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M1_ZERO_ADD",
+    "statement": "∀ (v_x : Fin 2 → ℝ), v_x + 0 = v_x",
+    "typed_binders": [
+      {
+        "type": "Fin 2 → ℝ",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M2_INNER_ZERO",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M2_INNER_ZERO",
+    "statement": "∀ (v_x : EuclideanSpace ℂ (Fin 2)), inner ℂ v_x 0 = 0",
+    "typed_binders": [
+      {
+        "type": "EuclideanSpace ℂ (Fin 2)",
+        "name": "v_x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M3_ZERO",
+    "stage": 1,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M3_ZERO",
+    "statement": "∀ (v_a : Fin 2 → ℝ), (fun tensor_i_0 tensor_i_1 => v_a tensor_i_0 * 0 tensor_i_1) 0 1 = 0",
+    "typed_binders": [
+      {
+        "type": "Fin 2 → ℝ",
+        "name": "v_a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M4_TRACE",
+    "stage": 3,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_TRACE",
+    "statement": "∀ (v_rho : { m // m.PosSemidef ∧ m.trace = 1 }), (↑v_rho).trace = 1",
+    "typed_binders": [
+      {
+        "type": "{ m // m.PosSemidef ∧ m.trace = 1 }",
+        "name": "v_rho",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M4_ZERO_PSD",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_ZERO_PSD",
+    "statement": "Matrix.PosSemidef 0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "IR_RET_M4_ZERO_TRACE",
+    "stage": 2,
+    "kind": "EXACT_IR_RETRIEVAL_VIEW",
+    "formal_constant": "USMMathKnowledge.IR_RET_M4_ZERO_TRACE",
+    "statement": "Matrix.trace 0 = 0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_EQ_SYMM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_EQ_SYMM",
+    "statement": "∀ (a b : ℝ), a = b → b = a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a = b",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_EQ_TRANS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_EQ_TRANS",
+    "statement": "∀ (a b c : ℝ), a = b → b = c → a = c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a = b",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "b = c",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_NE_ZERO_PRODUCT",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_NE_ZERO_PRODUCT",
+    "statement": "∀ (a b : ℝ), a * b ≠ 0 ↔ a ≠ 0 ∧ b ≠ 0",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ZERO_PRODUCT",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ZERO_PRODUCT",
+    "statement": "∀ (a b : ℝ), a * b = 0 ↔ a = 0 ∨ b = 0",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ADD_COMM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ADD_COMM",
+    "statement": "∀ (a b : ℝ), a + b = b + a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ADD_ASSOC",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ADD_ASSOC",
+    "statement": "∀ (a b c : ℝ), a + b + c = a + (b + c)",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_MUL_COMM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_MUL_COMM",
+    "statement": "∀ (a b : ℝ), a * b = b * a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DISTRIBUTE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DISTRIBUTE",
+    "statement": "∀ (a b c : ℝ), a * (b + c) = a * b + a * c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DIFF_SQUARES",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DIFF_SQUARES",
+    "statement": "∀ (a b : ℝ), (a - b) * (a + b) = a ^ 2 - b ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SQUARE_EXPAND",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SQUARE_EXPAND",
+    "statement": "∀ (a b : ℝ), (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SQUARE_NONNEG",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SQUARE_NONNEG",
+    "statement": "∀ (a : ℝ), 0 ≤ a ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ABS_NONNEG",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ABS_NONNEG",
+    "statement": "∀ (a : ℝ), 0 ≤ |a|",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ABS_TRIANGLE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ABS_TRIANGLE",
+    "statement": "∀ (a b : ℝ), |a + b| ≤ |a| + |b|",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ABS_MUL",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ABS_MUL",
+    "statement": "∀ (a b : ℝ), |a * b| = |a| * |b|",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DIV_SELF",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DIV_SELF",
+    "statement": "∀ (a : ℝ), a ≠ 0 → a / a = 1",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a ≠ 0",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_LINEAR_SOLUTION",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_LINEAR_SOLUTION",
+    "statement": "∀ (a b x : ℝ), a ≠ 0 → a * x + b = 0 → x = -b / a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a ≠ 0",
+        "name": "ha",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "a * x + b = 0",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_QUADRATIC_FACTORS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_QUADRATIC_FACTORS",
+    "statement": "∀ (x r s : ℝ), (x - r) * (x - s) = 0 ↔ x = r ∨ x = s",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SQRT_SQUARE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SQRT_SQUARE",
+    "statement": "∀ (a : ℝ), 0 ≤ a → √a ^ 2 = a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 ≤ a",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SQRT_NONNEG",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SQRT_NONNEG",
+    "statement": "∀ (a : ℝ), 0 ≤ √a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DISTANCE_PYTHAGOREAN",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DISTANCE_PYTHAGOREAN",
+    "statement": "∀ (x y : ℝ), √(x ^ 2 + y ^ 2) ^ 2 = x ^ 2 + y ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_AMGM_SQUARE_FORM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_AMGM_SQUARE_FORM",
+    "statement": "∀ (a b : ℝ), 4 * a * b ≤ (a + b) ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ADD_ORDER",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ADD_ORDER",
+    "statement": "∀ (a b c : ℝ), a ≤ b → a + c ≤ b + c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a ≤ b",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_MUL_ORDER",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_MUL_ORDER",
+    "statement": "∀ (a b c : ℝ), a ≤ b → 0 ≤ c → a * c ≤ b * c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a ≤ b",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "0 ≤ c",
+        "name": "hc",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_POW_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_POW_ADD",
+    "statement": "∀ (a : ℝ) (n m : ℕ), a ^ (n + m) = a ^ n * a ^ m",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_GEOMETRIC_STEP",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_GEOMETRIC_STEP",
+    "statement": "∀ (a : ℝ) (n : ℕ), a ^ (n + 1) = a ^ n * a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_EXP_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_EXP_ADD",
+    "statement": "∀ (a b : ℝ), Real.exp (a + b) = Real.exp a * Real.exp b",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_LOG_MUL",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_LOG_MUL",
+    "statement": "∀ (a b : ℝ), 0 < a → 0 < b → Real.log (a * b) = Real.log a + Real.log b",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 < a",
+        "name": "ha",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "0 < b",
+        "name": "hb",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SIN_COS_SQUARE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SIN_COS_SQUARE",
+    "statement": "∀ (a : ℝ), Real.sin a ^ 2 + Real.cos a ^ 2 = 1",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SIN_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SIN_ADD",
+    "statement": "∀ (a b : ℝ), Real.sin (a + b) = Real.sin a * Real.cos b + Real.cos a * Real.sin b",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_COS_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_COS_ADD",
+    "statement": "∀ (a b : ℝ), Real.cos (a + b) = Real.cos a * Real.cos b - Real.sin a * Real.sin b",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_COMPLEX_COORDINATES",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_COMPLEX_COORDINATES",
+    "statement": "∀ (z : ℂ), ↑z.re + ↑z.im * Complex.I = z",
+    "typed_binders": [
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_COMPLEX_NORM_SQUARE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_COMPLEX_NORM_SQUARE",
+    "statement": "∀ (z : ℂ), ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_COMPLEX_CONJ_PRODUCT",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_COMPLEX_CONJ_PRODUCT",
+    "statement": "∀ (z : ℂ), z * star z = ↑(‖z‖ ^ 2)",
+    "typed_binders": [
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DOT_COMM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DOT_COMM",
+    "statement": "∀ (x y : Fin 3 → ℝ), ∑ i, x i * y i = ∑ i, y i * x i",
+    "typed_binders": [
+      {
+        "type": "Fin 3 → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin 3 → ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DOT_NONNEG",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DOT_NONNEG",
+    "statement": "∀ (x : Fin 3 → ℝ), 0 ≤ ∑ i, x i * x i",
+    "typed_binders": [
+      {
+        "type": "Fin 3 → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_AFFINE_COMPOSE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_AFFINE_COMPOSE",
+    "statement": "∀ (a b c d x : ℝ), a * (c * x + d) + b = a * c * x + (a * d + b)",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "d",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_FINITE_SUM_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_FINITE_SUM_ADD",
+    "statement": "∀ (n : ℕ) (x y : Fin n → ℝ), ∑ i, (x i + y i) = ∑ i, x i + ∑ i, y i",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_ARITHMETIC_SUM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_ARITHMETIC_SUM",
+    "statement": "∀ (n : ℕ), ∑ i ∈ Finset.range n, ↑i = ↑n * (↑n - 1) / 2",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_COUNT_PAIRS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_COUNT_PAIRS",
+    "statement": "∀ (A : Type u_1) (B : Type u_2) [inst : Fintype A] [inst_1 : Fintype B],\n  Fintype.card (A × B) = Fintype.card A * Fintype.card B",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fintype A",
+        "name": "inst._@.USMMathKnowledge.HighSchool.3339791193._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "Fintype B",
+        "name": "inst._@.USMMathKnowledge.HighSchool.3339791193._hygCtx._hyg.7",
+        "is_typeclass": true,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_FINITE_UNION",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_FINITE_UNION",
+    "statement": "∀ (A : Type u_1) [inst : DecidableEq A] (s t : Finset A), (s ∪ t).card + (s ∩ t).card = s.card + t.card",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq A",
+        "name": "inst._@.USMMathKnowledge.HighSchool.2482642733._hygCtx._hyg.3",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "Finset A",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Finset A",
+        "name": "t",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_PROBABILITY_COMPLEMENT_BOUNDS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_PROBABILITY_COMPLEMENT_BOUNDS",
+    "statement": "∀ (p : ℝ), 0 ≤ p → p ≤ 1 → 0 ≤ 1 - p ∧ 1 - p ≤ 1",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 ≤ p",
+        "name": "hp",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "p ≤ 1",
+        "name": "hp1",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_FINITE_EXPECTATION_ADD",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_FINITE_EXPECTATION_ADD",
+    "statement": "∀ (n : ℕ) (p x y : Fin n → ℝ), ∑ i, p i * (x i + y i) = ∑ i, p i * x i + ∑ i, p i * y i",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_WEIGHTED_VARIANCE_NONNEG",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_WEIGHTED_VARIANCE_NONNEG",
+    "statement": "∀ (n : ℕ) (p x : Fin n → ℝ) (μ : ℝ), (∀ (i : Fin n), 0 ≤ p i) → 0 ≤ ∑ i, p i * (x i - μ) ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "p",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "μ",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "∀ (i : Fin n), 0 ≤ p i",
+        "name": "hp",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DERIV_SQUARE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DERIV_SQUARE",
+    "statement": "∀ (x : ℝ), HasDerivAt (fun t => t ^ 2) (2 * x) x",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_DERIV_SIN",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_DERIV_SIN",
+    "statement": "∀ (x : ℝ), HasDerivAt Real.sin (Real.cos x) x",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_CONTINUOUS_QUADRATIC",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_CONTINUOUS_QUADRATIC",
+    "statement": "∀ (a b c : ℝ), Continuous fun x => a * x ^ 2 + b * x + c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_INTEGRAL_POWER",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_INTEGRAL_POWER",
+    "statement": "∀ (a b : ℝ) (n : ℕ), ∫ (x : ℝ) in a..b, x ^ n = (b ^ (n + 1) - a ^ (n + 1)) / (↑n + 1)",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_NAT_DIVISION",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_NAT_DIVISION",
+    "statement": "∀ (a b : ℕ), a % b + b * (a / b) = a",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_REMAINDER_BOUND",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_REMAINDER_BOUND",
+    "statement": "∀ (a b : ℕ), 0 < b → a % b < b",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 < b",
+        "name": "hb",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_GCD_COMM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_GCD_COMM",
+    "statement": "∀ (a b : ℕ), a.gcd b = b.gcd a",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_GCD_DIVIDES",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_GCD_DIVIDES",
+    "statement": "∀ (a b : ℕ), a.gcd b ∣ a",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_FACTORIAL_STEP",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_FACTORIAL_STEP",
+    "statement": "∀ (n : ℕ), (n + 1).factorial = (n + 1) * n.factorial",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_PASCAL",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_PASCAL",
+    "statement": "∀ (n k : ℕ), (n + 1).choose (k + 1) = n.choose k + n.choose (k + 1)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_EXP_POSITIVE",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_EXP_POSITIVE",
+    "statement": "∀ (x : ℝ), 0 < Real.exp x",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_LOG_EXP",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_LOG_EXP",
+    "statement": "∀ (x : ℝ), Real.log (Real.exp x) = x",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_SIN_BOUND",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_SIN_BOUND",
+    "statement": "∀ (x : ℝ), |Real.sin x| ≤ 1",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_QUADRATIC_MINIMUM",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_QUADRATIC_MINIMUM",
+    "statement": "∀ (x a : ℝ), a ≤ (x - a) ^ 2 + a",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_LE_TRANS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_LE_TRANS",
+    "statement": "∀ (a b c : ℝ), a ≤ b → b ≤ c → a ≤ c",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "a ≤ b",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "b ≤ c",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_MODUS_PONENS",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_MODUS_PONENS",
+    "statement": "∀ (P Q : Prop), (P → Q) → P → Q",
+    "typed_binders": [
+      {
+        "type": "Prop",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Prop",
+        "name": "Q",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P → Q",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "P",
+        "name": "hp",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_VECTOR_ADD_ZERO",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_VECTOR_ADD_ZERO",
+    "statement": "∀ (n : ℕ) (x : Fin n → ℝ), x + 0 = x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "HS_MUL_ZERO",
+    "stage": 1,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.HS_MUL_ZERO",
+    "statement": "∀ (x : ℝ), x * 0 = 0",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "SP_UNITARY_NORM_FORM",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.SP_UNITARY_NORM_FORM",
+    "statement": "∀ {n : ℕ} (U : USMVerification.LinearOperator n) (x y : USMVerification.ComplexState n) (r : ℝ),\n  ContinuousLinearMap.adjoint U ∘SL U = 1 → y = U x → ‖x‖ = r → ‖y‖ = r",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.LinearOperator n",
+        "name": "U",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ContinuousLinearMap.adjoint U ∘SL U = 1",
+        "name": "hU",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "y = U x",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "‖x‖ = r",
+        "name": "hr",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_P0_03"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "SP_DENSITY_TRACE_SUBTYPE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.SP_DENSITY_TRACE_SUBTYPE",
+    "statement": "∀ {n : ℕ} (rho : { m // m.PosSemidef ∧ m.trace = 1 }), (↑rho).trace = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "{ m // m.PosSemidef ∧ m.trace = 1 }",
+        "name": "rho",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_LEFT_INVERSE_INJECTIVE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_LEFT_INVERSE_INJECTIVE",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} (f : A → B) (g : B → A), Function.LeftInverse g f → Function.Injective f",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B → A",
+        "name": "g",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Function.LeftInverse g f",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_INJECTIVE_COMPOSE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_INJECTIVE_COMPOSE",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} {C : Type u_3} (f : B → C) (g : A → B),\n  Function.Injective f → Function.Injective g → Function.Injective (f ∘ g)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_3",
+        "name": "C",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B → C",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "g",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Function.Injective f",
+        "name": "hf",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "Function.Injective g",
+        "name": "hg",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_EQUIV_INJECTIVE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_EQUIV_INJECTIVE",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} (e : A ≃ B), Function.Injective ⇑e",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A ≃ B",
+        "name": "e",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_COMPOSITION_ASSOC",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_COMPOSITION_ASSOC",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} {C : Type u_3} {D : Type u_4} (f : C → D) (g : B → C) (h : A → B),\n  (f ∘ g) ∘ h = f ∘ g ∘ h",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_3",
+        "name": "C",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_4",
+        "name": "D",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "C → D",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B → C",
+        "name": "g",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_CONTRAPOSITION",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_CONTRAPOSITION",
+    "statement": "∀ (P Q : Prop), (P → Q) → ¬Q → ¬P",
+    "typed_binders": [
+      {
+        "type": "Prop",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Prop",
+        "name": "Q",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P → Q",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "¬Q",
+        "name": "hq",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_LINEAR_ZERO",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_LINEAR_ZERO",
+    "statement": "∀ {n m : ℕ} (A : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m), A 0 = 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_LINEAR_ADD",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_LINEAR_ADD",
+    "statement": "∀ {n m : ℕ} (A : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m)\n  (x y : USMVerification.ComplexState n), A (x + y) = A x + A y",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_LINEAR_SMUL",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_LINEAR_SMUL",
+    "statement": "∀ {n m : ℕ} (A : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m) (c : ℂ)\n  (x : USMVerification.ComplexState n), A (c • x) = c • A x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_NORM_NONNEG",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_NORM_NONNEG",
+    "statement": "∀ {n : ℕ} (x : USMVerification.M1 n), 0 ≤ ‖x‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_NORM_ZERO",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_NORM_ZERO",
+    "statement": "∀ {n : ℕ} (x : USMVerification.M1 n), ‖x‖ = 0 ↔ x = 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_NORM_TRIANGLE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_NORM_TRIANGLE",
+    "statement": "∀ {n : ℕ} (x y : USMVerification.M1 n), ‖x + y‖ ≤ ‖x‖ + ‖y‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_NORM_SMUL",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_NORM_SMUL",
+    "statement": "∀ {n : ℕ} (c : ℂ) (x : USMVerification.ComplexState n), ‖c • x‖ = ‖c‖ * ‖x‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_INNER_SELF",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_INNER_SELF",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), inner ℂ x x = ↑(‖x‖ ^ 2)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_CAUCHY_SCHWARZ",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_CAUCHY_SCHWARZ",
+    "statement": "∀ {n : ℕ} (x y : USMVerification.ComplexState n), ‖inner ℂ x y‖ ≤ ‖x‖ * ‖y‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_SUBSPACE_ADD",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_SUBSPACE_ADD",
+    "statement": "∀ {n : ℕ} (S : Submodule ℝ (USMVerification.M1 n)) (x y : USMVerification.M1 n), x ∈ S → y ∈ S → x + y ∈ S",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Submodule ℝ (USMVerification.M1 n)",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x ∈ S",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "y ∈ S",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_SUBSPACE_SMUL",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_SUBSPACE_SMUL",
+    "statement": "∀ {n : ℕ} (S : Submodule ℝ (USMVerification.M1 n)) (c : ℝ), ∀ x ∈ S, c • x ∈ S",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Submodule ℝ (USMVerification.M1 n)",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "c",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x ∈ S",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_TRACE_ADD",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_TRACE_ADD",
+    "statement": "∀ {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ), (A + B).trace = A.trace + B.trace",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_TRACE_CYCLIC",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_TRACE_CYCLIC",
+    "statement": "∀ {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ), (A * B).trace = (B * A).trace",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_MATRIX_ID_LEFT",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_MATRIX_ID_LEFT",
+    "statement": "∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ), 1 * A = A",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_ADJOINT_INVOLUTION",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_ADJOINT_INVOLUTION",
+    "statement": "∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ), A.conjTranspose.conjTranspose = A",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_PSD_ZERO",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_PSD_ZERO",
+    "statement": "∀ {n : ℕ}, Matrix.PosSemidef 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_UPDATE_SELF",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_UPDATE_SELF",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} [inst : DecidableEq A] (f : A → B) (a : A) (b : B), Function.update f a b a = b",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq A",
+        "name": "inst._@.USMMathKnowledge.University.2250490686._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_UPDATE_OTHER",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_UPDATE_OTHER",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} [inst : DecidableEq A] (f : A → B) (a i : A) (b : B),\n  i ≠ a → Function.update f a b i = f i",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq A",
+        "name": "inst._@.USMMathKnowledge.University.3671178107._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "i ≠ a",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_SURJECTIVE_COMPOSE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_SURJECTIVE_COMPOSE",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} {C : Type u_3} (f : B → C) (g : A → B),\n  Function.Surjective f → Function.Surjective g → Function.Surjective (f ∘ g)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_3",
+        "name": "C",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "B → C",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "g",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Function.Surjective f",
+        "name": "hf",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "Function.Surjective g",
+        "name": "hg",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_KERNEL_ADD_FORM",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_KERNEL_ADD_FORM",
+    "statement": "∀ {n m : ℕ} (A : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m)\n  (x y z : USMVerification.ComplexState n), A x = 0 → A y = 0 → z = x + y → A z = 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState m",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "A x = 0",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "A y = 0",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "z = x + y",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_INNER_ZERO",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_INNER_ZERO",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), inner ℂ x 0 = 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_TRACE_ZERO",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_TRACE_ZERO",
+    "statement": "∀ {n : ℕ}, Matrix.trace 0 = 0",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "UNI_FIBER_OBSTRUCTION",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMMathKnowledge.UNI_FIBER_OBSTRUCTION",
+    "statement": "∀ {S : Type u_1} {T : Type u_2} (P : S → T) (F : S → S) (x y : S),\n  P x = P y → P (F x) ≠ P (F y) → ¬∃ G, ∀ (z : S), P (F z) = G (P z)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "T",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → T",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → S",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P x = P y",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "P (F x) ≠ P (F y)",
+        "name": "hne",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_C02",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C02",
+    "statement": "∀ {ι : Type u_1} (x : ι → ℂ), USMVerification.complexify (USMVerification.realify x) = x",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "ι",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ι → ℂ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C02",
+      "C11"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C03",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C03",
+    "statement": "∀ {ι : Type u_1}, Function.Injective USMVerification.realify",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "ι",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [
+      "USM_C02"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S10",
+      "C03",
+      "C11"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_MAP",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_map",
+    "statement": "∀ {ι : Type u_1} (F : (ι → ℂ) → ι → ℂ) (x : ι → ℂ),\n  USMVerification.realOp F (USMVerification.realify x) = USMVerification.realify (F x)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "ι",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "(ι → ℂ) → ι → ℂ",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ι → ℂ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S10",
+      "C10",
+      "C11",
+      "C12",
+      "I09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_COMP",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_comp",
+    "statement": "∀ {ι : Type u_1} (F G : (ι → ℂ) → ι → ℂ),\n  USMVerification.realOp (F ∘ G) = USMVerification.realOp F ∘ USMVerification.realOp G",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "ι",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "(ι → ℂ) → ι → ℂ",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "(ι → ℂ) → ι → ℂ",
+        "name": "G",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C11",
+      "C12"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_LINEAR",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_linear",
+    "statement": "∃ e, ∀ (z : ℂ), e z = (z.re, z.im)",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C04",
+      "C11"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_MUL",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_mul",
+    "statement": "∀ (a b : ℂ), ((a * b).re, (a * b).im) = USMVerification.realMul (a.re, a.im) (b.re, b.im)",
+    "typed_binders": [
+      {
+        "type": "ℂ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C05",
+      "C11"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U04",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U04",
+    "statement": "(∀ (i : Fin 2), ‖USMVerification.plus i‖ = ‖USMVerification.minus i‖) ∧\n  USMVerification.plus 0 * star (USMVerification.plus 1) ≠ USMVerification.minus 0 * star (USMVerification.minus 1)",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U04",
+      "C05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_NO_GLOBAL_PHASE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.no_global_phase",
+    "statement": "¬∃ z, USMVerification.minus = z • USMVerification.plus",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C08",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C08",
+    "statement": "¬∃ a > 0, a ≤ 0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I03_COMMUTE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I03_commute",
+    "statement": "∀ (a b : ℝ) (x : ℝ × ℝ),\n  USMVerification.projX (USMVerification.diagonalUpdate a b x) =\n    USMVerification.diagonalUpdate a b (USMVerification.projX x)",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "I03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I06",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I06",
+    "statement": "∀ {n : ℕ} (s : Fin n → ℝ) (v : ℝ),\n  (∀ (i : Fin n), USMVerification.extend s v i.castSucc = s i) ∧ USMVerification.extend s v (Fin.last n) = v",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K03",
+      "I06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R01",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R01",
+    "statement": "∀ {n m : ℕ} (x : USMVerification.ComplexState n) (y : USMVerification.ComplexState m),\n  ‖x‖ = 1 → ‖y‖ = 1 → ‖x ⊗ₜ[ℂ] y‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState m",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "‖x‖ = 1",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "‖y‖ = 1",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S02",
+      "R01"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R02",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R02",
+    "statement": "∀ (x y z : ℝ), (TensorProduct.assoc ℝ ℝ ℝ ℝ) (x ⊗ₜ[ℝ] y ⊗ₜ[ℝ] z) = x ⊗ₜ[ℝ] (y ⊗ₜ[ℝ] z)",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R03",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R03",
+    "statement": "∀ (x y : ℝ), (TensorProduct.comm ℝ ℝ ℝ) (x ⊗ₜ[ℝ] y) = y ⊗ₜ[ℝ] x",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R07_AMBIGUITY",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R07_ambiguity",
+    "statement": "2 ⊗ₜ[ℝ] 1 = 1 ⊗ₜ[ℝ] 2",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_READ_BIND",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.read_bind",
+    "statement": "∀ {E : Type u_1} {F : Type u_2} [inst : DecidableEq E] [inst_1 : DecidableEq F] (e e' : E) (f f' : F),\n  (USMVerification.readRole e f) (USMVerification.bind e' f') = USMVerification.role e' e * USMVerification.role f' f",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "E",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq E",
+        "name": "inst._@.USMVerification.Composition.1680165317._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq F",
+        "name": "inst._@.USMVerification.Composition.1680165317._hygCtx._hyg.7",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "E",
+        "name": "e",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "E",
+        "name": "e'",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "F",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "F",
+        "name": "f'",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S04",
+      "R09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R09",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R09",
+    "statement": "∀ {E : Type u_1} {F : Type u_2} [inst : DecidableEq E] [inst_1 : DecidableEq F],\n  Function.Injective fun p => USMVerification.bind p.1 p.2",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "E",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq E",
+        "name": "inst._@.USMVerification.Composition.2138252418._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq F",
+        "name": "inst._@.USMVerification.Composition.2138252418._hygCtx._hyg.7",
+        "is_typeclass": true,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [
+      "USM_READ_BIND"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S03",
+      "S04",
+      "S10",
+      "R06",
+      "R07",
+      "R09",
+      "C06",
+      "C10",
+      "C12",
+      "I04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R04",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R04",
+    "statement": "∀ (x y : ℝ × ℝ), x.1 = 0 → y.1 = 0 → (x + y).1 = 0",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x.1 = 0",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "y.1 = 0",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R04",
+      "I04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R05",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R05",
+    "statement": "¬∃ s, s = 0 ∧ s = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R06",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R06",
+    "statement": "∃ x y, x ≠ y",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_R10",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R10",
+    "statement": "∃ x y truth, ¬truth (x ⊗ₜ[ℝ] y)",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_OUTER_POSITIVE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.outer_positive",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), (USMVerification.outer x).PosSemidef",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_OUTER_TRACE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.outer_trace",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), (USMVerification.outer x).trace = ↑(‖x‖ ^ 2)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_P0_04",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_04",
+    "statement": "∀ {n : ℕ} (a : ℝ) (ha : 0 ≤ a) (ha1 : a ≤ 1) (r s : USMVerification.DensityState n),\n  (USMVerification.mix a ha ha1 r s).matrix.PosSemidef ∧\n    (USMVerification.mix a ha ha1 r s).matrix.IsHermitian ∧ (USMVerification.mix a ha ha1 r s).matrix.trace = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 ≤ a",
+        "name": "ha",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "a ≤ 1",
+        "name": "ha1",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "USMVerification.DensityState n",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.DensityState n",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_P0_06",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_06",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n) (z : ℂ),\n  ‖z‖ = 1 → USMVerification.outer (z • x) = USMVerification.outer x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "‖z‖ = 1",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PHASE_EXP",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_exp",
+    "statement": "∀ (θ : ℝ), ‖Complex.exp (↑θ * Complex.I)‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "θ",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_PHASE_EXP_DENSITY",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_exp_density",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n) (θ : ℝ),\n  USMVerification.outer (Complex.exp (↑θ * Complex.I) • x) = USMVerification.outer x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "θ",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [
+      "USM_P0_06",
+      "USM_PHASE_EXP"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_DENSITY_CONJUGATION_POSITIVE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.density_conjugation_positive",
+    "statement": "∀ {n : ℕ} (r : USMVerification.DensityState n) (A : Matrix (Fin n) (Fin n) ℂ),\n  (A * r.matrix * A.conjTranspose).PosSemidef",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.DensityState n",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_DENSITY_PROJECTION_POSITIVE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.density_projection_positive",
+    "statement": "∀ {n : ℕ} (r : USMVerification.DensityState n) (P : Matrix (Fin n) (Fin n) ℂ),\n  P.IsHermitian → (P * r.matrix * P).PosSemidef",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.DensityState n",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P.IsHermitian",
+        "name": "hP",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_DENSITY_CONJUGATION_POSITIVE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_FULLDENSITYEXTRACTION",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.fullDensityExtraction",
+    "statement": "USMVerification.FullDensityExtractionTheory",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_DENSITY_CONJUGATION_POSITIVE",
+      "USM_DENSITY_PROJECTION_POSITIVE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_DENSITYUPDATE_TRACE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.densityUpdate_trace",
+    "statement": "∀ {n : ℕ} (r : USMVerification.DensityState n) (U : Matrix (Fin n) (Fin n) ℂ) (hU : U.conjTranspose * U = 1),\n  (USMVerification.densityUpdate r U hU).matrix.trace = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.DensityState n",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "U",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "U.conjTranspose * U = 1",
+        "name": "hU",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_DENSITY_CONJUGATION_POSITIVE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_AMBIGUOUSMINUS_NORMALIZED",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.ambiguousMinus_normalized",
+    "statement": "‖USMVerification.ambiguousMinus‖ = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_ENSEMBLE_AMBIGUITY",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.ensemble_ambiguity",
+    "statement": "USMVerification.alternativeEnsemble.matrix = USMVerification.maximallyMixed.matrix",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_AMBIGUOUSMINUS_NORMALIZED",
+      "USM_CERTAIN_WITNESS",
+      "USM_E1_NORMALIZED",
+      "USM_MIXED_ENTRIES",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE",
+      "USM_UNCERTAIN_WITNESS"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R06",
+      "C07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_ENSEMBLE_COMPONENTS_DISTINCT",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.ensemble_components_distinct",
+    "statement": "USMVerification.outer USMVerification.ambiguous ≠ USMVerification.outer USMVerification.e0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R06",
+      "C07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E01",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E01",
+    "statement": "∀ (x : ℝ × ℝ), USMVerification.projX (USMVerification.projX x) = USMVerification.projX x",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E01",
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E02",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E02",
+    "statement": "∀ {n : ℕ} (P : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState n)\n  (x : USMVerification.ComplexState n), P x ≠ 0 → ‖‖P x‖⁻¹ • P x‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState n",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P x ≠ 0",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E02",
+      "E09",
+      "I02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E03",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E03",
+    "statement": "USMVerification.projX (0, 1) = 0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E04",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E04",
+    "statement": "∀ (x y z : ℝ × ℝ), y = USMVerification.projX x → z = USMVerification.projX x → y = z",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "y = USMVerification.projX x",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "z = USMVerification.projX x",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E05",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E05",
+    "statement": "USMVerification.projX (1, 1) ≠ USMVerification.projY (1, 1) ∧\n  USMVerification.projY (USMVerification.projY (1, 1)) = USMVerification.projY (1, 1)",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E04",
+      "E05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PROJD_IDEMPOTENT",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.projD_idempotent",
+    "statement": "∀ (x : ℝ × ℝ), USMVerification.projD (USMVerification.projD x) = USMVerification.projD x",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E01",
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E08",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E08",
+    "statement": "USMVerification.projX (USMVerification.projD (0, 1)) ≠ USMVerification.projD (USMVerification.projX (0, 1))",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E07",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E07",
+    "statement": "(USMVerification.projX (1, 1)).1 = 1 ∧ (USMVerification.projX (1, 1)).2 ≠ 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S08",
+      "E07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E10",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E10",
+    "statement": "∀ (r : ℝ), 0 < r → ∀ (x : ℝ), r * x / |r * x| = x / |x|",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "r",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 < r",
+        "name": "hr",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I02",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I02",
+    "statement": "∀ {n : ℕ} (F : USMVerification.ComplexState n → USMVerification.ComplexState n)\n  (P : USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState n) (x : USMVerification.ComplexState n),\n  P (F x) = 0 ∨ ∃ y, ‖y‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n → USMVerification.ComplexState n",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n →ₗ[ℂ] USMVerification.ComplexState n",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [
+      "USM_P0_02"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "I02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I03_FACTOR",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I03_factor",
+    "statement": "∀ {S : Type u_1} {T : Type u_2} [Nonempty S] (P : S → T) (F : S → S),\n  Function.Surjective P → (∀ (x y : S), P x = P y → P (F x) = P (F y)) → ∃ G, ∀ (x : S), P (F x) = G (P x)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "T",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Nonempty S",
+        "name": "inst._@.USMVerification.Extraction.2855842880._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": true
+      },
+      {
+        "type": "S → T",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → S",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Function.Surjective P",
+        "name": "hP",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "∀ (x y : S), P x = P y → P (F x) = P (F y)",
+        "name": "hf",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "Classical.choice"
+    ],
+    "related_usm_ids": [
+      "I03",
+      "I10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I03_NECESSARY",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I03_necessary",
+    "statement": "∀ {S : Type u_1} {T : Type u_2} (P : S → T) (F : S → S) (G : T → T),\n  (∀ (x : S), P (F x) = G (P x)) → ∀ (x y : S), P x = P y → P (F x) = P (F y)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "T",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → T",
+        "name": "P",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → S",
+        "name": "F",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "T → T",
+        "name": "G",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "∀ (x : S), P (F x) = G (P x)",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "S",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "P x = P y",
+        "name": "a._@._internal._hyg.0",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": [
+      "I03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I03_COUNTEREXAMPLE",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I03_counterexample",
+    "statement": "¬∃ G, ∀ (x : ℝ × ℝ), USMVerification.projX (USMVerification.swap x) = G (USMVerification.projX x)",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "I03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_P0_01",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_01",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), 0 ≤ ‖x‖ ^ 2",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_P0_02",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_02",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), x ≠ 0 → ∃ y, ‖y‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x ≠ 0",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_P0_03",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_03",
+    "statement": "∀ {n : ℕ} (U : USMVerification.LinearOperator n),\n  ContinuousLinearMap.adjoint U ∘SL U = 1 → ∀ (x : USMVerification.ComplexState n), ‖U x‖ = ‖x‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.LinearOperator n",
+        "name": "U",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ContinuousLinearMap.adjoint U ∘SL U = 1",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_P0_05",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_05",
+    "statement": "∀ {n m : ℕ} (x : USMVerification.ComplexState n) (y : USMVerification.ComplexState m), ‖x ⊗ₜ[ℂ] y‖ = ‖x‖ * ‖y‖",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState m",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_PHASE_REFL",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_refl",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), USMVerification.StateEquivalence x x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PHASE_SYMM",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_symm",
+    "statement": "∀ {n : ℕ} {x y : USMVerification.ComplexState n},\n  USMVerification.StateEquivalence x y → USMVerification.StateEquivalence y x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.StateEquivalence x y",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PHASE_TRANS",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_trans",
+    "statement": "∀ {n : ℕ} {x y w : USMVerification.ComplexState n},\n  USMVerification.StateEquivalence x y → USMVerification.StateEquivalence y w → USMVerification.StateEquivalence x w",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "w",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.StateEquivalence x y",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "USMVerification.StateEquivalence y w",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_P0_07",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.p0_07",
+    "statement": "∀ {S : Type u_1} {O : Type u_2} (observe : S → O) (x y : S),\n  (∃ o, observe x = o ∧ observe y ≠ o) ↔ observe x ≠ observe y",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "O",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → O",
+        "name": "observe",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_K02",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K02",
+    "statement": "∀ (s : ℕ → ℝ) (i j : ℕ) (v : ℝ), j ≠ i → USMVerification.replace s i v j = s j",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "j",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "j ≠ i",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K03",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K03",
+    "statement": "∀ (s : ℕ → ℝ) (i : ℕ) (v : ℝ), USMVerification.replace s i v i = v",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K04_DISTINCT",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K04_distinct",
+    "statement": "∀ (s : ℕ → ℝ) (i j : ℕ) (v w : ℝ),\n  i ≠ j →\n    USMVerification.replace (USMVerification.replace s i v) j w =\n      USMVerification.replace (USMVerification.replace s j w) i v",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "j",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "w",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "i ≠ j",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K04_SAME",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K04_same",
+    "statement": "∀ (s : ℕ → ℝ),\n  USMVerification.replace (USMVerification.replace s 0 1) 0 2 ≠\n    USMVerification.replace (USMVerification.replace s 0 2) 0 1",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K05",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K05",
+    "statement": "¬Function.Injective fun s => USMVerification.replace s 0 0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K06",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K06",
+    "statement": "¬∃ s, s 0 = 0 ∧ s 0 = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K10",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K10",
+    "statement": "∀ {n : ℕ} (s : Fin n → ℝ) (v : ℝ) (i : Fin n), USMVerification.extend s v i.castSucc = s i",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K01",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K01",
+    "statement": "∀ {n : ℕ} (v : ℝ), Function.Injective fun s => USMVerification.extend s v",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [
+      "USM_K10"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K01"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K07",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K07",
+    "statement": "∀ (s : Set ℕ) (i : ℕ), i ∉ s \\ {i}",
+    "typed_binders": [
+      {
+        "type": "Set ℕ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext"
+    ],
+    "related_usm_ids": [
+      "K07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K11",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K11",
+    "statement": "∀ {S : Type u_1} (Q : S → Prop) (fs : List (S → S)),\n  (∀ f ∈ fs, ∀ (x : S), Q x → Q (f x)) → ∀ (x : S), Q x → Q (List.foldl (fun s f => f s) x fs)",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "S",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "S → Prop",
+        "name": "Q",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "List (S → S)",
+        "name": "fs",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "∀ f ∈ fs, ∀ (x : S), Q x → Q (f x)",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "S",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Q x",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext"
+    ],
+    "related_usm_ids": [
+      "K11",
+      "R08",
+      "I07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K12",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K12",
+    "statement": "¬∃ F, (∀ (x : ℝ), F x = x) ∧ F 0 = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K12",
+      "I06",
+      "I10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_FINITE_CAPACITY",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.finite_capacity",
+    "statement": "∀ {A : Type u_1} {B : Type u_2} [inst : Fintype A] [inst_1 : Fintype B] (f : A → B),\n  Function.Injective f → Fintype.card A ≤ Fintype.card B",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Type u_2",
+        "name": "B",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fintype A",
+        "name": "inst._@.USMVerification.Knowledge.394533331._hygCtx._hyg.4",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "Fintype B",
+        "name": "inst._@.USMVerification.Knowledge.394533331._hygCtx._hyg.7",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "A → B",
+        "name": "f",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Function.Injective f",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E1_NORMALIZED",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.e1_normalized",
+    "statement": "‖USMVerification.e1‖ = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_MIXED_ENTRIES",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.mixed_entries",
+    "statement": "USMVerification.maximallyMixed.matrix = !![1 / 2, 0; 0, 1 / 2]",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_E1_NORMALIZED",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C07_NOT_PURE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C07_not_pure",
+    "statement": "¬∃ x, USMVerification.outer x = USMVerification.maximallyMixed.matrix",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_E1_NORMALIZED",
+      "USM_MIXED_ENTRIES",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R06",
+      "C01",
+      "C07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_MATRIX",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_matrix",
+    "statement": "∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ),\n  USMVerification.realify (A.mulVec x) = USMVerification.realMatVec A (USMVerification.realify x)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Matrix (Fin n) (Fin n) ℂ",
+        "name": "A",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin n → ℂ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S10",
+      "C11",
+      "C12"
+    ]
+  },
+  {
+    "knowledge_id": "USM_COORDINATEPROJECTION_IDEMPOTENT",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.coordinateProjection_idempotent",
+    "statement": "USMVerification.coordinateProjection ∘ₗ USMVerification.coordinateProjection = USMVerification.coordinateProjection",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E01",
+      "I01"
+    ]
+  },
+  {
+    "knowledge_id": "USM_HYBRID_NONTRIVIAL",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.hybrid_nontrivial",
+    "statement": "USMVerification.hybridWitness.extraction USMVerification.e0 = USMVerification.e0 ∧\n  USMVerification.hybridWitness.extraction USMVerification.e1 = 0 ∧ USMVerification.e1 ≠ 0",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_COORDINATEPROJECTION_IDEMPOTENT",
+      "USM_E1_NORMALIZED",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C09",
+      "I01"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E09_ZERO",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E09_zero",
+    "statement": "‖USMVerification.e1‖ = 1 ∧ USMVerification.coordinateProjection USMVerification.e1 = 0",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_COORDINATEPROJECTION_IDEMPOTENT",
+      "USM_E1_NORMALIZED",
+      "USM_HYBRID_NONTRIVIAL",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E03",
+      "E09",
+      "I05",
+      "I08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_E09_SELECT",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.E09_select",
+    "statement": "USMVerification.coordinateProjection USMVerification.ambiguous = (√2)⁻¹ • USMVerification.e0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E09",
+      "I05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I08_TRACE_LOSS",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I08_trace_loss",
+    "statement": "(USMVerification.outer (USMVerification.coordinateProjection USMVerification.e1)).trace ≠ 1",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_COORDINATEPROJECTION_IDEMPOTENT",
+      "USM_E09_ZERO",
+      "USM_E1_NORMALIZED",
+      "USM_HYBRID_NONTRIVIAL",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "I08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U02",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U02",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n), ¬(USMVerification.Certain x ∧ USMVerification.Uncertain x)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PHASE_WEIGHT",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.phase_weight",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n) (z : ℂ),\n  ‖z‖ = 1 → ∀ (i : Fin n), USMVerification.weight (z • x) i = USMVerification.weight x i",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "‖z‖ = 1",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "Fin n",
+        "name": "i",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_U05",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U05",
+    "statement": "∀ {n : ℕ} (x : USMVerification.ComplexState n) (z : ℂ),\n  ‖z‖ = 1 → (USMVerification.Certain (z • x) ↔ USMVerification.Certain x)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℂ",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "‖z‖ = 1",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_PHASE_WEIGHT"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_CERTAIN_WITNESS",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.certain_witness",
+    "statement": "‖USMVerification.e0‖ = 1 ∧ USMVerification.Certain USMVerification.e0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U01",
+      "U06",
+      "I05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_UNCERTAIN_WITNESS",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.uncertain_witness",
+    "statement": "‖USMVerification.ambiguous‖ = 1 ∧ USMVerification.Uncertain USMVerification.ambiguous",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U01",
+      "U06",
+      "I05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U06_FORWARD",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U06_forward",
+    "statement": "USMVerification.hadamard USMVerification.e0 = USMVerification.ambiguous",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U06_BACKWARD",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U06_backward",
+    "statement": "USMVerification.hadamard USMVerification.ambiguous = USMVerification.e0",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U07",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U07",
+    "statement": "∃ x, USMVerification.Certain x ∧ ∃ t f, t x ∧ ¬f x",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PROJX_SELFADJOINT_COORDINATES",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.projX_selfadjoint_coordinates",
+    "statement": "∀ (x y : ℝ × ℝ),\n  x.1 * (USMVerification.projX y).1 + x.2 * (USMVerification.projX y).2 =\n    (USMVerification.projX x).1 * y.1 + (USMVerification.projX x).2 * y.2",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PROJD_SELFADJOINT_COORDINATES",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.projD_selfadjoint_coordinates",
+    "statement": "∀ (x y : ℝ × ℝ),\n  x.1 * (USMVerification.projD y).1 + x.2 * (USMVerification.projD y).2 =\n    (USMVerification.projD x).1 * y.1 + (USMVerification.projD x).2 * y.2",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_PROJD_RESIDUAL_ORTHOGONAL",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.projD_residual_orthogonal",
+    "statement": "∀ (x : ℝ × ℝ),\n  (USMVerification.projD x).1 * (x.1 - (USMVerification.projD x).1) +\n      (USMVerification.projD x).2 * (x.2 - (USMVerification.projD x).2) =\n    0",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "E08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S01",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S01",
+    "statement": "∀ {E : Type u_1} [inst : Fintype E] [inst_1 : DecidableEq E], Function.Injective USMVerification.encode",
+    "typed_binders": [
+      {
+        "type": "Type u_1",
+        "name": "E",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fintype E",
+        "name": "inst._@.USMVerification.Semantics.4070031439._hygCtx._hyg.3",
+        "is_typeclass": true,
+        "is_proposition": false
+      },
+      {
+        "type": "DecidableEq E",
+        "name": "inst._@.USMVerification.Semantics.4070031439._hygCtx._hyg.6",
+        "is_typeclass": true,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S01",
+      "S10",
+      "C10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_ARBITRARY_RELATION_NOT_LINEAR",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.arbitrary_relation_not_linear",
+    "statement": "¬∃ A, A 0 = 1",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": []
+  },
+  {
+    "knowledge_id": "USM_S06",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S06",
+    "statement": "1 + 2 = 2 + 1 ∧ 1 ≠ 2",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S09",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S09",
+    "statement": "USMVerification.projX (USMVerification.swap (0, 1)) ≠ USMVerification.swap (USMVerification.projX (0, 1))",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S09",
+      "C12",
+      "I09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S08",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S08",
+    "statement": "∀ (x y : ℝ × ℝ), x.1 = y.1 → (USMVerification.projX x).1 = (USMVerification.projX y).1",
+    "typed_binders": [
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x.1 = y.1",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S08",
+      "E07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S05_NO_DECODER",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S05_no_decoder",
+    "statement": "¬∃ d, ∀ (x : ℝ × ℝ), d (USMVerification.projX x) = x",
+    "typed_binders": [],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S05",
+      "E06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U01",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U01",
+    "statement": "∃ r u, USMVerification.Certain ↑r ∧ USMVerification.Uncertain ↑u",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_UNCERTAIN_WITNESS"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U01"
+    ]
+  },
+  {
+    "knowledge_id": "USM_RAY_OUTER",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.ray_outer",
+    "statement": "∀ {n : ℕ} {x y : USMVerification.ComplexState n},\n  USMVerification.StateEquivalence x y → USMVerification.outer x = USMVerification.outer y",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.ComplexState n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.StateEquivalence x y",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_P0_06"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U05"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S07",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S07",
+    "statement": "∀ {n m : ℕ} (U : USMVerification.M1 n →ₗᵢ[ℝ] USMVerification.M1 m) (x y : USMVerification.M1 n),\n  inner ℝ (U x) (U y) = inner ℝ x y",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n →ₗᵢ[ℝ] USMVerification.M1 m",
+        "name": "U",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M1 n",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_S03",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.S03",
+    "statement": "USMVerification.bind 0 1 ≠ USMVerification.bind 1 0",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_R09",
+      "USM_READ_BIND"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "S03",
+      "R03"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K08",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K08",
+    "statement": "∀ (s : ℕ → ℝ) (j : ℕ) (v : ℝ) (updates : List (ℕ × ℝ)),\n  (∀ p ∈ updates, p.1 ≠ j) → s j = v → List.foldl (fun t p => USMVerification.replace t p.1 p.2) s updates j = v",
+    "typed_binders": [
+      {
+        "type": "ℕ → ℝ",
+        "name": "s",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "j",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "List (ℕ × ℝ)",
+        "name": "updates",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "∀ p ∈ updates, p.1 ≠ j",
+        "name": "h",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "s j = v",
+        "name": "hj",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_K02"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K08",
+      "K11",
+      "I07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_K09",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.K09",
+    "statement": "∀ {n k : ℕ} (v : Fin k → USMVerification.M1 n), LinearIndependent ℝ v → k ≤ n",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "Fin k → USMVerification.M1 n",
+        "name": "v",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "LinearIndependent ℝ v",
+        "name": "hv",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "K09"
+    ]
+  },
+  {
+    "knowledge_id": "USM_TENSOR_DIMENSION",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.tensor_dimension",
+    "statement": "∀ (n m : ℕ), Module.finrank ℝ (USMVerification.M3 ℝ n m) = n * m",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C06"
+    ]
+  },
+  {
+    "knowledge_id": "USM_R08",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.R08",
+    "statement": "∀ {n m k : ℕ} (x : USMVerification.M2 n) (y : USMVerification.M2 m) (z : USMVerification.M2 k),\n  ‖x‖ = 1 → ‖y‖ = 1 → ‖z‖ = 1 → ‖x ⊗ₜ[ℂ] y ⊗ₜ[ℂ] z‖ = 1",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "k",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M2 n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M2 m",
+        "name": "y",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.M2 k",
+        "name": "z",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "‖x‖ = 1",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "‖y‖ = 1",
+        "name": "hy",
+        "is_typeclass": false,
+        "is_proposition": true
+      },
+      {
+        "type": "‖z‖ = 1",
+        "name": "hz",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "R08"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I07",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I07",
+    "statement": "∀ (a b : ℝ) (x : ℝ × ℝ), x.1 = 0 → (USMVerification.projX (USMVerification.diagonalUpdate a b (x + (0, 1)))).1 = 0",
+    "typed_binders": [
+      {
+        "type": "ℝ",
+        "name": "a",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ",
+        "name": "b",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℝ × ℝ",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "x.1 = 0",
+        "name": "hx",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "I07"
+    ]
+  },
+  {
+    "knowledge_id": "USM_I01",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.I01",
+    "statement": "∃ h, h.extraction USMVerification.e0 = USMVerification.e0 ∧ h.extraction USMVerification.e1 = 0",
+    "typed_binders": [],
+    "dependencies": [
+      "USM_CERTAIN_WITNESS",
+      "USM_COORDINATEPROJECTION_IDEMPOTENT",
+      "USM_E1_NORMALIZED",
+      "USM_HYBRID_NONTRIVIAL",
+      "USM_OUTER_POSITIVE",
+      "USM_OUTER_TRACE"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C09",
+      "I01",
+      "I10"
+    ]
+  },
+  {
+    "knowledge_id": "USM_U02_EXHAUSTIVE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.U02_exhaustive",
+    "statement": "∀ {n : ℕ} (x : USMVerification.NormalizedState n), USMVerification.Certain ↑x ∨ USMVerification.Uncertain ↑x",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "USMVerification.NormalizedState n",
+        "name": "x",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "U02"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C04_DIMENSION",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C04_dimension",
+    "statement": "∀ (n : ℕ), Module.finrank ℝ (Fin n → ℂ) = 2 * n",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C04"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C04_SAME_DIMENSION",
+    "stage": 2,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C04_same_dimension",
+    "statement": "∀ (n : ℕ), 0 < n → ¬Nonempty ((Fin n → ℂ) ≃ₗ[ℝ] Fin n → ℝ)",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "0 < n",
+        "name": "hn",
+        "is_typeclass": false,
+        "is_proposition": true
+      }
+    ],
+    "dependencies": [
+      "USM_C04_DIMENSION"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C04",
+      "C12"
+    ]
+  },
+  {
+    "knowledge_id": "USM_C11_TENSOR_SPACE",
+    "stage": 3,
+    "kind": "MATHEMATICAL_PROPOSITION",
+    "formal_constant": "USMVerification.C11_tensor_space",
+    "statement": "∀ (n m : ℕ), Nonempty (USMVerification.M3 ℂ n m ≃ₗ[ℂ] USMVerification.M2 (n * m))",
+    "typed_binders": [
+      {
+        "type": "ℕ",
+        "name": "n",
+        "is_typeclass": false,
+        "is_proposition": false
+      },
+      {
+        "type": "ℕ",
+        "name": "m",
+        "is_typeclass": false,
+        "is_proposition": false
+      }
+    ],
+    "dependencies": [],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "related_usm_ids": [
+      "C01",
+      "C06",
+      "C11"
+    ]
+  }
+]

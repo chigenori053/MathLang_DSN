@@ -1,0 +1,52 @@
+{
+  "version": "USM-MATH-KNOWLEDGE/0.1.1",
+  "scope": "USM-targeted staged foundation, not complete coverage of all school/university/specialist mathematics",
+  "mathematical_propositions": 198,
+  "exact_ir_views": 18,
+  "duplicate_proof_aliases": 3,
+  "new_knowledge_units": 216,
+  "legacy_units": 29,
+  "total_units": 245,
+  "stage_counts": {
+    "1": {
+      "EXACT_IR_RETRIEVAL_VIEW": 3,
+      "MATHEMATICAL_PROPOSITION": 61
+    },
+    "2": {
+      "EXACT_IR_RETRIEVAL_VIEW": 14,
+      "MATHEMATICAL_PROPOSITION": 76
+    },
+    "3": {
+      "EXACT_IR_RETRIEVAL_VIEW": 1,
+      "MATHEMATICAL_PROPOSITION": 61
+    }
+  },
+  "full_dependency_graph_nodes": 44014,
+  "proof_body_dependencies_included": true,
+  "generic_conditional_rules": 3,
+  "axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "lean_version": "leanprover/lean4:v4.35.0",
+  "proof_declarations_audited": 219,
+  "curriculum_source": "https://www.mext.go.jp/content/20230217-mxt_kyoiku02-100002620_05.pdf",
+  "default_cli_catalogue_replaced": false,
+  "automatic_proof_recipe_generation": false,
+  "date": "2026-11-03",
+  "timezone": "Asia/Tokyo",
+  "catalogue_validation": "PASS",
+  "staged_registration": "PASS",
+  "persistence_reload": "PASS",
+  "existing_dsn_goal_matches_before": 0,
+  "existing_dsn_goal_matches_after": 18,
+  "tested_goal_count": 18,
+  "conditional_gke_applications": 3,
+  "missing_premise_controls_passed": 3,
+  "negative_division_control": "EXPECTED_REJECTION",
+  "native_cli_inspection": "PASS",
+  "curriculum_entirely_covered": false,
+  "usm_all_properties_solved": false,
+  "formal_inference_automatic_end_to_end": false
+}

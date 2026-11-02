@@ -1,0 +1,5 @@
+{
+  "USMVerification.C11_norm": "USMMathKnowledge.HS_COMPLEX_NORM_SQUARE",
+  "USMVerification.leftInverse_injective": "USMMathKnowledge.UNI_LEFT_INVERSE_INJECTIVE",
+  "USMVerification.R10_modusPonens": "USMMathKnowledge.HS_MODUS_PONENS"
+}
