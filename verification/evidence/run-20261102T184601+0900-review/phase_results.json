@@ -1,0 +1,13 @@
+{
+  "phases": {
+    "P0": "PASS",
+    "P1": "PASS",
+    "P2": "PASS",
+    "P3": "PASS",
+    "P4": "PASS",
+    "P5": "PASS"
+  },
+  "overall": "PASS",
+  "scope": "Bounded v0.1 mathematical IR and representative models; see IR specification and final report.",
+  "basis": "reports/audit-summary-final.json; raw per-kernel assessment is kernel_phase_results.json"
+}

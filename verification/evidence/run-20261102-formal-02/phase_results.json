@@ -1,0 +1,10 @@
+{
+  "P0": "SEE_BASELINE_REPORT",
+  "P1": "SEE_RUST_TESTS",
+  "P2": "NOT_VERIFIED",
+  "P3": "SEE_RUST_TESTS",
+  "P4": "SEE_RUST_TESTS",
+  "P5": "NOT_VERIFIED",
+  "note": "Full phase gate adjudication requires integration and independent source/artifact audit; model-level PASS is distinct from expected-refutation test PASS.",
+  "overall": "PARTIAL"
+}

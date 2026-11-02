@@ -1,0 +1,13 @@
+{
+  "binary_sha256": "568618c06bb23527b2e072bfef51a3098936bf331f3468f91649a8c6939236de",
+  "knowledge_revision": "1759fbc509d2bd36e7866be10bdca9fa6aba21537a212f2b6dfdc5d39dc56297",
+  "lean": "4.35.0",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "max_rss_bytes": 2147483648,
+  "parallelism": 1,
+  "planner_max_nodes": 1000,
+  "rustc": "rustc 1.93.1 (01f6ddf75 2026-02-11)",
+  "seconds_per_case": 300,
+  "translation_version": "mathir-lean/0.1",
+  "unix_timestamp": 1793612351
+}

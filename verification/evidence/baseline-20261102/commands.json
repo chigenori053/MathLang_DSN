@@ -1,0 +1,115 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "mirp/Cargo.toml",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 405.5950876669958,
+    "stdout": "00.stdout.log",
+    "stderr": "00.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "check"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.965076084001339,
+    "stdout": "01.stdout.log",
+    "stderr": "01.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "project-validate",
+      ".",
+      "--json"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.567153458003304,
+    "stdout": "02.stdout.log",
+    "stderr": "02.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "SelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.19495937500323635,
+    "stdout": "03.stdout.log",
+    "stderr": "03.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "PolynomialSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.19094487500115065,
+    "stdout": "04.stdout.log",
+    "stderr": "04.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "KnowledgeSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.19008941600623075,
+    "stdout": "05.stdout.log",
+    "stderr": "05.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "JuniorHighSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.18985799999791197,
+    "stdout": "06.stdout.log",
+    "stderr": "06.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "QuadraticRuntimeSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.1881211669970071,
+    "stdout": "07.stdout.log",
+    "stderr": "07.stderr.log"
+  }
+]

@@ -1,0 +1,5 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1h6vfj6n/Generated.lean:11:47: error: unsolved goals
+⊢ 1 = 1
+theorem Generated.target : 1 = 1 :=
+sorry
+'Generated.target' depends on axioms: [sorryAx]

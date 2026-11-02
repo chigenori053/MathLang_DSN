@@ -1,0 +1,4 @@
+theorem Generated.target : ∀ (v_A v_B : Type) (v_E : v_A → v_B) (v_D : v_B → v_A) (v_x v_y : v_A),
+  ¬v_x = v_y → v_E v_x = v_E v_y → ¬(v_D (v_E v_x) = v_x ∧ v_D (v_E v_y) = v_y) :=
+fun v_A v_B v_E v_D v_x v_y hne hc => Foundation.collision v_E v_D v_x v_y hne hc
+'Generated.target' does not depend on any axioms

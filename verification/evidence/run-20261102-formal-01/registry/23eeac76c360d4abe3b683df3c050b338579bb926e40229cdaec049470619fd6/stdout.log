@@ -1,0 +1,12 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:50: error(lean.unknownIdentifier): Unknown identifier `Function.update`
+
+Note: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:134: error(lean.unknownIdentifier): Unknown identifier `Function.update`
+
+Note: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:11:43: error: aesop: failed to prove the goal after exhaustive search.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:220: error: unsolved goals
+v_S : ℕ → ℕ
+a : ?m.2 = ?m.4
+⊢ False
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`

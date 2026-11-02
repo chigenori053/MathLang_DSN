@@ -1,0 +1,1 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-7_g476m4/Foundation.lean:55:2: error: Cannot add attribute `[expose]`: This attribute can only be added when declaring a `def`

@@ -1,0 +1,54 @@
+{
+  "context": {
+    "assumptions": [],
+    "variables": {
+      "x": {
+        "Vector": [
+          "Complex",
+          {
+            "Fixed": 2
+          }
+        ]
+      },
+      "y": {
+        "Vector": [
+          "Complex",
+          {
+            "Fixed": 3
+          }
+        ]
+      }
+    }
+  },
+  "evidence": {
+    "diagnostics": [
+      "type mismatch: Vector(Complex, Fixed(2)) versus Vector(Complex, Fixed(3))"
+    ],
+    "source_ir_hash": "8c13e9cae6b10599424b5dbe38601ab9960dca2a8ad8c721fb5529579e9e0f4d",
+    "valid": false
+  },
+  "goal": {
+    "Equality": [
+      {
+        "Add": [
+          {
+            "Variable": "x"
+          },
+          {
+            "Variable": "y"
+          }
+        ]
+      },
+      {
+        "Add": [
+          {
+            "Variable": "x"
+          },
+          {
+            "Variable": "y"
+          }
+        ]
+      }
+    ]
+  }
+}

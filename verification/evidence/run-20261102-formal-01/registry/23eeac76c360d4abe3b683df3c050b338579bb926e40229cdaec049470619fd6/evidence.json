@@ -1,0 +1,56 @@
+{
+  "evidence_id": "23eeac76c360d4abe3b683df3c050b338579bb926e40229cdaec049470619fd6",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "CV-UPDATE",
+  "source_ir_hash": "33521c8da19ad1b4de0678943ae67a6a52b25614ac4289c4c3eca9e48943566b",
+  "lean_source_hash": "d8b5ec45e00603bb21c2b1a98a039144628464eca8cd3714133a8f2e549a2935",
+  "proof_result": "UNKNOWN",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "UNKNOWN",
+    "diagnostics": [],
+    "exit_code": 1,
+    "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:50: error(lean.unknownIdentifier): Unknown identifier `Function.update`\n\nNote: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:134: error(lean.unknownIdentifier): Unknown identifier `Function.update`\n\nNote: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:11:43: error: aesop: failed to prove the goal after exhaustive search.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:10:220: error: unsolved goals\nv_S : ℕ → ℕ\na : ?m.2 = ?m.4\n⊢ False\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ms4of4_2/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1368686592,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "d8b5ec45e00603bb21c2b1a98a039144628464eca8cd3714133a8f2e549a2935",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611160,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "d8b5ec45e00603bb21c2b1a98a039144628464eca8cd3714133a8f2e549a2935",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "4465bc91f6833ffb55f51393e5e24bfcf27499ee2407c93e66f7557ea2d0121d"
+  },
+  "translation": {
+    "source_ir_hash": "33521c8da19ad1b4de0678943ae67a6a52b25614ac4289c4c3eca9e48943566b",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "d8b5ec45e00603bb21c2b1a98a039144628464eca8cd3714133a8f2e549a2935",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_CHECKED; INDEPENDENT_CASE_AUDIT_REQUIRED",
+    "expected_statement": "(∀ (v_S : (ℕ → ℕ)), (¬ (((Function.update (Function.update v_S (0 : ℕ) (1 : ℕ)) (0 : ℕ) (2 : ℕ)) (0 : ℕ)) = ((Function.update (Function.update v_S (0 : ℕ) (2 : ℕ)) (0 : ℕ) (1 : ℕ)) (0 : ℕ)))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

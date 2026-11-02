@@ -1,0 +1,1112 @@
+{
+  "models": {
+    "USM-MVF": {
+      "1": {
+        "model_id": "USM-MVF",
+        "revision": 1,
+        "definitions": {},
+        "assumptions": [],
+        "operations": [
+          "norm",
+          "adjoint",
+          "application",
+          "update"
+        ],
+        "invariants": [
+          {
+            "ForAll": [
+              "n",
+              "Nat",
+              {
+                "ForAll": [
+                  "U",
+                  {
+                    "LinearOperator": [
+                      {
+                        "HilbertSpace": {
+                          "Symbol": "n"
+                        }
+                      },
+                      {
+                        "HilbertSpace": {
+                          "Symbol": "n"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Implies": [
+                      {
+                        "Unitary": {
+                          "Variable": "U"
+                        }
+                      },
+                      {
+                        "ForAll": [
+                          "x",
+                          {
+                            "HilbertSpace": {
+                              "Symbol": "n"
+                            }
+                          },
+                          {
+                            "Equality": [
+                              {
+                                "Norm": {
+                                  "Apply": [
+                                    {
+                                      "Variable": "U"
+                                    },
+                                    {
+                                      "Variable": "x"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "Norm": {
+                                  "Variable": "x"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "n",
+              "Nat",
+              {
+                "ForAll": [
+                  "A",
+                  {
+                    "LinearOperator": [
+                      {
+                        "HilbertSpace": {
+                          "Symbol": "n"
+                        }
+                      },
+                      {
+                        "HilbertSpace": {
+                          "Symbol": "n"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ForAll": [
+                      "x",
+                      {
+                        "HilbertSpace": {
+                          "Symbol": "n"
+                        }
+                      },
+                      {
+                        "Equality": [
+                          {
+                            "Norm": {
+                              "Apply": [
+                                {
+                                  "Variable": "A"
+                                },
+                                {
+                                  "Variable": "x"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "Norm": {
+                              "Variable": "x"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "x",
+              "Bool",
+              {
+                "Equality": [
+                  {
+                    "Apply": [
+                      {
+                        "Constant": {
+                          "IdentityFunction": "Bool"
+                        }
+                      },
+                      {
+                        "Apply": [
+                          {
+                            "Constant": {
+                              "IdentityFunction": "Bool"
+                            }
+                          },
+                          {
+                            "Variable": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Variable": "x"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "A",
+              "Universe",
+              {
+                "ForAll": [
+                  "B",
+                  "Universe",
+                  {
+                    "ForAll": [
+                      "E",
+                      {
+                        "Function": [
+                          {
+                            "Abstract": "A"
+                          },
+                          {
+                            "Abstract": "B"
+                          }
+                        ]
+                      },
+                      {
+                        "ForAll": [
+                          "D",
+                          {
+                            "Function": [
+                              {
+                                "Abstract": "B"
+                              },
+                              {
+                                "Abstract": "A"
+                              }
+                            ]
+                          },
+                          {
+                            "ForAll": [
+                              "x",
+                              {
+                                "Abstract": "A"
+                              },
+                              {
+                                "ForAll": [
+                                  "y",
+                                  {
+                                    "Abstract": "A"
+                                  },
+                                  {
+                                    "Implies": [
+                                      {
+                                        "LogicalNot": {
+                                          "Equality": [
+                                            {
+                                              "Variable": "x"
+                                            },
+                                            {
+                                              "Variable": "y"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "Implies": [
+                                          {
+                                            "Equality": [
+                                              {
+                                                "Apply": [
+                                                  {
+                                                    "Variable": "E"
+                                                  },
+                                                  {
+                                                    "Variable": "x"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "Apply": [
+                                                  {
+                                                    "Variable": "E"
+                                                  },
+                                                  {
+                                                    "Variable": "y"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "LogicalNot": {
+                                              "LogicalAnd": [
+                                                {
+                                                  "Equality": [
+                                                    {
+                                                      "Apply": [
+                                                        {
+                                                          "Variable": "D"
+                                                        },
+                                                        {
+                                                          "Apply": [
+                                                            {
+                                                              "Variable": "E"
+                                                            },
+                                                            {
+                                                              "Variable": "x"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Variable": "x"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "Equality": [
+                                                    {
+                                                      "Apply": [
+                                                        {
+                                                          "Variable": "D"
+                                                        },
+                                                        {
+                                                          "Apply": [
+                                                            {
+                                                              "Variable": "E"
+                                                            },
+                                                            {
+                                                              "Variable": "y"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Variable": "y"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "S",
+              {
+                "Function": [
+                  "Nat",
+                  "Nat"
+                ]
+              },
+              {
+                "ForAll": [
+                  "i",
+                  "Nat",
+                  {
+                    "ForAll": [
+                      "j",
+                      "Nat",
+                      {
+                        "ForAll": [
+                          "delta",
+                          "Nat",
+                          {
+                            "Implies": [
+                              {
+                                "LogicalNot": {
+                                  "Equality": [
+                                    {
+                                      "Variable": "j"
+                                    },
+                                    {
+                                      "Variable": "i"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "Equality": [
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Update": [
+                                          {
+                                            "Variable": "S"
+                                          },
+                                          {
+                                            "Variable": "i"
+                                          },
+                                          {
+                                            "Variable": "delta"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "Variable": "j"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "Apply": [
+                                      {
+                                        "Variable": "S"
+                                      },
+                                      {
+                                        "Variable": "j"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ForAll": [
+              "positive",
+              "Proposition",
+              {
+                "ForAll": [
+                  "valid",
+                  "Proposition",
+                  {
+                    "Implies": [
+                      {
+                        "LogicalNot": {
+                          "Variable": "positive"
+                        }
+                      },
+                      {
+                        "LogicalNot": {
+                          "LogicalAnd": [
+                            {
+                              "Variable": "positive"
+                            },
+                            {
+                              "Variable": "valid"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "proof_obligations": [
+          {
+            "id": "MV-01",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "n",
+                "Nat",
+                {
+                  "ForAll": [
+                    "U",
+                    {
+                      "LinearOperator": [
+                        {
+                          "HilbertSpace": {
+                            "Symbol": "n"
+                          }
+                        },
+                        {
+                          "HilbertSpace": {
+                            "Symbol": "n"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Implies": [
+                        {
+                          "Unitary": {
+                            "Variable": "U"
+                          }
+                        },
+                        {
+                          "ForAll": [
+                            "x",
+                            {
+                              "HilbertSpace": {
+                                "Symbol": "n"
+                              }
+                            },
+                            {
+                              "Equality": [
+                                {
+                                  "Norm": {
+                                    "Apply": [
+                                      {
+                                        "Variable": "U"
+                                      },
+                                      {
+                                        "Variable": "x"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Norm": {
+                                    "Variable": "x"
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Conditional",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          },
+          {
+            "id": "MV-02",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "n",
+                "Nat",
+                {
+                  "ForAll": [
+                    "A",
+                    {
+                      "LinearOperator": [
+                        {
+                          "HilbertSpace": {
+                            "Symbol": "n"
+                          }
+                        },
+                        {
+                          "HilbertSpace": {
+                            "Symbol": "n"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "ForAll": [
+                        "x",
+                        {
+                          "HilbertSpace": {
+                            "Symbol": "n"
+                          }
+                        },
+                        {
+                          "Equality": [
+                            {
+                              "Norm": {
+                                "Apply": [
+                                  {
+                                    "Variable": "A"
+                                  },
+                                  {
+                                    "Variable": "x"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "Norm": {
+                                "Variable": "x"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Construction",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          },
+          {
+            "id": "MV-03",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "x",
+                "Bool",
+                {
+                  "Equality": [
+                    {
+                      "Apply": [
+                        {
+                          "Constant": {
+                            "IdentityFunction": "Bool"
+                          }
+                        },
+                        {
+                          "Apply": [
+                            {
+                              "Constant": {
+                                "IdentityFunction": "Bool"
+                              }
+                            },
+                            {
+                              "Variable": "x"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Variable": "x"
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Construction",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          },
+          {
+            "id": "MV-04",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "A",
+                "Universe",
+                {
+                  "ForAll": [
+                    "B",
+                    "Universe",
+                    {
+                      "ForAll": [
+                        "E",
+                        {
+                          "Function": [
+                            {
+                              "Abstract": "A"
+                            },
+                            {
+                              "Abstract": "B"
+                            }
+                          ]
+                        },
+                        {
+                          "ForAll": [
+                            "D",
+                            {
+                              "Function": [
+                                {
+                                  "Abstract": "B"
+                                },
+                                {
+                                  "Abstract": "A"
+                                }
+                              ]
+                            },
+                            {
+                              "ForAll": [
+                                "x",
+                                {
+                                  "Abstract": "A"
+                                },
+                                {
+                                  "ForAll": [
+                                    "y",
+                                    {
+                                      "Abstract": "A"
+                                    },
+                                    {
+                                      "Implies": [
+                                        {
+                                          "LogicalNot": {
+                                            "Equality": [
+                                              {
+                                                "Variable": "x"
+                                              },
+                                              {
+                                                "Variable": "y"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "Implies": [
+                                            {
+                                              "Equality": [
+                                                {
+                                                  "Apply": [
+                                                    {
+                                                      "Variable": "E"
+                                                    },
+                                                    {
+                                                      "Variable": "x"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "Apply": [
+                                                    {
+                                                      "Variable": "E"
+                                                    },
+                                                    {
+                                                      "Variable": "y"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "LogicalNot": {
+                                                "LogicalAnd": [
+                                                  {
+                                                    "Equality": [
+                                                      {
+                                                        "Apply": [
+                                                          {
+                                                            "Variable": "D"
+                                                          },
+                                                          {
+                                                            "Apply": [
+                                                              {
+                                                                "Variable": "E"
+                                                              },
+                                                              {
+                                                                "Variable": "x"
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "Variable": "x"
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "Equality": [
+                                                      {
+                                                        "Apply": [
+                                                          {
+                                                            "Variable": "D"
+                                                          },
+                                                          {
+                                                            "Apply": [
+                                                              {
+                                                                "Variable": "E"
+                                                              },
+                                                              {
+                                                                "Variable": "y"
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "Variable": "y"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Impossibility",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          },
+          {
+            "id": "MV-05",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "S",
+                {
+                  "Function": [
+                    "Nat",
+                    "Nat"
+                  ]
+                },
+                {
+                  "ForAll": [
+                    "i",
+                    "Nat",
+                    {
+                      "ForAll": [
+                        "j",
+                        "Nat",
+                        {
+                          "ForAll": [
+                            "delta",
+                            "Nat",
+                            {
+                              "Implies": [
+                                {
+                                  "LogicalNot": {
+                                    "Equality": [
+                                      {
+                                        "Variable": "j"
+                                      },
+                                      {
+                                        "Variable": "i"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Equality": [
+                                    {
+                                      "Apply": [
+                                        {
+                                          "Update": [
+                                            {
+                                              "Variable": "S"
+                                            },
+                                            {
+                                              "Variable": "i"
+                                            },
+                                            {
+                                              "Variable": "delta"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "Variable": "j"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Apply": [
+                                        {
+                                          "Variable": "S"
+                                        },
+                                        {
+                                          "Variable": "j"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Conditional",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          },
+          {
+            "id": "MV-06",
+            "model_id": "USM-MVF",
+            "model_revision": 1,
+            "goal": {
+              "ForAll": [
+                "positive",
+                "Proposition",
+                {
+                  "ForAll": [
+                    "valid",
+                    "Proposition",
+                    {
+                      "Implies": [
+                        {
+                          "LogicalNot": {
+                            "Variable": "positive"
+                          }
+                        },
+                        {
+                          "LogicalNot": {
+                            "LogicalAnd": [
+                              {
+                                "Variable": "positive"
+                              },
+                              {
+                                "Variable": "valid"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "context": {
+              "variables": {},
+              "assumptions": []
+            },
+            "assumptions": [],
+            "required_lemmas": [],
+            "dependencies": [],
+            "kind": "Conditional",
+            "verification_method": "Lean4+Mathlib",
+            "proof_status": "UNKNOWN",
+            "evidence_refs": []
+          }
+        ],
+        "dependencies": []
+      }
+    }
+  },
+  "knowledge": {
+    "EQ_MOVE_LEFT_CONSTANT": {
+      "id": "EQ_MOVE_LEFT_CONSTANT",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:ba0ce84e8e5dce0a6a7d819581180437"
+    },
+    "EQ_MOVE_RIGHT_VARIABLE": {
+      "id": "EQ_MOVE_RIGHT_VARIABLE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:ea6714d46d444476b33711d49175ab1c"
+    },
+    "EQ_SWAP_SIDES": {
+      "id": "EQ_SWAP_SIDES",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:1ad8c41a818a47237e1b480abadd822e"
+    },
+    "JH_CIRCLE_ANGLE": {
+      "id": "JH_CIRCLE_ANGLE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:9f20683a5226ce2da648bdc100720918"
+    },
+    "JH_CLASSICAL_PROBABILITY": {
+      "id": "JH_CLASSICAL_PROBABILITY",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:2e3a31d67eb0746dd6c012a97f151739"
+    },
+    "JH_DATA_QUARTILES": {
+      "id": "JH_DATA_QUARTILES",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:97f7f5c239daa3291b5e71e9694a4e3f"
+    },
+    "JH_FUNCTION_VALUE": {
+      "id": "JH_FUNCTION_VALUE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:860379abaeebb2f14ed33dc380dc4cf3"
+    },
+    "JH_INVERSE_PROPORTION": {
+      "id": "JH_INVERSE_PROPORTION",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:dfa636ed94a6aa4d46e6cec327895eb1"
+    },
+    "JH_LINEAR_SYSTEM": {
+      "id": "JH_LINEAR_SYSTEM",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:879d5b0714120b3b4b63b833d08adff0"
+    },
+    "JH_POLYGON_ANGLE_SUM": {
+      "id": "JH_POLYGON_ANGLE_SUM",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:c12815a8fcb9b3026f81992002007aa4"
+    },
+    "JH_PRIME_FACTORIZATION": {
+      "id": "JH_PRIME_FACTORIZATION",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:dc25fe1221f133dec0e42a14591496b9"
+    },
+    "JH_PYTHAGOREAN": {
+      "id": "JH_PYTHAGOREAN",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:4925857eeaf74832839a8cb1dd8e1d47"
+    },
+    "JH_QUADRATIC_FORMULA": {
+      "id": "JH_QUADRATIC_FORMULA",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:ac8587dbe609c286c2529ea204246f56"
+    },
+    "JH_QUADRATIC_INTEGER_FACTOR": {
+      "id": "JH_QUADRATIC_INTEGER_FACTOR",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:aff03872d785b74f2d0ff9352c4fd8fa"
+    },
+    "JH_RELATIVE_FREQUENCY": {
+      "id": "JH_RELATIVE_FREQUENCY",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:3589eece6ebbcbda797f4c8846fd63b3"
+    },
+    "JH_SIMILARITY_RATIOS": {
+      "id": "JH_SIMILARITY_RATIOS",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:2da10fbf5b268d7061b98caf6df6c441"
+    },
+    "JH_SQUARE_ROOT_SIMPLIFY": {
+      "id": "JH_SQUARE_ROOT_SIMPLIFY",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:b3112b0fd6ca068424759e20ef3164db"
+    },
+    "MIRP_INTEGER_COMPARISON": {
+      "id": "MIRP_INTEGER_COMPARISON",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:1032995f965f19c44ca42f047a7da60c"
+    },
+    "POLY_ADD": {
+      "id": "POLY_ADD",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:1e3e2684f3067b3d04c2d4df90e1fffa"
+    },
+    "POLY_DIFFERENTIATE": {
+      "id": "POLY_DIFFERENTIATE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:3c724ffd183e8dfb1ddafb2f449084ba"
+    },
+    "POLY_DIVIDE_CONSTANT": {
+      "id": "POLY_DIVIDE_CONSTANT",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:e2452c90671e6b97a482b610de180a43"
+    },
+    "POLY_EQUATION_EQUIVALENCE": {
+      "id": "POLY_EQUATION_EQUIVALENCE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:da9bd48f3f11e4c71137e4c839c5345f"
+    },
+    "POLY_EXPRESSION_EQUIVALENCE": {
+      "id": "POLY_EXPRESSION_EQUIVALENCE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:c6f5e9b65b42ce1373ea0a939d99bc69"
+    },
+    "POLY_INTEGER": {
+      "id": "POLY_INTEGER",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:e093ed323e97c5bc4de307439f161f2e"
+    },
+    "POLY_INTEGRATE": {
+      "id": "POLY_INTEGRATE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:f3f6322060d7c25ce0b8c73de7db178b"
+    },
+    "POLY_MULTIPLY": {
+      "id": "POLY_MULTIPLY",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:90b2b0746984f6b530ba6f9632f57a64"
+    },
+    "POLY_POWER_BOUNDED": {
+      "id": "POLY_POWER_BOUNDED",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:fde5f57b30fbae2800a6aa2de5739e13"
+    },
+    "POLY_SUBTRACT": {
+      "id": "POLY_SUBTRACT",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:dace7874b4d0f0c06c418aed1757324c"
+    },
+    "POLY_VARIABLE": {
+      "id": "POLY_VARIABLE",
+      "revision": 1,
+      "content_hash": "knowledge-occurrence:a8913d938000e3c0e95d606f898d1d4d"
+    }
+  }
+}

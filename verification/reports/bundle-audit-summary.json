@@ -1,0 +1,50 @@
+{
+  "specification": "MLDSN-MVF-001 v0.1",
+  "phases": {
+    "P0": "PASS",
+    "P1": "PASS",
+    "P2": "PASS",
+    "P3": "PASS",
+    "P4": "PASS",
+    "P5": "PASS"
+  },
+  "overall": "PASS",
+  "scope": "Bounded v0.1 mathematical IR and representative models; see IR specification and final report.",
+  "raw_result_count": 27,
+  "obligations": {
+    "MV-01": 3,
+    "MV-02": 3,
+    "MV-03": 3,
+    "MV-04": 3,
+    "MV-05": 3,
+    "MV-06": 3,
+    "CV-PHASE-COLLISION": 3,
+    "CV-UPDATE": 3,
+    "CV-PHASE": 3
+  },
+  "expected_results": {
+    "MV-01": "PROVED",
+    "MV-02": "REFUTED",
+    "MV-03": "PROVED",
+    "MV-04": "PROVED",
+    "MV-05": "PROVED",
+    "MV-06": "PROVED",
+    "CV-UPDATE": "PROVED",
+    "CV-PHASE": "PROVED",
+    "CV-PHASE-COLLISION": "REFUTED"
+  },
+  "repeatability": true,
+  "false_proved": 0,
+  "missing_obligations": 0,
+  "peak_rss_bytes": 1392214016,
+  "maximum_case_ms": 6446,
+  "independent_translation_cases": 11,
+  "negative_cases": 6,
+  "rust_tests_passed": 33,
+  "existing_rust_tests_passed": 77,
+  "baseline": "verification/evidence/run-20261102T184601+0900-review/regression",
+  "run": "verification/evidence/run-20261102T184601+0900-review",
+  "negative": "verification/evidence/run-20261102T184601+0900-review/negative",
+  "semantics": "verification/evidence/run-20261102T184601+0900-review/semantic_checks",
+  "artifact_manifest_sha256": "646d4fe061f1cea632e3bc307311e16cfd282381314b4fc9ba576593a2a96c5f"
+}

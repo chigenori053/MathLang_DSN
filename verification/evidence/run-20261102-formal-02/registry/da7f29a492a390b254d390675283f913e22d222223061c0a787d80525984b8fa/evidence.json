@@ -1,0 +1,60 @@
+{
+  "evidence_id": "da7f29a492a390b254d390675283f913e22d222223061c0a787d80525984b8fa",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "CV-PHASE",
+  "source_ir_hash": "01930fc042335930bacfc6abdb9ed7f52aa11eeb310a32325bd1337311ac5616",
+  "lean_source_hash": "da527a4b9af8a133084787b9ad6f27eee36b78ba5fa5d6e4d5a4fa03d6333acd",
+  "proof_result": "PROVED",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "PROVED",
+    "diagnostics": [],
+    "exit_code": 0,
+    "stdout": "'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1365819392,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "da527a4b9af8a133084787b9ad6f27eee36b78ba5fa5d6e4d5a4fa03d6333acd",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611234,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "da527a4b9af8a133084787b9ad6f27eee36b78ba5fa5d6e4d5a4fa03d6333acd",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "857b7e912e2da4b86b1ea5c9e39128983df1327fcc24458a4a4968df0f51e217"
+  },
+  "translation": {
+    "source_ir_hash": "01930fc042335930bacfc6abdb9ed7f52aa11eeb310a32325bd1337311ac5616",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "da527a4b9af8a133084787b9ad6f27eee36b78ba5fa5d6e4d5a4fa03d6333acd",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_CHECKED; INDEPENDENT_CASE_AUDIT_REQUIRED",
+    "expected_statement": "(∀ (v_z : ℂ), (∀ (v_x : ℂ), ((‖v_z‖ = 1) → (‖(v_z * v_x)‖ = ‖v_x‖))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

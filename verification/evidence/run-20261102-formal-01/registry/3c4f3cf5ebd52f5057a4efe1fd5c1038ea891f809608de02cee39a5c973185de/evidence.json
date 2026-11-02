@@ -1,0 +1,56 @@
+{
+  "evidence_id": "3c4f3cf5ebd52f5057a4efe1fd5c1038ea891f809608de02cee39a5c973185de",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-01",
+  "source_ir_hash": "d0f59dba291719873f2a11b993987afe51d4448fcbbdc0da74ebdfcf9e8a9b57",
+  "lean_source_hash": "f0446b3387b58e2ae9d541dfb6144324e082edbc738543d004613cfbdd31e7eb",
+  "proof_result": "UNKNOWN",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "UNKNOWN",
+    "diagnostics": [],
+    "exit_code": 1,
+    "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:10:49: error(lean.unknownIdentifier): Unknown constant `ContinuousLinearMap`\n\nNote: A public declaration `ContinuousLinearMap` exists but is imported privately; consider adding `public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:10:154: error(lean.unknownIdentifier): Unknown identifier `EuclideanSpace`\n\nNote: A public declaration `EuclideanSpace` exists but is imported privately; consider adding `public import Mathlib.Analysis.InnerProductSpace.PiL2`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:10:184: error(lean.unknownIdentifier): Unknown constant `Norm.norm`\n\nNote: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:10:198: error(lean.unknownIdentifier): Unknown constant `Norm.norm`\n\nNote: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-a0fqedii/Generated.lean:13:30: error(lean.unknownIdentifier): Unknown identifier `Generated.target`\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1368260608,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "f0446b3387b58e2ae9d541dfb6144324e082edbc738543d004613cfbdd31e7eb",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611064,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "f0446b3387b58e2ae9d541dfb6144324e082edbc738543d004613cfbdd31e7eb",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "228a8964d87407790c4c98ef836a738fb00913c6d091f717aa439af090c43c05"
+  },
+  "translation": {
+    "source_ir_hash": "d0f59dba291719873f2a11b993987afe51d4448fcbbdc0da74ebdfcf9e8a9b57",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "f0446b3387b58e2ae9d541dfb6144324e082edbc738543d004613cfbdd31e7eb",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_n : ℕ), (∀ (v_U : (EuclideanSpace ℂ (Fin v_n) →L[ℂ] EuclideanSpace ℂ (Fin v_n))), (((v_U).adjoint.comp v_U = 1) → (∀ (v_x : EuclideanSpace ℂ (Fin v_n)), (‖(v_U v_x)‖ = ‖v_x‖)))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

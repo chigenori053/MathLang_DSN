@@ -1,0 +1,59 @@
+{
+  "evidence_id": "5eb3dd800236861445c554b464f5c9b234daf845905d09a909dedcb24f0a321e",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-06",
+  "source_ir_hash": "bf32ea2b259f325d9c102cf91274571b46d2842538bfabf07619db0fad3717b2",
+  "lean_source_hash": "30a5ae6a9ffd38013302ad4de1f349b1c48fdf8626c688dcb1c284fb60b3cee9",
+  "proof_result": "UNKNOWN",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "UNKNOWN",
+    "diagnostics": [],
+    "exit_code": 1,
+    "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-b9wa0b64/Generated.lean:12:27: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-b9wa0b64/Generated.lean:12:35: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-b9wa0b64/Generated.lean:12:43: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n'Generated.target' depends on axioms: [propext, Quot.sound]\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1367998464,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "30a5ae6a9ffd38013302ad4de1f349b1c48fdf8626c688dcb1c284fb60b3cee9",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611299,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "30a5ae6a9ffd38013302ad4de1f349b1c48fdf8626c688dcb1c284fb60b3cee9",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "b00a9388fd9e3b650479bda0428c893fb9c725dc48e484ed0e0ddf0931c7d21b"
+  },
+  "translation": {
+    "source_ir_hash": "bf32ea2b259f325d9c102cf91274571b46d2842538bfabf07619db0fad3717b2",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "30a5ae6a9ffd38013302ad4de1f349b1c48fdf8626c688dcb1c284fb60b3cee9",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_positive : Prop), (∀ (v_valid : Prop), ((¬ v_positive) → (¬ (v_positive ∧ v_valid)))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

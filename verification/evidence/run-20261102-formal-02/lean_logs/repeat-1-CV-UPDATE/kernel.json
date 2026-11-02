@@ -1,0 +1,20 @@
+{
+  "status": "UNKNOWN",
+  "diagnostics": [],
+  "exit_code": 1,
+  "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ufzugjxp/Generated.lean:12:27: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ufzugjxp/Generated.lean:12:35: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-ufzugjxp/Generated.lean:12:43: error: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\n'Generated.target' depends on axioms: [propext, Quot.sound]\n",
+  "stderr": "",
+  "timed_out": false,
+  "peak_rss_bytes": 1368408064,
+  "sandboxed": true,
+  "toolchain_verified": true,
+  "axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "source_hash": "7ab63aeb93a2c4f027f0ed1052ada1c929cbebd73648c25b3a66f82a31e736c8",
+  "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+  "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+}

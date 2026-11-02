@@ -1,0 +1,36 @@
+{
+  "rust_test": [
+    "cargo",
+    "test",
+    "--manifest-path",
+    "verification/Cargo.toml",
+    "--locked",
+    "--offline"
+  ],
+  "clippy": [
+    "cargo",
+    "clippy",
+    "--manifest-path",
+    "verification/Cargo.toml",
+    "--locked",
+    "--offline",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "format": [
+    "cargo",
+    "fmt",
+    "--manifest-path",
+    "verification/Cargo.toml",
+    "--",
+    "--check"
+  ],
+  "regression_commands": "regression/commands.json",
+  "negative_commands": "negative/commands.json",
+  "kernel_entry": "commands.json",
+  "kernel_processes": "proof_results.json -> toolchain.commands",
+  "source_origin": "verification/evidence/run-20261102T184232+0900",
+  "kernel_manifest_origin": "verification/evidence/run-20261102T184232+0900/artifact_manifest.json"
+}

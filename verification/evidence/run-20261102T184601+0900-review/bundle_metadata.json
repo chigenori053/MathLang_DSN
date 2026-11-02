@@ -1,0 +1,5 @@
+{
+  "timestamp": "2026-11-02T18:46:01.566868+09:00",
+  "origin_run": "verification/evidence/run-20261102T184232+0900",
+  "note": "New review bundle; original evidence and failed runs remain unchanged. kernel_artifact_manifest.json describes the original origin_run."
+}

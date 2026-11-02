@@ -1,0 +1,99 @@
+{
+  "obligation": {
+    "id": "MV-05",
+    "model_id": "USM-MVF",
+    "model_revision": 1,
+    "goal": {
+      "ForAll": [
+        "S",
+        {
+          "Function": [
+            "Nat",
+            "Nat"
+          ]
+        },
+        {
+          "ForAll": [
+            "i",
+            "Nat",
+            {
+              "ForAll": [
+                "j",
+                "Nat",
+                {
+                  "ForAll": [
+                    "delta",
+                    "Nat",
+                    {
+                      "Implies": [
+                        {
+                          "LogicalNot": {
+                            "Equality": [
+                              {
+                                "Variable": "j"
+                              },
+                              {
+                                "Variable": "i"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "Equality": [
+                            {
+                              "Apply": [
+                                {
+                                  "Update": [
+                                    {
+                                      "Variable": "S"
+                                    },
+                                    {
+                                      "Variable": "i"
+                                    },
+                                    {
+                                      "Variable": "delta"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Variable": "j"
+                                }
+                              ]
+                            },
+                            {
+                              "Apply": [
+                                {
+                                  "Variable": "S"
+                                },
+                                {
+                                  "Variable": "j"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "context": {
+      "variables": {},
+      "assumptions": []
+    },
+    "assumptions": [],
+    "required_lemmas": [],
+    "dependencies": [],
+    "kind": "Conditional",
+    "verification_method": "Lean4+Mathlib",
+    "proof_status": "UNKNOWN",
+    "evidence_refs": []
+  },
+  "recipe": "Auto",
+  "refutation": false
+}

@@ -1,0 +1,3 @@
+theorem Generated.target : ¬∀ (v_x v_y : ℂ), ‖v_x‖ = ‖v_y‖ → v_x = v_y :=
+Foundation.phase_collision
+'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]

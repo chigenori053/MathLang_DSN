@@ -1,0 +1,156 @@
+
+running 4 tests
+test session::tests::precedence_and_rejection ... ok
+test memory::tests::malformed_trace_and_invalid_state_are_rejected ... ok
+test knowledge::tests::migrated_catalog_is_semantically_equivalent_to_reasonscript ... ok
+test memory::tests::stale_and_mismatched_memory_is_rejected ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.23s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test loaded_state_rejects_inconsistent_status_and_provenance ... ok
+test dependency_cycle_and_missing_reference_are_rejected ... ok
+test relation_modality_and_validation ... ok
+test set_value_has_deterministic_order ... ok
+test core_delta_identity_conflict_and_unknown ... ok
+test call_result_representation_requires_a_real_call_dependency ... ok
+test canonical_serialization_determinism_and_persistence ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 11 tests
+test natural_language_relation_preserves_negation_modality_and_condition ... ok
+test code_scope_and_unknown_are_preserved ... ok
+test cross_domain_reasoning_and_restart ... ok
+test independent_processes_share_persisted_state ... ok
+test cross_domain_runtime_generalizes_beyond_reference_numbers ... ok
+test copied_memory_codec_restores_mirp_after_restart ... ok
+test copied_nlsrv_adapter_enters_shared_mirp ... ok
+test copied_nlsrv_quantity_and_reference_binding ... ok
+test memory_bridge_continues_reasoning_in_new_processes ... ok
+test three_fresh_runs_have_byte_identical_mirp ... ok
+test copied_math_and_code_adapters_use_shared_runtime ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.13s
+
+
+running 15 tests
+test performance_scales ... ignored, explicit 100k KnowledgeSpace performance gate
+test conflicts_and_limits ... ok
+test hot_knowledge_injection_and_trace ... ok
+test prior_opposite_fact_transitions_to_mirp_conflict ... ok
+test bounded_multistep_and_order_invariance ... ok
+test state_insertion_order_and_symbol_renaming_are_metamorphic ... ok
+test unknown_facts_do_not_satisfy_premises ... ok
+test typed_terms_and_exact_rationals ... ok
+test built_binary_accepts_knowledge_added_after_build ... ok
+test four_domain_patterns_use_same_executor ... ok
+test three_processes_and_three_registration_orders_are_identical ... ok
+test exact_constraints_are_evaluated_by_reasonscript ... ok
+test mandatory_limits_stop_before_unbounded_work ... ok
+test formal_1300_scenario_matrix ... ok
+test reasonscript_numeric_guard_truth_table ... ok
+
+test result: ok. 14 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.32s
+
+
+running 11 tests
+test an_occurrence_cannot_be_rewritten_to_a_different_meaning ... ok
+test symmetric_and_directed_relations_have_the_right_semantic_ids ... ok
+test unknown_does_not_mask_a_later_known_conflict ... ok
+test tampered_occurrence_id_is_rejected_on_load ... ok
+test same_fact_across_domains_has_one_meaning_and_two_occurrences ... ok
+test parent_derivation_cannot_be_changed_on_an_existing_occurrence ... ok
+test repeated_assertions_are_distinct_occurrences_and_conflicts_are_semantic ... ok
+test repeated_identical_code_inputs_use_distinct_local_keys ... ok
+test commutative_expressions_share_meaning_but_not_occurrence ... ok
+test persistence_and_memory_preserve_original_occurrences ... ok
+test persisted_occurrence_keys_are_deterministic_across_three_fresh_runs ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.23s
+
+
+running 2 tests
+test provenance_output_constraints_and_history_are_inspectable ... ok
+test mandatory_200_case_matrix_is_deterministic has been running for over 60 seconds
+test mandatory_200_case_matrix_is_deterministic ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 93.96s
+
+
+running 7 tests
+test capability_registry_has_stable_lookup_and_rejects_duplicates ... ok
+test explicitly_incompatible_equal_rank_knowledge_reports_conflict ... ok
+test missing_capability_is_distinct_from_missing_knowledge ... ok
+test schema_accepts_capability_free_knowledge_and_migrates_old_catalogs ... ok
+test new_knowledge_types_share_a_capability_without_numeric_ids ... ok
+test persisted_knowledge_is_deterministic_across_three_processes ... ok
+test twenty_inputs_match_across_three_processes_and_registration_orders ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 42.76s
+
+
+running 5 tests
+test native_runtime_requires_retrieved_applicable_knowledge ... ok
+test applicability_checks_mirp_type_and_required_relation ... ok
+test registry_validation_persistence_and_boundaries ... ok
+test indexed_retrieval_reduces_candidate_space_at_scale ... ok
+test mandatory_800_check_matrix ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.64s
+
+
+running 4 tests
+test nonmonic_metamorphic ... ok
+test status_separation_and_strategy_fallback ... ok
+test required_e2e ... ok
+test mandatory_520_case_matrix has been running for over 60 seconds
+test mandatory_520_case_matrix ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 105.83s
+
+
+running 3 tests
+test pif_5_frozen_state_and_anti_cheating_source_gate ... ok
+test pif_5_method_constraint_without_execution_is_unknown ... ok
+test pif_5_remaining_matrix_groups_and_end_to_end has been running for over 60 seconds
+test pif_5_remaining_matrix_groups_and_end_to_end ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 66.03s
+
+
+running 2 tests
+test pif_3_ambiguity_unknown_and_extraction_provenance ... ok
+test pif_3_forty_language_cases_and_twenty_equivalent_pairs ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 5 tests
+test pif_4_executed_method_wins_over_declaration ... ok
+test pif_2_definition_is_immutable_and_runtime_criteria_change ... ok
+test pif_2_subgoal_satisfaction_does_not_complete_primary_goal ... ok
+test pif_2_each_required_criterion_controls_completion ... ok
+test pif_2_local_global_validity_and_error_origin ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 49.05s
+
+
+running 2 tests
+test pif_1_goal_graph_accepts_alternatives_and_rejects_bad_links ... ok
+test pif_1_schema_positive_and_negative_cases ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

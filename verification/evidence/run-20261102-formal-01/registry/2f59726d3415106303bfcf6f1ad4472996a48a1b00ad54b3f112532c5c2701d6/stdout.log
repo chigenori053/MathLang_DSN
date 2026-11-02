@@ -1,0 +1,14 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:10:49: error(lean.unknownIdentifier): Unknown constant `ContinuousLinearMap`
+
+Note: A public declaration `ContinuousLinearMap` exists but is imported privately; consider adding `public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:10:154: error(lean.unknownIdentifier): Unknown identifier `EuclideanSpace`
+
+Note: A public declaration `EuclideanSpace` exists but is imported privately; consider adding `public import Mathlib.Analysis.InnerProductSpace.PiL2`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:10:184: error(lean.unknownIdentifier): Unknown constant `Norm.norm`
+
+Note: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:10:198: error(lean.unknownIdentifier): Unknown constant `Norm.norm`
+
+Note: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-h_eauym1/Generated.lean:13:30: error(lean.unknownIdentifier): Unknown identifier `Generated.target`

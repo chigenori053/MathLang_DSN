@@ -1,0 +1,3 @@
+theorem Generated.target : ∀ (v_z v_x : ℂ), ‖v_z‖ = 1 → ‖v_z * v_x‖ = ‖v_x‖ :=
+Foundation.phase_observation
+'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]

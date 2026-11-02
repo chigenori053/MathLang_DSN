@@ -1,0 +1,16 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:10:34: error(lean.unknownIdentifier): Unknown constant `Complex`
+
+Note: A public declaration `Complex` exists but is imported privately; consider adding `public import Mathlib.Basic.Complex.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:10:48: error(lean.unknownIdentifier): Unknown constant `Complex`
+
+Note: A public declaration `Complex` exists but is imported privately; consider adding `public import Mathlib.Basic.Complex.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:10:54: error(lean.unknownIdentifier): Unknown constant `Norm.norm`
+
+Note: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:10:68: error(lean.unknownIdentifier): Unknown constant `Norm.norm`
+
+Note: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:10:84: error(lean.unknownIdentifier): Unknown constant `Norm.norm`
+
+Note: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-g474zwd6/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`

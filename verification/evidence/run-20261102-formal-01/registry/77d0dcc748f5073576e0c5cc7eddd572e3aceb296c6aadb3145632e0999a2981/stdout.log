@@ -1,0 +1,13 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-qbux01v7/Generated.lean:11:10: error: Unused tactic linter: `rfl` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-qbux01v7/Generated.lean:11:27: error: Unused tactic linter: `tauto` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-qbux01v7/Generated.lean:11:35: error: Unused tactic linter: `omega` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-qbux01v7/Generated.lean:11:43: error: Unused tactic linter: `aesop` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+'Generated.target' depends on axioms: [propext, Quot.sound]

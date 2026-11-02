@@ -1,0 +1,35 @@
+{
+  "status": "UNKNOWN",
+  "diagnostics": [],
+  "exit_code": 1,
+  "commands": [
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-7_g476m4/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-7_g476m4/Foundation.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-7_g476m4/Foundation.lean"
+    ]
+  ],
+  "elapsed_ms": 1529,
+  "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-7_g476m4/Foundation.lean:55:2: error: Cannot add attribute `[expose]`: This attribute can only be added when declaring a `def`\n",
+  "stderr": "",
+  "timed_out": false,
+  "peak_rss_bytes": 1379155968,
+  "sandboxed": true,
+  "toolchain_verified": true,
+  "axioms": [],
+  "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "source_hash": "a125801f307b401d26893be4745c8d8de6a942cf5c67dcd5cd99cd6a0612564f",
+  "foundation_hash": "39d7fb93ae6733375a2d34549cba3291a58d6c512ae8c4cbc65e69e7e09d3fe5",
+  "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+}

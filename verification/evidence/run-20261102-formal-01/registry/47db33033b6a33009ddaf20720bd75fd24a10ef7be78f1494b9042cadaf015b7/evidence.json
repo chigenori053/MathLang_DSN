@@ -1,0 +1,60 @@
+{
+  "evidence_id": "47db33033b6a33009ddaf20720bd75fd24a10ef7be78f1494b9042cadaf015b7",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-05",
+  "source_ir_hash": "e84944b1567dc541696889e7143a4e35f3f14ae413977bbaec8e01623a82b8c9",
+  "lean_source_hash": "0603a9ac4f8fa39795f1773f8f1803f4608767652d4f59b0e0ec75992ba476b3",
+  "proof_result": "UNKNOWN",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "UNKNOWN",
+    "diagnostics": [],
+    "exit_code": 1,
+    "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-fi_kgzzt/Generated.lean:10:112: error(lean.unknownIdentifier): Unknown identifier `Function.update`\n\nNote: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-fi_kgzzt/Generated.lean:10:171: error: unsolved goals\n⊢ ∀ (v_S : ℕ → ℕ) (v_i v_j : ℕ), ¬v_j = v_i → sorry () = v_S v_j\n'Generated.target' depends on axioms: [propext, sorryAx, Quot.sound]\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-fi_kgzzt/Generated.lean:13:0: error: declaration uses `sorry`\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1372504064,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [
+      "propext",
+      "sorryAx",
+      "Quot.sound"
+    ],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "0603a9ac4f8fa39795f1773f8f1803f4608767652d4f59b0e0ec75992ba476b3",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611079,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "0603a9ac4f8fa39795f1773f8f1803f4608767652d4f59b0e0ec75992ba476b3",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "b6005db9c8c9939aebf2aaa7687cd3db870833a9dacffa75f4b110e0c58c9dd5"
+  },
+  "translation": {
+    "source_ir_hash": "e84944b1567dc541696889e7143a4e35f3f14ae413977bbaec8e01623a82b8c9",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "0603a9ac4f8fa39795f1773f8f1803f4608767652d4f59b0e0ec75992ba476b3",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_S : (ℕ → ℕ)), (∀ (v_i : ℕ), (∀ (v_j : ℕ), (∀ (v_delta : ℕ), ((¬ (v_j = v_i)) → (((Function.update v_S v_i v_delta) v_j) = (v_S v_j)))))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

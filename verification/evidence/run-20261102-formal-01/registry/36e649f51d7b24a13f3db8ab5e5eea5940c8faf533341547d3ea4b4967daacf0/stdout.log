@@ -1,0 +1,7 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-9xfx9c4y/Generated.lean:10:112: error(lean.unknownIdentifier): Unknown identifier `Function.update`
+
+Note: A public declaration `Function.update` exists but is imported privately; consider adding `public import Mathlib.Logic.Function.Basic`.
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-9xfx9c4y/Generated.lean:10:171: error: unsolved goals
+⊢ ∀ (v_S : ℕ → ℕ) (v_i v_j : ℕ), ¬v_j = v_i → sorry () = v_S v_j
+'Generated.target' depends on axioms: [propext, sorryAx, Quot.sound]
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-9xfx9c4y/Generated.lean:13:0: error: declaration uses `sorry`

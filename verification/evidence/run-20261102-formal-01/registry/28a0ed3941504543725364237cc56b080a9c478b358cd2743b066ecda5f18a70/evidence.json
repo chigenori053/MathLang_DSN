@@ -1,0 +1,56 @@
+{
+  "evidence_id": "28a0ed3941504543725364237cc56b080a9c478b358cd2743b066ecda5f18a70",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "CV-PHASE",
+  "source_ir_hash": "01930fc042335930bacfc6abdb9ed7f52aa11eeb310a32325bd1337311ac5616",
+  "lean_source_hash": "b16d605bfaf85d4bb6a5ed3583c14cb0531cf3c3e9002e997a9134563ba2ac36",
+  "proof_result": "UNKNOWN",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "UNKNOWN",
+    "diagnostics": [],
+    "exit_code": 1,
+    "stdout": "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:10:34: error(lean.unknownIdentifier): Unknown constant `Complex`\n\nNote: A public declaration `Complex` exists but is imported privately; consider adding `public import Mathlib.Basic.Complex.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:10:48: error(lean.unknownIdentifier): Unknown constant `Complex`\n\nNote: A public declaration `Complex` exists but is imported privately; consider adding `public import Mathlib.Basic.Complex.Basic`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:10:54: error(lean.unknownIdentifier): Unknown constant `Norm.norm`\n\nNote: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:10:68: error(lean.unknownIdentifier): Unknown constant `Norm.norm`\n\nNote: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:10:84: error(lean.unknownIdentifier): Unknown constant `Norm.norm`\n\nNote: A public declaration `norm` exists but is imported privately; consider adding `public import Mathlib.Analysis.Normed.Group.Defs`.\n/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-1k4d59oh/Generated.lean:12:14: error(lean.unknownIdentifier): Unknown constant `Generated.target`\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1365884928,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "b16d605bfaf85d4bb6a5ed3583c14cb0531cf3c3e9002e997a9134563ba2ac36",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793611164,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "b16d605bfaf85d4bb6a5ed3583c14cb0531cf3c3e9002e997a9134563ba2ac36",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "41a744119bceaea48ca9e73ee0f1b227f32914c79aed95ee5f594001d7018a51"
+  },
+  "translation": {
+    "source_ir_hash": "01930fc042335930bacfc6abdb9ed7f52aa11eeb310a32325bd1337311ac5616",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "b16d605bfaf85d4bb6a5ed3583c14cb0531cf3c3e9002e997a9134563ba2ac36",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_CHECKED; INDEPENDENT_CASE_AUDIT_REQUIRED",
+    "expected_statement": "(∀ (v_z : ℂ), (∀ (v_x : ℂ), ((‖v_z‖ = 1) → (‖(v_z * v_x)‖ = ‖v_x‖))))",
+    "refutation": false
+  },
+  "diagnostics": []
+}

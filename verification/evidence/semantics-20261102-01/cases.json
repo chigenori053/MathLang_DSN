@@ -1,0 +1,730 @@
+[
+  [
+    {
+      "id": "MAP-INNER",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "InnerProduct": [
+              {
+                "Variable": "x"
+              },
+              {
+                "Variable": "y"
+              }
+            ]
+          },
+          {
+            "InnerProduct": [
+              {
+                "Variable": "x"
+              },
+              {
+                "Variable": "y"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "HilbertSpace": {
+              "Fixed": 2
+            }
+          },
+          "y": {
+            "HilbertSpace": {
+              "Fixed": 2
+            }
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x v_y : EuclideanSpace ℂ (Fin 2)), inner ℂ v_x v_y = inner ℂ v_x v_y"
+  ],
+  [
+    {
+      "id": "MAP-ADJOINT-TRACE",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Trace": {
+              "MatrixMultiply": [
+                {
+                  "Adjoint": {
+                    "Variable": "x"
+                  }
+                },
+                {
+                  "Variable": "y"
+                }
+              ]
+            }
+          },
+          {
+            "Trace": {
+              "MatrixMultiply": [
+                {
+                  "Adjoint": {
+                    "Variable": "x"
+                  }
+                },
+                {
+                  "Variable": "y"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "Matrix": [
+              "Complex",
+              {
+                "Fixed": 2
+              },
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          "y": {
+            "Matrix": [
+              "Complex",
+              {
+                "Fixed": 2
+              },
+              {
+                "Fixed": 2
+              }
+            ]
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x v_y : Matrix (Fin 2) (Fin 2) ℂ), (v_x.conjTranspose * v_y).trace = (v_x.conjTranspose * v_y).trace"
+  ],
+  [
+    {
+      "id": "MAP-TENSOR",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "TensorIndex": [
+              {
+                "TensorProduct": [
+                  {
+                    "Variable": "x"
+                  },
+                  {
+                    "Variable": "y"
+                  }
+                ]
+              },
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          {
+            "TensorIndex": [
+              {
+                "TensorProduct": [
+                  {
+                    "Variable": "x"
+                  },
+                  {
+                    "Variable": "y"
+                  }
+                ]
+              },
+              [
+                1,
+                2
+              ]
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "Vector": [
+              "Complex",
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          "y": {
+            "Vector": [
+              "Complex",
+              {
+                "Fixed": 3
+              }
+            ]
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x : Fin 2 → ℂ) (v_y : Fin 3 → ℂ), v_x 1 * v_y 2 = v_x 1 * v_y 2"
+  ],
+  [
+    {
+      "id": "MAP-MATRIX-PREDICATES",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "LogicalAnd": [
+              {
+                "LogicalAnd": [
+                  {
+                    "PositiveSemidefinite": {
+                      "Variable": "x"
+                    }
+                  },
+                  {
+                    "Hermitian": {
+                      "Variable": "x"
+                    }
+                  }
+                ]
+              },
+              {
+                "Unitary": {
+                  "Variable": "x"
+                }
+              }
+            ]
+          },
+          {
+            "LogicalAnd": [
+              {
+                "LogicalAnd": [
+                  {
+                    "PositiveSemidefinite": {
+                      "Variable": "x"
+                    }
+                  },
+                  {
+                    "Hermitian": {
+                      "Variable": "x"
+                    }
+                  }
+                ]
+              },
+              {
+                "Unitary": {
+                  "Variable": "x"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "Matrix": [
+              "Complex",
+              {
+                "Fixed": 2
+              },
+              {
+                "Fixed": 2
+              }
+            ]
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x : Matrix (Fin 2) (Fin 2) ℂ), ((v_x.PosSemidef ∧ v_x.IsHermitian) ∧ v_x.conjTranspose * v_x = 1) = ((v_x.PosSemidef ∧ v_x.IsHermitian) ∧ v_x.conjTranspose * v_x = 1)"
+  ],
+  [
+    {
+      "id": "MAP-DENSITY",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Trace": {
+              "Variable": "x"
+            }
+          },
+          {
+            "Trace": {
+              "Variable": "x"
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "DensityOperator": {
+              "Fixed": 2
+            }
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x : {m : Matrix (Fin 2) (Fin 2) ℂ // m.PosSemidef ∧ m.trace = 1}), v_x.val.trace = v_x.val.trace"
+  ],
+  [
+    {
+      "id": "MAP-LINEAR",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "LinearMap": {
+              "Variable": "f"
+            }
+          },
+          {
+            "LinearMap": {
+              "Variable": "f"
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "f": {
+            "LinearOperator": [
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              },
+              {
+                "HilbertSpace": {
+                  "Fixed": 2
+                }
+              }
+            ]
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_f : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)), IsLinearMap ℂ v_f = IsLinearMap ℂ v_f"
+  ],
+  [
+    {
+      "id": "MAP-NORMALIZED",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Normalized": {
+              "Variable": "x"
+            }
+          },
+          {
+            "Normalized": {
+              "Variable": "x"
+            }
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "HilbertSpace": {
+              "Fixed": 2
+            }
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x : EuclideanSpace ℂ (Fin 2)), (‖v_x‖ = 1) = (‖v_x‖ = 1)"
+  ],
+  [
+    {
+      "id": "MAP-VECTOR",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Add": [
+              {
+                "Variable": "x"
+              },
+              {
+                "Variable": "y"
+              }
+            ]
+          },
+          {
+            "Add": [
+              {
+                "Variable": "x"
+              },
+              {
+                "Variable": "y"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "x": {
+            "Vector": [
+              "Complex",
+              {
+                "Fixed": 2
+              }
+            ]
+          },
+          "y": {
+            "Vector": [
+              "Complex",
+              {
+                "Fixed": 2
+              }
+            ]
+          }
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_x v_y : Fin 2 → ℂ), v_x + v_y = v_x + v_y"
+  ],
+  [
+    {
+      "id": "MAP-TRANSITION",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "StateTransition": [
+              {
+                "Variable": "f"
+              },
+              {
+                "Variable": "x"
+              }
+            ]
+          },
+          {
+            "StateTransition": [
+              {
+                "Variable": "f"
+              },
+              {
+                "Variable": "x"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "f": {
+            "Function": [
+              "Real",
+              "Real"
+            ]
+          },
+          "x": "Real"
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_f : ℝ → ℝ) (v_x : ℝ), v_f v_x = v_f v_x"
+  ],
+  [
+    {
+      "id": "MAP-LOGIC",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Implies": [
+              {
+                "Variable": "p"
+              },
+              {
+                "LogicalOr": [
+                  {
+                    "Variable": "q"
+                  },
+                  {
+                    "LogicalNot": {
+                      "Variable": "q"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Implies": [
+              {
+                "Variable": "p"
+              },
+              {
+                "LogicalOr": [
+                  {
+                    "Variable": "q"
+                  },
+                  {
+                    "LogicalNot": {
+                      "Variable": "q"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "p": "Proposition",
+          "q": "Proposition"
+        },
+        "assumptions": []
+      },
+      "assumptions": [],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Construction",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_p v_q : Prop), (v_p → v_q ∨ ¬ v_q) = (v_p → v_q ∨ ¬ v_q)"
+  ],
+  [
+    {
+      "id": "MAP-SCALAR",
+      "model_id": "USM-MVF",
+      "model_revision": 1,
+      "goal": {
+        "Equality": [
+          {
+            "Power": [
+              {
+                "Conjugate": {
+                  "Divide": [
+                    {
+                      "Multiply": [
+                        {
+                          "Subtract": [
+                            {
+                              "Add": [
+                                {
+                                  "Variable": "x"
+                                },
+                                {
+                                  "Variable": "y"
+                                }
+                              ]
+                            },
+                            {
+                              "Variable": "x"
+                            }
+                          ]
+                        },
+                        {
+                          "Variable": "y"
+                        }
+                      ]
+                    },
+                    {
+                      "Variable": "y"
+                    }
+                  ]
+                }
+              },
+              {
+                "Variable": "n"
+              }
+            ]
+          },
+          {
+            "Power": [
+              {
+                "Conjugate": {
+                  "Divide": [
+                    {
+                      "Multiply": [
+                        {
+                          "Subtract": [
+                            {
+                              "Add": [
+                                {
+                                  "Variable": "x"
+                                },
+                                {
+                                  "Variable": "y"
+                                }
+                              ]
+                            },
+                            {
+                              "Variable": "x"
+                            }
+                          ]
+                        },
+                        {
+                          "Variable": "y"
+                        }
+                      ]
+                    },
+                    {
+                      "Variable": "y"
+                    }
+                  ]
+                }
+              },
+              {
+                "Variable": "n"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "variables": {
+          "n": "Nat",
+          "x": "Complex",
+          "y": "Complex"
+        },
+        "assumptions": [
+          {
+            "LogicalNot": {
+              "Equality": [
+                {
+                  "Variable": "y"
+                },
+                {
+                  "Constant": {
+                    "Zero": "Complex"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "assumptions": [
+        {
+          "proposition": {
+            "LogicalNot": {
+              "Equality": [
+                {
+                  "Variable": "y"
+                },
+                {
+                  "Constant": {
+                    "Zero": "Complex"
+                  }
+                }
+              ]
+            }
+          },
+          "origin": {
+            "ExternalSpecification": "semantic test input"
+          }
+        }
+      ],
+      "required_lemmas": [],
+      "dependencies": [],
+      "kind": "Conditional",
+      "verification_method": "Lean4+Mathlib",
+      "proof_status": "UNKNOWN",
+      "evidence_refs": []
+    },
+    "∀ (v_n : ℕ) (v_x v_y : ℂ), v_y ≠ 0 → (star (((v_x + v_y - v_x) * v_y) / v_y)) ^ v_n = (star (((v_x + v_y - v_x) * v_y) / v_y)) ^ v_n"
+  ]
+]

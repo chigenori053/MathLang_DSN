@@ -1,0 +1,62 @@
+{
+  "artifact_validation_passed": true,
+  "canonical_hashes": [
+    "ac91296a88c4a80c88b7b61fbd53c958788df24f87ea4f029633ea962668da19",
+    "ac91296a88c4a80c88b7b61fbd53c958788df24f87ea4f029633ea962668da19",
+    "ac91296a88c4a80c88b7b61fbd53c958788df24f87ea4f029633ea962668da19"
+  ],
+  "determinism_passed": true,
+  "diagnostics": [],
+  "golden_validation_passed": true,
+  "phases": [
+    {
+      "phase": "manifest_validation",
+      "status": "passed"
+    },
+    {
+      "count": 12,
+      "phase": "source_discovery",
+      "status": "passed"
+    },
+    {
+      "count": 12,
+      "phase": "source_check",
+      "status": "passed"
+    },
+    {
+      "phase": "semantic_validation",
+      "status": "passed"
+    },
+    {
+      "count": 1,
+      "phase": "runtime_execution",
+      "status": "passed"
+    },
+    {
+      "phase": "artifact_validation",
+      "status": "passed"
+    },
+    {
+      "phase": "golden_comparison",
+      "status": "passed"
+    },
+    {
+      "phase": "determinism_validation",
+      "repetitions": 3,
+      "status": "passed"
+    },
+    {
+      "phase": "project_local_tests",
+      "status": "passed"
+    }
+  ],
+  "project_root": "/Users/chigenori/development/MathLang_DSN",
+  "repository_workflow_required": false,
+  "runtime_cases_passed": 1,
+  "runtime_cases_total": 1,
+  "schema_version": "reasonscript-project-validation/0.1",
+  "sources_passed": 12,
+  "sources_total": 12,
+  "status": "passed",
+  "tests_passed": true
+}

@@ -1,0 +1,60 @@
+{
+  "evidence_id": "d08de5e45658decf907f067a63726e5a3a03ee8e692df7725f131c45fd57f48f",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-04",
+  "source_ir_hash": "51535fb44727287ca1353d32c4f53d531a4b0cf1958699256120575c27f89633",
+  "lean_source_hash": "7a41b219cceed83a1a0ac80a4d5ccc595d281878de8a27a1c736322433faedeb",
+  "proof_result": "ERROR",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "ERROR",
+    "diagnostics": [
+      "RSS monitor denied by host sandbox"
+    ],
+    "exit_code": null,
+    "stdout": "",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 0,
+    "sandboxed": false,
+    "toolchain_verified": true,
+    "axioms": [],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "7a41b219cceed83a1a0ac80a4d5ccc595d281878de8a27a1c736322433faedeb",
+    "foundation_hash": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793610981,
+  "artifact_hashes": {
+    "Foundation.lean": "73ee2e59106c00d208dfe1ce021f635cd52e1f0517bfcb0a272d02467106d45e",
+    "Generated.lean": "7a41b219cceed83a1a0ac80a4d5ccc595d281878de8a27a1c736322433faedeb",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "translation": {
+    "source_ir_hash": "51535fb44727287ca1353d32c4f53d531a4b0cf1958699256120575c27f89633",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "7a41b219cceed83a1a0ac80a4d5ccc595d281878de8a27a1c736322433faedeb",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_A : Type), (∀ (v_B : Type), (∀ (v_E : (v_A → v_B)), (∀ (v_D : (v_B → v_A)), (∀ (v_x : v_A), (∀ (v_y : v_A), ((¬ (v_x = v_y)) → (((v_E v_x) = (v_E v_y)) → (¬ (((v_D (v_E v_x)) = v_x) ∧ ((v_D (v_E v_y)) = v_y)))))))))))",
+    "refutation": false
+  },
+  "diagnostics": [
+    "RSS monitor denied by host sandbox"
+  ]
+}

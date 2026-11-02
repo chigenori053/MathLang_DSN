@@ -1,0 +1,17 @@
+{
+  "CV-PHASE": "unit modulus phase preserves norm; observational model only",
+  "CV-UPDATE": "same-key updates 1 then 2 differ from 2 then 1",
+  "MV-02": {
+    "dimension": 1,
+    "evidence": "proof_results.json",
+    "exact_negation": "Foundation.arbitrary_norm_false",
+    "operator": "2 • identity",
+    "state": "EuclideanSpace.single 0 1"
+  },
+  "MV-04": {
+    "claim": "not both deterministic decodings correct",
+    "condition": "E x = E y and x ≠ y",
+    "evidence": "proof_results.json"
+  },
+  "MV-06": "missing positive evidence excludes known in conjunction model"
+}

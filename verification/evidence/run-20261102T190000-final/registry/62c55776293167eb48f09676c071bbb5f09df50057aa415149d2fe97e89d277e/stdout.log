@@ -1,0 +1,14 @@
+theorem Generated.target : ∀ (v_positive v_valid : Prop), ¬v_positive → ¬(v_positive ∧ v_valid) :=
+of_eq_true
+  (Eq.trans
+    (forall_congr fun v_positive =>
+      Eq.trans
+        (forall_congr fun v_valid =>
+          Eq.trans
+            (implies_congr_ctx (Eq.refl ¬v_positive) fun a =>
+              Eq.trans (congrArg Not (Eq.trans (congrFun' (congrArg And (eq_false a)) v_valid) (false_and v_valid)))
+                not_false_eq_true)
+            (implies_true ¬v_positive))
+        (implies_true Prop))
+    (implies_true Prop))
+'Generated.target' depends on axioms: [propext, Quot.sound]
