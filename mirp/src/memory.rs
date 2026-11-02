@@ -80,6 +80,15 @@ impl MemorySpace {
         self.knowledge_space.query(query)
     }
 
+    pub fn infer_generic(
+        &self,
+        state: &mut SemanticState,
+        goal: &crate::gke::RulePredicate,
+        limits: crate::gke::InferenceLimits,
+    ) -> crate::gke::InferenceReport {
+        crate::gke::infer_goal(&self.knowledge_space, state, goal, limits)
+    }
+
     pub fn store(
         &mut self,
         memory_id: &str,

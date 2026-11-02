@@ -3,9 +3,9 @@
 use super::parser::ParseOutcome;
 use super::schema::*;
 use crate::intent::{
-    integer_quadratic_roots, EducationalError as ErrorKind, ExpectedOutput, GoalCompletion,
-    IntentAlignment, MathematicalValidity, Method, MethodCompliance, OperationIntent, Polynomial,
-    ProblemRelevance,
+    equivalent_equations, integer_quadratic_roots, EducationalError as ErrorKind, ExpectedOutput,
+    GoalCompletion, IntentAlignment, MathematicalValidity, Method, MethodCompliance,
+    OperationIntent, Polynomial, ProblemRelevance,
 };
 use crate::{stable_id, Provenance, SemanticDelta, SemanticState};
 use serde::{Deserialize, Serialize};
@@ -307,10 +307,12 @@ impl ReasoningContext {
                     Some(poly) if poly.supported() => {
                         if values.is_empty() && integer_quadratic_roots(poly).is_none() {
                             MathematicalValidity::Unknown
-                        } else if values.iter().all(|x| poly.at(*x) == 0) {
-                            MathematicalValidity::Valid
                         } else {
-                            MathematicalValidity::Invalid
+                            match poly.roots_satisfy(values) {
+                                Some(true) => MathematicalValidity::Valid,
+                                Some(false) => MathematicalValidity::Invalid,
+                                None => MathematicalValidity::Unknown,
+                            }
                         }
                     }
                     _ => MathematicalValidity::Unknown,
@@ -832,10 +834,7 @@ fn equivalent(a: &Polynomial, b: &Polynomial) -> bool {
 }
 
 fn equivalent_coefficients(a: &Polynomial, b: [i128; 3]) -> bool {
-    let a = a.coefficients.map(i128::from);
-    a.iter().position(|n| *n != 0).is_some_and(|i| {
-        b[i] != 0 && (0..3).all(|j| a[j].checked_mul(b[i]) == b[j].checked_mul(a[i]))
-    })
+    equivalent_equations(a, b) == Some(true)
 }
 
 fn executed_trace(id: &str, operation: &str, input: &Polynomial, values: Vec<i64>) -> RuTrace {

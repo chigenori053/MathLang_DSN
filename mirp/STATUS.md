@@ -14,8 +14,9 @@ frozen `mirp/0.1-si2` state schema. The supplied intent specification is
 truncated in its final acceptance-gate list, and the broader curriculum and
 method-execution proof remain outside this bounded stage.
 The intent matrix passed in three consecutive test processes. The full Rust
-suite, Clippy with warnings denied, formatting check, existing Python API
-suite (9 tests), ReasonScript project validation, and whitespace check passed.
+suite, Clippy with warnings denied, formatting check, ReasonScript project
+validation, and whitespace check passed. The former Python API suite (9 tests)
+also passed at that time; it was later removed.
 
 The bounded Foundation architecture is implemented. Occurrence integrity is
 finalized in schema `mirp/0.1-si2`; the prior frozen `mirp/0.1-si` schema needed
@@ -54,9 +55,8 @@ freeze boundary; further changes require a schema version or migration.
 
 The imported DSN_Test modules are listed in `DSN_TEST_IMPORTS.md`. Its older `mirp.rsn` was intentionally excluded because it defines a different schema.
 
-Verification commands: `cargo test --offline --manifest-path mirp/Cargo.toml`,
-`reason project-validate . --json`, and
-`python3 -m unittest discover -s tests -q`. The Foundation suite covers core
+Verification commands: `cargo test --offline --manifest-path mirp/Cargo.toml`
+and `reason project-validate . --json`. The Foundation suite covers core
 types, scoped identity and aliases, uncertainty and conflicts, transactional
 deltas, provenance and dependency validation, both runtime RU families,
 cross-domain continuation, persistence, MemorySpace integrity, and CALL / RESULT
@@ -64,8 +64,8 @@ representation. The bounded input grammar and remaining MIRP v1.0 work are
 described in `README.md`.
 
 Verification result: Rust tests passed three consecutive runs (32 tests per
-run), the existing Python API regression suite passed three consecutive runs
-(9 tests per run), and three ReasonScript project validations produced identical
+run), the former Python API regression suite passed three consecutive runs
+(9 tests per run) before that API was removed, and three ReasonScript project validations produced identical
 canonical output and passed. `cargo clippy --offline --manifest-path mirp/Cargo.toml
 --all-targets -- -D warnings`, `cargo fmt --manifest-path mirp/Cargo.toml --check`,
 and `git diff --check` also passed. `tests/identity.rs` covers same-meaning

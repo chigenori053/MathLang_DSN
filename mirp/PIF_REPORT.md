@@ -84,13 +84,13 @@ mirp/Cargo.toml --example pif_digest -q` processes produced the identical hash:
 
 `cargo clippy --offline --manifest-path mirp/Cargo.toml --all-targets -- -D
 warnings`, `cargo fmt --manifest-path mirp/Cargo.toml --check`, `git diff
---check`, `reason project-validate . --json`, and the existing Python API
-regression suite (9 tests) passed. The old identity, persistence, MemorySpace,
+--check` and `reason project-validate . --json` passed. The former Python API
+regression suite (9 tests) also passed at the time of this report; that API was later removed. The old identity, persistence, MemorySpace,
 cross-domain, and CALL/RESULT Rust tests remain unchanged and passed. The
 anti-cheating source gate rejects fixture-ID, expected-answer, and reference
 trajectory branches in the new production layer.
 
-Method evidence comes from executed bounded Rust quadratic operations with
+Method evidence comes from executed bounded ReasonScript quadratic operations with
 explicit RU/RUS/RUO records. The declared method field is ignored for
 compliance. General natural-language parsing, non-integer roots, other
 operation execution, geometry, and curriculum-wide coverage remain outside

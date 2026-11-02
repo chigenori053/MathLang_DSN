@@ -9,6 +9,7 @@ use std::fs;
 use std::path::Path;
 
 pub mod capability;
+pub mod gke;
 pub mod intent;
 pub mod knowledge;
 pub mod memory;
@@ -364,8 +365,19 @@ pub struct Hypothesis {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct PredicateFact {
+    #[serde(flatten)]
+    pub common: Common,
+    pub predicate: String,
+    pub arguments: Vec<gke::RuleTerm>,
+    #[serde(default)]
+    pub negated: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", content = "data", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Object {
+    Predicate(PredicateFact),
     Entity(Entity),
     Attribute(Attribute),
     Relation(Relation),
@@ -381,6 +393,7 @@ pub enum Object {
 impl Object {
     pub fn common(&self) -> &Common {
         match self {
+            Self::Predicate(x) => &x.common,
             Self::Entity(x) => &x.common,
             Self::Attribute(x) => &x.common,
             Self::Relation(x) => &x.common,
@@ -396,6 +409,7 @@ impl Object {
 
     pub fn common_mut(&mut self) -> &mut Common {
         match self {
+            Self::Predicate(x) => &mut x.common,
             Self::Entity(x) => &mut x.common,
             Self::Attribute(x) => &mut x.common,
             Self::Relation(x) => &mut x.common,
@@ -418,6 +432,10 @@ impl Object {
 
     pub fn semantic_id(&self) -> String {
         let (kind, content) = match self {
+            Self::Predicate(x) => (
+                "predicate",
+                serde_json::json!([x.predicate, x.arguments, x.negated]),
+            ),
             Self::Entity(x) => ("entity", serde_json::json!([x.namespace, x.scope, x.label])),
             Self::Attribute(x) => (
                 "attribute",
@@ -671,8 +689,25 @@ impl SemanticState {
 
     pub fn conflicts(&self) -> Vec<[String; 2]> {
         let mut seen: BTreeMap<(&str, &str), &Attribute> = BTreeMap::new();
+        let mut predicates: BTreeMap<(&str, Vec<gke::RuleTerm>), &PredicateFact> = BTreeMap::new();
         let mut conflicts = vec![];
         for item in &self.objects {
+            if let Object::Predicate(fact) = item {
+                if matches!(
+                    fact.common.status,
+                    Status::Unknown | Status::Unsupported | Status::Invalid
+                ) {
+                    continue;
+                }
+                let key = (fact.predicate.as_str(), fact.arguments.clone());
+                if let Some(previous) = predicates.get(&key) {
+                    if previous.negated != fact.negated {
+                        conflicts.push([previous.common.id.clone(), fact.common.id.clone()]);
+                    }
+                } else {
+                    predicates.insert(key, fact);
+                }
+            }
             if let Object::Attribute(attribute) = item {
                 if attribute.common.status == Status::Unknown || attribute.value == Value::Unknown {
                     continue;
@@ -854,6 +889,19 @@ impl SemanticState {
                 require(&occurrences, parent, source)?;
             }
             match item {
+                Object::Predicate(x) => {
+                    if x.predicate.is_empty()
+                        || x.arguments.iter().any(|term| match term {
+                            gke::RuleTerm::Variable(_) => true,
+                            gke::RuleTerm::EntityRef(id) => {
+                                !term.valid() || !ids.contains(id.as_str())
+                            }
+                            _ => !term.valid(),
+                        })
+                    {
+                        return Err(error("MirpTypeError", "invalid predicate fact", source));
+                    }
+                }
                 Object::Entity(x)
                     if x.entity_type.is_empty()
                         || x.label.is_empty()

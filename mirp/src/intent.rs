@@ -1,9 +1,22 @@
 //! Intent-aware assessment for a bounded, exact quadratic algebra contract.
 //! Unsupported mathematics stays UNKNOWN; an answer is never checked against a reference path.
 
+use crate::session::run_reason_source;
 use crate::{MirpError, Object, Provenance, SemanticDelta, SemanticState};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashMap};
+use std::sync::{Mutex, OnceLock};
+
+fn run_math(source: &str) -> Option<serde_json::Value> {
+    static RESULTS: OnceLock<Mutex<HashMap<String, serde_json::Value>>> = OnceLock::new();
+    let cache = RESULTS.get_or_init(|| Mutex::new(HashMap::new()));
+    if let Some(result) = cache.lock().ok()?.get(source).cloned() {
+        return Some(result);
+    }
+    let result = run_reason_source(source, &[]).ok()?;
+    cache.lock().ok()?.insert(source.to_owned(), result.clone());
+    Some(result)
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Polynomial {
@@ -12,10 +25,21 @@ pub struct Polynomial {
 }
 
 impl Polynomial {
-    pub(crate) fn at(&self, x: i64) -> i128 {
-        let [c, b, a] = self.coefficients.map(i128::from);
-        let x = i128::from(x);
-        a * x * x + b * x + c
+    pub(crate) fn roots_satisfy(&self, roots: &[i64]) -> Option<bool> {
+        self.check_roots("JCheckIntegerRoots", roots)
+    }
+
+    pub(crate) fn any_root_satisfies(&self, roots: &[i64]) -> Option<bool> {
+        self.check_roots("JAnyIntegerRoot", roots)
+    }
+
+    fn check_roots(&self, function: &str, roots: &[i64]) -> Option<bool> {
+        if !self.supported() {
+            return None;
+        }
+        let [c, b, a] = self.coefficients;
+        let roots = serde_json::to_string(roots).ok()?;
+        run_math(&format!("JuniorHigh::{function}({a}, {b}, {c}, {roots})"))?.as_bool()
     }
 
     pub(crate) fn supported(&self) -> bool {
@@ -77,11 +101,21 @@ impl AlgebraExpression {
     }
 }
 
-fn equivalent_equations(before: &Polynomial, after: [i128; 3]) -> bool {
-    let a = before.coefficients.map(i128::from);
-    a.iter().position(|n| *n != 0).is_some_and(|i| {
-        after[i] != 0 && (0..3).all(|j| a[j].checked_mul(after[i]) == after[j].checked_mul(a[i]))
-    })
+pub(crate) fn equivalent_equations(before: &Polynomial, after: [i128; 3]) -> Option<bool> {
+    if !before.supported() || after.iter().any(|n| n.unsigned_abs() > 1_000_000_000_000) {
+        return None;
+    }
+    let after: Vec<i64> = after
+        .into_iter()
+        .map(i64::try_from)
+        .collect::<Result<_, _>>()
+        .ok()?;
+    let source = format!(
+        "JuniorHigh::JEquivalentQuadratics({}, {})",
+        serde_json::to_string(&before.coefficients).ok()?,
+        serde_json::to_string(&after).ok()?,
+    );
+    run_math(&source)?.as_bool()
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -469,31 +503,36 @@ impl ReasoningContext {
             });
         let validity = match &step.claim {
             Claim::Transformation { before, after } if before.supported() && after.supported() => {
-                if equivalent_equations(before, after.coefficients.map(i128::from)) {
-                    MathematicalValidity::Valid
-                } else {
-                    MathematicalValidity::Invalid
+                match equivalent_equations(before, after.coefficients.map(i128::from)) {
+                    Some(true) => MathematicalValidity::Valid,
+                    Some(false) => MathematicalValidity::Invalid,
+                    None => MathematicalValidity::Unknown,
                 }
             }
             Claim::Transformation { .. } => MathematicalValidity::Unknown,
             Claim::ExpressionTransformation { before, after } if before.supported() => {
                 match after.coefficients() {
-                    Some(coefficients) if equivalent_equations(before, coefficients) => {
+                    Some(coefficients)
+                        if equivalent_equations(before, coefficients) == Some(true) =>
+                    {
                         MathematicalValidity::Valid
                     }
-                    Some(_) => MathematicalValidity::Invalid,
+                    Some(coefficients)
+                        if equivalent_equations(before, coefficients) == Some(false) =>
+                    {
+                        MathematicalValidity::Invalid
+                    }
+                    Some(_) => MathematicalValidity::Unknown,
                     None => MathematicalValidity::Unknown,
                 }
             }
             Claim::ExpressionTransformation { .. } => MathematicalValidity::Unknown,
             Claim::Solutions { values, .. } if supported_intent => match equation {
-                Some(poly) if poly.supported() => {
-                    if values.iter().all(|x| poly.at(*x) == 0) {
-                        MathematicalValidity::Valid
-                    } else {
-                        MathematicalValidity::Invalid
-                    }
-                }
+                Some(poly) if poly.supported() => match poly.roots_satisfy(values) {
+                    Some(true) => MathematicalValidity::Valid,
+                    Some(false) => MathematicalValidity::Invalid,
+                    None => MathematicalValidity::Unknown,
+                },
                 _ => MathematicalValidity::Unknown,
             },
             Claim::Solutions { .. } => MathematicalValidity::Unknown,
@@ -601,10 +640,7 @@ impl ReasoningContext {
         if let (Claim::Solutions { values, .. }, Some(needed)) = (&step.claim, &required) {
             if values.iter().any(|x| !needed.contains(x)) {
                 errors.push(
-                    if values
-                        .iter()
-                        .any(|x| equation.is_some_and(|p| p.at(*x) == 0))
-                    {
+                    if equation.is_some_and(|p| p.any_root_satisfies(values) == Some(true)) {
                         EducationalError::ConstraintError
                     } else {
                         EducationalError::ExtraneousSolution
@@ -678,9 +714,11 @@ fn equation_matches_history(
     intent.given.iter().any(|given| given.equation == *before)
         || history.iter().any(|step| match &step.claim {
             Claim::Transformation { after, .. } => after == before,
-            Claim::ExpressionTransformation { after, .. } => after
-                .coefficients()
-                .is_some_and(|coefficients| equivalent_equations(before, coefficients)),
+            Claim::ExpressionTransformation { after, .. } => {
+                after.coefficients().is_some_and(|coefficients| {
+                    equivalent_equations(before, coefficients) == Some(true)
+                })
+            }
             _ => false,
         })
 }
@@ -690,27 +728,14 @@ pub(crate) fn integer_quadratic_roots(poly: &Polynomial) -> Option<Vec<i64>> {
     if !poly.supported() {
         return None;
     }
-    let [c, b, a] = poly.coefficients.map(i128::from);
-    if a == 0 {
+    let [c, b, a] = poly.coefficients;
+    let result = run_math(&format!("JuniorHigh::JExactIntegerRoots({a}, {b}, {c})"))?;
+    if result["known"] != true {
         return None;
     }
-    let discriminant = b * b - 4 * a * c;
-    if discriminant < 0 {
-        return Some(vec![]);
-    }
-    let root = (discriminant as f64).sqrt() as i128;
-    let square = [root.saturating_sub(1), root, root + 1]
-        .into_iter()
-        .find(|r| r * r == discriminant)?;
-    let denominator = 2 * a;
-    let mut roots = vec![];
-    for numerator in [-b - square, -b + square] {
-        if numerator % denominator != 0 {
-            return None;
-        }
-        roots.push(i64::try_from(numerator / denominator).ok()?);
-    }
-    roots.sort();
-    roots.dedup();
-    Some(roots)
+    result["roots"]
+        .as_array()?
+        .iter()
+        .map(serde_json::Value::as_i64)
+        .collect()
 }

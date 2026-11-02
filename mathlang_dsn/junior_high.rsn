@@ -49,6 +49,21 @@ module JuniorHigh {
     ruo: Evidence
   }
 
+  struct IntegerRootsResult {
+    known: bool
+    roots: [int]
+  }
+
+  struct QuadraticRuntimeResult {
+    status: string
+    roots: [Root]
+    integer_roots: [int]
+    validated_roots: [int]
+    filtered_roots: [int]
+    factors: [int]
+    verified: bool
+  }
+
   struct SystemResult {
     status: string
     x: Rational
@@ -289,6 +304,174 @@ module JuniorHigh {
     }
     let event = Event(35, status, [a, b, c], [])
     return QuadraticResult { status: status, discriminant: b * b - 4 * a * c, roots: roots, knowledge_id: event.knowledge_id, source: event.source, active_rus: event.source_rus, ruo: event }
+  }
+
+  // Exact integer roots for the bounded MIRP quadratic contract.
+  pub fn JExactIntegerRoots(a: int, b: int, c: int) -> IntegerRootsResult {
+    if a == 0 || a < -1000000 || a > 1000000 || b < -1000000 || b > 1000000 || c < -1000000 || c > 1000000 {
+      return IntegerRootsResult { known: false, roots: [] }
+    }
+    let discriminant = b * b - 4 * a * c
+    if discriminant < 0 {
+      return IntegerRootsResult { known: true, roots: [] }
+    }
+    // sqrt(discriminant) <= sqrt(5e12), so this bound keeps products in int range.
+    let low = 0
+    let high = 2500001
+    while low + 1 < high {
+      let middle = DivideExact(low + high, 2)
+      if middle * middle <= discriminant {
+        low = middle
+      } else {
+        high = middle
+      }
+    }
+    if low * low != discriminant {
+      return IntegerRootsResult { known: false, roots: [] }
+    }
+    let denominator = 2 * a
+    let first = 0 - b - low
+    let second = 0 - b + low
+    if first % denominator != 0 || second % denominator != 0 {
+      return IntegerRootsResult { known: false, roots: [] }
+    }
+    let left = DivideExact(first, denominator)
+    let right = DivideExact(second, denominator)
+    if left == right {
+      return IntegerRootsResult { known: true, roots: [left] }
+    }
+    if left < right {
+      return IntegerRootsResult { known: true, roots: [left, right] }
+    }
+    return IntegerRootsResult { known: true, roots: [right, left] }
+  }
+
+  pub fn JCheckIntegerRoots(a: int, b: int, c: int, roots: [int]) -> bool {
+    if a == 0 && b == 0 {
+      return roots.length == 0 || c == 0
+    }
+    let index = 0
+    while index < roots.length {
+      let root = roots[index]
+      if root < -1000000 || root > 1000000 {
+        return false
+      }
+      if a * root * root + b * root + c != 0 {
+        return false
+      }
+      index = index + 1
+    }
+    return true
+  }
+
+  pub fn JAnyIntegerRoot(a: int, b: int, c: int, roots: [int]) -> bool {
+    if a == 0 && b == 0 {
+      return c == 0 && roots.length > 0
+    }
+    let index = 0
+    while index < roots.length {
+      let root = roots[index]
+      if root >= -1000000 && root <= 1000000 {
+        if a * root * root + b * root + c == 0 {
+          return true
+        }
+      }
+      index = index + 1
+    }
+    return false
+  }
+
+  pub fn JEquivalentQuadratics(before: [int], after: [int]) -> bool {
+    if before.length != 3 || after.length != 3 {
+      return false
+    }
+    let bound_index = 0
+    while bound_index < 3 {
+      if before[bound_index] < -1000000 || before[bound_index] > 1000000 || after[bound_index] < -1000000000000 || after[bound_index] > 1000000000000 {
+        return false
+      }
+      bound_index = bound_index + 1
+    }
+    let pivot = 0
+    while pivot < 3 && before[pivot] == 0 {
+      pivot = pivot + 1
+    }
+    if pivot == 3 || after[pivot] == 0 {
+      return false
+    }
+    let index = 0
+    while index < 3 {
+      if before[index] * after[pivot] != after[index] * before[pivot] {
+        return false
+      }
+      index = index + 1
+    }
+    return true
+  }
+
+  fn FilterIntegerRoots(roots: [int], kinds: [int], lefts: [int], rights: [int]) -> [int] {
+    let filtered = []
+    let index = 0
+    while index < roots.length {
+      let root = roots[index]
+      let accepted = true
+      let constraint = 0
+      while constraint < kinds.length {
+        let kind = kinds[constraint]
+        let left = lefts[constraint]
+        let right = rights[constraint]
+        if (kind == 1 && root <= left) || (kind == 2 && root < left) || (kind == 3 && root >= left) || (kind == 4 && root > left) || (kind == 5 && root == left) || (kind == 6 && (root < left || root > right)) {
+          accepted = false
+        }
+        constraint = constraint + 1
+      }
+      if accepted {
+        filtered = array.append(filtered, root)
+      }
+      index = index + 1
+    }
+    return filtered
+  }
+
+  pub fn JProcessQuadratic(use_factorization: bool, a: int, b: int, c: int, kinds: [int], lefts: [int], rights: [int]) -> QuadraticRuntimeResult {
+    if use_factorization {
+      return ProcessQuadraticResult(JFactorQuadratic(a, b, c), a, b, c, kinds, lefts, rights)
+    }
+    return ProcessQuadraticResult(JSolveQuadratic(a, b, c), a, b, c, kinds, lefts, rights)
+  }
+
+  fn ProcessQuadraticResult(result: QuadraticResult, a: int, b: int, c: int, kinds: [int], lefts: [int], rights: [int]) -> QuadraticRuntimeResult {
+    let expected = JExactIntegerRoots(a, b, c)
+    let actual = []
+    let integral = true
+    let index = 0
+    while index < result.roots.length {
+      let root = result.roots[index]
+      if root.radical_coefficient != 0 || root.denominator == 0 || root.numerator % root.denominator != 0 {
+        integral = false
+      } else {
+        actual = array.append(actual, DivideExact(root.numerator, root.denominator))
+      }
+      index = index + 1
+    }
+    if actual.length == 2 && actual[0] > actual[1] {
+      actual = [actual[1], actual[0]]
+    }
+    let verified = integral && expected.known && actual.length == expected.roots.length
+    let match_index = 0
+    while match_index < actual.length && verified {
+      if actual[match_index] != expected.roots[match_index] {
+        verified = false
+      }
+      match_index = match_index + 1
+    }
+    let validated = []
+    let filtered = []
+    if verified {
+      validated = actual
+      filtered = FilterIntegerRoots(validated, kinds, lefts, rights)
+    }
+    return QuadraticRuntimeResult { status: result.status, roots: result.roots, integer_roots: actual, validated_roots: validated, filtered_roots: filtered, factors: array.concat([a], validated), verified: verified }
   }
 
   pub fn JQuadraticFromPolynomial(coefficients: [int]) -> QuadraticResult {

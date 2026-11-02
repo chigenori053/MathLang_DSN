@@ -6,7 +6,7 @@ version = "0.3.0"
 [project]
 name = "MathLang_DSN"
 version = "0.3.0"
-reason_version = "0.5.6.2"
+reason_version = "0.5.6.5"
 
 [source]
 entry = "src/main.rsn"

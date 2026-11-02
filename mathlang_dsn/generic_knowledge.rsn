@@ -1,0 +1,29 @@
+package mathlang_dsn
+
+// Exact numeric guards for data-defined generic rules.
+module GenericKnowledge {
+  pub fn Check(kind: string, numerator: int, denominator: int) -> string {
+    if denominator <= 0 {
+      return "UNKNOWN"
+    }
+    if kind == "NONZERO" {
+      if numerator != 0 {
+        return "SATISFIED"
+      }
+      return "VIOLATED"
+    }
+    if kind == "POSITIVE" {
+      if numerator > 0 {
+        return "SATISFIED"
+      }
+      return "VIOLATED"
+    }
+    if kind == "INTEGER" {
+      if numerator % denominator == 0 {
+        return "SATISFIED"
+      }
+      return "VIOLATED"
+    }
+    return "UNKNOWN"
+  }
+}

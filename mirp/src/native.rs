@@ -1,6 +1,6 @@
 //! ProblemIntent to native ReasonScript reasoning, with MIRP as mathematical state.
 use crate::capability::{CapabilityRequest, RuntimeCapabilityRegistry};
-use crate::intent::{integer_quadratic_roots, ConstraintKind, Method, Polynomial};
+use crate::intent::{ConstraintKind, Method, Polynomial};
 use crate::knowledge::{
     Applicability, ApplicabilityEngine, KnowledgeActivation, KnowledgeQuery, KnowledgeQueryResult,
 };
@@ -696,7 +696,6 @@ impl MathProblemContext {
             return Ok(self.finish(result));
         }
         let poly = self.equation()?;
-        let a = poly.coefficients[2];
         let automatic_selection = selected.is_none();
         let strategy = selected.unwrap_or(match self.plan.required_method {
             Some(Method::QuadraticFormula) => Strategy::QuadraticFormula,
@@ -754,6 +753,7 @@ impl MathProblemContext {
             rus_ref: activation.selected_rus.clone(),
             semantic_state_refs: query.semantic_state_refs.clone(),
             constraints: query.constraints.clone(),
+            root_constraints: self.plan.constraints.clone(),
         };
         let output = executor.execute(&request, &self.semantic_state)?;
         if output.ru_ref
@@ -831,25 +831,10 @@ impl MathProblemContext {
         self.reasoning_runtime.selected_ru = Some(trace.ru_ref.clone());
         self.reasoning_runtime.active_rus = Some(trace.rus_ref.clone());
         self.trace.push(trace.clone());
-        let mut roots = vec![];
-        let mut all_integral = true;
-        for root in trace.ruo["result"]["roots"]
-            .as_array()
-            .ok_or("CAPABILITY_OUTPUT_INVALID")?
-        {
-            let numerator = root["numerator"].as_i64().ok_or("invalid numerator")?;
-            let radical = root["radical_coefficient"]
-                .as_i64()
-                .ok_or("invalid radical")?;
-            let denominator = root["denominator"].as_i64().ok_or("invalid denominator")?;
-            if radical != 0 || denominator == 0 || numerator % denominator != 0 {
-                all_integral = false;
-                continue;
-            }
-            roots.push(numerator / denominator);
-        }
-        roots.sort();
-        roots.dedup();
+        let roots = integer_array(&trace.ruo["result"]["integer_roots"])?;
+        let verified = trace.ruo["result"]["verified"]
+            .as_bool()
+            .ok_or("CAPABILITY_OUTPUT_INVALID")?;
         let native_status = trace.ruo["status"].as_str().unwrap_or("UNKNOWN");
         if native_status == "UNSUPPORTED" || native_status == "RESOURCE_LIMIT" {
             let result = self.result(
@@ -861,13 +846,7 @@ impl MathProblemContext {
             );
             return Ok(self.finish(result));
         }
-        let exact_roots = integer_quadratic_roots(&poly);
-        if !all_integral
-            || native_status == "UNKNOWN"
-            || exact_roots
-                .as_ref()
-                .is_none_or(|expected| *expected != roots)
-        {
+        if !verified || native_status == "UNKNOWN" {
             if automatic_selection
                 && strategy == Strategy::Factorization
                 && self.plan.required_method.is_none()
@@ -894,8 +873,8 @@ impl MathProblemContext {
             None
         };
         if is_factorization {
-            let factors = std::iter::once(a)
-                .chain(roots.iter().copied())
+            let factors = integer_array(&trace.ruo["result"]["factors"])?
+                .into_iter()
                 .map(Value::Integer)
                 .collect();
             self.record(
@@ -905,18 +884,17 @@ impl MathProblemContext {
             )?;
         }
         self.record("candidate_roots", root_set(&roots), &trace)?;
-        let validated: Vec<i64> = roots.into_iter().filter(|x| poly.at(*x) == 0).collect();
+        let validated = integer_array(&trace.ruo["result"]["validated_roots"])?;
         let validation_trace = self.native_step(
             "RootValidationRU",
             "QuadraticSolveRUS",
             json!({"validated_roots": validated}),
         );
         self.record("validated_roots", root_set(&validated), &validation_trace)?;
-        let filtered: Vec<i64> = validated
-            .iter()
-            .copied()
-            .filter(|x| self.plan.constraints.iter().all(|c| c.accepts(*x)))
-            .collect();
+        let filtered = integer_array(&trace.ruo["result"]["filtered_roots"])?;
+        if !filtered.iter().all(|root| validated.contains(root)) {
+            return Err("CAPABILITY_OUTPUT_INVALID".into());
+        }
         let filter_trace = self.native_step(
             "ConstraintFilterRU",
             "QuadraticSolveRUS",
@@ -1098,6 +1076,18 @@ fn polynomial_value(poly: &Polynomial) -> Value {
 
 fn root_set(roots: &[i64]) -> Value {
     Value::Set(roots.iter().copied().map(Value::Integer).collect())
+}
+
+fn integer_array(value: &Json) -> Result<Vec<i64>, String> {
+    value
+        .as_array()
+        .ok_or("CAPABILITY_OUTPUT_INVALID")?
+        .iter()
+        .map(|item| {
+            item.as_i64()
+                .ok_or_else(|| "CAPABILITY_OUTPUT_INVALID".into())
+        })
+        .collect()
 }
 
 pub fn solve_problem(text: &str) -> Result<(MathLangResult, SemanticState, ReasoningPlan), String> {

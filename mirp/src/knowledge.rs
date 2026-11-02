@@ -51,6 +51,8 @@ pub struct KnowledgeUnit {
     pub activation_metadata: BTreeMap<String, serde_json::Value>,
     #[serde(default)]
     pub runtime_rule_id: Option<i64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub generic_rule: Option<crate::gke::GenericRule>,
 }
 
 impl KnowledgeUnit {
@@ -105,6 +107,9 @@ impl KnowledgeUnit {
         if self.capabilities.iter().any(|id| !valid_id(id)) {
             return Err(format!("invalid capability ID: {}", self.knowledge_id));
         }
+        if let Some(rule) = &self.generic_rule {
+            rule.validate()?;
+        }
         if let Some(conflicts) = self.activation_metadata.get("conflicts_with") {
             let Some(ids) = conflicts.as_array() else {
                 return Err("invalid conflicts_with".into());
@@ -148,6 +153,8 @@ pub struct KnowledgeSpace {
     goals: BTreeMap<String, BTreeSet<String>>,
     #[serde(skip)]
     rules: BTreeMap<i64, String>,
+    #[serde(skip)]
+    generic_premises: BTreeMap<String, BTreeSet<String>>,
 }
 
 impl KnowledgeSpace {
@@ -179,6 +186,20 @@ impl KnowledgeSpace {
     pub fn units(&self) -> impl Iterator<Item = &KnowledgeUnit> {
         self.units.values()
     }
+    pub fn query_generic<'a, 'b>(
+        &'a self,
+        predicates: impl IntoIterator<Item = &'b str>,
+    ) -> Vec<&'a KnowledgeUnit> {
+        let mut ids = self.generic_premises.get("*").cloned().unwrap_or_default();
+        for predicate in predicates {
+            if let Some(found) = self.generic_premises.get(predicate) {
+                ids.extend(found.iter().cloned());
+            }
+        }
+        ids.into_iter()
+            .filter_map(|id| self.units.get(&id))
+            .collect()
+    }
 
     /// Registration is transactional; absent dependencies and cycles reject the batch.
     pub fn register_batch(&mut self, incoming: Vec<KnowledgeUnit>) -> Result<(), String> {
@@ -198,6 +219,7 @@ impl KnowledgeSpace {
         self.categories.clear();
         self.goals.clear();
         self.rules.clear();
+        self.generic_premises.clear();
         // Older persisted catalogs predate capabilities. The bundled data is the migration table.
         let legacy_capabilities: BTreeMap<i64, Vec<String>> =
             serde_json::from_str::<Vec<KnowledgeUnit>>(include_str!("../knowledge/legacy.json"))
@@ -236,6 +258,18 @@ impl KnowledgeSpace {
                 if self.rules.insert(rule, id.clone()).is_some() {
                     return Err("duplicate runtime Rule ID".into());
                 }
+            }
+            if let Some(rule) = &unit.generic_rule {
+                self.generic_premises
+                    .entry(
+                        rule.premises
+                            .first()
+                            .map(|p| p.predicate.as_str())
+                            .unwrap_or("*")
+                            .into(),
+                    )
+                    .or_default()
+                    .insert(id.clone());
             }
             self.categories
                 .entry(unit.category.clone())

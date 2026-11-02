@@ -65,6 +65,25 @@ module main {
     result = greater.status == "APPLIED" && greater.value && greater.ruo.source_ru == 34 && greater.ruo.source_rus == "ComparisonRUS" && unknown_rule.status == "UNSUPPORTED"
   }
 
+  calculation QuadraticRuntimeSelfCheck {
+    let exact = JuniorHigh::JExactIntegerRoots(1, -5, 6)
+    let irrational = JuniorHigh::JExactIntegerRoots(1, 0, -2)
+    let no_real = JuniorHigh::JExactIntegerRoots(1, 0, 1)
+    let valid = JuniorHigh::JCheckIntegerRoots(1, -5, 6, [2, 3])
+    let invalid = JuniorHigh::JCheckIntegerRoots(1, -5, 6, [4])
+    let outside = JuniorHigh::JCheckIntegerRoots(1, -5, 6, [9223372036854775807])
+    let any_valid = JuniorHigh::JAnyIntegerRoot(1, -5, 6, [4, 3])
+    let any_invalid = JuniorHigh::JAnyIntegerRoot(1, -5, 6, [4, 9223372036854775807])
+    let equivalent = JuniorHigh::JEquivalentQuadratics([6, -5, 1], [12, -10, 2])
+    let different = JuniorHigh::JEquivalentQuadratics([6, -5, 1], [6, -4, 1])
+    let factor = JuniorHigh::JProcessQuadratic(true, 1, -5, 6, [1], [2], [0])
+    let formula = JuniorHigh::JProcessQuadratic(false, 1, -5, 6, [], [], [])
+    let constrained_three = JuniorHigh::JProcessQuadratic(false, 1, -5, 6, [2, 4, 5], [2, 3, 2], [0, 0, 0])
+    let constrained_two = JuniorHigh::JProcessQuadratic(false, 1, -5, 6, [3, 6], [3, 2], [0, 2])
+    let empty = JuniorHigh::JProcessQuadratic(false, 1, 0, 1, [], [], [])
+    result = exact.known && exact.roots == [2, 3] && !irrational.known && no_real.known && no_real.roots.length == 0 && valid && !invalid && !outside && any_valid && !any_invalid && equivalent && !different && factor.verified && factor.filtered_roots == [3] && factor.factors == [1, 2, 3] && formula.verified && formula.integer_roots == [2, 3] && constrained_three.filtered_roots == [3] && constrained_two.filtered_roots == [2] && empty.verified && empty.integer_roots.length == 0
+  }
+
   calculation MirpImportedAdaptersSelfCheck {
     let semantic = Japanese_semantic_adapter::AdaptJapaneseSemantic("太郎は学生である。")
     let unit = Memory_codec_f4::New("memory-1", ["RU"], ["RUS"], ["RUO"], [], [], "goal", "KNOWN", "", "v1", "source", 0, 0)

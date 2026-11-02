@@ -30,12 +30,12 @@ Indexed retrieval was checked at 100, 1,000, 10,000, and 50,000 Knowledge units.
 
 ```text
 cd mirp && cargo test
-python3 -m unittest discover -s tests
+reason project-validate . --json
 git diff --check
 rg -n 'match activation.selected_ru|match knowledge_id|match runtime_rule_id|expected_answer|fixture_filename|test_index' mirp/src mirp/knowledge
 ```
 
-The Rust suite, Python suite, whitespace check, and anti-cheating source scan pass. The last scan has no matches in the native execution source or bundled Knowledge.
+The Rust suite, ReasonScript validation, whitespace check, and anti-cheating source scan pass. The last scan has no matches in the native execution source or bundled Knowledge.
 
 ## Scope of the current registry
 

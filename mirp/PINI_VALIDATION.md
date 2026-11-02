@@ -14,7 +14,7 @@ The factorization RU searches integer candidates in `[-100, 100]`. An exact inde
 - `cargo clippy --offline --manifest-path mirp/Cargo.toml --all-targets -- -D warnings`: passed.
 - `cargo fmt --manifest-path mirp/Cargo.toml --check`: passed.
 - `reason project-validate . --json`: passed.
-- `python3 -m pytest -q tests/test_api.py`: 9 passed.
+- The former Python API regression suite had 9 passing tests at the time of this report; it was later removed.
 - `git diff --check`: passed.
 - `mirp/target/debug/examples/pini_digest` run in three independent processes over 100 generated end-to-end inputs each: SHA-256 `58f914cf6e6f8befad9684782ad47e5e1daa5755d2b5a27171debaa76a8c8cbf` in all three.
 

@@ -14,6 +14,33 @@ fn main() {
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("gke-infer") {
+        if args.len() != 5 {
+            return Err("usage: mirp gke-infer <state.mirp> <knowledge.json> <goal>".into());
+        }
+        let mut state = SemanticState::load(&args[2])?;
+        let units: Vec<mathlang_mirp::knowledge::KnowledgeUnit> =
+            serde_json::from_str(&std::fs::read_to_string(&args[3])?)?;
+        let mut space = mathlang_mirp::knowledge::KnowledgeSpace::empty();
+        space.register_batch(units)?;
+        let memory = MemorySpace::with_knowledge_space(space)?;
+        let report = if args[4].starts_with('{') {
+            let goal: mathlang_mirp::gke::RulePredicate = serde_json::from_str(&args[4])?;
+            memory.infer_generic(&mut state, &goal, Default::default())
+        } else {
+            mathlang_mirp::gke::infer(
+                memory.knowledge_space(),
+                &mut state,
+                &args[4],
+                Default::default(),
+            )
+        };
+        println!(
+            "{}",
+            serde_json::to_string(&serde_json::json!({"report": report, "semantic_state": state}))?
+        );
+        return Ok(());
+    }
     if args.get(1).map(String::as_str) == Some("solve-problem") {
         if args.len() != 3 && args.len() != 4 {
             return Err("usage: mirp solve-problem <problem> [memory.json]".into());
