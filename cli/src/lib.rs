@@ -44,6 +44,11 @@ pub enum Command {
     },
     Verify {
         input: String,
+        /// Knowledge catalogue (KnowledgeUnit JSON array or single unit) used for the recorded
+        /// retrieval plans. Defaults to the bundled legacy catalogue. Proof generation still uses
+        /// the closed Lean recipe; retrieved Knowledge never changes a formal status.
+        #[arg(long)]
+        knowledge: Option<PathBuf>,
     },
     Proof {
         #[command(subcommand)]
@@ -74,8 +79,16 @@ pub enum ModelAction {
 }
 #[derive(Subcommand, Debug)]
 pub enum ProofAction {
-    Plan { input: PathBuf },
-    Counterexample { input: PathBuf },
+    Plan {
+        input: PathBuf,
+        /// Knowledge catalogue (KnowledgeUnit JSON array or single unit). Defaults to the bundled
+        /// legacy catalogue; e.g. mirp/knowledge/usm_math_v0_1_1/catalogue/all_with_legacy.json.
+        #[arg(long)]
+        knowledge: Option<PathBuf>,
+    },
+    Counterexample {
+        input: PathBuf,
+    },
 }
 #[derive(Subcommand, Debug)]
 pub enum KnowledgeAction {

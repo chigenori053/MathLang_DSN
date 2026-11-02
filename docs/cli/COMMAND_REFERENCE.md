@@ -8,11 +8,11 @@
 | `model check FILE` | 既存MathematicalModel JSON。既存ModelRegistry.registerで構造・型・次元・添字・義務IDを検査 |
 | `model inspect FILE` | モデル全内容、ID/revision/content_hashを表示 |
 | `model normalize FILE` | 型付き式の既存ir::normalizedを使用。定義、前提、invariant、全義務を正規化 |
-| `verify FILE` | 既存 `{obligation,recipe,refutation}` またはProofObligation単体。単体はAuto/非否定 |
+| `verify FILE [--knowledge CATALOGUE]` | 既存 `{obligation,recipe,refutation}` またはProofObligation単体。単体はAuto/非否定。Lean証明は閉じたレシピで生成し、指定Knowledge（既定legacy）による検索計画を `knowledge_plans.json`、Knowledgeの出所・revisionを `environment.json` に記録 |
 | `verify usm` | 既存usm + auxiliaryの9件を3回。全27結果を保持 |
-| `proof plan FILE` | 同じ義務入力。legacy Knowledge、既存dsn::plan、上限1000ノード |
+| `proof plan FILE [--knowledge CATALOGUE]` | 同じ義務入力。既定はlegacy Knowledge。`--knowledge` はKnowledgeUnit配列または単体で、legacyを置き換える（両方必要なら累積版 `all_with_legacy.json`）。既存dsn::plan、上限1000ノード |
 | `proof counterexample FILE` | 既存有限探索、予算1000。候補と元の義務を保持。formal_status=UNKNOWN |
-| `knowledge inspect FILE` | KnowledgeUnit単体または配列。既存KnowledgeSpaceで依存・循環を検査 |
+| `knowledge inspect FILE` | KnowledgeUnit単体または配列。既存KnowledgeSpaceで依存・循環を検査。各unitの `formal_retrieval` と、結論形式別の件数 `summary.conclusion_formats` を表示 |
 | `knowledge impact FILE --revision N` | ModelRegistryの既存履歴revisionを選択し、各モデルの依存と現在失効している義務を表示 |
 | `knowledge update FILE` | 明示的OUT_OF_SCOPE、終了4 |
 | `compare A B` | モデルの全構造・前提・義務・依存・Evidence参照を比較。順位付けしない |
@@ -28,6 +28,9 @@ Evidenceの対象義務は近傍4階層の `proof_obligations.json` から照合
 `--registry` がなければ現在revisionの判定はnull。指定したRegistryで失効していれば終了7。
 standalone Knowledgeのrevision=1は初回importの意味で、履歴revisionを推測しない。
 impactは読み取り専用の現状分析。更新操作や仮想revisionの登録はしない。
+
+Knowledge検索は、`conclusion` が型付きMathExpr IRのJSONであるunitだけを対象とする。目標と結論をそれぞれ `ir::normalized` で正規化し、束縛変数名を束縛の深さで置き換えて構造比較する（α同値は一致、自由変数名・束縛順序・型が違えば不一致）。JSONの空白やキー順の差は影響しない。
+legacyの29件は `validated result of ...` という説明文の操作RULEで、数式目標の検索キーにはならない。Lean精緻化命題の記録（`Lean4.ElaboratedProposition.v1`）も検索キーではない。検索一致は候補であり、formal_statusは常にUNKNOWNのまま。PROVEDはLean kernelのEvidenceだけが与える。
 
 比較では実行環境が与えられないため、条件一致でもCONDITIONALLY_COMPARABLE、条件差はNOT_COMPARABLE。
 環境比較と数学的同値性はUNKNOWN。COMPARABLEへの自動昇格や証明数の順位付けをしない。

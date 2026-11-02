@@ -68,8 +68,60 @@ impl Plan {
         Ok(())
     }
 }
+/// Retrieval key for a typed IR statement: normalized IR with bound variables renamed by
+/// binder depth, so alpha-equivalent statements share a key. Free variables keep their names.
+pub fn retrieval_key(e: &MathExpr) -> Result<String, String> {
+    fn rename(v: &mut serde_json::Value, bound: &mut Vec<String>) {
+        match v {
+            serde_json::Value::Object(map) => {
+                if let Some(serde_json::Value::String(name)) = map.get_mut("Variable") {
+                    if let Some(depth) = bound.iter().rposition(|b| b == name) {
+                        *name = format!("#{depth}");
+                    }
+                    return;
+                }
+                for quantifier in ["ForAll", "Exists"] {
+                    if let Some(serde_json::Value::Array(parts)) = map.get_mut(quantifier) {
+                        if let (Some(name), 3) = (parts[0].as_str().map(String::from), parts.len())
+                        {
+                            parts[0] = serde_json::Value::String(format!("#{}", bound.len()));
+                            bound.push(name);
+                            rename(&mut parts[2], bound);
+                            bound.pop();
+                            return;
+                        }
+                    }
+                }
+                for value in map.values_mut() {
+                    rename(value, bound);
+                }
+            }
+            serde_json::Value::Array(xs) => {
+                for x in xs {
+                    rename(x, bound);
+                }
+            }
+            _ => {}
+        }
+    }
+    let mut v: serde_json::Value =
+        serde_json::from_str(&crate::ir::normalized(e)?).map_err(|e| e.to_string())?;
+    rename(&mut v, &mut vec![]);
+    serde_json::to_string(&v).map_err(|e| e.to_string())
+}
+/// A KnowledgeUnit participates in formal goal retrieval only when its conclusion is a typed
+/// MathExpr IR statement. Descriptive conclusions (for example the bundled operational
+/// `validated result of ...` RULEs) are not formal statements and are never matched.
+pub fn knowledge_retrieval_key(u: &mathlang_mirp::knowledge::KnowledgeUnit) -> Option<String> {
+    let e: MathExpr = serde_json::from_str(&u.conclusion).ok()?;
+    retrieval_key(&e).ok()
+}
 pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Result<Plan, String> {
     o.validate()?;
+    let index: Vec<(String, &mathlang_mirp::knowledge::KnowledgeUnit)> = space
+        .units()
+        .filter_map(|u| knowledge_retrieval_key(u).map(|k| (k, u)))
+        .collect();
     let revisions: Vec<_> = space
         .units()
         .map(|u| (u.knowledge_id.clone(), u.occurrence_id()))
@@ -86,7 +138,7 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
         g: &MathExpr,
         a: Vec<MathExpr>,
         v: BTreeMap<String, MathType>,
-        space: &KnowledgeSpace,
+        index: &[(String, &mathlang_mirp::knowledge::KnowledgeUnit)],
         max: usize,
     ) -> Result<String, String> {
         if p.nodes.len() >= max {
@@ -108,8 +160,8 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
             evidence_refs: vec![],
         };
         // An existing textual theorem is a retrieval candidate, never a checked lemma.
-        let key = crate::ir::normalized(g)?;
-        for u in space.units().filter(|u| u.conclusion == key) {
+        let key = retrieval_key(g)?;
+        for (_, u) in index.iter().filter(|(k, _)| *k == key) {
             node.source_knowledge.push(Dependency {
                 id: u.knowledge_id.clone(),
                 revision: 1,
@@ -121,22 +173,22 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
         match g {
             MathExpr::LogicalAnd(x, y) => {
                 p.nodes[i].rule = "conjunction-elimination".into();
-                let l = expand(p, x, a.clone(), v.clone(), space, max)?;
-                let r = expand(p, y, a, v, space, max)?;
+                let l = expand(p, x, a.clone(), v.clone(), index, max)?;
+                let r = expand(p, y, a, v, index, max)?;
                 p.nodes[i].children = vec![l, r];
             }
             MathExpr::Implies(x, y) => {
                 p.nodes[i].rule = "implication-introduction".into();
                 let mut a = a;
                 a.push(*x.clone());
-                let c = expand(p, y, a, v, space, max)?;
+                let c = expand(p, y, a, v, index, max)?;
                 p.nodes[i].children.push(c);
             }
             MathExpr::ForAll(n, t, b) => {
                 p.nodes[i].rule = "forall-introduction".into();
                 let mut v = v;
                 v.insert(n.clone(), t.clone());
-                let c = expand(p, b, a, v, space, max)?;
+                let c = expand(p, b, a, v, index, max)?;
                 p.nodes[i].children.push(c);
             }
             _ if a.contains(g) => {
@@ -158,7 +210,7 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
         &o.goal,
         o.context.assumptions.clone(),
         o.context.variables.clone(),
-        space,
+        &index,
         max_nodes,
     )?;
     fn retrieve(

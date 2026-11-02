@@ -1,7 +1,7 @@
 # インストールと環境
 
-正式対象は macOS、Rust 1.93.1、ReasonScript 0.5.6.5、Lean 4.35.0、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`。
-今回のローカル実測は ReasonScript 0.5.6.10。互換試験は通るが、指定版の受入は未完了。
+正式対象は macOS、Rust 1.93.1、ReasonScript 0.5.6.10、Lean 4.35.0、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`。
+プロジェクト宣言（`reason.toml`）も実測環境の0.5.6.10へ揃えた。2026-11-03より前のEvidenceは、0.5.6.5宣言を0.5.6.10で実行した記録であり、その記載は当時のまま保持する。
 Linux/Windows は正式受入対象外。
 
 ```sh

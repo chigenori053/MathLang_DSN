@@ -157,6 +157,60 @@ fn plan_and_candidates_never_prove() {
     run(&["proof", "counterexample", path.to_str().unwrap()], 4);
 }
 #[test]
+fn proof_plan_uses_supplied_knowledge_catalogue() {
+    let pack = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../mirp/knowledge/usm_math_v0_1_1/catalogue");
+    let views: Vec<Value> =
+        serde_json::from_slice(&fs::read(pack.join("ir_views.json")).unwrap()).unwrap();
+    let p = temp();
+    let path = p.join("obligation.json");
+    write(&path, &views[0]["obligation"]);
+    let id = views[0]["knowledge_id"].as_str().unwrap();
+    let legacy = run(&["proof", "plan", path.to_str().unwrap()], 0);
+    assert!(legacy["result"]["nodes"][0]["source_knowledge"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+    let catalogue = pack.join("all_with_legacy.json");
+    let v = run(
+        &[
+            "proof",
+            "plan",
+            path.to_str().unwrap(),
+            "--knowledge",
+            catalogue.to_str().unwrap(),
+        ],
+        0,
+    );
+    assert_eq!(v["formal_status"], "UNKNOWN");
+    assert!(v["result"]["nodes"][0]["source_knowledge"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|d| d["id"] == id));
+    assert_ne!(
+        v["result"]["knowledge_revision"],
+        legacy["result"]["knowledge_revision"]
+    );
+    let v = run(&["knowledge", "inspect", catalogue.to_str().unwrap()], 0);
+    assert_eq!(v["result"]["summary"]["units"], 245);
+    assert_eq!(v["result"]["summary"]["formal_ir_conclusions"], 18);
+    assert_eq!(
+        v["result"]["summary"]["conclusion_formats"],
+        serde_json::json!({"MathIR":18,"Lean4.ElaboratedProposition.v1":198,"DESCRIPTIVE_TEXT":29})
+    );
+    run(
+        &[
+            "proof",
+            "plan",
+            path.to_str().unwrap(),
+            "--knowledge",
+            p.join("missing.json").to_str().unwrap(),
+        ],
+        8,
+    );
+}
+#[test]
 fn evidence_integrity_and_stale_revision() {
     let p = temp();
     let o = fixtures::usm().remove(0).0;

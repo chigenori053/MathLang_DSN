@@ -582,3 +582,81 @@ fn infrastructure_launch_failure_is_saved_as_error() {
     assert!(output.join("lean_logs/kernel.json").is_file());
     std::fs::remove_dir_all(root).unwrap();
 }
+#[test]
+fn dp_11_descriptive_conclusions_are_not_formal_retrieval_keys() {
+    let legacy = mathlang_mirp::knowledge::KnowledgeSpace::legacy();
+    assert!(legacy.len() > 0);
+    assert!(legacy
+        .units()
+        .all(|u| dsn::knowledge_retrieval_key(u).is_none()));
+}
+#[test]
+fn dp_12_structural_alpha_equivalent_retrieval() {
+    let mut u = mathlang_mirp::knowledge::KnowledgeSpace::legacy()
+        .units()
+        .find(|u| u.dependencies.is_empty())
+        .unwrap()
+        .clone();
+    // Stored with a different binder name and pretty-printed JSON.
+    let stored = MathExpr::forall("x", MathType::Real, MathExpr::eq(var("x"), var("x")));
+    u.conclusion = serde_json::to_string_pretty(&stored).unwrap();
+    let id = u.knowledge_id.clone();
+    let mut k = mathlang_mirp::knowledge::KnowledgeSpace::empty();
+    k.register_batch(vec![u]).unwrap();
+    let goal = MathExpr::forall("y", MathType::Real, MathExpr::eq(var("y"), var("y")));
+    let plan = dsn::plan(&simple("alpha", goal, Context::default()), &k, 8).unwrap();
+    assert_eq!(plan.nodes[0].source_knowledge[0].id, id);
+    assert_eq!(plan.nodes[0].formal_status, FormalStatus::Unknown);
+    // Free variables are not renamed: a different free symbol is a different statement.
+    let free_a = MathExpr::forall("x", MathType::Real, MathExpr::eq(var("x"), var("a")));
+    let free_b = MathExpr::forall("x", MathType::Real, MathExpr::eq(var("x"), var("b")));
+    assert_ne!(
+        dsn::retrieval_key(&free_a).unwrap(),
+        dsn::retrieval_key(&free_b).unwrap()
+    );
+    // Binder order matters.
+    let xy = MathExpr::forall(
+        "x",
+        MathType::Real,
+        MathExpr::forall("y", MathType::Nat, MathExpr::eq(var("x"), var("x"))),
+    );
+    let yx = MathExpr::forall(
+        "x",
+        MathType::Real,
+        MathExpr::forall("y", MathType::Nat, MathExpr::eq(var("y"), var("y"))),
+    );
+    assert_ne!(
+        dsn::retrieval_key(&xy).unwrap(),
+        dsn::retrieval_key(&yx).unwrap()
+    );
+}
+#[test]
+fn dp_13_usm_knowledge_pack_is_retrievable() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../mirp/knowledge/usm_math_v0_1_1");
+    let units: Vec<mathlang_mirp::knowledge::KnowledgeUnit> = serde_json::from_slice(
+        &std::fs::read(root.join("catalogue/all_with_legacy.json")).unwrap(),
+    )
+    .unwrap();
+    let mut k = mathlang_mirp::knowledge::KnowledgeSpace::empty();
+    k.register_batch(units).unwrap();
+    let views: Vec<serde_json::Value> =
+        serde_json::from_slice(&std::fs::read(root.join("catalogue/ir_views.json")).unwrap())
+            .unwrap();
+    assert_eq!(views.len(), 18);
+    let legacy = mathlang_mirp::knowledge::KnowledgeSpace::legacy();
+    for view in views {
+        let o: ProofObligation = serde_json::from_value(view["obligation"].clone()).unwrap();
+        let id = view["knowledge_id"].as_str().unwrap();
+        let plan = dsn::plan(&o, &k, 1000).unwrap();
+        assert!(
+            plan.nodes[0].source_knowledge.iter().any(|d| d.id == id),
+            "{id} not retrieved"
+        );
+        assert!(plan
+            .nodes
+            .iter()
+            .all(|n| n.formal_status == FormalStatus::Unknown));
+        let plan = dsn::plan(&o, &legacy, 1000).unwrap();
+        assert!(plan.nodes.iter().all(|n| n.source_knowledge.is_empty()));
+    }
+}

@@ -21,19 +21,23 @@
 ## 検証
 
 Lean 4.35.0 / Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`。
-本プロジェクトと、隣接する `USM_Math_Verification` の証明を使用する。
+証明ソースは `formal/` に同梱している（`USMMathKnowledge` と、元の `USM_Math_Verification` の証明 `USMVerification`）。
+
+このパックの再確認は、パックのディレクトリで次を実行する（Lean証明は[REPLAY.ja.md](REPLAY.ja.md)も参照）。
 
 ```sh
-./verify.sh
-/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang knowledge inspect catalogue/all_with_legacy.json --format json > verification/native_knowledge_inspect.json
-python3 verification/validate_catalogue.py
+(cd formal && lake exe cache get && lake build && lake env lean -DwarningAsError=true AuditKnowledge.lean)
+cargo run --manifest-path ../../../cli/Cargo.toml -- knowledge inspect catalogue/all_with_legacy.json --format json
 ```
 
-`checks/`は既存のMathLang_DSN登録・保存・planner・GKE APIを呼ぶ回帰確認用コード。新しい推論器・学習器・証明探索器は実装していない。Rust依存は `checks/Cargo.lock` に固定し、offlineで構築する。
+`verify.sh`、`checks/`（登録・保存・planner・GKE APIの回帰確認用Rustコード）、`verification/validate_catalogue.py` は作成時の作業リポジトリ（MRA_Testの `USM_Math_Knowledge/`）にあり、このパックには含まれない。
+カタログ内の `proof_source_root`（`/Users/chigenori/development/MRA_Test/...`）は作成時の来歴記録である。`occurrence_id` のハッシュに含まれるため書き換えていない。同梱の証明は `activation_metadata.formal_source.bundle_path` の `formal/` 配下にあり、`sha256` で照合できる。
 
 ## 利用範囲
 
-MathLang_DSNの `KnowledgeSpace::register_batch`、`MemorySpace::load`、`gke-infer` で明示的に読み込む。既定CLIの `proof plan` が使用するlegacyカタログは自動的には切り替わらない。
+MathLang_DSNの `KnowledgeSpace::register_batch`、`MemorySpace::load`、`gke-infer` で明示的に読み込む。CLIでは `mathlang proof plan FILE --knowledge catalogue/all_with_legacy.json`（`verify` も同じオプション）で指定する。指定しない場合、既定のlegacyカタログが使われる。
+
+証明目標と構造照合される検索キーは、結論が型付きMathExpr IRである18件の検索ビュー（`IR_RET_*`）である。198件の数理命題の結論はLean精緻化命題の記録（`Lean4.ElaboratedProposition.v1`）で、IR目標の検索キーにはならない。検索一致は候補であり、PROVEDにはしない。
 
 GKEの条件付き規則は3件。入力事実と型・解釈が正しいという前提の適用であり、GKEのDERIVEDをLeanのPROVEDと同一視しない。全ての登録命題が汎用GKE規則になっているわけではない。
 

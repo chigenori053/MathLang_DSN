@@ -4,7 +4,7 @@ MathLang_DSN is a bounded mathematical reasoning model for MathLang. ReasonScrip
 
 ## Run
 
-Install [ReasonScript 0.5.6.5](https://github.com/chigenori053/ReasonScript) so `reason` is on `PATH`, and install Rust and Cargo. From the repository root:
+Install [ReasonScript 0.5.6.10](https://github.com/chigenori053/ReasonScript) so `reason` is on `PATH`, and install Rust and Cargo. From the repository root:
 
 ```sh
 reason --version

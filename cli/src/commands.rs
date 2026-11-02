@@ -27,6 +27,45 @@ fn request(p: &Path) -> Result<Request> {
         })
     }
 }
+fn knowledge_units(p: &Path) -> Result<Vec<KnowledgeUnit>> {
+    let v: Value = read(p)?;
+    if v.is_array() {
+        decode(v)
+    } else {
+        Ok(vec![decode(v)?])
+    }
+}
+/// The bundled legacy catalogue unless an explicit catalogue is supplied. An explicit catalogue
+/// replaces the legacy one; use a cumulative pack (e.g. `all_with_legacy.json`) to keep both.
+fn knowledge_space(p: Option<&Path>) -> Result<(KnowledgeSpace, Value)> {
+    let Some(p) = p else {
+        return Ok((KnowledgeSpace::legacy(), json!("bundled:legacy")));
+    };
+    let mut space = KnowledgeSpace::empty();
+    space
+        .register_batch(knowledge_units(p)?)
+        .map_err(|x| Error::new(3, x))?;
+    Ok((space, json!(p)))
+}
+fn knowledge_summary(space: &KnowledgeSpace, source: Value) -> Value {
+    let formal = space
+        .units()
+        .filter(|u| dsn::knowledge_retrieval_key(u).is_some())
+        .count();
+    let mut formats = BTreeMap::<String, usize>::new();
+    for u in space.units() {
+        let format = if dsn::knowledge_retrieval_key(u).is_some() {
+            "MathIR".to_string()
+        } else {
+            serde_json::from_str::<Value>(&u.conclusion)
+                .ok()
+                .and_then(|v| v["format"].as_str().map(String::from))
+                .unwrap_or_else(|| "DESCRIPTIVE_TEXT".into())
+        };
+        *formats.entry(format).or_default() += 1;
+    }
+    json!({"source":source,"units":space.len(),"formal_ir_conclusions":formal,"conclusion_formats":formats,"note":"Only MathIR conclusions are matched against proof goals; Lean statement records and descriptive text are not retrieval keys.","revision":mathlang_verification::hash(&space.units().map(|u|(u.knowledge_id.clone(),u.occurrence_id())).collect::<Vec<_>>())})
+}
 fn validate(o: &ProofObligation) -> Result<()> {
     o.validate().map_err(|e| Error::new(3, e))
 }
@@ -101,19 +140,21 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
                 _ => json!({"model":m,"content_hash":m.content_hash()}),
             };
         }
-        Command::Verify { input } => verify(cli, config, e, input)?,
+        Command::Verify { input, knowledge } => {
+            verify(cli, config, e, input, knowledge.as_deref())?
+        }
         Command::Proof { action } => {
-            let (input, plan) = match action {
-                ProofAction::Plan { input } => (input, true),
-                ProofAction::Counterexample { input } => (input, false),
+            let (input, plan, knowledge) = match action {
+                ProofAction::Plan { input, knowledge } => (input, true, knowledge.as_deref()),
+                ProofAction::Counterexample { input } => (input, false, None),
             };
             let r = request(input)?;
             validate(&r.obligation)?;
             set_obligation(e, &r.obligation);
             e["formal_status"] = json!(FormalStatus::Unknown);
             e["result"] = if plan {
-                json!(dsn::plan(&r.obligation, &KnowledgeSpace::legacy(), 1000)
-                    .map_err(resource_error)?)
+                let (space, _) = knowledge_space(knowledge)?;
+                json!(dsn::plan(&r.obligation, &space, 1000).map_err(resource_error)?)
             } else {
                 json!({"obligation":r.obligation,"candidates":counterexample::search_finite(&r.obligation,1000).map_err(resource_error)?,"note":"Candidates only; REFUTED requires verify with a checked whole-statement negation."})
             };
@@ -148,15 +189,8 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
                 return Err(Error::new(4, "Knowledge update is OUT_OF_SCOPE in v0.1"))
             }
             KnowledgeAction::Inspect { input } => {
-                let v: Value = read(input)?;
-                let mut space = KnowledgeSpace::empty();
-                let units: Vec<KnowledgeUnit> = if v.is_array() {
-                    decode(v)?
-                } else {
-                    vec![decode(v)?]
-                };
-                space.register_batch(units).map_err(|x| Error::new(3, x))?;
-                e["result"] = json!({"knowledge":space.units().map(|u|json!({"unit":u,"occurrence_id":u.occurrence_id(),"revision":1,"revision_scope":"initial import; historical revision requires ModelRegistry"})).collect::<Vec<_>>()});
+                let (space, source) = knowledge_space(Some(input))?;
+                e["result"] = json!({"knowledge":space.units().map(|u|json!({"unit":u,"occurrence_id":u.occurrence_id(),"formal_retrieval":dsn::knowledge_retrieval_key(u).is_some(),"revision":1,"revision_scope":"initial import; historical revision requires ModelRegistry"})).collect::<Vec<_>>(),"summary":knowledge_summary(&space,source)});
             }
             KnowledgeAction::Impact { input, revision } => {
                 if *revision == 0 {
@@ -340,7 +374,14 @@ fn compare_evidence(
     }
     Ok(json!({"left":refs(a,ap),"right":refs(b,bp)}))
 }
-fn verify(cli: &Cli, config: &Config, e: &mut Value, input: &str) -> Result<()> {
+fn verify(
+    cli: &Cli,
+    config: &Config,
+    e: &mut Value,
+    input: &str,
+    knowledge: Option<&Path>,
+) -> Result<()> {
+    let (space, knowledge_source) = knowledge_space(knowledge)?;
     let cases = if input == "usm" {
         let mut c = fixtures::usm();
         c.extend(fixtures::auxiliary());
@@ -371,7 +412,7 @@ fn verify(cli: &Cli, config: &Config, e: &mut Value, input: &str) -> Result<()> 
     let binary = std::env::current_exe().map_err(|x| Error::new(5, x))?;
     save(
         &out.join("environment.json"),
-        &json!({"cli_version":env!("CARGO_PKG_VERSION"),"binary_sha256":hash_bytes(&fs::read(binary).map_err(|x|Error::new(8,x))?),"rust":probe("rustc",&["--version"],Path::new(ROOT)),"reason":probe("reason",&["--version"],Path::new(ROOT)),"lean":lean::LEAN_VERSION,"mathlib_revision":lean::MATHLIB_REVISION,"configuration":config}),
+        &json!({"cli_version":env!("CARGO_PKG_VERSION"),"binary_sha256":hash_bytes(&fs::read(binary).map_err(|x|Error::new(8,x))?),"rust":probe("rustc",&["--version"],Path::new(ROOT)),"reason":probe("reason",&["--version"],Path::new(ROOT)),"lean":lean::LEAN_VERSION,"mathlib_revision":lean::MATHLIB_REVISION,"configuration":config,"knowledge":knowledge_summary(&space,knowledge_source)}),
     )?;
     let sources = source_manifest()?;
     save(&out.join("source_manifest.json"), &sources)?;
@@ -414,6 +455,16 @@ fn verify(cli: &Cli, config: &Config, e: &mut Value, input: &str) -> Result<()> 
             }
         }
         save(&out.join("proof_results.json"), &results)?;
+        // Retrieval plans are recorded beside the kernel results. The Lean source still comes from
+        // the closed recipe; a Knowledge candidate never changes a formal status by itself.
+        let mut plans = vec![];
+        for (r, proof) in cases.iter().zip(results.iter()) {
+            let mut plan = dsn::plan(&r.obligation, &space, 1000).map_err(resource_error)?;
+            plan.apply_evidence(&r.obligation, proof)
+                .map_err(|x| Error::new(7, x))?;
+            plans.push(plan);
+        }
+        save(&out.join("knowledge_plans.json"), &plans)?;
         e["result"] = json!({"proof_results":results,"repetitions":repeats});
         // A set retains individual statuses; never invent a model-wide formal verdict.
         if cases.len() == 1 {

@@ -15,5 +15,6 @@ lake env lean -DwarningAsError=true AuditKnowledge.lean
 `catalogue/memoryspace.json`はMemorySpace::load用の保存済みデータ。
 `catalogue/stage*.json`は前段階の依存を含めて読み込む。
 
-元の登録・検索の回帰確認用ハーネスは、作業リポジトリのUSM_Math_Knowledge/checks/にある。
+元の登録・検索の回帰確認用ハーネスは、作成時の作業リポジトリ（MRA_Testの `USM_Math_Knowledge/checks/`）にあり、このパックには含まれない。
+MathLang_DSN内では `mathlang knowledge inspect` と `mathlang proof plan --knowledge` で登録・検索を確認できる。
 MathLang_DSNのソース本体とlegacy.jsonは変更していない。
