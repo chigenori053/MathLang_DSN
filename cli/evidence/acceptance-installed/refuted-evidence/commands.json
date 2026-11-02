@@ -1,0 +1,9 @@
+[
+  "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+  "verify",
+  "/Users/chigenori/development/MathLang_DSN/verification/fixtures/MV-02.json",
+  "--output",
+  "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-installed/refuted-evidence",
+  "--format",
+  "json"
+]

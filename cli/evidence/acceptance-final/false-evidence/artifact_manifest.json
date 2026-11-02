@@ -1,0 +1,16 @@
+{
+  "commands.json": "55765e2f3ac6528b4c565c1455c1fb742c173a0bae4029d04c452735843eba60",
+  "configuration.json": "71408c5caa3b1bb84a9d0e946da29db25a512e6b036957cbd0829f7647803c28",
+  "environment.json": "1e9e84f1c0aeeccd86e6c05612db9e0667fb246c0e3bbeb159fbfa1a85c16fdf",
+  "lean_logs/0-0/Generated.lean": "1a725d5a242c7cb82cb2993253e83bd569fcb738ba7dc58845302edcf8c1169d",
+  "lean_logs/0-0/kernel.json": "9477612fc38c04190a94b0e8952eb39c24cdab5ee180260d3ee7e9c62ceeb4d4",
+  "proof_obligations.json": "caefd916d828cb87262369b2599686ba0fc398ee3d342b108667d110dc631c8b",
+  "proof_results.json": "1767edd4703e17dfc5ec4ac60b6b6af37c72b816eba919b5e2c0bebf51f2d457",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/Foundation.lean": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/Generated.lean": "1a725d5a242c7cb82cb2993253e83bd569fcb738ba7dc58845302edcf8c1169d",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/evidence.json": "cf54271ac21fa19bbd56b2eefc7e7b830c031fa3869e50aebf197930a8a377bd",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "registry/0fb920d515e932dc30a4d9f3290a5d53fb144ac04fc653aa9e3ecd9c78ba1f3d/stdout.log": "dd3d65ec12e2e329175d53542ca5c3eced3ddc5e5b3d567d4b767a2b261ac743",
+  "source_manifest.json": "6c86336aeceaeefd52b612c549ebf18596e65c692ef6287832bce4d6e4dccc14"
+}

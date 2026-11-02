@@ -1,0 +1,64 @@
+{
+  "evidence_id": "95c52b710a6267bd3192d5d245e16760f5cbed135eaa901ca2a53a0bc48e5d39",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-01",
+  "source_ir_hash": "d0f59dba291719873f2a11b993987afe51d4448fcbbdc0da74ebdfcf9e8a9b57",
+  "lean_source_hash": "46418db9bafef184e883f8c303fc8a0846d8a677e2d5844ed5c16fc8ef36d5b2",
+  "proof_result": "ERROR",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "ERROR",
+    "diagnostics": [
+      "runner launch: No such file or directory (os error 2)"
+    ],
+    "exit_code": null,
+    "commands": [],
+    "checked_modules": [],
+    "elapsed_ms": 0,
+    "stdout": "",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 0,
+    "sandboxed": false,
+    "toolchain_verified": false,
+    "axioms": [],
+    "lean_version": "",
+    "mathlib_revision": "",
+    "source_hash": "",
+    "foundation_hash": "",
+    "independent_hash": ""
+  },
+  "timestamp": 1793614455,
+  "artifact_hashes": {
+    "Foundation.lean": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+    "Generated.lean": "46418db9bafef184e883f8c303fc8a0846d8a677e2d5844ed5c16fc8ef36d5b2",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "translation": {
+    "source_ir_hash": "d0f59dba291719873f2a11b993987afe51d4448fcbbdc0da74ebdfcf9e8a9b57",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "46418db9bafef184e883f8c303fc8a0846d8a677e2d5844ed5c16fc8ef36d5b2",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_n : ℕ), (∀ (v_U : (EuclideanSpace ℂ (Fin v_n) →L[ℂ] EuclideanSpace ℂ (Fin v_n))), (((v_U).adjoint.comp v_U = 1) → (∀ (v_x : EuclideanSpace ℂ (Fin v_n)), (‖(v_U v_x)‖ = ‖v_x‖)))))",
+    "refutation": false
+  },
+  "diagnostics": [
+    "runner launch: No such file or directory (os error 2)"
+  ],
+  "recipe": "UnitaryNorm"
+}

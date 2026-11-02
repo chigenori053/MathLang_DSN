@@ -1,0 +1,84 @@
+[
+  {
+    "test": "LV-05-false",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/verification/target/debug/mathlang-verification",
+      "verify-obligation",
+      "cli/evidence/negative-lean/LV-05-false.json",
+      "cli/evidence/negative-lean/LV-05-false"
+    ],
+    "status": "PASS",
+    "observed": "UNKNOWN"
+  },
+  {
+    "test": "LV-06-incomplete",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/verification/target/debug/mathlang-verification",
+      "verify-obligation",
+      "cli/evidence/negative-lean/LV-06-incomplete.json",
+      "cli/evidence/negative-lean/LV-06-incomplete"
+    ],
+    "status": "PASS",
+    "observed": "UNKNOWN"
+  },
+  {
+    "test": "LV-07-axiom",
+    "command": [
+      "python3",
+      "/Users/chigenori/development/MathLang_DSN/verification/scripts/lean_runner.py",
+      "--project",
+      "/Users/chigenori/development/MathLang_DSN/verification/lean",
+      "--source",
+      "cli/evidence/negative-lean/LV-07-axiom.lean"
+    ],
+    "status": "PASS",
+    "observed": "ERROR",
+    "axioms": [
+      "poisoned"
+    ]
+  },
+  {
+    "test": "LV-06-sorry",
+    "command": [
+      "python3",
+      "/Users/chigenori/development/MathLang_DSN/verification/scripts/lean_runner.py",
+      "--project",
+      "/Users/chigenori/development/MathLang_DSN/verification/lean",
+      "--source",
+      "cli/evidence/negative-lean/LV-06-sorry.lean"
+    ],
+    "status": "PASS",
+    "observed": "UNKNOWN",
+    "axioms": [
+      "sorryAx"
+    ]
+  },
+  {
+    "test": "LV-09-weakened",
+    "command": [
+      "python3",
+      "/Users/chigenori/development/MathLang_DSN/verification/scripts/lean_runner.py",
+      "--project",
+      "/Users/chigenori/development/MathLang_DSN/verification/lean",
+      "--source",
+      "cli/evidence/negative-lean/LV-09-weakened.lean"
+    ],
+    "status": "PASS",
+    "observed": "UNKNOWN",
+    "axioms": []
+  },
+  {
+    "test": "LV-SAFE-fork",
+    "command": [
+      "python3",
+      "/Users/chigenori/development/MathLang_DSN/verification/scripts/lean_runner.py",
+      "--project",
+      "/Users/chigenori/development/MathLang_DSN/verification/lean",
+      "--source",
+      "cli/evidence/negative-lean/LV-SAFE-fork.lean"
+    ],
+    "status": "PASS",
+    "observed": "UNKNOWN",
+    "axioms": []
+  }
+]

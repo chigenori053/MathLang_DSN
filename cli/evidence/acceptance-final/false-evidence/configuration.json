@@ -1,0 +1,16 @@
+{
+  "cli": {
+    "output_format": "text"
+  },
+  "runtime": {
+    "mode": "local"
+  },
+  "verification": {
+    "max_rss_mib": 2048,
+    "timeout_seconds": 300,
+    "parallelism": 1
+  },
+  "evidence": {
+    "directory": "./evidence"
+  }
+}

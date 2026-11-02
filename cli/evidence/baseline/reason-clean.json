@@ -1,0 +1,72 @@
+[
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "SelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "stdout": "reason-clean-0.stdout.json",
+    "stderr": "reason-clean-0.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "PolynomialSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "stdout": "reason-clean-1.stdout.json",
+    "stderr": "reason-clean-1.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "KnowledgeSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "stdout": "reason-clean-2.stdout.json",
+    "stderr": "reason-clean-2.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "JuniorHighSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "stdout": "reason-clean-3.stdout.json",
+    "stderr": "reason-clean-3.stderr.log"
+  },
+  {
+    "command": [
+      "reason",
+      "run",
+      "--entry",
+      "QuadraticRuntimeSelfCheck",
+      "--json",
+      "--trace=off"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "stdout": "reason-clean-4.stdout.json",
+    "stderr": "reason-clean-4.stderr.log"
+  }
+]

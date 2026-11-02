@@ -1,0 +1,8 @@
+{
+  "error_code": "MLCLI-5",
+  "category": "ENVIRONMENT",
+  "message": "verification interrupted or environment failed; inspect persisted kernel diagnostics",
+  "command": "",
+  "recoverable": true,
+  "evidence_reference": null
+}

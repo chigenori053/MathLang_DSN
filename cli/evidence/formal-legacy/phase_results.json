@@ -1,0 +1,10 @@
+{
+  "P0": "SEE_BASELINE_REPORT",
+  "P1": "SEE_RUST_TESTS",
+  "P2": "PARTIAL",
+  "P3": "SEE_RUST_TESTS",
+  "P4": "SEE_RUST_TESTS",
+  "P5": "PASS",
+  "note": "This per-run gate file excludes separate negative and semantic suites; final gate adjudication requires their integration and independent source/artifact audit; model-level PASS is distinct from expected-refutation test PASS.",
+  "overall": "PARTIAL"
+}

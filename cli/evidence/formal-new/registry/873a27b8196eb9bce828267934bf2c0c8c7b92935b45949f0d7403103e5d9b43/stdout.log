@@ -1,0 +1,14 @@
+theorem Generated.target : ∀ (v_S : ℕ → ℕ),
+  ¬Function.update (Function.update v_S 0 1) 0 2 0 = Function.update (Function.update v_S 0 2) 0 1 0 :=
+of_eq_true
+  (Eq.trans
+    (forall_congr fun v_S =>
+      Eq.trans
+        (congrArg Not
+          (Eq.trans
+            (congr (congrArg Eq (Function.update_self 0 2 (Function.update v_S 0 1)))
+              (Function.update_self 0 1 (Function.update v_S 0 2)))
+            (OfNat.ofNat_ne_one._simp_1 2)))
+        not_false_eq_true)
+    (implies_true (ℕ → ℕ)))
+'Generated.target' depends on axioms: [propext, Quot.sound]

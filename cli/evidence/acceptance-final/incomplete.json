@@ -1,0 +1,34 @@
+{
+  "obligation": {
+    "id": "CLI-FINITE",
+    "model_id": "USM-MVF",
+    "model_revision": 1,
+    "goal": {
+      "Equality": [
+        {
+          "Constant": {
+            "Natural": 1
+          }
+        },
+        {
+          "Constant": {
+            "Natural": 1
+          }
+        }
+      ]
+    },
+    "context": {
+      "variables": {},
+      "assumptions": []
+    },
+    "assumptions": [],
+    "required_lemmas": [],
+    "dependencies": [],
+    "kind": "Construction",
+    "verification_method": "Lean4+Mathlib",
+    "proof_status": "UNKNOWN",
+    "evidence_refs": []
+  },
+  "recipe": "Incomplete",
+  "refutation": false
+}

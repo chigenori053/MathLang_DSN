@@ -1,0 +1,16 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (mirp/target/debug/deps/mathlang_mirp-efe56c7b98ee8cc4)
+     Running unittests src/main.rs (mirp/target/debug/deps/mathlang_mirp-72bd53bc3affa16e)
+     Running tests/core.rs (mirp/target/debug/deps/core-29173446c3f8eb59)
+     Running tests/foundation.rs (mirp/target/debug/deps/foundation-cb0f0a44232b5e9e)
+     Running tests/gke.rs (mirp/target/debug/deps/gke-8199d0b471647f55)
+     Running tests/identity.rs (mirp/target/debug/deps/identity-f9a1755918e6bda9)
+     Running tests/intent.rs (mirp/target/debug/deps/intent-e40c08893fce1744)
+     Running tests/knowledge_native.rs (mirp/target/debug/deps/knowledge_native-c5f4ea367b424c41)
+     Running tests/knowledge_registry.rs (mirp/target/debug/deps/knowledge_registry-22454356f0391c43)
+     Running tests/native_integration.rs (mirp/target/debug/deps/native_integration-e1f29514095d3447)
+     Running tests/pif_matrix.rs (mirp/target/debug/deps/pif_matrix-0436311db54336df)
+     Running tests/pif_parser.rs (mirp/target/debug/deps/pif_parser-275a7a9fec053e4a)
+     Running tests/pif_runtime.rs (mirp/target/debug/deps/pif_runtime-c511b654d0ccc25a)
+     Running tests/pif_schema.rs (mirp/target/debug/deps/pif_schema-baaa3f3f910dafe6)
+   Doc-tests mathlang_mirp

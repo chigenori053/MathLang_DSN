@@ -1,0 +1,50 @@
+
+running 1 test
+test process::tests::deadline_kills_process_group ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+Unified MathLang CLI; existing mathematical engines and immutable evidence
+
+Usage: mathlang [OPTIONS] <COMMAND>
+
+Commands:
+  model      
+  verify     
+  proof      
+  knowledge  
+  compare    
+  evidence   
+  solve      
+  doctor     
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --format <FORMAT>  [possible values: text, json]
+      --output <OUTPUT>  
+      --config <CONFIG>  
+      --quiet            
+      --verbose          
+  -h, --help             Print help
+  -V, --version          Print version
+mathlang 0.1.0
+test config_and_paths ... ok
+test plan_and_candidates_never_prove ... ok
+test arguments_and_output_contract ... ok
+test models_normalization_and_comparison ... ok
+test evidence_integrity_and_stale_revision ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

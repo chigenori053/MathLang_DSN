@@ -1,0 +1,70 @@
+{
+  "status": "PROVED",
+  "diagnostics": [],
+  "exit_code": 0,
+  "commands": [
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Foundation.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Foundation.lean"
+    ],
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Independent.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Independent.lean"
+    ],
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Generated.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-u5t_2s_9/Generated.lean"
+    ]
+  ],
+  "checked_modules": [
+    "Foundation",
+    "Independent",
+    "Generated"
+  ],
+  "elapsed_ms": 5029,
+  "stdout": "theorem Generated.target : ∀ (v_A v_B : Type) (v_E : v_A → v_B) (v_D : v_B → v_A) (v_x v_y : v_A),\n  ¬v_x = v_y → v_E v_x = v_E v_y → ¬(v_D (v_E v_x) = v_x ∧ v_D (v_E v_y) = v_y) :=\nfun v_A v_B v_E v_D v_x v_y hne hc => Foundation.collision v_E v_D v_x v_y hne hc\n'Generated.target' does not depend on any axioms\n",
+  "stderr": "",
+  "timed_out": false,
+  "peak_rss_bytes": 1392181248,
+  "sandboxed": true,
+  "toolchain_verified": true,
+  "axioms": [],
+  "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "source_hash": "c0b015627bb830ccf5dd652a4d869dee3d67f7c563f65b3f25fdc591c4385bc0",
+  "foundation_hash": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+  "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+}

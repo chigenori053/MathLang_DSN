@@ -1,0 +1,1 @@
+{"status": "failure", "diagnostics": [{"code": "RTH-IR-INVALID", "severity": "error", "category": "runtime.native", "message": "compiled artifact or trusted build record is invalid: [Errno 2] No such file or directory: '/Users/chigenori/development/MathLang_DSN/.reason/current-build'"}]}

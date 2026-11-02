@@ -1,0 +1,57 @@
+Usage: reason <command> [args]
+
+Commands:
+  help          Show this help
+  init <name>   Create a new ReasonScript project
+  doctor        Diagnose the installed environment
+  install-info  Show the installation manifest
+  install-validate Validate the installation contract
+  update         Check, install, validate, inspect, or roll back an update package
+  install-foundation-report Generate Install Foundation validation summary
+  version-validate Validate release version metadata
+  build         Compile source files
+  run           Execute the compiled program
+  test          Run test suites
+  check         Validate sources without building
+  lsp           Start the ReasonScript language server over stdio
+  view          Browse .rsn source alongside its compiled representations
+  workspace     Show workspace foundation summary
+  summary       Show machine-readable project summary
+  index         Generate workspace JSON artifacts
+  scan          Scan workspace files and directories
+  analyze       Analyze a .rsn source file
+  artifacts     Generate canonical source artifacts
+  validate-artifacts Validate generated artifact directory
+  manifest      Show generated artifact manifest
+  golden        Run the Golden Test Corpus
+  test-golden   Run the Golden Test Corpus
+  lsp           Start the ReasonScript Language Server (LSP)
+  migrate       Migrate legacy source extensions to canonical .rsn
+  agent-protocol Validate Agent Development Protocol rules
+  agent-report  Emit Agent Development Protocol report
+  ci            Run the canonical CI Stabilization pipeline
+  ci-entry      Validate the canonical CI entry point contract
+  tensor-manifest Emit/check the frozen Tensor function contract manifest
+  runtime-manifest Emit/check the frozen Runtime consolidation manifest
+  computation-ir Lower a .rsn file to reason-computation-ir/0.1 JSON
+  project-validate Validate a standalone ReasonScript project
+  phase1r-validate Generate and validate Phase 1R probes
+  reasonunit-baseline Generate or validate the RUO-C0 compatibility baseline
+  reasonunit-compatibility Generate or validate the RUO-C1 compatibility foundation
+  reasonunit-object Generate or validate the RUO-U1 universal Object model
+  reason-object-graph Generate or validate the MRA Reason Object Graph profile
+  reasonunit-file Read, write, validate, inspect, select, and verify canonical .ruo files
+  reasonunit-tensor Encode, validate, inspect, decode, select, convert, and verify Tensor payloads
+  tensor        Import, inspect, and verify canonical .rstensor files
+  reasonunit-runtime Load, query, revise, project, and validate native ReasonUnit Objects
+  rcp           Run a bounded native RCP Core communication session
+  vision        Validate observations and construct RUO/Tensor vision artifacts
+  geometry      Derive geometric state and relations from Vision observations
+  visualization Project semantic scenes and render deterministic SVG artifacts
+  object        Check, run, inspect, query, transact, select, project, tensor, and save ReasonUnit Objects
+  reasoning-model validate <file> Validate a Reasoning Model artifact
+  reasoning-eval evaluate <file> Evaluate a Reasoning Model artifact
+  reasoning-eval validate <file> Validate a Reasoning Evaluation Report
+  reasoning-runtime run <source.rsn> Generate a Reasoning Runtime Result
+  cluster       Plan, run, simulate, validate, and compare cluster execution
+  phase8-golden validate Run Phase 8 golden validation

@@ -49,3 +49,7 @@ git diff --check
 ```
 
 The MIRP foundation, ProblemIntent validation, and knowledge-native runtime contracts are documented in [mirp/STATUS.md](mirp/STATUS.md), [mirp/PIF_REPORT.md](mirp/PIF_REPORT.md), and [mirp/KNOWLEDGE_RUNTIME_VALIDATION.md](mirp/KNOWLEDGE_RUNTIME_VALIDATION.md). Their historical validation figures describe the versions tested at the time. The project is licensed under Apache-2.0.
+
+## Unified CLI v0.1
+
+Rust製 `mathlang` CLIの実装・インストール・検証結果は [docs/cli/README.md](docs/cli/README.md) を参照。

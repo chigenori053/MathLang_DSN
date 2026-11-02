@@ -1,0 +1,4 @@
+theorem Generated.target : ¬∀ (v_n : ℕ) (v_A : EuclideanSpace ℂ (Fin v_n) →L[ℂ] EuclideanSpace ℂ (Fin v_n))
+    (v_x : EuclideanSpace ℂ (Fin v_n)), ‖v_A v_x‖ = ‖v_x‖ :=
+Foundation.arbitrary_norm_false
+'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]

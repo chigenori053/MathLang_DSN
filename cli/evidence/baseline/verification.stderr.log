@@ -1,0 +1,5 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/lib.rs (verification/target/debug/deps/mathlang_verification-2462c3f4621e6286)
+     Running unittests src/main.rs (verification/target/debug/deps/mathlang_verification-89eaf06c93648307)
+     Running tests/foundation.rs (verification/target/debug/deps/foundation-0cbbbb7184243964)
+   Doc-tests mathlang_verification

@@ -1,0 +1,168 @@
+    Checking mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:18:25
+   |
+18 | fn request(p: &Path) -> Result<Request> {
+   |                         ^^^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+   = note: `-D clippy::result-large-err` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::result_large_err)]`
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:30:37
+   |
+30 | fn validate(o: &ProofObligation) -> Result<()> {
+   |                                     ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:33:23
+   |
+33 | fn model(p: &Path) -> Result<MathematicalModel> {
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:40:47
+   |
+40 | fn normalized_model(m: &MathematicalModel) -> Result<Value> {
+   |                                               ^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:42:38
+   |
+42 |     fn expr(e: &mut ir::MathExpr) -> Result<()> {
+   |                                      ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:47:45
+   |
+47 |     fn assumptions(a: &mut [Assumption]) -> Result<()> {
+   |                                             ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+  --> src/commands.rs:86:62
+   |
+86 | pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
+   |                                                              ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+   |
+   = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/commands.rs:262:26
+    |
+262 | fn registry(p: &Path) -> Result<ModelRegistry> {
+    |                          ^^^^^^^^^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/commands.rs:276:6
+    |
+276 | ) -> Result<(VerificationEvidence, ProofObligation)> {
+    |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/commands.rs:324:6
+    |
+324 | ) -> Result<Value> {
+    |      ^^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/commands.rs:336:70
+    |
+336 | fn verify(cli: &Cli, config: &Config, e: &mut Value, input: &str) -> Result<()> {
+    |                                                                      ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:206:41
+    |
+206 |     pub fn load(path: Option<&Path>) -> Result<Self> {
+    |                                         ^^^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:229:59
+    |
+229 | pub fn read<T: DeserializeOwned + Serialize>(p: &Path) -> Result<T> {
+    |                                                           ^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:234:63
+    |
+234 | pub fn decode<T: DeserializeOwned + Serialize>(raw: Value) -> Result<T> {
+    |                                                               ^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:236:38
+    |
+236 |     fn keys(a: &Value, b: &Value) -> Result<()> {
+    |                                      ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:262:34
+    |
+262 | pub fn safe_path(path: &Path) -> Result<()> {
+    |                                  ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:292:46
+    |
+292 | pub fn save(p: &Path, v: &impl Serialize) -> Result<()> {
+    |                                              ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: the `Err`-variant returned from this function is very large
+   --> src/lib.rs:297:35
+    |
+297 | pub fn new_directory(p: &Path) -> Result<()> {
+    |                                   ^^^^^^^^^^ the `Err`-variant is at least 128 bytes
+    |
+    = help: try reducing the size of `Error`, for example by boxing large elements or replacing it with `Box<Error>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.93.0/index.html#result_large_err
+
+error: could not compile `mathlang-cli` (lib) due to 18 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mathlang-cli` (lib test) due to 18 previous errors

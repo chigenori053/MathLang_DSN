@@ -1,0 +1,721 @@
+[
+  {
+    "label": "help",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "--help"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.011327125001116656,
+    "stdout": "help.stdout.log",
+    "stderr": "help.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "version",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "--version"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.0025812919993768446,
+    "stdout": "version.stdout.log",
+    "stderr": "version.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "bad-args",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "unknown",
+      "--format",
+      "json"
+    ],
+    "exit_code": 2,
+    "expected_exit_code": 2,
+    "passed": true,
+    "elapsed_seconds": 0.00866074999794364,
+    "stdout": "bad-args.stdout.log",
+    "stderr": "bad-args.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "model-check",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.00981020800099941,
+    "stdout": "model-check.stdout.log",
+    "stderr": "model-check.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "model-inspect",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "inspect",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.005198124999878928,
+    "stdout": "model-inspect.stdout.log",
+    "stderr": "model-inspect.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "model-normalize",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "normalize",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.005439417000161484,
+    "stdout": "model-normalize.stdout.log",
+    "stderr": "model-normalize.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "repeat-0",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "normalize",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.0052084169947193,
+    "stdout": "repeat-0.stdout.log",
+    "stderr": "repeat-0.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "repeat-1",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "normalize",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.0050848339960793965,
+    "stdout": "repeat-1.stdout.log",
+    "stderr": "repeat-1.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "repeat-2",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "normalize",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.00530929199885577,
+    "stdout": "repeat-2.stdout.log",
+    "stderr": "repeat-2.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "text",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "inspect",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "text"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.005305833998136222,
+    "stdout": "text.stdout.log",
+    "stderr": "text.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "quiet-json",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--quiet",
+      "--verbose",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.004868000003625639,
+    "stdout": "quiet-json.stdout.log",
+    "stderr": "quiet-json.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "config",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--config",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/config.toml"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.004882209002971649,
+    "stdout": "config.stdout.log",
+    "stderr": "config.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "config-override",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--config",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/config.toml",
+      "--format",
+      "text"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.00504420799552463,
+    "stdout": "config-override.stdout.log",
+    "stderr": "config-override.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "bad-config",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "doctor",
+      "--config",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/config.toml",
+      "--format",
+      "json"
+    ],
+    "exit_code": 4,
+    "expected_exit_code": 4,
+    "passed": true,
+    "elapsed_seconds": 0.0026370830019004643,
+    "stdout": "bad-config.stdout.log",
+    "stderr": "bad-config.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "doctor",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "doctor",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 1.9408297920017503,
+    "stdout": "doctor.stdout.log",
+    "stderr": "doctor.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "bad-model",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/bad-model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 3,
+    "expected_exit_code": 3,
+    "passed": true,
+    "elapsed_seconds": 0.006345041001623031,
+    "stdout": "bad-model.stdout.log",
+    "stderr": "bad-model.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "unsupported",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/unsupported.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 4,
+    "expected_exit_code": 4,
+    "passed": true,
+    "elapsed_seconds": 0.004349959002865944,
+    "stdout": "unsupported.stdout.log",
+    "stderr": "unsupported.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "bad-json",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/bad.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 2,
+    "expected_exit_code": 2,
+    "passed": true,
+    "elapsed_seconds": 0.003402292000828311,
+    "stdout": "bad-json.stdout.log",
+    "stderr": "bad-json.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "missing-input",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/missing.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 8,
+    "expected_exit_code": 8,
+    "passed": true,
+    "elapsed_seconds": 0.003027124999789521,
+    "stdout": "missing-input.stdout.log",
+    "stderr": "missing-input.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "proof-plan",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/verification/fixtures/MV-01.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.007994249994226266,
+    "stdout": "proof-plan.stdout.log",
+    "stderr": "proof-plan.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "proof",
+      "counterexample",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/finite.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.0033557089991518296,
+    "stdout": "candidate.stdout.log",
+    "stderr": "candidate.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "budget",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "proof",
+      "counterexample",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/budget.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 6,
+    "expected_exit_code": 6,
+    "passed": true,
+    "elapsed_seconds": 0.003006457998708356,
+    "stdout": "budget.stdout.log",
+    "stderr": "budget.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "knowledge",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "knowledge",
+      "inspect",
+      "/Users/chigenori/development/MathLang_DSN/mirp/knowledge/legacy.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.00999562499782769,
+    "stdout": "knowledge.stdout.log",
+    "stderr": "knowledge.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "impact",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "knowledge",
+      "impact",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/formal-legacy/model_registry.json",
+      "--revision",
+      "1",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.007319667005504016,
+    "stdout": "impact.stdout.log",
+    "stderr": "impact.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "knowledge-update",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "knowledge",
+      "update",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 4,
+    "expected_exit_code": 4,
+    "passed": true,
+    "elapsed_seconds": 0.0029484999977285042,
+    "stdout": "knowledge-update.stdout.log",
+    "stderr": "knowledge-update.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "compare-same",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "compare",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.006407875000149943,
+    "stdout": "compare-same.stdout.log",
+    "stderr": "compare-same.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "compare-different",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "compare",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/different.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.006870541998068802,
+    "stdout": "compare-different.stdout.log",
+    "stderr": "compare-different.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "false",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "verify",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/false.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/false-evidence",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 11.362923209002474,
+    "stdout": "false.stdout.log",
+    "stderr": "false.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "incomplete",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "verify",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/incomplete.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/incomplete-evidence",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 4.61168537499907,
+    "stdout": "incomplete.stdout.log",
+    "stderr": "incomplete.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "refuted",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "verify",
+      "/Users/chigenori/development/MathLang_DSN/verification/fixtures/MV-02.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 4.920901874997071,
+    "stdout": "refuted.stdout.log",
+    "stderr": "refuted.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "collision",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "verify",
+      "/Users/chigenori/development/MathLang_DSN/verification/fixtures/MV-02.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence",
+      "--format",
+      "json"
+    ],
+    "exit_code": 8,
+    "expected_exit_code": 8,
+    "passed": true,
+    "elapsed_seconds": 0.003664707997813821,
+    "stdout": "collision.stdout.log",
+    "stderr": "collision.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "evidence-show",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "evidence",
+      "show",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence/registry/95c2138846cd22d104e98cc815043151ff3916649f9c4e25ca9a2114921049b9",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.004188583996437956,
+    "stdout": "evidence-show.stdout.log",
+    "stderr": "evidence-show.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "evidence-validate",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "evidence",
+      "validate",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence/registry/95c2138846cd22d104e98cc815043151ff3916649f9c4e25ca9a2114921049b9",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.0041445829992881045,
+    "stdout": "evidence-validate.stdout.log",
+    "stderr": "evidence-validate.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "stale",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "evidence",
+      "validate",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence/registry/95c2138846cd22d104e98cc815043151ff3916649f9c4e25ca9a2114921049b9",
+      "--registry",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/stale-registry.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 7,
+    "expected_exit_code": 7,
+    "passed": true,
+    "elapsed_seconds": 0.007542957995610777,
+    "stdout": "stale.stdout.log",
+    "stderr": "stale.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "tampered",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "evidence",
+      "validate",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/refuted-evidence/registry/95c2138846cd22d104e98cc815043151ff3916649f9c4e25ca9a2114921049b9",
+      "--format",
+      "json"
+    ],
+    "exit_code": 7,
+    "expected_exit_code": 7,
+    "passed": true,
+    "elapsed_seconds": 0.0042321250002714805,
+    "stdout": "tampered.stdout.log",
+    "stderr": "tampered.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "missing-evidence",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "evidence",
+      "validate",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/nonexistent",
+      "--format",
+      "json"
+    ],
+    "exit_code": 7,
+    "expected_exit_code": 7,
+    "passed": true,
+    "elapsed_seconds": 0.0026776659942697734,
+    "stdout": "missing-evidence.stdout.log",
+    "stderr": "missing-evidence.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "symlink",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "model",
+      "check",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/model.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/symlink/output.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 8,
+    "expected_exit_code": 8,
+    "passed": true,
+    "elapsed_seconds": 0.005582667006819975,
+    "stdout": "symlink.stdout.log",
+    "stderr": "symlink.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "missing-runner",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "verify",
+      "/Users/chigenori/development/MathLang_DSN/verification/fixtures/MV-01.json",
+      "--output",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/missing-runner-evidence",
+      "--format",
+      "json"
+    ],
+    "exit_code": 5,
+    "expected_exit_code": 5,
+    "passed": true,
+    "elapsed_seconds": 0.5901080420007929,
+    "stdout": "missing-runner.stdout.log",
+    "stderr": "missing-runner.stderr.log",
+    "path_override": "/unavailable"
+  },
+  {
+    "label": "solve",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+      "solve",
+      "Solve x^2 - 5x + 6 = 0.",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.7432052920048591,
+    "stdout": "solve.stdout.log",
+    "stderr": "solve.stderr.log",
+    "path_override": null
+  },
+  {
+    "label": "old-solve",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/mirp/target/debug/mathlang-mirp",
+      "solve-problem",
+      "Solve x^2 - 5x + 6 = 0."
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 0.6506934999997611,
+    "stdout": "old-solve.stdout.log",
+    "stderr": "old-solve.stderr.log",
+    "path_override": null
+  }
+]

@@ -1,0 +1,6 @@
+   Compiling mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.21s
+     Running unittests src/lib.rs (cli/target/debug/deps/mathlang_cli-890300e1eb5afb45)
+     Running unittests src/main.rs (cli/target/debug/deps/mathlang-92218d108714fe63)
+     Running tests/contracts.rs (cli/target/debug/deps/contracts-08202bf3b1311d93)
+   Doc-tests mathlang_cli

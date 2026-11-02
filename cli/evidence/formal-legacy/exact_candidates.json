@@ -1,0 +1,57 @@
+{
+  "candidates": [
+    {
+      "assumptions_satisfied": true,
+      "conclusion_false": true,
+      "kernel_evidence": null,
+      "kind": "Finite",
+      "model_revision": 1,
+      "notes": [
+        "Exact Rust evaluation is candidate evidence; REFUTED requires a checked negation."
+      ],
+      "obligation_id": "CV-FINITE-CANDIDATE",
+      "source_ir_hash": "426abde8abd54ce94d6187610e57269ed2d1cbc86284249b2d19f9fdc8f11a44",
+      "witness": {
+        "x": {
+          "Bool": false
+        }
+      }
+    }
+  ],
+  "formal_status": "UNKNOWN",
+  "note": "Exact finite evaluation is retained as a candidate until a kernel negation is checked.",
+  "obligation": {
+    "assumptions": [],
+    "context": {
+      "assumptions": [],
+      "variables": {}
+    },
+    "dependencies": [],
+    "evidence_refs": [],
+    "goal": {
+      "ForAll": [
+        "x",
+        "Bool",
+        {
+          "Equality": [
+            {
+              "Variable": "x"
+            },
+            {
+              "Constant": {
+                "Bool": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "id": "CV-FINITE-CANDIDATE",
+    "kind": "Construction",
+    "model_id": "USM-MVF",
+    "model_revision": 1,
+    "proof_status": "UNKNOWN",
+    "required_lemmas": [],
+    "verification_method": "Lean4+Mathlib"
+  }
+}

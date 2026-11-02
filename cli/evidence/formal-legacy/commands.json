@@ -1,0 +1,9 @@
+{
+  "entry": [
+    "verification/target/debug/mathlang-verification",
+    "verify-usm",
+    "cli/evidence/formal-legacy"
+  ],
+  "kernel_commands": "proof_results.json -> toolchain.commands",
+  "rust_tests": "recorded separately in regression baseline and Rust test logs"
+}

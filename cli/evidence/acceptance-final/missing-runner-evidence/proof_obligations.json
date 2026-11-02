@@ -1,0 +1,83 @@
+[
+  {
+    "id": "MV-01",
+    "model_id": "USM-MVF",
+    "model_revision": 1,
+    "goal": {
+      "ForAll": [
+        "n",
+        "Nat",
+        {
+          "ForAll": [
+            "U",
+            {
+              "LinearOperator": [
+                {
+                  "HilbertSpace": {
+                    "Symbol": "n"
+                  }
+                },
+                {
+                  "HilbertSpace": {
+                    "Symbol": "n"
+                  }
+                }
+              ]
+            },
+            {
+              "Implies": [
+                {
+                  "Unitary": {
+                    "Variable": "U"
+                  }
+                },
+                {
+                  "ForAll": [
+                    "x",
+                    {
+                      "HilbertSpace": {
+                        "Symbol": "n"
+                      }
+                    },
+                    {
+                      "Equality": [
+                        {
+                          "Norm": {
+                            "Apply": [
+                              {
+                                "Variable": "U"
+                              },
+                              {
+                                "Variable": "x"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "Norm": {
+                            "Variable": "x"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "context": {
+      "variables": {},
+      "assumptions": []
+    },
+    "assumptions": [],
+    "required_lemmas": [],
+    "dependencies": [],
+    "kind": "Conditional",
+    "verification_method": "Lean4+Mathlib",
+    "proof_status": "UNKNOWN",
+    "evidence_refs": []
+  }
+]

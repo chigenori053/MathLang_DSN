@@ -1,0 +1,26 @@
+theorem Generated.target : ∀ (v_S : ℕ → ℕ) (v_i v_j v_delta : ℕ),
+  ¬v_j = v_i → Function.update v_S v_i v_delta v_j = v_S v_j :=
+of_eq_true
+  (Eq.trans
+    (forall_congr fun v_S =>
+      Eq.trans
+        (forall_congr fun v_i =>
+          Eq.trans
+            (forall_congr fun v_j =>
+              Eq.trans
+                (forall_congr fun v_delta =>
+                  Eq.trans
+                    (implies_congr_ctx (Eq.refl ¬v_j = v_i) fun a =>
+                      Eq.trans
+                        (congrFun'
+                          (congrArg Eq
+                            (Function.update_of_ne (of_eq_true (Eq.trans (congrArg Not (eq_false a)) not_false_eq_true))
+                              v_delta v_S))
+                          (v_S v_j))
+                        (eq_self (v_S v_j)))
+                    (implies_true ¬v_j = v_i))
+                (implies_true ℕ))
+            (implies_true ℕ))
+        (implies_true ℕ))
+    (implies_true (ℕ → ℕ)))
+'Generated.target' depends on axioms: [propext, Quot.sound]

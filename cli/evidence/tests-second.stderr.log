@@ -1,0 +1,6 @@
+   Compiling mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.55s
+     Running unittests src/lib.rs (cli/target/debug/deps/mathlang_cli-8ee30c9b8e446913)
+     Running unittests src/main.rs (cli/target/debug/deps/mathlang-2e5b08691495deac)
+     Running tests/contracts.rs (cli/target/debug/deps/contracts-c2176334eee84519)
+error: test failed, to rerun pass `--test contracts`

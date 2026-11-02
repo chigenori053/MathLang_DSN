@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/chigenori/development/MathLang_DSN/cli/scripts/audit.py", line 62, in <module>
+    plan=order_like(old_plans[i],json.loads(r.stdout)['result']);sha=digest(compact(plan));assert sha==hashes[o['id']]['plan_hash']
+  File "/Users/chigenori/development/MathLang_DSN/cli/scripts/audit.py", line 52, in order_like
+    assert set(template)==set(v);return {k:order_like(template[k],v[k]) for k in template}
+                                           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/chigenori/development/MathLang_DSN/cli/scripts/audit.py", line 54, in order_like
+    assert len(template)==len(v);return [order_like(x,y) for x,y in zip(template,v)]
+                                         ~~~~~~~~~~^^^^^
+  File "/Users/chigenori/development/MathLang_DSN/cli/scripts/audit.py", line 52, in order_like
+    assert set(template)==set(v);return {k:order_like(template[k],v[k]) for k in template}
+                                           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/chigenori/development/MathLang_DSN/cli/scripts/audit.py", line 54, in order_like
+    assert len(template)==len(v);return [order_like(x,y) for x,y in zip(template,v)]
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError

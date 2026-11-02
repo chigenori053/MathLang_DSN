@@ -1,0 +1,22 @@
+{
+  "status": "ERROR",
+  "diagnostics": [
+    "runner launch: No such file or directory (os error 2)"
+  ],
+  "exit_code": null,
+  "commands": [],
+  "checked_modules": [],
+  "elapsed_ms": 0,
+  "stdout": "",
+  "stderr": "",
+  "timed_out": false,
+  "peak_rss_bytes": 0,
+  "sandboxed": false,
+  "toolchain_verified": false,
+  "axioms": [],
+  "lean_version": "",
+  "mathlib_revision": "",
+  "source_hash": "",
+  "foundation_hash": "",
+  "independent_hash": ""
+}

@@ -1,0 +1,34 @@
+{
+  "id": "CLI-FINITE",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "goal": {
+    "ForAll": [
+      "x",
+      {
+        "Finite": 1001
+      },
+      {
+        "Equality": [
+          {
+            "Variable": "x"
+          },
+          {
+            "Variable": "x"
+          }
+        ]
+      }
+    ]
+  },
+  "context": {
+    "variables": {},
+    "assumptions": []
+  },
+  "assumptions": [],
+  "required_lemmas": [],
+  "dependencies": [],
+  "kind": "Construction",
+  "verification_method": "Lean4+Mathlib",
+  "proof_status": "UNKNOWN",
+  "evidence_refs": []
+}

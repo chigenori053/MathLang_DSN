@@ -1,0 +1,9 @@
+[
+  "cli/target/debug/mathlang",
+  "verify",
+  "usm",
+  "--output",
+  "cli/evidence/formal-new",
+  "--format",
+  "json"
+]

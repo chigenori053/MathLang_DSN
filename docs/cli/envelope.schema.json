@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mathlang.cli/0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "command",
+    "execution_status",
+    "formal_status",
+    "run_id",
+    "model_id",
+    "model_revision",
+    "result",
+    "evidence",
+    "error"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "mathlang.cli/0.1"
+    },
+    "command": {
+      "type": "string"
+    },
+    "execution_status": {
+      "enum": [
+        "COMPLETED",
+        "INTERRUPTED",
+        "ERROR"
+      ]
+    },
+    "formal_status": {
+      "enum": [
+        "PROVED",
+        "REFUTED",
+        "UNKNOWN",
+        "OUT_OF_SCOPE",
+        "ERROR",
+        null
+      ]
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_revision": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "result": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "reference"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "error_code",
+            "category",
+            "message",
+            "command",
+            "recoverable",
+            "evidence_reference"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "error_code": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "command": {
+              "type": "string"
+            },
+            "recoverable": {
+              "type": "boolean"
+            },
+            "evidence_reference": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

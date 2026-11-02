@@ -1,0 +1,15 @@
+{
+  "schema_version": "mathlang.cli.acceptance/0.1",
+  "baseline": "baseline/legacy/commands.json",
+  "reason_rebuilt": "baseline/reason-clean.json",
+  "debug": "acceptance-final/commands.json",
+  "installed": "acceptance-installed/commands.json",
+  "plans": "plan-regression/commands.json",
+  "formal_new": "formal-final/commands.json",
+  "formal_old": "formal-legacy/commands.json",
+  "negative_lean": "negative-lean/commands.json",
+  "rust_tests": "tests.stdout.log",
+  "rust_clippy": "clippy.stderr.log",
+  "rust_fmt": "fmt.stderr.log",
+  "install": "install-final.stderr.log"
+}

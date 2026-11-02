@@ -1,0 +1,9 @@
+[
+  "cli/target/debug/mathlang",
+  "verify",
+  "verification/fixtures/MV-01.json",
+  "--output",
+  "cli/evidence/lean-smoke",
+  "--format",
+  "json"
+]

@@ -1,0 +1,9 @@
+[
+  "/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang",
+  "verify",
+  "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/false.json",
+  "--output",
+  "/Users/chigenori/development/MathLang_DSN/cli/evidence/acceptance-final/false-evidence",
+  "--format",
+  "json"
+]

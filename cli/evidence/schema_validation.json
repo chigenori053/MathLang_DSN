@@ -1,0 +1,5 @@
+{
+  "schema": "docs/cli/envelope.schema.json",
+  "envelopes_validated": 74,
+  "passed": true
+}

@@ -1,0 +1,5 @@
+/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-q_alyiw3/Generated.lean:11:47: error: unsolved goals
+⊢ False
+theorem Generated.target : 1 = 2 :=
+Eq.mpr (id (OfNat.one_ne_ofNat._simp_1 2)) sorry
+'Generated.target' depends on axioms: [propext, sorryAx]

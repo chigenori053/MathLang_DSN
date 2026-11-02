@@ -1,0 +1,68 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+Unified MathLang CLI; existing mathematical engines and immutable evidence
+
+Usage: mathlang [OPTIONS] <COMMAND>
+
+Commands:
+  model      
+  verify     
+  proof      
+  knowledge  
+  compare    
+  evidence   
+  solve      
+  doctor     
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --format <FORMAT>  [possible values: text, json]
+      --output <OUTPUT>  
+      --config <CONFIG>  
+      --quiet            
+      --verbose          
+  -h, --help             Print help
+  -V, --version          Print version
+test evidence_integrity_and_stale_revision ... FAILED
+mathlang 0.1.0
+test arguments_and_output_contract ... FAILED
+test config_and_paths ... ok
+test plan_and_candidates_never_prove ... ok
+test models_normalization_and_comparison ... ok
+
+failures:
+
+---- evidence_integrity_and_stale_revision stdout ----
+
+thread 'evidence_integrity_and_stale_revision' (1003059) panicked at tests/contracts.rs:15:5:
+assertion `left == right` failed: {"command":"evidence","error":{"category":"FILESYSTEM","command":"evidence","error_code":"MLCLI-8","evidence_reference":null,"message":"symbolic link rejected: /var","recoverable":true},"evidence":{"reference":null},"execution_status":"ERROR","formal_status":null,"model_id":null,"model_revision":null,"result":{},"run_id":"run-1793614048-4008-5aaeb373","schema_version":"mathlang.cli/0.1"}
+
+  left: Some(8)
+ right: Some(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- arguments_and_output_contract stdout ----
+
+thread 'arguments_and_output_contract' (1003057) panicked at tests/contracts.rs:15:5:
+assertion `left == right` failed: {"command":"model","error":{"category":"FILESYSTEM","command":"model","error_code":"MLCLI-8","evidence_reference":null,"message":"symbolic link rejected: /var","recoverable":true},"evidence":{"reference":null},"execution_status":"ERROR","formal_status":null,"model_id":"USM-MVF","model_revision":1,"result":{"content_hash":"17ccc5a73229017861de6171b71e2f849e2443e7746ea8f3311bf8983dbda6e2","obligations":[{"diagnostics":[],"source_ir_hash":"bb332d177f7c9f241300fa3855f0715652175d05772b6fa42d78f4cfefc33226","valid":true}],"valid":true},"run_id":"run-1793614048-4023-4c59a5ab","schema_version":"mathlang.cli/0.1"}
+
+  left: Some(8)
+ right: Some(0)
+
+
+failures:
+    arguments_and_output_contract
+    evidence_integrity_and_stale_revision
+
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+

@@ -1,0 +1,113 @@
+{
+  "evidence_id": "dca20ae0a4aa9285951d6639bd801db7b132116456dbd2d95eeee53933a8ed9c",
+  "model_id": "USM-MVF",
+  "model_revision": 1,
+  "obligation_id": "MV-05",
+  "source_ir_hash": "e84944b1567dc541696889e7143a4e35f3f14ae413977bbaec8e01623a82b8c9",
+  "lean_source_hash": "70dad72d442abd7b8b14f3d0fb58b96f755cee958b63811d8772d0a1b5c8e13f",
+  "proof_result": "PROVED",
+  "counterexample": null,
+  "assumptions": [],
+  "dependencies": [],
+  "toolchain": {
+    "status": "PROVED",
+    "diagnostics": [],
+    "exit_code": 0,
+    "commands": [
+      [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/sandbox.sb",
+        "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+        "-j",
+        "1",
+        "-M",
+        "1536",
+        "-T",
+        "300",
+        "-o",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Foundation.olean",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Foundation.lean"
+      ],
+      [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/sandbox.sb",
+        "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+        "-j",
+        "1",
+        "-M",
+        "1536",
+        "-T",
+        "300",
+        "-o",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Independent.olean",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Independent.lean"
+      ],
+      [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/sandbox.sb",
+        "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+        "-j",
+        "1",
+        "-M",
+        "1536",
+        "-T",
+        "300",
+        "-o",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Generated.olean",
+        "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-zshe05vo/Generated.lean"
+      ]
+    ],
+    "checked_modules": [
+      "Foundation",
+      "Independent",
+      "Generated"
+    ],
+    "elapsed_ms": 4890,
+    "stdout": "theorem Generated.target : ∀ (v_S : ℕ → ℕ) (v_i v_j v_delta : ℕ),\n  ¬v_j = v_i → Function.update v_S v_i v_delta v_j = v_S v_j :=\nof_eq_true\n  (Eq.trans\n    (forall_congr fun v_S =>\n      Eq.trans\n        (forall_congr fun v_i =>\n          Eq.trans\n            (forall_congr fun v_j =>\n              Eq.trans\n                (forall_congr fun v_delta =>\n                  Eq.trans\n                    (implies_congr_ctx (Eq.refl ¬v_j = v_i) fun a =>\n                      Eq.trans\n                        (congrFun'\n                          (congrArg Eq\n                            (Function.update_of_ne (of_eq_true (Eq.trans (congrArg Not (eq_false a)) not_false_eq_true))\n                              v_delta v_S))\n                          (v_S v_j))\n                        (eq_self (v_S v_j)))\n                    (implies_true ¬v_j = v_i))\n                (implies_true ℕ))\n            (implies_true ℕ))\n        (implies_true ℕ))\n    (implies_true (ℕ → ℕ)))\n'Generated.target' depends on axioms: [propext, Quot.sound]\n",
+    "stderr": "",
+    "timed_out": false,
+    "peak_rss_bytes": 1392017408,
+    "sandboxed": true,
+    "toolchain_verified": true,
+    "axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_hash": "70dad72d442abd7b8b14f3d0fb58b96f755cee958b63811d8772d0a1b5c8e13f",
+    "foundation_hash": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+    "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+  },
+  "timestamp": 1793614104,
+  "artifact_hashes": {
+    "Foundation.lean": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+    "Generated.lean": "70dad72d442abd7b8b14f3d0fb58b96f755cee958b63811d8772d0a1b5c8e13f",
+    "Independent.lean": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "b6a9b45f200cded8ba08b3a31f8b52e86171f5c9a2332ae87c58f5130e6ebee2"
+  },
+  "translation": {
+    "source_ir_hash": "e84944b1567dc541696889e7143a4e35f3f14ae413977bbaec8e01623a82b8c9",
+    "source_model_revision": 1,
+    "translation_version": "mathir-lean/0.1",
+    "lean_module_hash": "70dad72d442abd7b8b14f3d0fb58b96f755cee958b63811d8772d0a1b5c8e13f",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "assumptions": [],
+    "semantic_mapping": {
+      "HilbertSpace": "EuclideanSpace ℂ (Fin n), Euclidean norm",
+      "Inequality": "LE.le, ordered scalar types only",
+      "LinearOperator": "ContinuousLinearMap ℂ; finite dimensional",
+      "Unitary": "adjoint.comp self = 1 (isometry condition)",
+      "assumptions/quantifiers": "preserved structurally, explicit binders"
+    },
+    "validation_status": "STRUCTURAL_AND_INDEPENDENT_KERNEL_CONTRACT",
+    "expected_statement": "(∀ (v_S : (ℕ → ℕ)), (∀ (v_i : ℕ), (∀ (v_j : ℕ), (∀ (v_delta : ℕ), ((¬ (v_j = v_i)) → (((Function.update v_S v_i v_delta) v_j) = (v_S v_j)))))))",
+    "refutation": false
+  },
+  "diagnostics": [],
+  "recipe": "Auto"
+}

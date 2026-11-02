@@ -1,0 +1,6 @@
+  Installing mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+   Compiling mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+    Finished `release` profile [optimized] target(s) in 2.88s
+   Replacing /Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang
+    Replaced package `mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)` with `mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)` (executable `mathlang`)
+warning: be sure to add `/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin` to your PATH to be able to run the installed binaries

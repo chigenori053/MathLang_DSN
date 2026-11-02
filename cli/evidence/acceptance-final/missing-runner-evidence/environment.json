@@ -1,0 +1,30 @@
+{
+  "binary_sha256": "32eab7edd83d528a9cc9f1e486667190e5e191a16646dbea047cd41d54f28227",
+  "cli_version": "0.1.0",
+  "configuration": {
+    "cli": {
+      "output_format": "text"
+    },
+    "evidence": {
+      "directory": "./evidence"
+    },
+    "runtime": {
+      "mode": "local"
+    },
+    "verification": {
+      "max_rss_mib": 2048,
+      "parallelism": 1,
+      "timeout_seconds": 300
+    }
+  },
+  "lean": "4.35.0",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "reason": {
+    "available": false,
+    "error": "No such file or directory (os error 2)"
+  },
+  "rust": {
+    "available": false,
+    "error": "No such file or directory (os error 2)"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "schema_version": "mathlang.cli.acceptance/0.1",
+  "debug": "acceptance-final/negative_results.json",
+  "installed": "acceptance-installed/negative_results.json",
+  "lean": "negative-lean/commands.json",
+  "resource_limit_live_test": "NOT_VERIFIED"
+}

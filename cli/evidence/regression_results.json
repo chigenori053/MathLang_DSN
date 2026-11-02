@@ -1,0 +1,8 @@
+{
+  "schema_version": "mathlang.cli.acceptance/0.1",
+  "audit": "audit-complete.json",
+  "solver": "acceptance-installed/regression_results.json",
+  "formal_new": "formal-final/proof_results.json",
+  "formal_old": "formal-legacy/proof_results.json",
+  "plans": "plan-regression/commands.json"
+}

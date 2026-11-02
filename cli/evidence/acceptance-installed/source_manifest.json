@@ -1,0 +1,8 @@
+{
+  "cli/src/commands.rs": "490eaf9f98f9852739b445503cf10126e2bd1d2a1b4cec9d7993561ede316e7c",
+  "cli/src/lib.rs": "ad73ff767a0ef285260fe9cf6b5ddadd4f388cfa88dcb2d3279f3d3bec6d9ab2",
+  "cli/src/main.rs": "2cc2f610626afe404dc53fbe5f69d0012350a6f3e4d9b35e6599e867c7cc025f",
+  "cli/src/process.rs": "05897083bf9d843044241b5f08743c27adc30cb3ae4a9c8c5df8c3b2a77e13ac",
+  "cli/tests/contracts.rs": "f3cf96b0584b0b32e31bdf2768523a03dda33b015b995a4956ed99276ff56e28",
+  "cli/scripts/acceptance.py": "36e865d3fe60d301da8b2a32f4ed5945f4a14901b81b4fada600ab102fc610ce"
+}

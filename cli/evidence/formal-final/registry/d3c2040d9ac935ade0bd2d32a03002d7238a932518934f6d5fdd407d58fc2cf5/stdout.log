@@ -1,0 +1,4 @@
+theorem Generated.target : ∀ (v_n : ℕ) (v_U : EuclideanSpace ℂ (Fin v_n) →L[ℂ] EuclideanSpace ℂ (Fin v_n)),
+  ContinuousLinearMap.adjoint v_U ∘SL v_U = 1 → ∀ (v_x : EuclideanSpace ℂ (Fin v_n)), ‖v_U v_x‖ = ‖v_x‖ :=
+Foundation.unitary_norm
+'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,74 @@
+{
+  "status": "REFUTED",
+  "diagnostics": [],
+  "exit_code": 0,
+  "commands": [
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Foundation.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Foundation.lean"
+    ],
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Independent.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Independent.lean"
+    ],
+    [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/sandbox.sb",
+      "/Users/chigenori/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean",
+      "-j",
+      "1",
+      "-M",
+      "1536",
+      "-T",
+      "300",
+      "-o",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Generated.olean",
+      "/private/var/folders/5p/t7pxkqvs6w5c0fyzg7g9yvx40000gn/T/mldsn-lean-jd0dgu35/Generated.lean"
+    ]
+  ],
+  "checked_modules": [
+    "Foundation",
+    "Independent",
+    "Generated"
+  ],
+  "elapsed_ms": 4769,
+  "stdout": "theorem Generated.target : ¬∀ (v_x v_y : ℂ), ‖v_x‖ = ‖v_y‖ → v_x = v_y :=\nFoundation.phase_collision\n'Generated.target' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+  "stderr": "",
+  "timed_out": false,
+  "peak_rss_bytes": 1391968256,
+  "sandboxed": true,
+  "toolchain_verified": true,
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "source_hash": "caa4558c0497ea811dfa9050d7a295b111110cdebdd7278e28a31c54debb8024",
+  "foundation_hash": "492fa4602f8600ee666aa7fb9c9f5bcd8ca0ef88ed3fc292dff58e39f456f6dd",
+  "independent_hash": "ad84ba3596ada6e1c6df6a3cd7e2423704222520baa8d8de3ec2cef83e3e9af1"
+}

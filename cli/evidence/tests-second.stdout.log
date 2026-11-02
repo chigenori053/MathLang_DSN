@@ -1,0 +1,56 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test config_and_paths ... FAILED
+Unified MathLang CLI; existing mathematical engines and immutable evidence
+
+Usage: mathlang [OPTIONS] <COMMAND>
+
+Commands:
+  model      
+  verify     
+  proof      
+  knowledge  
+  compare    
+  evidence   
+  solve      
+  doctor     
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --format <FORMAT>  [possible values: text, json]
+      --output <OUTPUT>  
+      --config <CONFIG>  
+      --quiet            
+      --verbose          
+  -h, --help             Print help
+  -V, --version          Print version
+mathlang 0.1.0
+test arguments_and_output_contract ... ok
+test plan_and_candidates_never_prove ... ok
+test evidence_integrity_and_stale_revision ... ok
+test models_normalization_and_comparison ... ok
+
+failures:
+
+---- config_and_paths stdout ----
+
+thread 'config_and_paths' (1012230) panicked at tests/contracts.rs:9:24:
+called `Result::unwrap()` on an `Err` value: Os { code: 17, kind: AlreadyExists, message: "File exists" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    config_and_paths
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+

@@ -1,0 +1,3 @@
+theorem Generated.target : ∀ (v_x : Bool), id (id v_x) = v_x :=
+of_eq_true (Eq.trans (forall_congr fun v_x => eq_self v_x) (implies_true Bool))
+'Generated.target' depends on axioms: [propext, Quot.sound]

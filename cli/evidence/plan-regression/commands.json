@@ -1,0 +1,119 @@
+[
+  {
+    "obligation_id": "MV-01",
+    "plan_hash": "a42ca1ad6df00b1b5f3522154a332921b8f501e11823a7a164e3991e1c6befd4",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-01.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "MV-02",
+    "plan_hash": "2dfa9e2336ad31c27ff51aebe3ad144abb896199e11d41a764f92daaaf05e3ed",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-02.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "MV-03",
+    "plan_hash": "4ab7f87b67f4775346052fc444bd97bf8f7edaa88e6d355a737f76c63f9fa41f",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-03.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "MV-04",
+    "plan_hash": "f62327afc13130e666005c7097e87bbe9bbee93c7af5d84536bc9560364aca3e",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-04.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "MV-05",
+    "plan_hash": "e7c521551db2eb3cbfba86e19007119c710f75c7321f75f53c61c2ca3bd9896b",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-05.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "MV-06",
+    "plan_hash": "e570b0096370cccd438ea0ed291a0a34e49811a3f76fd446727b97febfb4fdbc",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/MV-06.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "CV-PHASE-COLLISION",
+    "plan_hash": "bf23f0e56eba44d13949bb1d68617db9155dd75fa42f67fa4aee12a17c71c8e6",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/CV-PHASE-COLLISION.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "CV-UPDATE",
+    "plan_hash": "575c49c139352533e6c51b9800d19ff5577e01ddf4b1c7bb7f072608102f2e7c",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/CV-UPDATE.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  },
+  {
+    "obligation_id": "CV-PHASE",
+    "plan_hash": "a49910665b55baa7b884c13b1f81ca969e4fcafac689f5b53649be831d13a23e",
+    "command": [
+      "/Users/chigenori/development/MathLang_DSN/cli/target/local-install/bin/mathlang",
+      "proof",
+      "plan",
+      "/Users/chigenori/development/MathLang_DSN/cli/evidence/plan-regression/CV-PHASE.json",
+      "--format",
+      "json"
+    ],
+    "passed": true
+  }
+]
