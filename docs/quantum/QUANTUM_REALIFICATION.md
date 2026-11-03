@@ -138,10 +138,34 @@ ReasonScript 0.5.6.9(Linux、ソースからインストール)で実行した�
 
 プロジェクトが指定する ReasonScript の版は 0.5.6.5 で、今回使ったのは 0.5.6.9。指定版での受入はまだ行っていない。
 
-## 7. 範囲と限界
+## 7. Lean 形式化(未検査)
+
+`verification/quantum_real_lean/` に、Lean 4.35.0 + Mathlib `56a0058…` 用の証明を置いた。
+**まだ Lean で検査していない。** 検査環境から `release.lean-lang.org` と Mathlib キャッシュの配布ホストに
+接続できなかったため。
+
+| 要件 | 定理 | 範囲 |
+| --- | --- | --- |
+| REAL | `expect_im_eq_zero`、`hermitianPart_expect` | 任意の有限次元 |
+| RAY_INVARIANT | `realify_smul` | 任意の有限次元、c ≠ 0 |
+| ENSEMBLE_INDEPENDENT | `ensemble_independent` | 任意の有限次元・任意のアンサンブル |
+| SEPARATING | `qubit_reconstruction`、`qubit_separating` | 1 qubit の全状態 |
+| BOUNDED | `realify_bloch_unit`、`realify_sq_le_one` | 1 qubit の全状態 |
+| 反例 | `raw_expectation_not_real`、`real_part_not_ray_invariant`、`born_not_separating`、`bell_local_bloch_zero`、`bell_born_equal`、`bell_xx_separates`、`bell_states_differ` | 具体的な状態 |
+
+検査手順:
+
+```sh
+cd verification/quantum_real_lean
+lake exe cache get
+lake build
+lake env lean PrintAxioms.lean
+```
+
+## 8. 範囲と限界
 
 - 有界な試験集合での厳密検査であり、一般の d や全状態についての形式証明ではない。
-  第 5 節の一般論(エルミート性・線形性・Pauli 基底の完全性)は標準的な定理だが、本リポジトリの Lean 基盤では未形式化。
+  第 5 節の一般論は第 7 節で Lean 化したが、まだ検査していない。2 qubit の一般状態の再構成は形式化していない。
 - 対象は 1・2 qubit の純粋状態入力と、アンサンブル独立性検査用の 1 qubit 混合状態に限る。
 - 振幅は Gaussian 有理数に限る(√2 を含む規格化状態は非規格化の代表元で与える)。
 - Knowledge ID は報告用の識別子であり、`Knowledge::KCatalog` には未登録(既存カタログ件数の契約を変えないため)。

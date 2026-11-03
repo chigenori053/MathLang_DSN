@@ -1,0 +1,16 @@
+import QuantumRealification
+#print axioms QuantumRealification.expect_im_eq_zero
+#print axioms QuantumRealification.hermitianPart_expect
+#print axioms QuantumRealification.realify_smul
+#print axioms QuantumRealification.ensemble_independent
+#print axioms QuantumRealification.qubit_reconstruction
+#print axioms QuantumRealification.qubit_separating
+#print axioms QuantumRealification.realify_bloch_unit
+#print axioms QuantumRealification.realify_sq_le_one
+#print axioms QuantumRealification.raw_expectation_not_real
+#print axioms QuantumRealification.real_part_not_ray_invariant
+#print axioms QuantumRealification.born_not_separating
+#print axioms QuantumRealification.bell_local_bloch_zero
+#print axioms QuantumRealification.bell_born_equal
+#print axioms QuantumRealification.bell_xx_separates
+#print axioms QuantumRealification.bell_states_differ
