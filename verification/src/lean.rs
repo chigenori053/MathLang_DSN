@@ -465,3 +465,65 @@ pub fn assess_kernel(t: &Translation, r: &KernelRun) -> FormalStatus {
         FormalStatus::Proved
     }
 }
+
+/// Result of a Lean build check without the sealed sandbox. Never Evidence: no evidence_id,
+/// no registry entry, and `formal_status` of the obligation stays UNKNOWN.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BuildCheck {
+    /// Kernel outcome under the same judgement as the sealed path (`assess_kernel`), with the
+    /// isolation requirement lifted: PROVED/REFUTED mean "the kernel accepted the generated
+    /// module with only standard axioms", not sealed formal truth.
+    pub kernel_outcome: FormalStatus,
+    pub isolation: String,
+    pub isolation_diagnostics: Vec<String>,
+    pub sealed: bool,
+    pub run: KernelRun,
+}
+
+/// Run the Lean kernel on a translated module with the explicit Linux unsealed isolation mode.
+pub fn build_check(t: &Translation, project: &Path, out: &Path) -> Result<BuildCheck, String> {
+    std::fs::create_dir_all(out).map_err(|e| e.to_string())?;
+    let source = out.join("Generated.lean");
+    std::fs::write(&source, &t.source).map_err(|e| e.to_string())?;
+    let script = Path::new(env!("CARGO_MANIFEST_DIR")).join("scripts/lean_runner.py");
+    let output = Command::new("python3")
+        .arg(script)
+        .arg("--project")
+        .arg(project)
+        .arg("--source")
+        .arg(&source)
+        .arg("--isolation")
+        .arg("linux-unsealed")
+        .output()
+        .map_err(|e| format!("runner launch: {e}"))?;
+    let raw: serde_json::Value = serde_json::from_slice(&output.stdout)
+        .map_err(|e| format!("runner protocol failure: {e}"))?;
+    let run: KernelRun = serde_json::from_value(raw.clone()).map_err(|e| e.to_string())?;
+    let isolation = raw["isolation"].as_str().unwrap_or_default().to_string();
+    let isolation_diagnostics: Vec<String> =
+        serde_json::from_value(raw["isolation_diagnostics"].clone()).unwrap_or_default();
+    let kernel_outcome = if run.sandboxed || isolation != "linux-unsealed" {
+        // A sealed-mode result must go through VerificationEvidence, never through here.
+        FormalStatus::Error
+    } else if !isolation_diagnostics.is_empty() {
+        // Something outside staging stayed writable: do not report a kernel outcome.
+        FormalStatus::Error
+    } else {
+        let mut probe = run.clone();
+        probe.sandboxed = true;
+        assess_kernel(t, &probe)
+    };
+    let check = BuildCheck {
+        kernel_outcome,
+        isolation,
+        isolation_diagnostics,
+        sealed: false,
+        run,
+    };
+    std::fs::write(
+        out.join("build_check.json"),
+        serde_json::to_vec_pretty(&check).unwrap(),
+    )
+    .map_err(|e| e.to_string())?;
+    Ok(check)
+}

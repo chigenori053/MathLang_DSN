@@ -5,6 +5,7 @@ pub mod evidence;
 pub mod fixtures;
 pub mod ir;
 pub mod lean;
+pub mod pipeline;
 pub mod proof;
 use serde::Serialize;
 use sha2::{Digest, Sha256};

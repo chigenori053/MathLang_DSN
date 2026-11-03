@@ -64,6 +64,7 @@ fn main() {
         Command::Compare { .. } => "compare",
         Command::Evidence { .. } => "evidence",
         Command::Solve { .. } => "solve",
+        Command::Pipeline { .. } => "pipeline",
         Command::Doctor => "doctor",
     };
     let mut e = envelope(command, &run_id());
@@ -85,7 +86,10 @@ fn main() {
         Ok(()) => 0,
         Err(error) => failure(&mut e, error, command),
     };
-    if !matches!(cli.command, Command::Verify { .. }) {
+    if !matches!(
+        cli.command,
+        Command::Verify { .. } | Command::Pipeline { .. }
+    ) {
         if let Some(p) = &cli.output {
             if let Err(error) = save(p, &e) {
                 code = failure(&mut e, error, command);

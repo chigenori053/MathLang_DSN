@@ -69,7 +69,28 @@ pub enum Command {
     Solve {
         problem: String,
     },
+    /// Two-stage path: DSN computability first (IR decode, validate, DSN plan, Lean
+    /// translation), then Lean only for DSN-computable cases. INPUT is a request/obligation
+    /// JSON file, a directory of them, or `usm` (built-in fixtures).
+    Pipeline {
+        input: String,
+        #[arg(long)]
+        knowledge: Option<PathBuf>,
+        #[arg(long, value_enum, default_value = "auto")]
+        lean_isolation: LeanIsolation,
+    },
     Doctor,
+}
+#[derive(Clone, Copy, Debug, ValueEnum, PartialEq, Eq)]
+pub enum LeanIsolation {
+    /// sandbox-exec when available (sealed Evidence), else Linux namespaces (unsealed).
+    Auto,
+    /// Require macOS sandbox-exec; sealed VerificationEvidence only.
+    Sealed,
+    /// Linux user/network/mount namespaces; unsealed build check, never Evidence.
+    LinuxUnsealed,
+    /// Stage 1 only.
+    Skip,
 }
 #[derive(Subcommand, Debug)]
 pub enum ModelAction {

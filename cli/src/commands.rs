@@ -295,6 +295,11 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
             }
         }
         Command::Doctor => e["result"] = doctor(config),
+        Command::Pipeline {
+            input,
+            knowledge,
+            lean_isolation,
+        } => pipeline(cli, config, e, input, knowledge.as_deref(), *lean_isolation)?,
     }
     Ok(())
 }
@@ -627,4 +632,193 @@ fn source_manifest() -> Result<BTreeMap<String, String>> {
         walk(root, &root.join(name), &mut out)?;
     }
     Ok(out)
+}
+
+fn pipeline_inputs(input: &str) -> Result<Vec<(String, Value)>> {
+    if input == "usm" {
+        let mut c = fixtures::usm();
+        c.extend(fixtures::auxiliary());
+        return Ok(c
+            .into_iter()
+            .map(|(o, recipe, refutation)| {
+                (
+                    o.id.clone(),
+                    json!({"obligation":o,"recipe":recipe,"refutation":refutation}),
+                )
+            })
+            .collect());
+    }
+    let p = Path::new(input);
+    let files: Vec<PathBuf> = if p.is_dir() {
+        let mut fs: Vec<_> = fs::read_dir(p)
+            .map_err(|x| Error::new(8, x))?
+            .filter_map(|e| e.ok().map(|e| e.path()))
+            .filter(|f| f.extension().is_some_and(|x| x == "json"))
+            .collect();
+        fs.sort();
+        fs
+    } else {
+        vec![p.to_path_buf()]
+    };
+    if files.is_empty() {
+        return Err(Error::new(
+            2,
+            "pipeline input directory has no .json requests",
+        ));
+    }
+    let mut out = vec![];
+    for f in files {
+        let v: Value = read(&f)?;
+        let id = v
+            .get("obligation")
+            .unwrap_or(&v)
+            .get("id")
+            .and_then(Value::as_str)
+            .map(String::from)
+            .unwrap_or_else(|| f.file_stem().unwrap_or_default().to_string_lossy().into());
+        out.push((id, v));
+    }
+    Ok(out)
+}
+fn pipeline(
+    cli: &Cli,
+    config: &Config,
+    e: &mut Value,
+    input: &str,
+    knowledge: Option<&Path>,
+    isolation: LeanIsolation,
+) -> Result<()> {
+    use mathlang_verification::pipeline::{self, Isolation, Stage2};
+    let (space, knowledge_source) = knowledge_space(knowledge)?;
+    let cases = pipeline_inputs(input)?;
+    let mode = match isolation {
+        LeanIsolation::Skip => None,
+        LeanIsolation::Sealed => Some(Isolation::Sealed),
+        LeanIsolation::LinuxUnsealed => Some(Isolation::LinuxUnsealed),
+        LeanIsolation::Auto => Some(Isolation::detect().ok_or_else(|| {
+            Error::new(5, "no supported Lean isolation (sandbox-exec or Linux unshare); use --lean-isolation skip")
+        })?),
+    };
+    let out = cli.output.clone().unwrap_or_else(|| {
+        config
+            .evidence
+            .directory
+            .join(e["run_id"].as_str().unwrap_or("run"))
+    });
+    new_directory(&out)?;
+    e["evidence"]["reference"] = json!(out);
+    save(&out.join("configuration.json"), config)?;
+    save(
+        &out.join("commands.json"),
+        &std::env::args().collect::<Vec<_>>(),
+    )?;
+    let binary = std::env::current_exe().map_err(|x| Error::new(5, x))?;
+    save(
+        &out.join("environment.json"),
+        &json!({"cli_version":env!("CARGO_PKG_VERSION"),"binary_sha256":hash_bytes(&fs::read(binary).map_err(|x|Error::new(8,x))?),"lean":lean::LEAN_VERSION,"mathlib_revision":lean::MATHLIB_REVISION,"knowledge":knowledge_summary(&space,knowledge_source),"lean_isolation":mode}),
+    )?;
+    save(&out.join("source_manifest.json"), &source_manifest()?)?;
+    // Stage 1: DSN path.
+    let stage1: Vec<_> = cases
+        .iter()
+        .map(|(id, raw)| pipeline::stage1(id, raw, &space, 1000))
+        .collect();
+    save(&out.join("stage1_results.json"), &stage1)?;
+    let outcome = (|| {
+        // Stage 2: Lean only for DSN-computable cases.
+        let mut stage2 = vec![];
+        let project = Path::new(ROOT).join("verification/lean");
+        for (i, s) in stage1.iter().enumerate() {
+            let skipped = |note: &str| Stage2 {
+                id: s.id.clone(),
+                lean_checked: false,
+                isolation: None,
+                formal_status: FormalStatus::Unknown,
+                build_check: None,
+                evidence_id: None,
+                note: note.into(),
+            };
+            let (Some(t), Some(o)) = (&s.translation, &s.obligation) else {
+                stage2.push(skipped("not DSN-computable; Lean not run"));
+                continue;
+            };
+            let work = out.join(format!(
+                "lean/{i}-{}",
+                s.id.replace(
+                    |c: char| !c.is_ascii_alphanumeric() && c != '-' && c != '_',
+                    "_"
+                )
+            ));
+            match mode {
+                None => stage2.push(skipped("Lean stage skipped by --lean-isolation skip")),
+                Some(Isolation::Sealed) => {
+                    let proof = VerificationEvidence::verify(o, t, &project, &work)
+                        .map_err(|x| Error::new(5, x))?;
+                    proof
+                        .persist(
+                            &out.join("registry"),
+                            o,
+                            Some(&t.source),
+                            Some(include_bytes!("../../verification/lean/Foundation.lean")),
+                        )
+                        .map_err(|x| Error::new(8, x))?;
+                    stage2.push(Stage2 {
+                        id: s.id.clone(),
+                        lean_checked: true,
+                        isolation: mode,
+                        formal_status: proof.result(),
+                        build_check: None,
+                        evidence_id: Some(proof.evidence_id().into()),
+                        note: "sealed VerificationEvidence".into(),
+                    });
+                }
+                Some(Isolation::LinuxUnsealed) => {
+                    let check =
+                        lean::build_check(t, &project, &work).map_err(|x| Error::new(5, x))?;
+                    stage2.push(Stage2 {
+                        id: s.id.clone(),
+                        lean_checked: true,
+                        isolation: mode,
+                        formal_status: FormalStatus::Unknown,
+                        build_check: Some(check.kernel_outcome),
+                        evidence_id: None,
+                        note:
+                            "unsealed Linux build check; not Evidence, formal_status stays UNKNOWN"
+                                .into(),
+                    });
+                }
+            }
+        }
+        save(&out.join("stage2_results.json"), &stage2)?;
+        let count = |f: &dyn Fn(&Stage2) -> bool| stage2.iter().filter(|s| f(s)).count();
+        let mut outcomes = BTreeMap::<String, usize>::new();
+        for s in &stage2 {
+            if let Some(b) = s.build_check.or(s.lean_checked.then_some(s.formal_status)) {
+                *outcomes
+                    .entry(json!(b).as_str().unwrap_or_default().to_string())
+                    .or_default() += 1;
+            }
+        }
+        let summary = json!({"cases":stage1.len(),"dsn_computable":stage1.iter().filter(|s|s.dsn_computable).count(),
+            "blocked":stage1.iter().filter_map(|s|s.blocked_at.map(|b|json!({"id":s.id,"blocked_at":b,"error":s.steps.last().and_then(|x|x.error.clone())}))).collect::<Vec<_>>(),
+            "lean_checked":count(&|s|s.lean_checked),"lean_isolation":mode,"sealed":mode==Some(Isolation::Sealed),
+            "lean_outcomes":outcomes,
+            "note":"Stage 2 runs only for DSN-computable cases. Unsealed build checks never set formal_status; only sealed Evidence does."});
+        save(&out.join("summary.json"), &summary)?;
+        e["result"] = json!({"summary":summary,"stage1":stage1,"stage2":stage2});
+        if stage1.len() == 1 && mode == Some(Isolation::Sealed) {
+            if let Some(o) = &stage1[0].obligation {
+                set_obligation(e, o);
+            }
+            e["formal_status"] = json!(stage2[0].formal_status);
+        }
+        Ok(())
+    })();
+    if let Err(ref error) = outcome {
+        save(&out.join("failure.json"), error)?;
+    }
+    let manifest =
+        mathlang_verification::evidence::artifact_manifest(&out).map_err(|x| Error::new(8, x))?;
+    save(&out.join("artifact_manifest.json"), &manifest)?;
+    outcome
 }

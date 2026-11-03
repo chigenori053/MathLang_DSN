@@ -585,7 +585,7 @@ fn infrastructure_launch_failure_is_saved_as_error() {
 #[test]
 fn dp_11_descriptive_conclusions_are_not_formal_retrieval_keys() {
     let legacy = mathlang_mirp::knowledge::KnowledgeSpace::legacy();
-    assert!(legacy.len() > 0);
+    assert!(!legacy.is_empty());
     assert!(legacy
         .units()
         .all(|u| dsn::knowledge_retrieval_key(u).is_none()));
@@ -659,4 +659,46 @@ fn dp_13_usm_knowledge_pack_is_retrievable() {
         let plan = dsn::plan(&o, &legacy, 1000).unwrap();
         assert!(plan.nodes.iter().all(|n| n.source_knowledge.is_empty()));
     }
+}
+#[test]
+fn pl_01_stage1_classifies_dsn_computability() {
+    use mathlang_verification::pipeline::{stage1, Step};
+    let k = mathlang_mirp::knowledge::KnowledgeSpace::legacy();
+    let (o, recipe, refutation) = fixtures::usm().remove(0);
+    let raw = serde_json::json!({"obligation":o,"recipe":recipe,"refutation":refutation});
+    let s = stage1("ok", &raw, &k, 1000);
+    assert!(s.dsn_computable && s.blocked_at.is_none());
+    assert_eq!(s.steps.len(), 4);
+    assert!(s.translation.is_some());
+    assert_eq!(
+        s.lean_module_hash.as_deref(),
+        Some(
+            translate(&o, recipe, refutation)
+                .unwrap()
+                .record
+                .lean_module_hash
+                .as_str()
+        )
+    );
+    // Bare obligation defaults to Auto, non-refutation.
+    let s = stage1("bare", &serde_json::json!(o), &k, 1000);
+    assert!(s.dsn_computable && !s.refutation);
+    // Unsupported operator: blocked at IR decoding, no translation.
+    let mut bad = serde_json::json!(o);
+    bad["goal"] = serde_json::json!({"Sqrt":{"Variable":"x"}});
+    let s = stage1("sqrt", &bad, &k, 1000);
+    assert_eq!(s.blocked_at, Some(Step::IrDecode));
+    assert!(!s.dsn_computable && s.translation.is_none());
+    // Type error: blocked at validation.
+    let p = MathExpr::Add(bx(var("x")), bx(var("y")));
+    let typed = simple(
+        "mismatch",
+        MathExpr::eq(p.clone(), p),
+        context(&[("x", vector(2)), ("y", vector(3))]),
+    );
+    let s = stage1("mismatch", &serde_json::json!(typed), &k, 1000);
+    assert_eq!(s.blocked_at, Some(Step::Validate));
+    // Planning budget: blocked at the DSN plan.
+    let s = stage1("budget", &raw, &k, 1);
+    assert_eq!(s.blocked_at, Some(Step::DsnPlan));
 }

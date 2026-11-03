@@ -8,7 +8,10 @@ cargo install --path cli --locked --offline
 mathlang --help
 mathlang doctor --format json
 mathlang verify verification/fixtures/MV-01.json --output ./evidence/example --format json
+mathlang pipeline usm --output ./evidence/pipeline --format json
 ```
+
+`pipeline` はDSN経路で計算可能か先に判定し、計算できた件だけをLeanで検査する。Linuxでは未封印のビルド検査（Evidenceではない）になる。詳細は[コマンド](COMMAND_REFERENCE.md#pipelinedsn経路--lean)。
 
 `verify` の出力先は新規ディレクトリ。他のコマンドの `--output` は新規JSON応答ファイル。
 保存先も入力も上書きしない。text は整形済みEnvelope、json は標準出力に単一オブジェクト。

@@ -211,6 +211,77 @@ fn proof_plan_uses_supplied_knowledge_catalogue() {
     );
 }
 #[test]
+fn pipeline_runs_lean_only_for_dsn_computable_cases() {
+    let p = temp();
+    let inputs = p.join("inputs");
+    fs::create_dir(&inputs).unwrap();
+    let (o, recipe, refutation) = fixtures::usm().remove(0);
+    write(
+        &inputs.join("a-ok.json"),
+        &json!({"obligation":o,"recipe":recipe,"refutation":refutation}),
+    );
+    let mut bad = json!(o);
+    bad["id"] = json!("SQRT");
+    bad["goal"] = json!({"Sqrt":{"Variable":"x"}});
+    write(&inputs.join("b-sqrt.json"), &bad);
+    let out = p.join("run");
+    let v = run(
+        &[
+            "pipeline",
+            inputs.to_str().unwrap(),
+            "--lean-isolation",
+            "skip",
+            "--output",
+            out.to_str().unwrap(),
+        ],
+        0,
+    );
+    let summary = &v["result"]["summary"];
+    assert_eq!(summary["cases"], 2);
+    assert_eq!(summary["dsn_computable"], 1);
+    assert_eq!(summary["lean_checked"], 0);
+    assert_eq!(summary["blocked"][0]["id"], "SQRT");
+    assert_eq!(summary["blocked"][0]["blocked_at"], "ir_decode");
+    assert!(v["result"]["stage2"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .all(|s| s["formal_status"] == "UNKNOWN" && s["lean_checked"] == false));
+    for f in [
+        "stage1_results.json",
+        "stage2_results.json",
+        "summary.json",
+        "environment.json",
+        "artifact_manifest.json",
+    ] {
+        assert!(out.join(f).exists(), "{f}");
+    }
+    // Output directories are never reused.
+    run(
+        &[
+            "pipeline",
+            inputs.to_str().unwrap(),
+            "--lean-isolation",
+            "skip",
+            "--output",
+            out.to_str().unwrap(),
+        ],
+        8,
+    );
+    let v = run(
+        &[
+            "pipeline",
+            "usm",
+            "--lean-isolation",
+            "skip",
+            "--output",
+            p.join("usm").to_str().unwrap(),
+        ],
+        0,
+    );
+    assert_eq!(v["result"]["summary"]["dsn_computable"], 9);
+}
+#[test]
 fn evidence_integrity_and_stale_revision() {
     let p = temp();
     let o = fixtures::usm().remove(0).0;
