@@ -120,6 +120,24 @@ python3 verification/scripts/quantum_real_reference.py
 `QBlochVector`、`QExpectation`、`QEvaluateCandidate`、`QTomographyCheck`、`QEvaluate` は型付き引数を持つため
 `reason run --entry <name> --inputs request.json` でも呼び出せる。
 
+### 実行記録(2026-11-03)
+
+ReasonScript 0.5.6.9(Linux、ソースからインストール)で実行した。証跡は
+[`verification/evidence/quantum-real-20261103/`](../../verification/evidence/quantum-real-20261103/)。
+
+| 手順 | 結果 |
+| --- | --- |
+| `reason check` | 13 files passed |
+| `reason project-validate . --json` | 全フェーズ passed、決定性 3 回一致 |
+| `reason run --entry QuantumRealSelfCheck` | `true` |
+| `reason run --entry QuantumRealEvaluation` | `true` |
+| `reason run --entry QuantumRealReport` | 第 5 節の表と参照モデルが 7 候補すべてで一致 |
+| 既存の calculation(SelfCheck ほか 7 件) | すべて `true` |
+| `reason run --entry QRealify --inputs`(Φ⁻, 候補 7) | ⟨XX⟩ = −1 |
+| `cargo test --manifest-path mirp/Cargo.toml` | 全件 ok |
+
+プロジェクトが指定する ReasonScript の版は 0.5.6.5 で、今回使ったのは 0.5.6.9。指定版での受入はまだ行っていない。
+
 ## 7. 範囲と限界
 
 - 有界な試験集合での厳密検査であり、一般の d や全状態についての形式証明ではない。

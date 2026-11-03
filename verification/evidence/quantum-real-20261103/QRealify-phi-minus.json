@@ -1,0 +1,289 @@
+{
+  "status": "success",
+  "goal_reached": true,
+  "backend": "RuntimeReal",
+  "package": "MathLang_DSN",
+  "runtime_result": {
+    "schema_version": "reasonscript-integrated-runtime/0.1",
+    "status": "success",
+    "result": {
+      "type_name": "RealVector",
+      "fields": {
+        "values": [
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 0
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 0
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": -1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 0
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 0
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "denominator": 1,
+              "numerator": 0
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "type_name": "Rational",
+            "fields": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "real": true,
+        "status": "CALCULATED"
+      }
+    },
+    "calculations": {
+      "fn.mathlang_dsn.QuantumReal::QRealify": {
+        "type_name": "RealVector",
+        "fields": {
+          "values": [
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 0
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 0
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": -1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 0
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 0
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "denominator": 1,
+                "numerator": 0
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 0,
+                "denominator": 1
+              }
+            },
+            {
+              "type_name": "Rational",
+              "fields": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "real": true,
+          "status": "CALCULATED"
+        }
+      }
+    },
+    "console_output": [],
+    "tensor_metadata": [],
+    "tensor_trace": [],
+    "loop_trace": [],
+    "vision_trace": [],
+    "reasoning_trace": [],
+    "runtime_metrics": {
+      "loop_iterations": 1961,
+      "semantic_reasoning_steps": 0,
+      "builder_appends": 0,
+      "builder_full_copies": 0,
+      "relation_rows_scanned": 0,
+      "trace_bytes": 0,
+      "trace_mode": "off",
+      "vm_instruction_count": 17495,
+      "branch_count": 5847,
+      "ru_created_count": 0,
+      "ru_executed_count": 0,
+      "ru_verified_count": 0,
+      "ru_rejected_count": 0,
+      "ru_completed_count": 0,
+      "reason_structure_count": 0,
+      "spatial_object_count": 0,
+      "execution_state_count": 0,
+      "execution_state_transition_count": 0,
+      "execution_binding_count": 0,
+      "execution_relation_count": 0,
+      "structural_relation_count": 0,
+      "ru_allocated_bytes": 2,
+      "execution_state_bytes": 2,
+      "execution_binding_bytes": 2,
+      "execution_relation_bytes": 2,
+      "ruvmr": null,
+      "ru_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "execution_state_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "execution_binding_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "hypothesis_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "allocation_count": 17495,
+      "allocated_bytes": 279930,
+      "peak_live_bytes": 279930,
+      "allocation_metric_kind": "deterministic_managed_proxy"
+    },
+    "trace_diagnostics": []
+  },
+  "execution_mode": "integrated-rust",
+  "runtime_dispatch": {
+    "attempted": "rust_computation_vm",
+    "selected": "rust_computation_vm"
+  },
+  "entry": "QRealify"
+}

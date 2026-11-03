@@ -1,0 +1,386 @@
+{
+  "status": "success",
+  "goal_reached": true,
+  "backend": "RuntimeReal",
+  "package": "MathLang_DSN",
+  "runtime_result": {
+    "schema_version": "reasonscript-integrated-runtime/0.1",
+    "status": "success",
+    "result": {
+      "type_name": "Evaluation",
+      "fields": {
+        "tomography": [
+          {
+            "type_name": "TomographyCheck",
+            "fields": {
+              "reconstruction_ok": true,
+              "dimension": 2,
+              "purity_ok": true,
+              "states": 8
+            }
+          },
+          {
+            "type_name": "TomographyCheck",
+            "fields": {
+              "states": 8,
+              "purity_ok": true,
+              "dimension": 4,
+              "reconstruction_ok": true
+            }
+          }
+        ],
+        "recommended": "PAULI_TOMOGRAPHY",
+        "reports": [
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "score": 1,
+              "separating": false,
+              "ensemble_independent": false,
+              "knowledge_id": "QM_REAL_PART_PROJECTION",
+              "bounded": false,
+              "verdict": "REJECTED",
+              "failures": [
+                "RAY_INVARIANT: output changes under psi -> c psi",
+                "SEPARATING: two inequivalent rays share one output",
+                "BOUNDED: output leaves [-1, 1]",
+                "ENSEMBLE_INDEPENDENT: ensembles of one density matrix disagree"
+              ],
+              "id": 1,
+              "real": true,
+              "name": "REAL_PART",
+              "ray_invariant": false
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "id": 2,
+              "knowledge_id": "QM_REALIFICATION_ISOMORPHISM",
+              "real": true,
+              "ray_invariant": false,
+              "verdict": "REJECTED",
+              "separating": true,
+              "failures": [
+                "RAY_INVARIANT: output changes under psi -> c psi",
+                "BOUNDED: output leaves [-1, 1]",
+                "ENSEMBLE_INDEPENDENT: ensembles of one density matrix disagree"
+              ],
+              "name": "REALIFICATION",
+              "bounded": false,
+              "ensemble_independent": false,
+              "score": 2
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "failures": [
+                "SEPARATING: two inequivalent rays share one output"
+              ],
+              "score": 4,
+              "ensemble_independent": true,
+              "separating": false,
+              "id": 3,
+              "knowledge_id": "QM_BORN_RULE",
+              "real": true,
+              "bounded": true,
+              "name": "BORN_COMPUTATIONAL",
+              "verdict": "PARTIAL",
+              "ray_invariant": true
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "ensemble_independent": true,
+              "failures": [
+                "REAL: imaginary part remains for a non-Hermitian operator",
+                "SEPARATING: two inequivalent rays share one output"
+              ],
+              "knowledge_id": "QM_EXPECTATION_VALUE",
+              "id": 4,
+              "score": 3,
+              "separating": false,
+              "name": "RAW_EXPECTATION",
+              "verdict": "REJECTED",
+              "bounded": true,
+              "real": false,
+              "ray_invariant": true
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "bounded": true,
+              "name": "HERMITIAN_EXPECTATION",
+              "ensemble_independent": true,
+              "score": 4,
+              "knowledge_id": "QM_HERMITIAN_PART_EXPECTATION",
+              "real": true,
+              "ray_invariant": true,
+              "separating": false,
+              "verdict": "PARTIAL",
+              "failures": [
+                "SEPARATING: two inequivalent rays share one output"
+              ],
+              "id": 5
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "failures": [
+                "SEPARATING: two inequivalent rays share one output"
+              ],
+              "id": 6,
+              "ensemble_independent": true,
+              "ray_invariant": true,
+              "bounded": true,
+              "name": "LOCAL_BLOCH",
+              "separating": false,
+              "real": true,
+              "knowledge_id": "QM_REDUCED_BLOCH_VECTOR",
+              "verdict": "PARTIAL",
+              "score": 4
+            }
+          },
+          {
+            "type_name": "CandidateReport",
+            "fields": {
+              "bounded": true,
+              "verdict": "RECOMMENDED",
+              "ensemble_independent": true,
+              "real": true,
+              "id": 7,
+              "failures": [],
+              "ray_invariant": true,
+              "separating": true,
+              "score": 5,
+              "knowledge_id": "QM_PAULI_TOMOGRAPHY",
+              "name": "PAULI_TOMOGRAPHY"
+            }
+          }
+        ]
+      }
+    },
+    "calculations": {
+      "SelfCheck": true,
+      "PolynomialSelfCheck": true,
+      "KnowledgeSelfCheck": true,
+      "JuniorHighSelfCheck": true,
+      "MirpSelfCheck": true,
+      "QuadraticRuntimeSelfCheck": true,
+      "MirpImportedAdaptersSelfCheck": true,
+      "QuantumRealSelfCheck": true,
+      "QuantumRealEvaluation": true,
+      "QuantumRealReport": {
+        "type_name": "Evaluation",
+        "fields": {
+          "tomography": [
+            {
+              "type_name": "TomographyCheck",
+              "fields": {
+                "reconstruction_ok": true,
+                "dimension": 2,
+                "purity_ok": true,
+                "states": 8
+              }
+            },
+            {
+              "type_name": "TomographyCheck",
+              "fields": {
+                "states": 8,
+                "purity_ok": true,
+                "dimension": 4,
+                "reconstruction_ok": true
+              }
+            }
+          ],
+          "recommended": "PAULI_TOMOGRAPHY",
+          "reports": [
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "score": 1,
+                "separating": false,
+                "ensemble_independent": false,
+                "knowledge_id": "QM_REAL_PART_PROJECTION",
+                "bounded": false,
+                "verdict": "REJECTED",
+                "failures": [
+                  "RAY_INVARIANT: output changes under psi -> c psi",
+                  "SEPARATING: two inequivalent rays share one output",
+                  "BOUNDED: output leaves [-1, 1]",
+                  "ENSEMBLE_INDEPENDENT: ensembles of one density matrix disagree"
+                ],
+                "id": 1,
+                "real": true,
+                "name": "REAL_PART",
+                "ray_invariant": false
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "id": 2,
+                "knowledge_id": "QM_REALIFICATION_ISOMORPHISM",
+                "real": true,
+                "ray_invariant": false,
+                "verdict": "REJECTED",
+                "separating": true,
+                "failures": [
+                  "RAY_INVARIANT: output changes under psi -> c psi",
+                  "BOUNDED: output leaves [-1, 1]",
+                  "ENSEMBLE_INDEPENDENT: ensembles of one density matrix disagree"
+                ],
+                "name": "REALIFICATION",
+                "bounded": false,
+                "ensemble_independent": false,
+                "score": 2
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "failures": [
+                  "SEPARATING: two inequivalent rays share one output"
+                ],
+                "score": 4,
+                "ensemble_independent": true,
+                "separating": false,
+                "id": 3,
+                "knowledge_id": "QM_BORN_RULE",
+                "real": true,
+                "bounded": true,
+                "name": "BORN_COMPUTATIONAL",
+                "verdict": "PARTIAL",
+                "ray_invariant": true
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "ensemble_independent": true,
+                "failures": [
+                  "REAL: imaginary part remains for a non-Hermitian operator",
+                  "SEPARATING: two inequivalent rays share one output"
+                ],
+                "knowledge_id": "QM_EXPECTATION_VALUE",
+                "id": 4,
+                "score": 3,
+                "separating": false,
+                "name": "RAW_EXPECTATION",
+                "verdict": "REJECTED",
+                "bounded": true,
+                "real": false,
+                "ray_invariant": true
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "bounded": true,
+                "name": "HERMITIAN_EXPECTATION",
+                "ensemble_independent": true,
+                "score": 4,
+                "knowledge_id": "QM_HERMITIAN_PART_EXPECTATION",
+                "real": true,
+                "ray_invariant": true,
+                "separating": false,
+                "verdict": "PARTIAL",
+                "failures": [
+                  "SEPARATING: two inequivalent rays share one output"
+                ],
+                "id": 5
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "failures": [
+                  "SEPARATING: two inequivalent rays share one output"
+                ],
+                "id": 6,
+                "ensemble_independent": true,
+                "ray_invariant": true,
+                "bounded": true,
+                "name": "LOCAL_BLOCH",
+                "separating": false,
+                "real": true,
+                "knowledge_id": "QM_REDUCED_BLOCH_VECTOR",
+                "verdict": "PARTIAL",
+                "score": 4
+              }
+            },
+            {
+              "type_name": "CandidateReport",
+              "fields": {
+                "bounded": true,
+                "verdict": "RECOMMENDED",
+                "ensemble_independent": true,
+                "real": true,
+                "id": 7,
+                "failures": [],
+                "ray_invariant": true,
+                "separating": true,
+                "score": 5,
+                "knowledge_id": "QM_PAULI_TOMOGRAPHY",
+                "name": "PAULI_TOMOGRAPHY"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "console_output": [],
+    "tensor_metadata": [],
+    "tensor_trace": [],
+    "loop_trace": [],
+    "vision_trace": [],
+    "reasoning_trace": [],
+    "runtime_metrics": {
+      "loop_iterations": 235803,
+      "semantic_reasoning_steps": 0,
+      "builder_appends": 0,
+      "builder_full_copies": 0,
+      "relation_rows_scanned": 0,
+      "trace_bytes": 0,
+      "trace_mode": "off",
+      "vm_instruction_count": 1971936,
+      "branch_count": 549813,
+      "ru_created_count": 0,
+      "ru_executed_count": 0,
+      "ru_verified_count": 0,
+      "ru_rejected_count": 0,
+      "ru_completed_count": 0,
+      "reason_structure_count": 0,
+      "spatial_object_count": 0,
+      "execution_state_count": 0,
+      "execution_state_transition_count": 0,
+      "execution_binding_count": 0,
+      "execution_relation_count": 0,
+      "structural_relation_count": 0,
+      "ru_allocated_bytes": 2,
+      "execution_state_bytes": 2,
+      "execution_binding_bytes": 2,
+      "execution_relation_bytes": 2,
+      "ruvmr": null,
+      "ru_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "execution_state_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "execution_binding_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "hypothesis_sequence_hash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "allocation_count": 1971936,
+      "allocated_bytes": 31550986,
+      "peak_live_bytes": 31550986,
+      "allocation_metric_kind": "deterministic_managed_proxy"
+    },
+    "trace_diagnostics": []
+  },
+  "execution_mode": "integrated-rust",
+  "runtime_dispatch": {
+    "attempted": "rust_computation_vm",
+    "selected": "rust_computation_vm"
+  },
+  "entry": "QuantumRealReport"
+}

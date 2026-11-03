@@ -1,0 +1,62 @@
+{
+  "artifact_validation_passed": true,
+  "canonical_hashes": [
+    "6af431234e31beb6cc4a488a6862d0ab6face083670421d4cbd448b268feb592",
+    "6af431234e31beb6cc4a488a6862d0ab6face083670421d4cbd448b268feb592",
+    "6af431234e31beb6cc4a488a6862d0ab6face083670421d4cbd448b268feb592"
+  ],
+  "determinism_passed": true,
+  "diagnostics": [],
+  "golden_validation_passed": true,
+  "phases": [
+    {
+      "phase": "manifest_validation",
+      "status": "passed"
+    },
+    {
+      "count": 13,
+      "phase": "source_discovery",
+      "status": "passed"
+    },
+    {
+      "count": 13,
+      "phase": "source_check",
+      "status": "passed"
+    },
+    {
+      "phase": "semantic_validation",
+      "status": "passed"
+    },
+    {
+      "count": 1,
+      "phase": "runtime_execution",
+      "status": "passed"
+    },
+    {
+      "phase": "artifact_validation",
+      "status": "passed"
+    },
+    {
+      "phase": "golden_comparison",
+      "status": "passed"
+    },
+    {
+      "phase": "determinism_validation",
+      "repetitions": 3,
+      "status": "passed"
+    },
+    {
+      "phase": "project_local_tests",
+      "status": "passed"
+    }
+  ],
+  "project_root": "/home/user/MathLang_DSN",
+  "repository_workflow_required": false,
+  "runtime_cases_passed": 1,
+  "runtime_cases_total": 1,
+  "schema_version": "reasonscript-project-validation/0.1",
+  "sources_passed": 13,
+  "sources_total": 13,
+  "status": "passed",
+  "tests_passed": true
+}

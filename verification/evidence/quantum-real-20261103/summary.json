@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "reference_match": true,
+  "calculations": {
+    "SelfCheck": true,
+    "PolynomialSelfCheck": true,
+    "KnowledgeSelfCheck": true,
+    "JuniorHighSelfCheck": true,
+    "MirpSelfCheck": true,
+    "QuadraticRuntimeSelfCheck": true,
+    "MirpImportedAdaptersSelfCheck": true,
+    "QuantumRealSelfCheck": true,
+    "QuantumRealEvaluation": true
+  },
+  "recommended": "PAULI_TOMOGRAPHY"
+}

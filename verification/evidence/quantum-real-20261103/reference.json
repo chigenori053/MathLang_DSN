@@ -1,0 +1,98 @@
+{
+  "reports": [
+    {
+      "id": 1,
+      "real": true,
+      "ray_invariant": false,
+      "separating": false,
+      "bounded": false,
+      "ensemble_independent": false,
+      "score": 1,
+      "verdict": "REJECTED",
+      "name": "REAL_PART"
+    },
+    {
+      "id": 2,
+      "real": true,
+      "ray_invariant": false,
+      "separating": true,
+      "bounded": false,
+      "ensemble_independent": false,
+      "score": 2,
+      "verdict": "REJECTED",
+      "name": "REALIFICATION"
+    },
+    {
+      "id": 3,
+      "real": true,
+      "ray_invariant": true,
+      "separating": false,
+      "bounded": true,
+      "ensemble_independent": true,
+      "score": 4,
+      "verdict": "PARTIAL",
+      "name": "BORN_COMPUTATIONAL"
+    },
+    {
+      "id": 4,
+      "real": false,
+      "ray_invariant": true,
+      "separating": false,
+      "bounded": true,
+      "ensemble_independent": true,
+      "score": 3,
+      "verdict": "REJECTED",
+      "name": "RAW_EXPECTATION"
+    },
+    {
+      "id": 5,
+      "real": true,
+      "ray_invariant": true,
+      "separating": false,
+      "bounded": true,
+      "ensemble_independent": true,
+      "score": 4,
+      "verdict": "PARTIAL",
+      "name": "HERMITIAN_EXPECTATION"
+    },
+    {
+      "id": 6,
+      "real": true,
+      "ray_invariant": true,
+      "separating": false,
+      "bounded": true,
+      "ensemble_independent": true,
+      "score": 4,
+      "verdict": "PARTIAL",
+      "name": "LOCAL_BLOCH"
+    },
+    {
+      "id": 7,
+      "real": true,
+      "ray_invariant": true,
+      "separating": true,
+      "bounded": true,
+      "ensemble_independent": true,
+      "score": 5,
+      "verdict": "RECOMMENDED",
+      "name": "PAULI_TOMOGRAPHY"
+    }
+  ],
+  "tomography_reconstructs_qubit": true,
+  "tomography_reconstructs_two_qubit": true,
+  "bell_born_phi_plus": [
+    "1/2",
+    "0",
+    "0",
+    "1/2"
+  ],
+  "bell_born_phi_minus": [
+    "1/2",
+    "0",
+    "0",
+    "1/2"
+  ],
+  "bell_xx_phi_plus": "1",
+  "bell_xx_phi_minus": "-1",
+  "raw_expectation_counterexample_imag": 1.0
+}
