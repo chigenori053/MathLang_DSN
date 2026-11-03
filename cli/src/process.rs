@@ -36,8 +36,9 @@ pub fn capture(command: &mut Command, limit: Duration) -> Result<Output> {
     let mut timed_out = false;
     let status = loop {
         match child.try_wait() {
-            Ok(Some(s)) => break s,
-            Ok(None) if start.elapsed() < limit => std::thread::sleep(Duration::from_millis(20)),
+            // A reaped parent can leave descendants holding the output pipes.
+            Ok(Some(s)) if out.is_finished() && err.is_finished() => break s,
+            Ok(_) if start.elapsed() < limit => std::thread::sleep(Duration::from_millis(20)),
             result => {
                 timed_out = result.is_ok();
                 #[cfg(unix)]
@@ -79,6 +80,33 @@ pub fn capture(command: &mut Command, limit: Duration) -> Result<Output> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn captures_output_after_successful_exit() {
+        let output = capture(
+            Command::new("/bin/sh").args(["-c", "printf stdout; printf stderr >&2"]),
+            Duration::from_secs(2),
+        )
+        .unwrap();
+        assert!(output.status.success());
+        assert_eq!(output.stdout, b"stdout");
+        assert_eq!(output.stderr, b"stderr");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn deadline_includes_descendant_output_after_parent_exit() {
+        for script in ["sleep 5 >&1 2>/dev/null &", "sleep 5 >/dev/null 2>&2 &"] {
+            let start = Instant::now();
+            let error = capture(
+                Command::new("/bin/sh").args(["-c", script]),
+                Duration::from_millis(100),
+            )
+            .unwrap_err();
+            assert_eq!(error.exit, 6);
+            assert!(start.elapsed() < Duration::from_secs(2));
+        }
+    }
+
     #[test]
     fn deadline_kills_process_group() {
         let start = Instant::now();

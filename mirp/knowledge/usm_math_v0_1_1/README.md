@@ -23,15 +23,11 @@
 ## 検証
 
 Lean 4.35.0 / Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`。
-本プロジェクトと、隣接する `USM_Math_Verification` の証明を使用する。
+配布パック内の `formal/` に証明ソースと固定済み依存manifestを収録しています。
+Leanビルドと公理監査の手順は [配布パックの再確認](REPLAY.ja.md) を参照してください。
 
-```sh
-./verify.sh
-/Users/chigenori/development/MathLang_DSN/cli/target/debug/mathlang knowledge inspect catalogue/all_with_legacy.json --format json > verification/native_knowledge_inspect.json
-python3 verification/validate_catalogue.py
-```
-
-`checks/`は既存のMathLang_DSN登録・保存・planner・GKE APIを呼ぶ回帰確認用コード。新しい推論器・学習器・証明探索器は実装していない。Rust依存は `checks/Cargo.lock` に固定し、offlineで構築する。
+登録・保存・planner・GKE APIの回帰確認用コードは、元のMRA_Testリポジトリの
+`USM_Math_Knowledge/checks/` にあります。配布パックには含まれません。
 
 ## 利用範囲
 
