@@ -93,7 +93,7 @@ fn execute(out: PathBuf) -> Result<(), String> {
             let work = out
                 .join("lean_logs")
                 .join(format!("repeat-{repeat}-{}", o.id));
-            let t = translate(o, *recipe, *negation)?;
+            let t = translate(o, recipe.clone(), *negation)?;
             let e = VerificationEvidence::verify(o, &t, &project, &work)?;
             let path = e.persist(
                 &out.join("registry"),

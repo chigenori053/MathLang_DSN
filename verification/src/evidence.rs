@@ -64,8 +64,11 @@ impl VerificationEvidence {
                 .translation
                 .as_ref()
                 .ok_or("missing translation evidence")?;
-            let rebuilt =
-                lean::translate(o, self.recipe.ok_or("missing proof recipe")?, t.refutation)?;
+            let rebuilt = lean::translate(
+                o,
+                self.recipe.clone().ok_or("missing proof recipe")?,
+                t.refutation,
+            )?;
             if rebuilt.record != *t {
                 return Err("translation contract failed independent reconstruction".into());
             }
@@ -112,7 +115,18 @@ impl VerificationEvidence {
         project: &Path,
         work: &Path,
     ) -> Result<Self, String> {
-        let r = lean::run(o, t, project, work)?;
+        Self::verify_with_knowledge(o, t, project, work, None)
+    }
+    /// `verify` for translations whose recipe may be a Knowledge proof; `knowledge_root` is the
+    /// Knowledge pack directory the runner compiles the referenced module from.
+    pub fn verify_with_knowledge(
+        o: &ProofObligation,
+        t: &Translation,
+        project: &Path,
+        work: &Path,
+        knowledge_root: Option<&Path>,
+    ) -> Result<Self, String> {
+        let r = lean::run_with_knowledge(o, t, project, work, knowledge_root)?;
         let mut e = Self {
             evidence_id: String::new(),
             model_id: o.model_id.clone(),
@@ -140,7 +154,7 @@ impl VerificationEvidence {
                 ),
             ]),
             translation: Some(t.record.clone()),
-            recipe: Some(t.recipe),
+            recipe: Some(t.recipe.clone()),
             diagnostics: r.diagnostics.clone(),
         };
         e.seal();

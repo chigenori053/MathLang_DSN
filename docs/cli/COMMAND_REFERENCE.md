@@ -49,6 +49,12 @@ impactは読み取り専用の現状分析。更新操作や仮想revisionの登
 
 Leanの依存は `verification/lean/.lake/packages`（manifest固定のrevision）を使う。
 
+### Knowledge定理による証明
+
+段階1は、DSN計画が検索したKnowledgeのうち、`activation_metadata.formal_status=KERNEL_CHECKED` で、定理名（`formal_statement.constant`）と `formal/` 配下のソース（`formal_source.bundle_path`）を持ち、そのsha256がunit記録とパックの `package_manifest.json` の両方に一致するものを `knowledge_proofs` に記録する。条件を満たさない候補は `knowledge_proof_rejections` に理由を残す。パックは `--knowledge` のカタログを含むディレクトリ（`package_manifest.json` と `formal/` を持つ）から特定する。
+
+段階2は、要求された証明手順の結果がPROVED/REFUTEDでなく、反証要求でもない場合に限り、`knowledge_proofs` を順に試す。生成Leanは `public import <module>` と `exact <constant>` だけで、名前は検査済みの識別子に限る。runnerは対象モジュールとパック内のimport閉包をmanifestのハッシュと照合し、隔離したstaging内でソースからコンパイルする（ビルド済みoleanは信頼しない）。Knowledgeモジュール自体がコンパイルできない場合はERRORで、生成証明の判定にはしない。すべての試行は `attempts`、成功したKnowledgeは `proved_by_knowledge` に記録する。sealedでは各試行がEvidenceになり、Evidence照合は記録された証明手順（パックmanifestのハッシュを含む）から翻訳を再構築する。
+
 Knowledge検索は、`conclusion` が型付きMathExpr IRのJSONであるunitだけを対象とする。目標と結論をそれぞれ `ir::normalized` で正規化し、束縛変数名を束縛の深さで置き換えて構造比較する（α同値は一致、自由変数名・束縛順序・型が違えば不一致）。JSONの空白やキー順の差は影響しない。
 legacyの29件は `validated result of ...` という説明文の操作RULEで、数式目標の検索キーにはならない。Lean精緻化命題の記録（`Lean4.ElaboratedProposition.v1`）も検索キーではない。検索一致は候補であり、formal_statusは常にUNKNOWNのまま。PROVEDはLean kernelのEvidenceだけが与える。
 

@@ -39,6 +39,43 @@ done
 exec "$@"
 '''
 
+IMPORT = re.compile(r'^\s*(?:public\s+)?import\s+([A-Za-z_][A-Za-z0-9_.\']*)\s*$', re.M)
+
+def knowledge_closure(root, module, manifest_sha):
+    """Pack-local import closure of `module` in dependency order, each verified against the
+    pinned manifest. Imports outside the pack must be Mathlib (resolved from built packages)."""
+    if root is None or manifest_sha is None:
+        raise RuntimeError('Knowledge module requires --knowledge-root and --knowledge-manifest-sha256')
+    manifest_path = root / 'package_manifest.json'
+    if digest(manifest_path) != manifest_sha:
+        raise RuntimeError('Knowledge pack manifest hash mismatch')
+    files = json.loads(manifest_path.read_text())['files']
+    order, seen, active = [], set(), set()
+    def visit(name):
+        if name in seen:
+            return
+        if name in active:
+            raise RuntimeError('Knowledge import cycle at ' + name)
+        rel = name.replace('.', '/') + '.lean'
+        path = root / 'formal' / rel
+        if not path.is_file():
+            if name == 'Mathlib' or name.startswith('Mathlib.'):
+                return
+            raise RuntimeError('Knowledge import is neither in the pack nor Mathlib: ' + name)
+        expected = files.get('formal/' + rel)
+        if expected is None or digest(path) != expected:
+            raise RuntimeError('Knowledge source does not match pack manifest: formal/' + rel)
+        active.add(name)
+        for dep in IMPORT.findall(path.read_text()):
+            visit(dep)
+        active.discard(name)
+        seen.add(name)
+        order.append((name, rel, expected))
+    visit(module)
+    if not order or order[-1][0] != module:
+        raise RuntimeError('Knowledge module not found in pack: ' + module)
+    return order
+
 def digest(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
@@ -47,6 +84,11 @@ def main():
     parser.add_argument('--project', type=Path, required=True)
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--isolation', choices=['sandbox-exec', 'linux-unsealed'], default='sandbox-exec')
+    # Knowledge recipe: compile `--knowledge-module` and its pack-local imports from the pack's
+    # sources inside staging. Every file must match the pinned package_manifest.json.
+    parser.add_argument('--knowledge-root', type=Path)
+    parser.add_argument('--knowledge-module')
+    parser.add_argument('--knowledge-manifest-sha256')
     args = parser.parse_args()
     unsealed = args.isolation == 'linux-unsealed'
     project, source = args.project.resolve(), args.source.resolve()
@@ -55,7 +97,7 @@ def main():
                   timed_out=False, peak_rss_bytes=0, sandboxed=False, toolchain_verified=False,
                   axioms=[], lean_version='', mathlib_revision='', source_hash=digest(source),
                   foundation_hash=digest(project / 'Foundation.lean'), independent_hash=digest(project / 'Independent.lean'),
-                  isolation=args.isolation, isolation_diagnostics=[])
+                  isolation=args.isolation, isolation_diagnostics=[], knowledge_modules=[])
     try:
         manifest = json.loads((project / 'lake-manifest.json').read_text())
         if (project / 'lean-toolchain').read_text().strip() != 'leanprover/lean4:v' + LEAN:
@@ -87,6 +129,18 @@ def main():
             shutil.copyfile(project / 'Foundation.lean', staging / 'Foundation.lean')
             shutil.copyfile(source, staging / 'Generated.lean')
             shutil.copyfile(project / 'Independent.lean', staging / 'Independent.lean')
+            modules = ['Foundation', 'Independent']
+            if args.knowledge_module:
+                closure = knowledge_closure(args.knowledge_root, args.knowledge_module, args.knowledge_manifest_sha256)
+                for name, rel, sha in closure:
+                    target = staging / rel
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(args.knowledge_root / 'formal' / rel, target)
+                    if digest(target) != sha:
+                        raise RuntimeError('Knowledge source changed while staging: ' + rel)
+                    modules.append(name)
+                result['knowledge_modules'] = [dict(module=n, source='formal/' + r, sha256=h) for n, r, h in closure]
+            modules.append('Generated')
             profile = staging / 'sandbox.sb'
             # SBPL string literals are JSON-compatible for these absolute paths.
             profile.write_text('(version 1)\n(allow default)\n(deny network*)\n'
@@ -99,9 +153,10 @@ def main():
             env['LEAN_SRC_PATH'] = ''
             all_stdout, all_stderr = [], []
             deadline = time.monotonic() + 300
-            for module in ['Foundation', 'Independent', 'Generated']:
+            for module in modules:
+                path = module.replace('.', '/')
                 lean_cmd = [str(lean), '-j', '1', '-M', '1536', '-T', '300',
-                            '-o', str(staging / (module + '.olean')), str(staging / (module + '.lean'))]
+                            '-o', str(staging / (path + '.olean')), str(staging / (path + '.lean'))]
                 if unsealed:
                     # Inside private namespaces: keep staging writable, remount every other writable
                     # mount read-only, report anything that stayed writable, then exec lean.
@@ -150,6 +205,11 @@ def main():
                 # Unsealed runs are never reported as sandboxed, so they cannot become Evidence.
                 result['sandboxed'] = not unsealed
                 if result['exit_code'] != 0:
+                    if module not in ('Foundation', 'Independent', 'Generated'):
+                        # A pinned Knowledge module that does not compile is an infrastructure
+                        # failure, never a verdict about the generated proof.
+                        result['stdout'], result['stderr'] = ''.join(all_stdout), ''.join(all_stderr)
+                        raise RuntimeError('Knowledge module failed to compile: ' + module)
                     break
                 result['checked_modules'].append(module)
             result['stdout'], result['stderr'] = ''.join(all_stdout), ''.join(all_stderr)

@@ -18,7 +18,48 @@ pub struct TranslationRecord {
     pub expected_statement: String,
     pub refutation: bool,
 }
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+/// A kernel-checked Knowledge theorem used as the whole proof (`exact <constant>`).
+/// `pack_manifest_sha256` pins the Knowledge pack; the runner compiles the module and its
+/// imports from that pack's sources (each checked against the manifest) inside the sandbox.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct KnowledgeProof {
+    pub knowledge_id: String,
+    pub constant: String,
+    pub module: String,
+    pub pack_manifest_sha256: String,
+}
+fn lean_name(s: &str) -> bool {
+    !s.is_empty()
+        && s.split('.').all(|part| {
+            let mut c = part.chars();
+            c.next()
+                .is_some_and(|f| f.is_ascii_alphabetic() || f == '_')
+                && c.all(|x| x.is_ascii_alphanumeric() || x == '_' || x == '\'')
+        })
+}
+impl KnowledgeProof {
+    pub fn validate(&self) -> Result<(), String> {
+        if !lean_name(&self.constant)
+            || !lean_name(&self.module)
+            || self.module.starts_with("Mathlib")
+            || ["Foundation", "Independent", "Generated"].contains(&self.module.as_str())
+            || self.pack_manifest_sha256.len() != 64
+            || !self
+                .pack_manifest_sha256
+                .chars()
+                .all(|c| c.is_ascii_hexdigit())
+            || self.knowledge_id.is_empty()
+        {
+            return Err(format!(
+                "invalid Knowledge proof reference: {}",
+                self.knowledge_id
+            ));
+        }
+        Ok(())
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Recipe {
     Auto,
     Reflexivity,
@@ -28,6 +69,7 @@ pub enum Recipe {
     PhaseObservation,
     PhaseCollision,
     Incomplete,
+    Knowledge(KnowledgeProof),
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Translation {
@@ -246,7 +288,9 @@ pub fn translate(
     refutation: bool,
 ) -> Result<Translation, String> {
     let goal = statement(o, refutation)?;
-    let proof=match recipe {
+    let mut extra_import = String::new();
+    let knowledge_proof;
+    let proof=match &recipe {
         Recipe::Reflexivity=>"by\n  intros\n  rfl",
         Recipe::Auto=>"by\n  simp_all",
         Recipe::UnitaryNorm=>"by\n  exact Foundation.unitary_norm",
@@ -255,6 +299,15 @@ pub fn translate(
         Recipe::PhaseCollision=>"by\n  exact Foundation.phase_collision",
         Recipe::PhaseObservation=>"by\n  exact Foundation.phase_observation",
         Recipe::Incomplete=>"by\n  skip",
+        Recipe::Knowledge(k)=>{
+            k.validate()?;
+            if refutation {
+                return Err("a Knowledge proof establishes the stated goal; refutation is unsupported".into());
+            }
+            extra_import = format!("public import {}\n", k.module);
+            knowledge_proof = format!("by\n  exact {}", k.constant);
+            knowledge_proof.as_str()
+        }
     };
     let contract = match o.id.as_str() {
         "MV-01" => Some("mv01"),
@@ -268,7 +321,7 @@ pub fn translate(
     let independent = contract.map_or(String::new(), |name| {
         format!("example : Independent.{name} := Generated.target\n")
     });
-    let source=format!("module\npublic import Foundation\npublic import Independent\nset_option autoImplicit false\nset_option warningAsError true\nset_option maxRecDepth 1024\nset_option maxHeartbeats 2000000\nnoncomputable section\nopen scoped ComplexOrder\nnamespace Generated\npublic theorem target : {goal} := {proof}\nset_option pp.proofs true in\n#print Generated.target\n#print axioms Generated.target\n{independent}end Generated\n");
+    let source=format!("module\npublic import Foundation\npublic import Independent\n{extra_import}set_option autoImplicit false\nset_option warningAsError true\nset_option maxRecDepth 1024\nset_option maxHeartbeats 2000000\nnoncomputable section\nopen scoped ComplexOrder\nnamespace Generated\npublic theorem target : {goal} := {proof}\nset_option pp.proofs true in\n#print Generated.target\n#print axioms Generated.target\n{independent}end Generated\n");
     let record = TranslationRecord {
         source_ir_hash: o.source_hash(),
         source_model_revision: o.model_revision,
@@ -314,7 +367,7 @@ pub fn translate(
 }
 /// Rebuild from typed input; caller-supplied hashes, statements and revision flags are not trusted.
 pub fn audit_translation(o: &ProofObligation, t: &Translation) -> Result<(), String> {
-    let expected = translate(o, t.recipe, t.record.refutation)?;
+    let expected = translate(o, t.recipe.clone(), t.record.refutation)?;
     if expected.source != t.source || expected.record != t.record {
         return Err("translation/revision/assumption mismatch".into());
     }
@@ -365,11 +418,38 @@ impl KernelRun {
         }
     }
 }
+/// Runner arguments for a Knowledge recipe; empty for closed recipes.
+fn knowledge_args(t: &Translation, knowledge_root: Option<&Path>) -> Result<Vec<String>, String> {
+    let Recipe::Knowledge(k) = &t.recipe else {
+        return Ok(vec![]);
+    };
+    k.validate()?;
+    let root = knowledge_root.ok_or("Knowledge recipe requires the Knowledge pack directory")?;
+    Ok(vec![
+        "--knowledge-root".into(),
+        root.to_string_lossy().into_owned(),
+        "--knowledge-module".into(),
+        k.module.clone(),
+        "--knowledge-manifest-sha256".into(),
+        k.pack_manifest_sha256.clone(),
+    ])
+}
 pub fn run(
     o: &ProofObligation,
     t: &Translation,
     project: &Path,
     out: &Path,
+) -> Result<KernelRun, String> {
+    run_with_knowledge(o, t, project, out, None)
+}
+/// Same as `run`; `knowledge_root` is the Knowledge pack directory (holding
+/// `package_manifest.json` and `formal/`) required by a Knowledge recipe.
+pub fn run_with_knowledge(
+    o: &ProofObligation,
+    t: &Translation,
+    project: &Path,
+    out: &Path,
+    knowledge_root: Option<&Path>,
 ) -> Result<KernelRun, String> {
     audit_translation(o, t)?;
     std::fs::create_dir_all(out).map_err(|e| e.to_string())?;
@@ -382,6 +462,7 @@ pub fn run(
         .arg(project)
         .arg("--source")
         .arg(&source)
+        .args(knowledge_args(t, knowledge_root)?)
         .output();
     let mut r = match output {
         Err(e) => KernelRun::infrastructure_error(&format!("runner launch: {e}")),
@@ -481,7 +562,12 @@ pub struct BuildCheck {
 }
 
 /// Run the Lean kernel on a translated module with the explicit Linux unsealed isolation mode.
-pub fn build_check(t: &Translation, project: &Path, out: &Path) -> Result<BuildCheck, String> {
+pub fn build_check(
+    t: &Translation,
+    project: &Path,
+    out: &Path,
+    knowledge_root: Option<&Path>,
+) -> Result<BuildCheck, String> {
     std::fs::create_dir_all(out).map_err(|e| e.to_string())?;
     let source = out.join("Generated.lean");
     std::fs::write(&source, &t.source).map_err(|e| e.to_string())?;
@@ -494,6 +580,7 @@ pub fn build_check(t: &Translation, project: &Path, out: &Path) -> Result<BuildC
         .arg(&source)
         .arg("--isolation")
         .arg("linux-unsealed")
+        .args(knowledge_args(t, knowledge_root)?)
         .output()
         .map_err(|e| format!("runner launch: {e}"))?;
     let raw: serde_json::Value = serde_json::from_slice(&output.stdout)

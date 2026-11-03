@@ -47,6 +47,9 @@ pub enum UnknownReason {
     RefutationEstablished,
     MissingEvidence,
     StaleRevision,
+    /// No Knowledge statement matched this goal and it is not an assumption. This says nothing
+    /// about whether the goal needs extra premises (use MissingPremise only when that is known).
+    NoMatchingKnowledge,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Dependency {

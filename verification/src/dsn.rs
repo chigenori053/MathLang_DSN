@@ -198,7 +198,8 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
             _ => {
                 p.nodes[i].reasons.push(UnknownReason::UnprovedLemma);
                 if p.nodes[i].source_knowledge.is_empty() {
-                    p.nodes[i].reasons.push(UnknownReason::MissingPremise);
+                    // Not matching any Knowledge is not evidence that a premise is missing.
+                    p.nodes[i].reasons.push(UnknownReason::NoMatchingKnowledge);
                     p.nodes[i].candidate_status = CandidateStatus::Blocked;
                 }
             }
@@ -240,12 +241,18 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
         }
         Ok(())
     }
-    let candidates: Vec<_> = p
+    let mut candidates: Vec<String> = vec![];
+    for id in p
         .nodes
         .iter()
         .flat_map(|n| n.source_knowledge.iter().map(|d| d.id.clone()))
-        .collect();
-    for dep in o.required_lemmas.iter().chain(candidates.iter()) {
+        .chain(o.required_lemmas.iter().cloned())
+    {
+        if !candidates.contains(&id) {
+            candidates.push(id);
+        }
+    }
+    for dep in &candidates {
         if let Some(unit) = space.get(dep) {
             retrieve(
                 dep,
@@ -253,11 +260,15 @@ pub fn plan(o: &ProofObligation, space: &KnowledgeSpace, max_nodes: usize) -> Re
                 &mut p.lemma_graph,
                 max_nodes.saturating_sub(p.nodes.len()),
             )?;
-            p.nodes[0].source_knowledge.push(Dependency {
-                id: dep.clone(),
-                revision: 1,
-                content_hash: unit.occurrence_id(),
-            });
+            // The root lists each retrieved or required lemma once, even when the root goal
+            // itself matched it during expansion.
+            if !p.nodes[0].source_knowledge.iter().any(|d| d.id == *dep) {
+                p.nodes[0].source_knowledge.push(Dependency {
+                    id: dep.clone(),
+                    revision: 1,
+                    content_hash: unit.occurrence_id(),
+                });
+            }
             let edge = format!("knowledge:{dep}");
             if !p.nodes[0].children.contains(&edge) {
                 p.nodes[0].children.push(edge);

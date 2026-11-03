@@ -432,7 +432,7 @@ fn verify(
         let repeats = if input == "usm" { 3 } else { 1 };
         for repeat in 0..repeats {
             for (i, r) in cases.iter().enumerate() {
-                let t = lean::translate(&r.obligation, r.recipe, r.refutation)
+                let t = lean::translate(&r.obligation, r.recipe.clone(), r.refutation)
                     .map_err(resource_error)?;
                 let proof = VerificationEvidence::verify(
                     &r.obligation,
@@ -688,7 +688,7 @@ fn pipeline(
     knowledge: Option<&Path>,
     isolation: LeanIsolation,
 ) -> Result<()> {
-    use mathlang_verification::pipeline::{self, Isolation, Stage2};
+    use mathlang_verification::pipeline::{self, Attempt, Isolation, Stage2};
     let (space, knowledge_source) = knowledge_space(knowledge)?;
     let cases = pipeline_inputs(input)?;
     let mode = match isolation {
@@ -718,16 +718,18 @@ fn pipeline(
         &json!({"cli_version":env!("CARGO_PKG_VERSION"),"binary_sha256":hash_bytes(&fs::read(binary).map_err(|x|Error::new(8,x))?),"lean":lean::LEAN_VERSION,"mathlib_revision":lean::MATHLIB_REVISION,"knowledge":knowledge_summary(&space,knowledge_source),"lean_isolation":mode}),
     )?;
     save(&out.join("source_manifest.json"), &source_manifest()?)?;
-    // Stage 1: DSN path.
+    // Stage 1: DSN path. Knowledge proof references resolve against the catalogue's pack.
+    let pack = knowledge.and_then(pipeline::KnowledgePack::locate);
     let stage1: Vec<_> = cases
         .iter()
-        .map(|(id, raw)| pipeline::stage1(id, raw, &space, 1000))
+        .map(|(id, raw)| pipeline::stage1_with_pack(id, raw, &space, pack.as_ref(), 1000))
         .collect();
     save(&out.join("stage1_results.json"), &stage1)?;
     let outcome = (|| {
         // Stage 2: Lean only for DSN-computable cases.
         let mut stage2 = vec![];
         let project = Path::new(ROOT).join("verification/lean");
+        let root = pack.as_ref().map(|p| p.root.as_path());
         for (i, s) in stage1.iter().enumerate() {
             let skipped = |note: &str| Stage2 {
                 id: s.id.clone(),
@@ -737,57 +739,106 @@ fn pipeline(
                 build_check: None,
                 evidence_id: None,
                 note: note.into(),
+                attempts: vec![],
+                proved_by_knowledge: None,
             };
             let (Some(t), Some(o)) = (&s.translation, &s.obligation) else {
                 stage2.push(skipped("not DSN-computable; Lean not run"));
                 continue;
             };
-            let work = out.join(format!(
+            let Some(mode) = mode else {
+                stage2.push(skipped("Lean stage skipped by --lean-isolation skip"));
+                continue;
+            };
+            let base = format!(
                 "lean/{i}-{}",
                 s.id.replace(
                     |c: char| !c.is_ascii_alphanumeric() && c != '-' && c != '_',
                     "_"
                 )
-            ));
-            match mode {
-                None => stage2.push(skipped("Lean stage skipped by --lean-isolation skip")),
-                Some(Isolation::Sealed) => {
-                    let proof = VerificationEvidence::verify(o, t, &project, &work)
-                        .map_err(|x| Error::new(5, x))?;
-                    proof
-                        .persist(
-                            &out.join("registry"),
-                            o,
-                            Some(&t.source),
-                            Some(include_bytes!("../../verification/lean/Foundation.lean")),
-                        )
-                        .map_err(|x| Error::new(8, x))?;
-                    stage2.push(Stage2 {
-                        id: s.id.clone(),
-                        lean_checked: true,
-                        isolation: mode,
-                        formal_status: proof.result(),
-                        build_check: None,
-                        evidence_id: Some(proof.evidence_id().into()),
-                        note: "sealed VerificationEvidence".into(),
-                    });
+            );
+            // One Lean run; returns (outcome, evidence_id).
+            let attempt = |t: &lean::Translation,
+                           work: &Path|
+             -> Result<(FormalStatus, Option<String>)> {
+                match mode {
+                    Isolation::Sealed => {
+                        let proof =
+                            VerificationEvidence::verify_with_knowledge(o, t, &project, work, root)
+                                .map_err(|x| Error::new(5, x))?;
+                        proof
+                            .persist(
+                                &out.join("registry"),
+                                o,
+                                Some(&t.source),
+                                Some(include_bytes!("../../verification/lean/Foundation.lean")),
+                            )
+                            .map_err(|x| Error::new(8, x))?;
+                        Ok((proof.result(), Some(proof.evidence_id().into())))
+                    }
+                    Isolation::LinuxUnsealed => {
+                        let check = lean::build_check(t, &project, work, root)
+                            .map_err(|x| Error::new(5, x))?;
+                        Ok((check.kernel_outcome, None))
+                    }
                 }
-                Some(Isolation::LinuxUnsealed) => {
-                    let check =
-                        lean::build_check(t, &project, &work).map_err(|x| Error::new(5, x))?;
-                    stage2.push(Stage2 {
-                        id: s.id.clone(),
-                        lean_checked: true,
-                        isolation: mode,
-                        formal_status: FormalStatus::Unknown,
-                        build_check: Some(check.kernel_outcome),
-                        evidence_id: None,
-                        note:
-                            "unsealed Linux build check; not Evidence, formal_status stays UNKNOWN"
-                                .into(),
+            };
+            let mut attempts = vec![];
+            let work = out.join(&base);
+            let (first, first_id) = attempt(t, &work)?;
+            attempts.push(Attempt {
+                recipe: t.recipe.clone(),
+                lean_module_hash: t.record.lean_module_hash.clone(),
+                outcome: first,
+                evidence_id: first_id.clone(),
+                work: base.clone(),
+            });
+            let (mut best, mut best_id, mut proved_by) = (first, first_id, None);
+            // Knowledge proofs are tried only when the requested recipe did not settle the goal.
+            if !matches!(first, FormalStatus::Proved | FormalStatus::Refuted) && !s.refutation {
+                for (k, kp) in s.knowledge_proofs.iter().enumerate() {
+                    let kt = lean::translate(o, lean::Recipe::Knowledge(kp.clone()), false)
+                        .map_err(resource_error)?;
+                    let kbase = format!("{base}-knowledge-{k}");
+                    let (status, id) = attempt(&kt, &out.join(&kbase))?;
+                    attempts.push(Attempt {
+                        recipe: kt.recipe.clone(),
+                        lean_module_hash: kt.record.lean_module_hash.clone(),
+                        outcome: status,
+                        evidence_id: id.clone(),
+                        work: kbase,
                     });
+                    if status == FormalStatus::Proved {
+                        (best, best_id, proved_by) = (status, id, Some(kp.knowledge_id.clone()));
+                        break;
+                    }
                 }
             }
+            stage2.push(match mode {
+                Isolation::Sealed => Stage2 {
+                    id: s.id.clone(),
+                    lean_checked: true,
+                    isolation: Some(mode),
+                    formal_status: best,
+                    build_check: None,
+                    evidence_id: best_id,
+                    note: "sealed VerificationEvidence".into(),
+                    attempts,
+                    proved_by_knowledge: proved_by,
+                },
+                Isolation::LinuxUnsealed => Stage2 {
+                    id: s.id.clone(),
+                    lean_checked: true,
+                    isolation: Some(mode),
+                    formal_status: FormalStatus::Unknown,
+                    build_check: Some(best),
+                    evidence_id: None,
+                    note: "unsealed Linux build check; not Evidence, formal_status stays UNKNOWN"
+                        .into(),
+                    attempts,
+                    proved_by_knowledge: proved_by,
+                },
+            });
         }
         save(&out.join("stage2_results.json"), &stage2)?;
         let count = |f: &dyn Fn(&Stage2) -> bool| stage2.iter().filter(|s| f(s)).count();
@@ -802,7 +853,7 @@ fn pipeline(
         let summary = json!({"cases":stage1.len(),"dsn_computable":stage1.iter().filter(|s|s.dsn_computable).count(),
             "blocked":stage1.iter().filter_map(|s|s.blocked_at.map(|b|json!({"id":s.id,"blocked_at":b,"error":s.steps.last().and_then(|x|x.error.clone())}))).collect::<Vec<_>>(),
             "lean_checked":count(&|s|s.lean_checked),"lean_isolation":mode,"sealed":mode==Some(Isolation::Sealed),
-            "lean_outcomes":outcomes,
+            "lean_outcomes":outcomes,"proved_by_knowledge":stage2.iter().filter(|s|s.proved_by_knowledge.is_some()).count(),"knowledge_pack":pack,
             "note":"Stage 2 runs only for DSN-computable cases. Unsealed build checks never set formal_status; only sealed Evidence does."});
         save(&out.join("summary.json"), &summary)?;
         e["result"] = json!({"summary":summary,"stage1":stage1,"stage2":stage2});

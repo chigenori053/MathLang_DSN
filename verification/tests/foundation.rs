@@ -273,7 +273,12 @@ fn dp_01_03_06_07_10_structural_planning() {
     assert!(p
         .nodes
         .iter()
-        .any(|n| n.reasons.contains(&UnknownReason::MissingPremise)));
+        .any(|n| n.reasons.contains(&UnknownReason::NoMatchingKnowledge)));
+    // An unmatched leaf is not diagnosed as needing extra premises.
+    assert!(p
+        .nodes
+        .iter()
+        .all(|n| !n.reasons.contains(&UnknownReason::MissingPremise)));
     for _ in 0..3 {
         assert_eq!(p, dsn::plan(&o, &k, 1000).unwrap())
     }
@@ -652,6 +657,13 @@ fn dp_13_usm_knowledge_pack_is_retrievable() {
             plan.nodes[0].source_knowledge.iter().any(|d| d.id == id),
             "{id} not retrieved"
         );
+        let ids: Vec<_> = plan.nodes[0]
+            .source_knowledge
+            .iter()
+            .map(|d| &d.id)
+            .collect();
+        let unique: std::collections::BTreeSet<_> = ids.iter().collect();
+        assert_eq!(ids.len(), unique.len(), "duplicate candidates for {id}");
         assert!(plan
             .nodes
             .iter()
@@ -701,4 +713,136 @@ fn pl_01_stage1_classifies_dsn_computability() {
     // Planning budget: blocked at the DSN plan.
     let s = stage1("budget", &raw, &k, 1);
     assert_eq!(s.blocked_at, Some(Step::DsnPlan));
+}
+#[test]
+fn pl_02_knowledge_recipe_is_closed_and_pinned() {
+    use mathlang_verification::lean::KnowledgeProof;
+    let o = simple("k", MathExpr::eq(nat(1), nat(1)), Context::default());
+    let kp = KnowledgeProof {
+        knowledge_id: "IR_RET_X".into(),
+        constant: "USMMathKnowledge.IR_RET_X".into(),
+        module: "USMMathKnowledge.Anchors".into(),
+        pack_manifest_sha256: "a".repeat(64),
+    };
+    let t = translate(&o, Recipe::Knowledge(kp.clone()), false).unwrap();
+    assert!(t
+        .source
+        .contains("public import USMMathKnowledge.Anchors\n"));
+    assert!(t
+        .source
+        .contains(":= by\n  exact USMMathKnowledge.IR_RET_X\n"));
+    audit_translation(&o, &t).unwrap();
+    // A Knowledge theorem proves the stated goal; it is never used for a refutation.
+    assert!(translate(&o, Recipe::Knowledge(kp.clone()), true).is_err());
+    // Only plain Lean names: no command injection through the constant or module.
+    for (constant, module) in [
+        ("X\n#eval 1", "USMMathKnowledge.Anchors"),
+        ("USMMathKnowledge.X", "Mathlib.Tactic"),
+        ("USMMathKnowledge.X", "Foundation"),
+        ("USMMathKnowledge.X", "A..B"),
+        ("by simp", "USMMathKnowledge.Anchors"),
+    ] {
+        let bad = KnowledgeProof {
+            constant: constant.into(),
+            module: module.into(),
+            ..kp.clone()
+        };
+        assert!(
+            translate(&o, Recipe::Knowledge(bad), false).is_err(),
+            "{constant} {module}"
+        );
+    }
+    let bad = KnowledgeProof {
+        pack_manifest_sha256: "zz".into(),
+        ..kp
+    };
+    assert!(translate(&o, Recipe::Knowledge(bad), false).is_err());
+}
+#[test]
+fn pl_03_knowledge_proofs_resolve_against_the_pack() {
+    use mathlang_verification::pipeline::{stage1_with_pack, KnowledgePack};
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../mirp/knowledge/usm_math_v0_1_1");
+    let catalogue = root.join("catalogue/all_with_legacy.json");
+    let pack = KnowledgePack::locate(&catalogue).unwrap();
+    assert_eq!(pack.root, root.canonicalize().unwrap());
+    let units: Vec<mathlang_mirp::knowledge::KnowledgeUnit> =
+        serde_json::from_slice(&std::fs::read(&catalogue).unwrap()).unwrap();
+    let mut k = mathlang_mirp::knowledge::KnowledgeSpace::empty();
+    k.register_batch(units).unwrap();
+    let views: Vec<serde_json::Value> =
+        serde_json::from_slice(&std::fs::read(root.join("catalogue/ir_views.json")).unwrap())
+            .unwrap();
+    let view = views
+        .iter()
+        .find(|v| v["knowledge_id"] == "IR_RET_M4_ZERO_PSD")
+        .unwrap();
+    let raw =
+        serde_json::json!({"obligation":view["obligation"],"recipe":"Auto","refutation":false});
+    let s = stage1_with_pack("psd", &raw, &k, Some(&pack), 1000);
+    assert!(s.dsn_computable);
+    assert_eq!(s.knowledge_proofs.len(), 1);
+    let kp = &s.knowledge_proofs[0];
+    assert_eq!(kp.knowledge_id, "IR_RET_M4_ZERO_PSD");
+    assert_eq!(kp.constant, "USMMathKnowledge.IR_RET_M4_ZERO_PSD");
+    assert_eq!(kp.module, "USMMathKnowledge.Anchors");
+    assert_eq!(kp.pack_manifest_sha256, pack.manifest_sha256);
+    // Without a pack there is no source to compile, so no Knowledge proof is offered.
+    let s = stage1_with_pack("psd", &raw, &k, None, 1000);
+    assert!(s.knowledge_proofs.is_empty());
+    assert_eq!(s.knowledge_proof_rejections.len(), 1);
+    // Every retrieval-view case resolves to a usable Knowledge proof.
+    for v in &views {
+        let raw = serde_json::json!({"obligation":v["obligation"]});
+        let s = stage1_with_pack("v", &raw, &k, Some(&pack), 1000);
+        assert!(
+            s.knowledge_proofs
+                .iter()
+                .any(|p| p.knowledge_id == v["knowledge_id"]),
+            "{}",
+            v["knowledge_id"]
+        );
+    }
+}
+#[test]
+fn pl_04_runner_rejects_unpinned_knowledge_sources() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let pack = root.join("../mirp/knowledge/usm_math_v0_1_1");
+    let script = format!(
+        r#"
+import sys, shutil, tempfile, json, hashlib
+from pathlib import Path
+sys.path.insert(0, {scripts:?})
+import lean_runner as L
+pack = Path({pack:?})
+sha = L.digest(pack / 'package_manifest.json')
+order = L.knowledge_closure(pack, 'USMMathKnowledge.Anchors', sha)
+names = [n for n, _, _ in order]
+assert names[-1] == 'USMMathKnowledge.Anchors', names
+assert names.index('USMVerification') < names.index('USMMathKnowledge.HighSchool'), names
+for bad in [lambda: L.knowledge_closure(pack, 'USMMathKnowledge.Anchors', '0' * 64),
+            lambda: L.knowledge_closure(pack, 'Nope.Module', sha)]:
+    try: bad(); raise SystemExit('accepted')
+    except RuntimeError: pass
+with tempfile.TemporaryDirectory() as d:
+    copy = Path(d) / 'pack'
+    shutil.copytree(pack, copy)
+    f = copy / 'formal/USMMathKnowledge/Anchors.lean'
+    f.write_text(f.read_text() + '\n-- tampered\n')
+    try: L.knowledge_closure(copy, 'USMMathKnowledge.Anchors', sha); raise SystemExit('tampered accepted')
+    except RuntimeError as e: assert 'manifest' in str(e), e
+print('ok')
+"#,
+        scripts = root.join("scripts").to_string_lossy(),
+        pack = pack.to_string_lossy()
+    );
+    let out = std::process::Command::new("python3")
+        .args(["-c", &script])
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&out.stdout),
+        String::from_utf8_lossy(&out.stderr)
+    );
 }
