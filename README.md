@@ -53,3 +53,7 @@ The MIRP foundation, ProblemIntent validation, and knowledge-native runtime cont
 ## Unified CLI v0.1
 
 Rust製 `mathlang` CLIの実装・インストール・検証結果は [docs/cli/README.md](docs/cli/README.md) を参照。
+
+## Quantum state realification
+
+`mathlang_dsn/quantum_real.rsn` evaluates seven candidate functions that map quantum-state results to exact real values (Born probabilities, Hermitian expectations, Pauli tomography, and others) against reality, ray invariance, separation, boundedness, and ensemble independence. Run `reason run --entry QuantumRealEvaluation --json --trace=off`; the evaluation and conclusions are in [docs/quantum/QUANTUM_REALIFICATION.md](docs/quantum/QUANTUM_REALIFICATION.md).

@@ -1,0 +1,696 @@
+package mathlang_dsn
+
+// Bounded exact realification of quantum states.
+//
+// A state is a Gaussian-integer amplitude vector divided by a positive integer
+// denominator: amps = [re0, im0, re1, im1, ...]. A matrix is a row-major
+// complex d x d array in the same interleaved layout. Quadratic functions are
+// divided by <psi|psi>, so every real output is an exact reduced Rational and
+// the model never depends on floating-point rounding.
+//
+// Candidate realification functions R: C^d -> R^k (QM = quantum mechanics):
+//   1 REAL_PART              Re(psi_k)
+//   2 REALIFICATION          (Re(psi_k), Im(psi_k))
+//   3 BORN_COMPUTATIONAL     |psi_k|^2 / <psi|psi>
+//   4 RAW_EXPECTATION        <psi|A|psi> / <psi|psi>, A = sigma_plus (not Hermitian)
+//   5 HERMITIAN_EXPECTATION  <psi|(A + A^dagger)/2|psi> / <psi|psi>
+//   6 LOCAL_BLOCH            single-subsystem Pauli expectations only
+//   7 PAULI_TOMOGRAPHY       all non-identity Pauli-string expectations
+//
+// Physical acceptance properties checked exactly on bounded test suites:
+//   REAL                  every output has zero imaginary part
+//   RAY_INVARIANT         R(c psi) = R(psi) for nonzero complex c
+//   SEPARATING            inequivalent rays give different outputs
+//   BOUNDED               every output lies in [-1, 1]
+//   ENSEMBLE_INDEPENDENT  ensembles with the same density matrix agree
+module QuantumReal {
+  struct Rational {
+    numerator: int
+    denominator: int
+  }
+
+  struct QState {
+    amps: [int]
+    den: int
+  }
+
+  struct Matrix {
+    entries: [int]
+  }
+
+  struct RealVector {
+    status: string
+    real: bool
+    values: [Rational]
+  }
+
+  struct CandidateReport {
+    id: int
+    name: string
+    knowledge_id: string
+    real: bool
+    ray_invariant: bool
+    separating: bool
+    bounded: bool
+    ensemble_independent: bool
+    score: int
+    verdict: string
+    failures: [string]
+  }
+
+  struct TomographyCheck {
+    dimension: int
+    states: int
+    purity_ok: bool
+    reconstruction_ok: bool
+  }
+
+  struct Evaluation {
+    reports: [CandidateReport]
+    recommended: string
+    tomography: [TomographyCheck]
+  }
+
+  fn Abs(value: int) -> int {
+    if value < 0 {
+      return 0 - value
+    }
+    return value
+  }
+
+  fn Gcd(left: int, right: int) -> int {
+    let a = Abs(left)
+    let b = Abs(right)
+    while b != 0 {
+      let rem = a % b
+      a = b
+      b = rem
+    }
+    return a
+  }
+
+  fn DivideExact(numerator: int, denominator: int) -> int {
+    let remaining = Abs(numerator)
+    let divisor = Abs(denominator)
+    let quotient = 0
+    while remaining >= divisor {
+      let chunk = divisor
+      let count = 1
+      while chunk <= remaining - chunk {
+        chunk = chunk + chunk
+        count = count + count
+      }
+      remaining = remaining - chunk
+      quotient = quotient + count
+    }
+    if (numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0) {
+      return 0 - quotient
+    }
+    return quotient
+  }
+
+  fn Fraction(numerator: int, denominator: int) -> Rational {
+    if denominator == 0 {
+      return Rational { numerator: 0, denominator: 0 }
+    }
+    let divisor = Gcd(numerator, denominator)
+    let n = DivideExact(numerator, divisor)
+    let d = DivideExact(denominator, divisor)
+    if d < 0 {
+      n = 0 - n
+      d = 0 - d
+    }
+    return Rational { numerator: n, denominator: d }
+  }
+
+  fn RationalAdd(x: Rational, y: Rational) -> Rational {
+    return Fraction(x.numerator * y.denominator + y.numerator * x.denominator, x.denominator * y.denominator)
+  }
+
+  fn SameRational(x: Rational, y: Rational) -> bool {
+    return x.numerator == y.numerator && x.denominator == y.denominator
+  }
+
+  fn SameValues(x: [Rational], y: [Rational]) -> bool {
+    if x.length != y.length {
+      return false
+    }
+    let index = 0
+    while index < x.length {
+      if !SameRational(x[index], y[index]) {
+        return false
+      }
+      index = index + 1
+    }
+    return true
+  }
+
+  fn Zeros(count: int) -> [int] {
+    let out = []
+    let index = 0
+    while index < count {
+      out = array.append(out, 0)
+      index = index + 1
+    }
+    return out
+  }
+
+  // Single-qubit matrices: 0 I, 1 X, 2 Y, 3 Z, 4 sigma_plus = |0><1|.
+  fn Pauli(kind: int) -> Matrix {
+    if kind == 1 {
+      return Matrix { entries: [0, 0, 1, 0, 1, 0, 0, 0] }
+    }
+    if kind == 2 {
+      return Matrix { entries: [0, 0, 0, -1, 0, 1, 0, 0] }
+    }
+    if kind == 3 {
+      return Matrix { entries: [1, 0, 0, 0, 0, 0, -1, 0] }
+    }
+    if kind == 4 {
+      return Matrix { entries: [0, 0, 1, 0, 0, 0, 0, 0] }
+    }
+    return Matrix { entries: [1, 0, 0, 0, 0, 0, 1, 0] }
+  }
+
+  fn Kron2(a: Matrix, b: Matrix) -> Matrix {
+    let out = Zeros(32)
+    let row = 0
+    while row < 4 {
+      let column = 0
+      while column < 4 {
+        let i = DivideExact(row, 2)
+        let k = row % 2
+        let j = DivideExact(column, 2)
+        let l = column % 2
+        let ar = a.entries[2 * (2 * i + j)]
+        let ai = a.entries[2 * (2 * i + j) + 1]
+        let br = b.entries[2 * (2 * k + l)]
+        let bi = b.entries[2 * (2 * k + l) + 1]
+        out[2 * (4 * row + column)] = ar * br - ai * bi
+        out[2 * (4 * row + column) + 1] = ar * bi + ai * br
+        column = column + 1
+      }
+      row = row + 1
+    }
+    return Matrix { entries: out }
+  }
+
+  fn LocalMatrices(dimension: int) -> [Matrix] {
+    if dimension == 2 {
+      return [Pauli(1), Pauli(2), Pauli(3)]
+    }
+    return [Kron2(Pauli(1), Pauli(0)), Kron2(Pauli(2), Pauli(0)), Kron2(Pauli(3), Pauli(0)), Kron2(Pauli(0), Pauli(1)), Kron2(Pauli(0), Pauli(2)), Kron2(Pauli(0), Pauli(3))]
+  }
+
+  // Pauli strings in lexicographic order without the identity (IX, IY, ..., ZZ).
+  fn FullMatrices(dimension: int) -> [Matrix] {
+    if dimension == 2 {
+      return [Pauli(1), Pauli(2), Pauli(3)]
+    }
+    let out = []
+    let first = 0
+    while first < 4 {
+      let second = 0
+      while second < 4 {
+        if first != 0 || second != 0 {
+          out = array.append(out, Kron2(Pauli(first), Pauli(second)))
+        }
+        second = second + 1
+      }
+      first = first + 1
+    }
+    return out
+  }
+
+  fn RawOperator(dimension: int) -> Matrix {
+    if dimension == 2 {
+      return Pauli(4)
+    }
+    return Kron2(Pauli(4), Pauli(0))
+  }
+
+  fn Dimension(state: QState) -> int {
+    return DivideExact(state.amps.length, 2)
+  }
+
+  fn Norm2(state: QState) -> int {
+    let total = 0
+    let index = 0
+    while index < state.amps.length {
+      total = total + state.amps[index] * state.amps[index]
+      index = index + 1
+    }
+    return total
+  }
+
+  // <psi|M|psi> as [re, im] over the unscaled Gaussian-integer amplitudes.
+  fn QuadForm(matrix: Matrix, state: QState) -> [int] {
+    let dimension = Dimension(state)
+    let re = 0
+    let im = 0
+    let i = 0
+    while i < dimension {
+      let vr = state.amps[2 * i]
+      let vi = state.amps[2 * i + 1]
+      let j = 0
+      while j < dimension {
+        let mr = matrix.entries[2 * (dimension * i + j)]
+        let mi = matrix.entries[2 * (dimension * i + j) + 1]
+        let pr = vr * mr + vi * mi
+        let pim = vr * mi - vi * mr
+        let wr = state.amps[2 * j]
+        let wi = state.amps[2 * j + 1]
+        re = re + pr * wr - pim * wi
+        im = im + pr * wi + pim * wr
+        j = j + 1
+      }
+      i = i + 1
+    }
+    return [re, im]
+  }
+
+  fn Expectations(matrices: [Matrix], state: QState) -> RealVector {
+    let norm = Norm2(state)
+    let values = []
+    let real = true
+    for matrix in matrices {
+      let form = QuadForm(matrix, state)
+      if form[1] != 0 {
+        real = false
+      }
+      values = array.append(values, Fraction(form[0], norm))
+    }
+    return RealVector { status: "CALCULATED", real: real, values: values }
+  }
+
+  fn ValidState(state: QState) -> bool {
+    let dimension = Dimension(state)
+    if state.den <= 0 || (dimension != 2 && dimension != 4) || state.amps.length != 2 * dimension {
+      return false
+    }
+    let index = 0
+    while index < state.amps.length {
+      if Abs(state.amps[index]) > 10000 {
+        return false
+      }
+      index = index + 1
+    }
+    return Norm2(state) > 0
+  }
+
+  fn Unsupported() -> RealVector {
+    return RealVector { status: "UNSUPPORTED", real: false, values: [] }
+  }
+
+  fn ApplyWith(candidate: int, state: QState, local: [Matrix], full: [Matrix], raw: Matrix) -> RealVector {
+    if !ValidState(state) {
+      return Unsupported()
+    }
+    let dimension = Dimension(state)
+    if candidate == 1 || candidate == 2 {
+      let values = []
+      let index = 0
+      while index < dimension {
+        values = array.append(values, Fraction(state.amps[2 * index], state.den))
+        if candidate == 2 {
+          values = array.append(values, Fraction(state.amps[2 * index + 1], state.den))
+        }
+        index = index + 1
+      }
+      return RealVector { status: "CALCULATED", real: true, values: values }
+    }
+    if candidate == 3 {
+      let norm = Norm2(state)
+      let values = []
+      let index = 0
+      while index < dimension {
+        let re = state.amps[2 * index]
+        let im = state.amps[2 * index + 1]
+        values = array.append(values, Fraction(re * re + im * im, norm))
+        index = index + 1
+      }
+      return RealVector { status: "CALCULATED", real: true, values: values }
+    }
+    if candidate == 4 {
+      return Expectations([raw], state)
+    }
+    if candidate == 5 {
+      // Re<psi|A|psi> = <psi|(A + A^dagger)/2|psi>.
+      let form = QuadForm(raw, state)
+      return RealVector { status: "CALCULATED", real: true, values: [Fraction(form[0], Norm2(state))] }
+    }
+    if candidate == 6 {
+      return Expectations(local, state)
+    }
+    if candidate == 7 {
+      return Expectations(full, state)
+    }
+    return Unsupported()
+  }
+
+  // Public bounded realification entry. dimension is 2 (qubit) or 4 (two qubits).
+  pub fn QRealify(candidate: int, amps: [int], den: int) -> RealVector {
+    let state = QState { amps: amps, den: den }
+    if !ValidState(state) {
+      return Unsupported()
+    }
+    let dimension = Dimension(state)
+    return ApplyWith(candidate, state, LocalMatrices(dimension), FullMatrices(dimension), RawOperator(dimension))
+  }
+
+  // Born-rule outcome probabilities in the computational basis.
+  pub fn QBornProbabilities(amps: [int]) -> RealVector {
+    return QRealify(3, amps, 1)
+  }
+
+  // Bloch vector (<X>, <Y>, <Z>) of one qubit.
+  pub fn QBlochVector(amps: [int]) -> RealVector {
+    if amps.length != 4 {
+      return Unsupported()
+    }
+    return QRealify(7, amps, 1)
+  }
+
+  // <psi|H|psi>/<psi|psi> for a supplied matrix; real is false unless the
+  // result has zero imaginary part (always true for Hermitian H).
+  pub fn QExpectation(entries: [int], amps: [int]) -> RealVector {
+    let state = QState { amps: amps, den: 1 }
+    let dimension = Dimension(state)
+    if !ValidState(state) || entries.length != 2 * dimension * dimension {
+      return Unsupported()
+    }
+    return Expectations([Matrix { entries: entries }], state)
+  }
+
+  fn St(amps: [int], den: int) -> QState {
+    return QState { amps: amps, den: den }
+  }
+
+  fn Suite(dimension: int) -> [QState] {
+    if dimension == 2 {
+      return [St([1, 0, 0, 0], 1), St([0, 0, 1, 0], 1), St([1, 0, 1, 0], 1), St([1, 0, -1, 0], 1), St([1, 0, 0, 1], 1), St([1, 0, 0, -1], 1), St([1, 0, 2, 0], 1), St([2, 1, 1, -1], 1)]
+    }
+    return [St([1, 0, 0, 0, 0, 0, 0, 0], 1), St([0, 0, 1, 0, 0, 0, 0, 0], 1), St([1, 0, 0, 0, 0, 0, 1, 0], 1), St([1, 0, 0, 0, 0, 0, -1, 0], 1), St([0, 0, 1, 0, 1, 0, 0, 0], 1), St([0, 0, 1, 0, -1, 0, 0, 0], 1), St([1, 0, 1, 0, 1, 0, 1, 0], 1), St([1, 0, 0, 1, 0, 0, 0, 0], 1)]
+  }
+
+  // Three single-qubit ensembles with equal weights and density matrix I/2.
+  fn Ensemble(kind: int) -> [QState] {
+    if kind == 1 {
+      return [St([3, 0, 4, 0], 5), St([4, 0, -3, 0], 5)]
+    }
+    if kind == 2 {
+      return [St([3, 0, 0, 4], 5), St([0, 4, 3, 0], 5)]
+    }
+    return [St([1, 0, 0, 0], 1), St([0, 0, 1, 0], 1)]
+  }
+
+  fn Scale(state: QState, cr: int, ci: int) -> QState {
+    let out = []
+    let index = 0
+    while index < state.amps.length {
+      let vr = state.amps[index]
+      let vi = state.amps[index + 1]
+      out = array.append(out, cr * vr - ci * vi)
+      out = array.append(out, cr * vi + ci * vr)
+      index = index + 2
+    }
+    return QState { amps: out, den: state.den }
+  }
+
+  // Cauchy-Schwarz equality decides exact ray equivalence.
+  fn Equivalent(u: QState, v: QState) -> bool {
+    let re = 0
+    let im = 0
+    let index = 0
+    while index < u.amps.length {
+      let ur = u.amps[index]
+      let ui = u.amps[index + 1]
+      let vr = v.amps[index]
+      let vi = v.amps[index + 1]
+      re = re + ur * vr + ui * vi
+      im = im + ur * vi - ui * vr
+      index = index + 2
+    }
+    return re * re + im * im == Norm2(u) * Norm2(v)
+  }
+
+  fn Bounded(values: [Rational]) -> bool {
+    for value in values {
+      if value.denominator <= 0 || Abs(value.numerator) > value.denominator {
+        return false
+      }
+    }
+    return true
+  }
+
+  fn RayInvariantOn(candidate: int, state: QState, base: [Rational], local: [Matrix], full: [Matrix], raw: Matrix) -> bool {
+    let multiplier_re = [0, -1, 2, 1, 3]
+    let multiplier_im = [1, 0, 0, 2, 4]
+    let index = 0
+    while index < multiplier_re.length {
+      let scaled = ApplyWith(candidate, Scale(state, multiplier_re[index], multiplier_im[index]), local, full, raw)
+      if !SameValues(scaled.values, base) {
+        return false
+      }
+      index = index + 1
+    }
+    return true
+  }
+
+  fn SeparatingOn(candidate: int, suite: [QState], local: [Matrix], full: [Matrix], raw: Matrix) -> bool {
+    let i = 0
+    while i < suite.length {
+      let first = ApplyWith(candidate, suite[i], local, full, raw)
+      let j = i + 1
+      while j < suite.length {
+        if !Equivalent(suite[i], suite[j]) {
+          let second = ApplyWith(candidate, suite[j], local, full, raw)
+          if SameValues(first.values, second.values) {
+            return false
+          }
+        }
+        j = j + 1
+      }
+      i = i + 1
+    }
+    return true
+  }
+
+  fn EnsembleAverage(candidate: int, kind: int) -> [Rational] {
+    let members = Ensemble(kind)
+    let local = LocalMatrices(2)
+    let full = FullMatrices(2)
+    let raw = RawOperator(2)
+    let sums = []
+    for member in members {
+      let row = ApplyWith(candidate, member, local, full, raw)
+      if sums.length == 0 {
+        sums = row.values
+      } else {
+        let added = []
+        let index = 0
+        while index < row.values.length {
+          added = array.append(added, RationalAdd(sums[index], row.values[index]))
+          index = index + 1
+        }
+        sums = added
+      }
+    }
+    let averages = []
+    for value in sums {
+      averages = array.append(averages, Fraction(value.numerator, value.denominator * members.length))
+    }
+    return averages
+  }
+
+  fn CandidateName(candidate: int) -> string {
+    if candidate == 1 {
+      return "REAL_PART"
+    }
+    if candidate == 2 {
+      return "REALIFICATION"
+    }
+    if candidate == 3 {
+      return "BORN_COMPUTATIONAL"
+    }
+    if candidate == 4 {
+      return "RAW_EXPECTATION"
+    }
+    if candidate == 5 {
+      return "HERMITIAN_EXPECTATION"
+    }
+    if candidate == 6 {
+      return "LOCAL_BLOCH"
+    }
+    return "PAULI_TOMOGRAPHY"
+  }
+
+  fn CandidateKnowledge(candidate: int) -> string {
+    if candidate == 1 {
+      return "QM_REAL_PART_PROJECTION"
+    }
+    if candidate == 2 {
+      return "QM_REALIFICATION_ISOMORPHISM"
+    }
+    if candidate == 3 {
+      return "QM_BORN_RULE"
+    }
+    if candidate == 4 {
+      return "QM_EXPECTATION_VALUE"
+    }
+    if candidate == 5 {
+      return "QM_HERMITIAN_PART_EXPECTATION"
+    }
+    if candidate == 6 {
+      return "QM_REDUCED_BLOCH_VECTOR"
+    }
+    return "QM_PAULI_TOMOGRAPHY"
+  }
+
+  pub fn QEvaluateCandidate(candidate: int) -> CandidateReport {
+    let real = true
+    let invariant = true
+    let separating = true
+    let bounded = true
+    let dimensions = [2, 4]
+    for dimension in dimensions {
+      let local = LocalMatrices(dimension)
+      let full = FullMatrices(dimension)
+      let raw = RawOperator(dimension)
+      let suite = Suite(dimension)
+      for state in suite {
+        let base = ApplyWith(candidate, state, local, full, raw)
+        if !base.real {
+          real = false
+        }
+        if !Bounded(base.values) {
+          bounded = false
+        }
+        if !RayInvariantOn(candidate, state, base.values, local, full, raw) {
+          invariant = false
+        }
+      }
+      if !SeparatingOn(candidate, suite, local, full, raw) {
+        separating = false
+      }
+    }
+    let reference = EnsembleAverage(candidate, 0)
+    let ensemble = SameValues(EnsembleAverage(candidate, 1), reference) && SameValues(EnsembleAverage(candidate, 2), reference)
+    let failures = []
+    let score = 0
+    if real {
+      score = score + 1
+    } else {
+      failures = array.append(failures, "REAL: imaginary part remains for a non-Hermitian operator")
+    }
+    if invariant {
+      score = score + 1
+    } else {
+      failures = array.append(failures, "RAY_INVARIANT: output changes under psi -> c psi")
+    }
+    if separating {
+      score = score + 1
+    } else {
+      failures = array.append(failures, "SEPARATING: two inequivalent rays share one output")
+    }
+    if bounded {
+      score = score + 1
+    } else {
+      failures = array.append(failures, "BOUNDED: output leaves [-1, 1]")
+    }
+    if ensemble {
+      score = score + 1
+    } else {
+      failures = array.append(failures, "ENSEMBLE_INDEPENDENT: ensembles of one density matrix disagree")
+    }
+    let verdict = "REJECTED"
+    if score == 5 {
+      verdict = "RECOMMENDED"
+    } else {
+      if real && invariant {
+        verdict = "PARTIAL"
+      }
+    }
+    return CandidateReport { id: candidate, name: CandidateName(candidate), knowledge_id: CandidateKnowledge(candidate), real: real, ray_invariant: invariant, separating: separating, bounded: bounded, ensemble_independent: ensemble, score: score, verdict: verdict, failures: failures }
+  }
+
+  // Pure-state tomography: sum r_P^2 = d - 1 and
+  // N * delta_ij + sum_P n_P P_ij = d * psi_i * conj(psi_j), with r_P = n_P / N.
+  fn ReconstructsState(state: QState, full: [Matrix]) -> bool {
+    let dimension = Dimension(state)
+    let norm = Norm2(state)
+    let coefficients = []
+    for matrix in full {
+      let form = QuadForm(matrix, state)
+      coefficients = array.append(coefficients, form[0])
+    }
+    let i = 0
+    while i < dimension {
+      let j = 0
+      while j < dimension {
+        let re = 0
+        let im = 0
+        if i == j {
+          re = norm
+        }
+        let k = 0
+        while k < full.length {
+          re = re + coefficients[k] * full[k].entries[2 * (dimension * i + j)]
+          im = im + coefficients[k] * full[k].entries[2 * (dimension * i + j) + 1]
+          k = k + 1
+        }
+        let ar = state.amps[2 * i]
+        let ai = state.amps[2 * i + 1]
+        let br = state.amps[2 * j]
+        let bi = state.amps[2 * j + 1]
+        if re != dimension * (ar * br + ai * bi) || im != dimension * (ai * br - ar * bi) {
+          return false
+        }
+        j = j + 1
+      }
+      i = i + 1
+    }
+    return true
+  }
+
+  fn PurityHolds(state: QState, full: [Matrix]) -> bool {
+    let norm = Norm2(state)
+    let total = 0
+    for matrix in full {
+      let form = QuadForm(matrix, state)
+      total = total + form[0] * form[0]
+    }
+    return total == (Dimension(state) - 1) * norm * norm
+  }
+
+  pub fn QTomographyCheck(dimension: int) -> TomographyCheck {
+    let full = FullMatrices(dimension)
+    let suite = Suite(dimension)
+    let purity = true
+    let reconstruction = true
+    for state in suite {
+      if !PurityHolds(state, full) {
+        purity = false
+      }
+      if !ReconstructsState(state, full) {
+        reconstruction = false
+      }
+    }
+    return TomographyCheck { dimension: dimension, states: suite.length, purity_ok: purity, reconstruction_ok: reconstruction }
+  }
+
+  pub fn QEvaluate() -> Evaluation {
+    let reports = []
+    let recommended = "NONE"
+    let candidate = 1
+    while candidate <= 7 {
+      let report = QEvaluateCandidate(candidate)
+      reports = array.append(reports, report)
+      if report.verdict == "RECOMMENDED" && recommended == "NONE" {
+        recommended = report.name
+      }
+      candidate = candidate + 1
+    }
+    return Evaluation { reports: reports, recommended: recommended, tomography: [QTomographyCheck(2), QTomographyCheck(4)] }
+  }
+}

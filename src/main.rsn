@@ -9,6 +9,7 @@ module main {
   import mathlang_dsn.Memory_codec_f4
   import mathlang_dsn.Math_adapter_stage2a
   import mathlang_dsn.Code_adapter_stage2a
+  import mathlang_dsn.QuantumReal
 
   calculation SelfCheck {
     let kinds = [0, 0, 2]
@@ -93,5 +94,31 @@ module main {
     let math = Math_adapter_stage2a::AdaptMath("x:=5")
     let code = Code_adapter_stage2a::AdaptCode("if(y>6){result=y;}")
     result = semantic.status == "RESOLVED" && semantic.primitives.length > 0 && restored.valid && restored.unit.memory_id == "memory-1" && math.assignments.length == 1 && code.conditions.length == 1
+  }
+
+  calculation QuantumRealSelfCheck {
+    let born_plus = QuantumReal::QBornProbabilities([1, 0, 1, 0])
+    let bloch_plus_i = QuantumReal::QBlochVector([1, 0, 0, 1])
+    let bloch_phase = QuantumReal::QBlochVector([0, 1, -1, 0])
+    let phi_plus = QuantumReal::QRealify(7, [1, 0, 0, 0, 0, 0, 1, 0], 1)
+    let phi_minus = QuantumReal::QRealify(7, [1, 0, 0, 0, 0, 0, -1, 0], 1)
+    let born_phi_plus = QuantumReal::QBornProbabilities([1, 0, 0, 0, 0, 0, 1, 0])
+    let born_phi_minus = QuantumReal::QBornProbabilities([1, 0, 0, 0, 0, 0, -1, 0])
+    let raw = QuantumReal::QExpectation([0, 0, 1, 0, 0, 0, 0, 0], [1, 0, 0, 1])
+    let hermitian = QuantumReal::QExpectation([2, 0, 1, -1, 1, 1, -1, 0], [1, 0, 2, 1])
+    let invalid = QuantumReal::QRealify(7, [0, 0, 0, 0], 1)
+    let qubit = QuantumReal::QTomographyCheck(2)
+    let pair = QuantumReal::QTomographyCheck(4)
+    result = born_plus.values[0].numerator == 1 && born_plus.values[0].denominator == 2 && bloch_plus_i.values[0].numerator == 0 && bloch_plus_i.values[1].numerator == 1 && bloch_plus_i.values[2].numerator == 0 && bloch_phase.values[1].numerator == 1 && bloch_phase.values[1].denominator == 1 && phi_plus.values[4].numerator == 1 && phi_minus.values[4].numerator == -1 && born_phi_plus.values[0].numerator == born_phi_minus.values[0].numerator && born_phi_plus.values[3].denominator == born_phi_minus.values[3].denominator && !raw.real && hermitian.real && hermitian.values[0].numerator == 1 && hermitian.values[0].denominator == 2 && invalid.status == "UNSUPPORTED" && qubit.purity_ok && qubit.reconstruction_ok && pair.purity_ok && pair.reconstruction_ok
+  }
+
+  calculation QuantumRealEvaluation {
+    let evaluation = QuantumReal::QEvaluate()
+    let r = evaluation.reports
+    result = evaluation.recommended == "PAULI_TOMOGRAPHY" && r.length == 7 && r[0].verdict == "REJECTED" && r[0].score == 1 && r[1].verdict == "REJECTED" && r[1].separating && !r[1].ray_invariant && r[2].verdict == "PARTIAL" && !r[2].separating && r[3].verdict == "REJECTED" && !r[3].real && r[4].verdict == "PARTIAL" && r[4].score == 4 && r[5].verdict == "PARTIAL" && !r[5].separating && r[6].verdict == "RECOMMENDED" && r[6].score == 5 && evaluation.tomography[0].reconstruction_ok && evaluation.tomography[1].reconstruction_ok
+  }
+
+  calculation QuantumRealReport {
+    result = QuantumReal::QEvaluate()
   }
 }
