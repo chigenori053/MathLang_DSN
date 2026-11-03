@@ -155,7 +155,13 @@ def main():
             deadline = time.monotonic() + 300
             for module in modules:
                 path = module.replace('.', '/')
-                lean_cmd = [str(lean), '-j', '1', '-M', '1536', '-T', '300',
+                # Pinned Knowledge modules may import all of Mathlib.Tactic (~1.75 GiB to
+                # elaborate), and a Generated module importing them inherits that load. Those get
+                # a higher Lean threshold that stays below the 2 GiB RSS budget enforced above.
+                # Foundation, Independent and closed-recipe Generated modules keep 1536 MiB.
+                heavy = module not in ('Foundation', 'Independent', 'Generated') or (module == 'Generated' and args.knowledge_module)
+                memory = '1900' if heavy else '1536'
+                lean_cmd = [str(lean), '-j', '1', '-M', memory, '-T', '300',
                             '-o', str(staging / (path + '.olean')), str(staging / (path + '.lean'))]
                 if unsealed:
                     # Inside private namespaces: keep staging writable, remount every other writable

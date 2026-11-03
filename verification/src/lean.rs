@@ -589,7 +589,11 @@ pub fn build_check(
     let isolation = raw["isolation"].as_str().unwrap_or_default().to_string();
     let isolation_diagnostics: Vec<String> =
         serde_json::from_value(raw["isolation_diagnostics"].clone()).unwrap_or_default();
-    let kernel_outcome = if run.sandboxed || isolation != "linux-unsealed" {
+    let kernel_outcome = if run.status == FormalStatus::Error {
+        // The runner itself failed closed (isolation, pins, or a Knowledge module that did
+        // not compile): infrastructure error, never a verdict about the generated proof.
+        FormalStatus::Error
+    } else if run.sandboxed || isolation != "linux-unsealed" {
         // A sealed-mode result must go through VerificationEvidence, never through here.
         FormalStatus::Error
     } else if !isolation_diagnostics.is_empty() {
