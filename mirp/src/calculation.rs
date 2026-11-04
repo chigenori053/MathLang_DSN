@@ -12,6 +12,10 @@ use crate::knowledge::{
     KnowledgeActivation, KnowledgeDecision, KnowledgeQuery, KnowledgeSpace, KnowledgeUnit,
 };
 use crate::physics::{PhysicalContext, PhysicsResult, ScalarQuantity, VectorQuantity};
+use crate::quantum::{
+    PureState, QuantumBasis, QuantumOperator, QuantumProjector, QuantumResult, QuantumState,
+    UnitaryOperator,
+};
 use crate::{
     stable_id, Common, Evidence, Object, Provenance, SemanticDelta, SemanticState, Status, Value,
 };
@@ -44,10 +48,16 @@ pub(crate) enum Operation {
     ConstantForceWork,
     KineticEnergy,
     WorkEnergy,
+    QuantumNormalize,
+    QuantumInnerProduct,
+    QuantumBorn,
+    QuantumExpectation,
+    QuantumDensityMatrix,
+    QuantumUnitary,
 }
 
 impl Operation {
-    pub(crate) const ALL: [Self; 22] = [
+    pub(crate) const ALL: [Self; 28] = [
         Self::SimplifySqrt,
         Self::DescribeData,
         Self::DataVariance,
@@ -70,7 +80,24 @@ impl Operation {
         Self::ConstantForceWork,
         Self::KineticEnergy,
         Self::WorkEnergy,
+        Self::QuantumNormalize,
+        Self::QuantumInnerProduct,
+        Self::QuantumBorn,
+        Self::QuantumExpectation,
+        Self::QuantumDensityMatrix,
+        Self::QuantumUnitary,
     ];
+    fn quantum(self) -> bool {
+        matches!(
+            self,
+            Self::QuantumNormalize
+                | Self::QuantumInnerProduct
+                | Self::QuantumBorn
+                | Self::QuantumExpectation
+                | Self::QuantumDensityMatrix
+                | Self::QuantumUnitary
+        )
+    }
     fn physical(self) -> bool {
         matches!(
             self,
@@ -124,9 +151,18 @@ impl Operation {
             Self::ConstantForceWork => "CONSTANT_FORCE_WORK",
             Self::KineticEnergy => "KINETIC_ENERGY",
             Self::WorkEnergy => "WORK_ENERGY",
+            Self::QuantumNormalize => "QUANTUM_NORMALIZE",
+            Self::QuantumInnerProduct => "QUANTUM_INNER_PRODUCT",
+            Self::QuantumBorn => "QUANTUM_BORN",
+            Self::QuantumExpectation => "QUANTUM_EXPECTATION",
+            Self::QuantumDensityMatrix => "QUANTUM_DENSITY_MATRIX",
+            Self::QuantumUnitary => "QUANTUM_UNITARY",
         }
     }
     fn domain(self) -> &'static str {
+        if self.quantum() {
+            return "QUANTUM_MECHANICS";
+        }
         if self.physical() {
             return "CLASSICAL_PHYSICS";
         }
@@ -146,6 +182,9 @@ impl Operation {
         self.capability()
     }
     fn constraints(self) -> Vec<String> {
+        if self.quantum() {
+            return vec!["VALID_FINITE_QUANTUM_INPUT".into()];
+        }
         if self.physical() {
             return vec!["VALID_CLASSICAL_PHYSICS_INPUT".into()];
         }
@@ -276,6 +315,34 @@ pub enum CalculationRequest {
         final_velocity: VectorQuantity,
         net_work: ScalarQuantity,
     },
+    QuantumNormalize {
+        basis: QuantumBasis,
+        state: PureState,
+    },
+    QuantumInnerProduct {
+        basis: QuantumBasis,
+        left: PureState,
+        right: PureState,
+    },
+    QuantumBorn {
+        basis: QuantumBasis,
+        state: QuantumState,
+        projectors: Vec<QuantumProjector>,
+    },
+    QuantumExpectation {
+        basis: QuantumBasis,
+        state: QuantumState,
+        observable: QuantumOperator,
+    },
+    QuantumDensityMatrix {
+        basis: QuantumBasis,
+        state: QuantumState,
+    },
+    QuantumUnitary {
+        basis: QuantumBasis,
+        state: QuantumState,
+        unitary: UnitaryOperator,
+    },
 }
 
 impl CalculationRequest {
@@ -303,6 +370,12 @@ impl CalculationRequest {
             Self::ConstantForceWork { .. } => Operation::ConstantForceWork,
             Self::KineticEnergy { .. } => Operation::KineticEnergy,
             Self::WorkEnergy { .. } => Operation::WorkEnergy,
+            Self::QuantumNormalize { .. } => Operation::QuantumNormalize,
+            Self::QuantumInnerProduct { .. } => Operation::QuantumInnerProduct,
+            Self::QuantumBorn { .. } => Operation::QuantumBorn,
+            Self::QuantumExpectation { .. } => Operation::QuantumExpectation,
+            Self::QuantumDensityMatrix { .. } => Operation::QuantumDensityMatrix,
+            Self::QuantumUnitary { .. } => Operation::QuantumUnitary,
         }
     }
     fn value(&self) -> Value {
@@ -318,6 +391,9 @@ impl CalculationRequest {
         }
     }
     pub fn validate(&self) -> Result<(), String> {
+        if self.operation().quantum() {
+            return crate::quantum::validate(self);
+        }
         if self.operation().physical() {
             return crate::physics::validate(self);
         }
@@ -372,6 +448,9 @@ fn gcd(mut a: i128, mut b: i128) -> i128 {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "SCREAMING_SNAKE_CASE", deny_unknown_fields)]
 pub enum CalculationAnswer {
+    Quantum {
+        result: Box<QuantumResult>,
+    },
     Physics {
         result: Box<PhysicsResult>,
     },
@@ -446,6 +525,9 @@ pub fn verify_answer(
     answer: &CalculationAnswer,
 ) -> Result<Vec<String>, String> {
     request.validate()?;
+    if request.operation().quantum() {
+        return crate::quantum::verify(request, answer);
+    }
     if request.operation().physical() {
         return crate::physics::verify(request, answer);
     }
@@ -645,7 +727,9 @@ impl CapabilityExecutor for CalculationExecutor {
         };
         calculation.validate()?;
         let (answer, execution_metadata) = if self.0.extended() {
-            let (answer, metadata) = if self.0.physical() {
+            let (answer, metadata) = if self.0.quantum() {
+                crate::quantum::execute(&calculation)?
+            } else if self.0.physical() {
                 crate::physics::execute(&calculation)?
             } else if self.0.geometric() {
                 crate::geometry::execute(&calculation)?
@@ -734,6 +818,11 @@ pub fn calculation_knowledge() -> KnowledgeSpace {
     space
         .register_batch(units)
         .expect("bundled physics validates");
+    let units = serde_json::from_str(include_str!("../knowledge/finite_quantum_v0_1.json"))
+        .expect("bundled quantum JSON");
+    space
+        .register_batch(units)
+        .expect("bundled quantum validates");
     space
 }
 
@@ -784,7 +873,9 @@ pub fn compute_with_knowledge(
     let query = KnowledgeQuery {
         domain: operation.domain().into(),
         goal: operation.goal().into(),
-        symbols: vec![if operation.physical() {
+        symbols: vec![if operation.quantum() {
+            "finite_quantum"
+        } else if operation.physical() {
             "physical_quantity"
         } else if operation.geometric() {
             "plane2"
@@ -840,7 +931,12 @@ pub fn compute_with_knowledge(
     let answer: CalculationAnswer = serde_json::from_value(execution.output["answer"].clone())
         .map_err(|e| format!("CAPABILITY_OUTPUT_INVALID: {e}"))?;
     let checks = verify_answer(request, &answer)?;
-    let verification = json!({"status":"VERIFIED", "method":"EXACT_INTEGER_CHECK", "checks":checks, "formal_status":"NOT_CHECKED"});
+    let method = if operation.quantum() {
+        "EXACT_COMPLEX_IDENTITY_CHECK"
+    } else {
+        "EXACT_INTEGER_CHECK"
+    };
+    let verification = json!({"status":"VERIFIED", "method":method, "checks":checks, "formal_status":"NOT_CHECKED"});
     let unit = space
         .get(&activation.knowledge_id)
         .ok_or("KNOWLEDGE_NOT_FOUND")?;
@@ -955,7 +1051,9 @@ fn explain(
         "使用Knowledge: {}。{}",
         unit.knowledge_id, unit.conclusion
     )];
-    if request.operation().physical() {
+    if request.operation().quantum() {
+        steps.extend(crate::quantum::explain(request, answer));
+    } else if request.operation().physical() {
         steps.extend(crate::physics::explain(request, answer));
     } else if request.operation().geometric() {
         steps.extend(crate::geometry::explain(request, answer));

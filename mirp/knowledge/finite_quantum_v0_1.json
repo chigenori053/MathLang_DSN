@@ -1,0 +1,260 @@
+[
+  {
+    "knowledge_id": "QUANTUM_NORMALIZE",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "有限次元の非零複素ベクトルを正のノルムで明示的に正規化する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_NORMALIZE"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_NORMALIZE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_INNER_PRODUCT",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "第一引数を共役にする内積と重なりの確率を厳密計算する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_INNER_PRODUCT"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_INNER_PRODUCT"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_BORN",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "完全直交射影測定のBorn則を純粋状態・混合状態の両方に適用する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_BORN"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_BORN"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_EXPECTATION",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "エルミート観測量の期待値Tr(ρA)を実数として計算する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_EXPECTATION"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_EXPECTATION"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_DENSITY_MATRIX",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "密度行列のエルミート性・半正定値性・トレース1と純度を検証する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_DENSITY_MATRIX"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_DENSITY_MATRIX"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_UNITARY",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "ユニタリ変換を適用し逆変換、正規化・トレース・純度の保存を検証する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_UNITARY"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_UNITARY"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "1..8 dimensional named orthonormal complex basis; exact Gaussian rationals and positive common square-root scale; explicit normalization",
+      "verification": "conjugate identities, complete projectors, real expectation, PSD LDL-adjoint certificate, trace and unitary inverse checks; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  }
+]

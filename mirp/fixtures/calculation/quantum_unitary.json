@@ -1,0 +1,95 @@
+{
+  "operation": "QUANTUM_UNITARY",
+  "basis": {
+    "id": "qubit_z",
+    "labels": [
+      "0",
+      "1"
+    ]
+  },
+  "state": {
+    "kind": "PURE",
+    "basis_id": "qubit_z",
+    "amplitudes": [
+      {
+        "real": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 0,
+          "denominator": 1
+        }
+      },
+      {
+        "real": {
+          "numerator": 0,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 1,
+          "denominator": 1
+        }
+      }
+    ],
+    "squared_scale": {
+      "numerator": 1,
+      "denominator": 2
+    }
+  },
+  "unitary": {
+    "operator": {
+      "basis_id": "qubit_z",
+      "entries": [
+        [
+          {
+            "real": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "imaginary": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "real": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "imaginary": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        [
+          {
+            "real": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "imaginary": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "real": {
+              "numerator": -1,
+              "denominator": 1
+            },
+            "imaginary": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ]
+      ]
+    },
+    "squared_scale": {
+      "numerator": 1,
+      "denominator": 2
+    }
+  }
+}

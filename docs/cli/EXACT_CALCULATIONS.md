@@ -44,6 +44,12 @@ cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calc
 | 7 | `CONSTANT_FORCE_WORK` | 物理context・一定力・変位 | 仕事W=F·Δx |
 | 7 | `KINETIC_ENERGY` | 物理context・質量・速度 | 運動エネルギー |
 | 7 | `WORK_ENERGY` | 物理context・質量・前後速度・総仕事 | ΔK・残差・整合判定 |
+| 8 | `QUANTUM_NORMALIZE` | 基底・非零純粋状態 | ノルム・明示的な正規化 |
+| 8 | `QUANTUM_INNER_PRODUCT` | 基底・2つの正規化純粋状態 | 共役内積・重なりの確率 |
+| 8 | `QUANTUM_BORN` | 基底・純粋/混合状態・完全直交射影 | 各結果の確率・総和 |
+| 8 | `QUANTUM_EXPECTATION` | 基底・純粋/混合状態・エルミート観測量 | 実数の期待値 |
+| 8 | `QUANTUM_DENSITY_MATRIX` | 基底・純粋/混合状態 | 密度行列・トレース・純度・半正定値の証明書 |
+| 8 | `QUANTUM_UNITARY` | 基底・純粋/混合状態・ユニタリ作用素 | 変換後の状態・正規化・純度 |
 
 入力JSONは `operation` と上表の入力フィールドを持つ。未知のフィールド・浮動小数・自由記述の数式文字列は受け付けない。
 有理数は `{"numerator":2,"denominator":3}` のような既約分数で表す。
@@ -54,7 +60,7 @@ cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calc
 
 ## 計算と検算
 
-`compute` はlegacy 29件、`mirp/knowledge/exact_statistics_v0_1.json` の9件、`mirp/knowledge/plane_geometry_v0_1.json` の7件、`mirp/knowledge/classical_physics_v0_1.json` の6件、計51件のKnowledgeSpaceを明示的に使う。
+`compute` はlegacy 29件、`mirp/knowledge/exact_statistics_v0_1.json` の9件、`mirp/knowledge/plane_geometry_v0_1.json` の7件、`mirp/knowledge/classical_physics_v0_1.json` の6件、`mirp/knowledge/finite_quantum_v0_1.json` の6件、計57件のKnowledgeSpaceを明示的に使う。
 既存の `solve` の二次方程式用KnowledgeSpaceと、USM配布パックの既定読み込みは変更しない。
 
 処理順序は、入力検証 → MIRPへの入力登録 → Knowledge検索・適用条件確認 → Capability選択 → 登録済実行器による計算 → 独立検算 → 結果・説明・証拠の登録。
@@ -248,7 +254,7 @@ Knowledge IDの差し替え、欠落、競合、係数倍、円の入れ替え�
 `applicability=CONDITIONAL_ON_DECLARED_ASSUMPTIONS` は、現実の系への適用が宣言に条件付きであることを表す。
 仮定の物理的な真偽を自動証明するものではない。`WORK_ENERGY` の `consistent=false` は正常な評価結果で、
 `verification.status=VERIFIED` はその不整合判定を含む算術の検算成功を意味する。
-位置エネルギー・重力モデル・可変質量・変動力の積分・回転・相対論・量子力学は扱わない。Lean形式証明は追加していない。
+この古典物理実行器では位置エネルギー・重力モデル・可変質量・変動力の積分・回転・相対論は扱わない。Lean形式証明は追加していない。
 
 6個の入力例は同じ1次元慣性系を使い、36 km/h、200 cm/s²、2秒から変位24 m・終速度14 m/sを得る。
 質量1500 gなら合力3 N、仕事72 J、K前75 J・K後147 Jで一致する。
@@ -263,6 +269,121 @@ cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calc
 # 10万候補と末尾の競合を含めた試験
 cargo test --manifest-path mirp/Cargo.toml --offline --test physics -- --include-ignored --nocapture
 ```
+
+## 有限次元の量子力学
+
+`mirp/knowledge/finite_quantum_v0_1.json` の6件のKnowledgeは、上表のoperationと同じIDを持つ。
+既存の検索・適用条件・競合検出から、`Rust/num-rational finite quantum mechanics` の実行、厳密検算、説明、SemanticStateの証拠まで接続する。
+`verification.method=EXACT_COMPLEX_IDENTITY_CHECK`、`formal_status=NOT_CHECKED` を返す。
+
+### 基底・複素数・状態の表現
+
+全操作で `basis={"id":"qubit_z","labels":["0","1"]}` を指定する。
+これは指定順の正規直交複素基底を表す。次元はラベル数で1〜8、IDとラベルは非空・各128文字まで、ラベル重複は拒否する。
+全状態・作用素の `basis_id` はこのIDと一致し、ベクトル長・正方行列の行数・列数も次元と一致する必要がある。
+異なる基底の自動変換はしない。指定された基底の物理的な意味は呼出側の宣言である。
+
+複素数は `{"real":{"numerator":1,"denominator":2},"imaginary":{"numerator":-1,"denominator":3}}`。
+各成分は有理数で、分子・正の分母は整数または10進整数文字列、入力各80桁まで。
+出力は約分された10進整数文字列で、0は0/1。浮動小数点・三角関数文字列は受け付けない。
+
+純粋状態 `PureState` は次の型で、物理的なketを **ψ=√s a** と表す。
+`squared_scale=s` は正の有理数で、平方根は正の主値。`amplitudes=a` は複素有理数の配列。
+
+```json
+{
+  "basis_id": "qubit_z",
+  "amplitudes": [
+    {"real":{"numerator":1,"denominator":1},"imaginary":{"numerator":0,"denominator":1}},
+    {"real":{"numerator":0,"denominator":1},"imaginary":{"numerator":1,"denominator":1}}
+  ],
+  "squared_scale": {"numerator":1,"denominator":2}
+}
+```
+
+上例は(1, i)/√2。一般にノルム二乗は `s Σ|aᵢ|²`。
+`QUANTUM_NORMALIZE` は非零の任意のPureStateを受け、`a` を保持して `s=1/Σ|aᵢ|²` に置き換える。
+入力のノルム二乗と出力のノルム二乗1を返し、相対位相も保持する。
+他の5操作は正規化済み状態だけを受け付け、暗黙の正規化は行わない。
+
+`QUANTUM_NORMALIZE.state` と `QUANTUM_INNER_PRODUCT.left/right` は上のPureStateを直接使う。
+残る4操作の `state` は、上のフィールドに `"kind":"PURE"` を加えるか、次の混合状態を使う。
+
+```json
+{
+  "kind": "MIXED", "basis_id": "qubit_z",
+  "entries": [
+    [
+      {"real":{"numerator":1,"denominator":4},"imaginary":{"numerator":0,"denominator":1}},
+      {"real":{"numerator":0,"denominator":1},"imaginary":{"numerator":0,"denominator":1}}
+    ],
+    [
+      {"real":{"numerator":0,"denominator":1},"imaginary":{"numerator":0,"denominator":1}},
+      {"real":{"numerator":3,"denominator":4},"imaginary":{"numerator":0,"denominator":1}}
+    ]
+  ]
+}
+```
+
+これはρ=diag(1/4,3/4)。`entries` は複素有理数の正方行列。
+密度行列はρ=ρ†、Trρ=1、半正定値をすべて要求する。
+例えば `[[1/2,1],[1,1/2]]` は対角が非負でトレース1でも半正定値ではないため拒否する。
+ゼロ固有値を含む有効な密度行列は受理する。小さな負の値を0に切り捨てる処理はない。
+
+### 内積・Born則・期待値
+
+内積は数学の **第一引数を共役にする規約** `⟨ψ|φ⟩=Σconj(ψᵢ)φᵢ`。
+結果の `value={"coefficient":複素有理数,"radicand":正の有理数}` は coefficient×√radicand を意味する。
+平方根係数を小数化せず、共役対称性と重なりの確率 `|⟨ψ|φ⟩|²∈[0,1]` を検算する。
+
+`QUANTUM_BORN.projectors` は `{"label":"0","operator":{"basis_id":"qubit_z","entries":行列}}` の配列。
+1〜次元数の非零射影を指定し、ラベルは非空・重複不可。高ランクの射影による縮退した測定も扱う。
+各P=P†=P²、相互直交PᵢPⱼ=0、完全性ΣP=Iをすべて検査する。
+計算はpₖ=Tr(ρPₖ)。純粋状態では `||Pₖψ||²`、混合状態では別の成分縮約で検算する。
+各確率0〜1と総和1を検査し、指定したラベル順に全結果を返す。0確率の結果も省略しない。
+
+`QUANTUM_EXPECTATION.observable={"basis_id":基底ID,"entries":行列}` はエルミートである必要がある。
+期待値Tr(ρA)を計算し、純粋状態では⟨ψ|A|ψ⟩とも照合する。共役による虚部の相殺を厳密に確認する。
+結果は実数の有理数で、負の期待値も保持する。観測量に物理単位や現実のHamiltonianを自動で割り当てることはしない。
+
+### 密度行列・ユニタリ変換・検算
+
+`QUANTUM_DENSITY_MATRIX` は純粋状態からρ=|ψ⟩⟨ψ|を構成するか、入力された混合状態を検査する。
+出力は行列、トレース、純度Trρ²、`pure`、`psd_certificate`。
+半正定値の証明書は `lower_triangular=L` と非負有理数列 `diagonal=D`。
+検算側でLの単位下三角形、D≥0、**LDL†=ρ** を再構成して確認する。ゼロピボットでは残りの結合が0であることを要求する。
+純粋状態ではρa=aも照合し、純度とpure判定を確認する。
+
+`QUANTUM_UNITARY.unitary={"operator":{"basis_id":基底ID,"entries":A},"squared_scale":s}` は **U=√s A** を表す。
+例えばHadamardは `A=[[1,1],[1,-1]], s=1/2`。成分は上の複素数JSONで指定する。
+U†U=UU†=Iを検査し、純粋状態にはUψ、混合状態にはUρU†を適用する。
+出力状態は次の操作に再入力できる。純粋状態の共通係数は積として保持するため、表現が入力と異なる場合もある。
+U†による逆変換、正規化、トレース、半正定値性、純度の保存を確認する。
+
+### 実行例と対象範囲
+
+6個のfixtureは(1,i)/√2を中心に、正規化、⟨+|ψ⟩=(1+i)/2、計算基底の確率(1/2,1/2)、
+Pauli Yの期待値1、共役を含む密度行列、Hadamard変換を確認する。
+
+```sh
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_normalize.json --format json
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_inner_product.json --format json
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_born.json --format json
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_expectation.json --format json
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_density_matrix.json --format json
+cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calculation/quantum_unitary.json --format json
+# 10万候補、同じ集合への4並列要求、末尾の競合を含める
+cargo test --manifest-path mirp/Cargo.toml --offline --test quantum -- --include-ignored --nocapture
+```
+
+計算対象は1〜8次元、複素有理数の行列・振幅と、純粋状態/ユニタリ全体の正の共通平方根係数。
+任意の複素数や成分ごとに異なる無理数は受理しない。例えばT=diag(1,(1+i)/√2)は、この共通係数の形式では表せない。
+一般POVM・測定後状態・連続系・Schrödinger方程式の積分・任意角の回転・一般量子チャネルは未対応。
+再入力にも80桁の入力上限が適用される。上限を超えて成長した結果に暗黙の近似は行わない。
+検算は有限次元モデル内の算術であり、実験での適合性やLean形式証明の実行を意味しない。
+
+数理上の規約は[IBMの密度行列解説](https://learning.quantum.ibm.com/course/general-formulation-of-quantum-information/density-matrices)と
+[測定の定式化](https://quantum.cloud.ibm.com/learning/en/courses/general-formulation-of-quantum-information/general-measurements/formulations-of-measurements)を参照。
 
 ## APIと追加Knowledge
 
@@ -301,4 +422,4 @@ cargo test --manifest-path mirp/Cargo.toml --offline --test calculation dense_ca
 各操作の実行・独立検算・説明・証拠に加え、別IDへの差し替え、Knowledge欠落、競合検出をテストしている。
 
 一般の無理数全体、入れ子の根号、無理数根への `solve` 拡張、標準偏差、重み付き分散・共分散、統計的推定は未対応。
-幾何学は上記の座標平面の範囲に対応する。幾何学の3次元、線分・半直線、任意曲線、量子力学の新しい実行経路は未対応。
+幾何学は上記の座標平面の範囲に対応する。幾何学の3次元、線分・半直線、任意曲線は未対応。
