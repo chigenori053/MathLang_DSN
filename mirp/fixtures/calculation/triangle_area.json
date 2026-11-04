@@ -1,0 +1,33 @@
+{
+  "operation": "TRIANGLE_AREA",
+  "a": [
+    {
+      "numerator": "0",
+      "denominator": "1"
+    },
+    {
+      "numerator": "0",
+      "denominator": "1"
+    }
+  ],
+  "b": [
+    {
+      "numerator": "4",
+      "denominator": "1"
+    },
+    {
+      "numerator": "0",
+      "denominator": "1"
+    }
+  ],
+  "c": [
+    {
+      "numerator": "0",
+      "denominator": "1"
+    },
+    {
+      "numerator": "3",
+      "denominator": "1"
+    }
+  ]
+}

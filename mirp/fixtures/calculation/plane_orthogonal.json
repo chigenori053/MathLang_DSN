@@ -1,0 +1,23 @@
+{
+  "operation": "PLANE_ORTHOGONAL",
+  "u": [
+    {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    {
+      "numerator": "2",
+      "denominator": "1"
+    }
+  ],
+  "v": [
+    {
+      "numerator": "-2",
+      "denominator": "1"
+    },
+    {
+      "numerator": "1",
+      "denominator": "1"
+    }
+  ]
+}

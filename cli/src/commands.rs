@@ -143,6 +143,27 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
                 ));
             }
         }
+        Command::Compute { input } => {
+            let request: mathlang_mirp::calculation::CalculationRequest = read(input)?;
+            request.validate().map_err(|e| Error::new(4, e))?;
+            let mut child = Process::new(std::env::current_exe().map_err(|e| Error::new(5, e))?);
+            child.args([
+                "__compute-worker",
+                &serde_json::to_string(&request).map_err(|e| Error::new(9, e))?,
+            ]);
+            let output = crate::process::capture(&mut child, std::time::Duration::from_secs(300))?;
+            e["result"] = serde_json::from_slice(&output.stdout).map_err(|e| Error::new(5, e))?;
+            if !output.status.success() {
+                return Err(Error::new(
+                    output
+                        .status
+                        .code()
+                        .filter(|c| (2..=9).contains(c))
+                        .unwrap_or(5),
+                    format!("calculation failed: {}", e["result"]["diagnostic"]),
+                ));
+            }
+        }
         Command::Knowledge { action } => match action {
             KnowledgeAction::Update { .. } => {
                 return Err(Error::new(4, "Knowledge update is OUT_OF_SCOPE in v0.1"))

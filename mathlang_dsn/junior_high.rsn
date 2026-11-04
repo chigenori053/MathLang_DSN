@@ -157,7 +157,7 @@ module JuniorHigh {
     return quotient
   }
 
-  fn Fraction(numerator: int, denominator: int) -> Rational {
+  pub fn Fraction(numerator: int, denominator: int) -> Rational {
     if denominator == 0 {
       return Rational { numerator: 0, denominator: 1 }
     }

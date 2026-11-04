@@ -1,0 +1,408 @@
+[
+  {
+    "knowledge_id": "EXACT_SQUARE_ROOT",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "0以上の整数nの主平方根をa√bへ簡約し、a²b=nとbの平方因子除去を検算する。",
+    "constraints": [
+      "RADICAND_IN_RANGE"
+    ],
+    "dependencies": [
+      "JH_SQUARE_ROOT_SIMPLIFY"
+    ],
+    "applicable_goals": [
+      "SIMPLIFY_RADICAL"
+    ],
+    "applicable_rus": [
+      "ExactNumberRUS"
+    ],
+    "capabilities": [
+      "SIMPLIFY_RADICAL"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mathlang_dsn/junior_high.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "stage": 1,
+      "input_contract": "0 <= n <= 200000000",
+      "verification": "independent exact integer arithmetic; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_DATA_SUMMARY",
+    "category": "STATISTICS",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "有限整数データの個数、平均、中央値、四分位数、範囲を厳密計算する。",
+    "constraints": [
+      "BOUNDED_NONEMPTY_INTEGER_DATA"
+    ],
+    "dependencies": [
+      "JH_DATA_QUARTILES"
+    ],
+    "applicable_goals": [
+      "DESCRIBE_DATA"
+    ],
+    "applicable_rus": [
+      "DescriptiveStatisticsRUS"
+    ],
+    "capabilities": [
+      "DESCRIBE_DATA"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mathlang_dsn/descriptive.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "stage": 2,
+      "input_contract": "1 <= count <= 64; integer magnitude <= 1000000",
+      "verification": "independent exact integer arithmetic; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_DATA_VARIANCE",
+    "category": "STATISTICS",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "母分散は(nΣx²−(Σx)²)/n²、不偏分散は(nΣx²−(Σx)²)/(n(n−1))。n=1の不偏分散は未定義。",
+    "constraints": [
+      "BOUNDED_NONEMPTY_INTEGER_DATA"
+    ],
+    "dependencies": [
+      "EXACT_DATA_SUMMARY"
+    ],
+    "applicable_goals": [
+      "DATA_VARIANCE"
+    ],
+    "applicable_rus": [
+      "DescriptiveStatisticsRUS"
+    ],
+    "capabilities": [
+      "DATA_VARIANCE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mathlang_dsn/descriptive.rsn",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "stage": 3,
+      "input_contract": "1 <= count <= 64; integer magnitude <= 1000000",
+      "verification": "independent exact integer arithmetic; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_DATA_COVARIANCE",
+    "category": "STATISTICS",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "対応する有限有理数データの母共分散と不偏共分散を厳密計算する。標本数1の不偏共分散は未定義。",
+    "constraints": [
+      "VALID_PAIRED_RATIONAL_DATA"
+    ],
+    "dependencies": [
+      "EXACT_DATA_SUMMARY"
+    ],
+    "applicable_goals": [
+      "DATA_COVARIANCE"
+    ],
+    "applicable_rus": [
+      "DescriptiveStatisticsRUS"
+    ],
+    "capabilities": [
+      "DATA_COVARIANCE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_WEIGHT_NORMALIZATION",
+    "category": "STATISTICS",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "非負の有理数重みを正の総和で割り、合計が厳密に1となる確率を得る。",
+    "constraints": [
+      "VALID_EXACT_DISTRIBUTION"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "NORMALIZE_WEIGHTS"
+    ],
+    "applicable_rus": [
+      "DescriptiveStatisticsRUS"
+    ],
+    "capabilities": [
+      "NORMALIZE_WEIGHTS"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_DISCRETE_EXPECTATION",
+    "category": "STATISTICS",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "data"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "有限離散分布の期待値はΣpᵢxᵢ。確率の総和1を要求し、重みの正規化は明示指定時だけ行う。",
+    "constraints": [
+      "VALID_EXACT_DISTRIBUTION"
+    ],
+    "dependencies": [
+      "EXACT_WEIGHT_NORMALIZATION"
+    ],
+    "applicable_goals": [
+      "DISCRETE_EXPECTATION"
+    ],
+    "applicable_rus": [
+      "DescriptiveStatisticsRUS"
+    ],
+    "capabilities": [
+      "DISCRETE_EXPECTATION"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_RADICAL_NORMAL_FORM",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "有理数係数を持つ主平方根の有限和を簡約し、同類項を統合した厳密な正規形にする。",
+    "constraints": [
+      "VALID_FINITE_RADICAL_SUM"
+    ],
+    "dependencies": [
+      "EXACT_SQUARE_ROOT"
+    ],
+    "applicable_goals": [
+      "NORMALIZE_EXACT"
+    ],
+    "applicable_rus": [
+      "ExactNumberRUS"
+    ],
+    "capabilities": [
+      "NORMALIZE_EXACT"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_RADICAL_EQUALITY",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "平方根式の差を正規化し、厳密な零または整数不等式で検証できる非零の符号から等値を判定する。",
+    "constraints": [
+      "VALID_FINITE_RADICAL_SUM"
+    ],
+    "dependencies": [
+      "EXACT_RADICAL_NORMAL_FORM"
+    ],
+    "applicable_goals": [
+      "EXACT_EQUAL"
+    ],
+    "applicable_rus": [
+      "ExactNumberRUS"
+    ],
+    "capabilities": [
+      "EXACT_EQUAL"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "EXACT_RADICAL_COMPARISON",
+    "category": "NUMBER_SYSTEM",
+    "subcategory": "EXACT_CALCULATION",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "integer"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "平方根式の差を包含する有理数区間を構成し、整数の二乗不等式で大小関係を保証する。",
+    "constraints": [
+      "VALID_FINITE_RADICAL_SUM"
+    ],
+    "dependencies": [
+      "EXACT_RADICAL_NORMAL_FORM"
+    ],
+    "applicable_goals": [
+      "EXACT_COMPARE"
+    ],
+    "applicable_rus": [
+      "ExactNumberRUS"
+    ],
+    "capabilities": [
+      "EXACT_COMPARE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/exact.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "finite exact rational input; see docs/cli/EXACT_CALCULATIONS.md",
+      "verification": "exact identities or integer-bound certificate; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  }
+]

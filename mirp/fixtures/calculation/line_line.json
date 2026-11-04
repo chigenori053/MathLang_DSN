@@ -1,0 +1,31 @@
+{
+  "operation": "LINE_LINE_INTERSECTIONS",
+  "first": {
+    "a": {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    "b": {
+      "numerator": "0",
+      "denominator": "1"
+    },
+    "c": {
+      "numerator": "-2",
+      "denominator": "1"
+    }
+  },
+  "second": {
+    "a": {
+      "numerator": "0",
+      "denominator": "1"
+    },
+    "b": {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    "c": {
+      "numerator": "-3",
+      "denominator": "1"
+    }
+  }
+}

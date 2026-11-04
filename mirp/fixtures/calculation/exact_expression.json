@@ -1,0 +1,28 @@
+{
+  "operation": "NORMALIZE_EXACT",
+  "expression": {
+    "terms": [
+      {
+        "coefficient": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "radicand": 8
+      },
+      {
+        "coefficient": {
+          "numerator": "3",
+          "denominator": "1"
+        },
+        "radicand": 2
+      },
+      {
+        "coefficient": {
+          "numerator": "-1",
+          "denominator": "1"
+        },
+        "radicand": 2
+      }
+    ]
+  }
+}

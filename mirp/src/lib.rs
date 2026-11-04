@@ -8,12 +8,16 @@ use std::fmt;
 use std::fs;
 use std::path::Path;
 
+pub mod calculation;
 pub mod capability;
+pub mod exact;
+pub mod geometry;
 pub mod gke;
 pub mod intent;
 pub mod knowledge;
 pub mod memory;
 pub mod native;
+pub mod physics;
 pub mod pif;
 pub mod session;
 

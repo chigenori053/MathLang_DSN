@@ -1,0 +1,37 @@
+{
+  "operation": "NEWTON_FORCE",
+  "context": {
+    "model": "NEWTONIAN_POINT_PARTICLE",
+    "frame": {
+      "id": "lab",
+      "origin": "fixed laboratory origin",
+      "dimension": 1,
+      "axes": [
+        "x"
+      ],
+      "kind": "INERTIAL",
+      "basis": "ORTHONORMAL_CARTESIAN"
+    },
+    "assumptions": [
+      "NONRELATIVISTIC",
+      "CONSTANT_MASS"
+    ]
+  },
+  "mass": {
+    "value": {
+      "numerator": 1500,
+      "denominator": 1
+    },
+    "unit": "g"
+  },
+  "acceleration": {
+    "values": [
+      {
+        "numerator": 2,
+        "denominator": 1
+      }
+    ],
+    "unit": "m/s^2",
+    "frame_id": "lab"
+  }
+}

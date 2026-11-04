@@ -1,0 +1,88 @@
+package mathlang_dsn
+
+// Exact finite-data calculations. Bounds keep all integer intermediates below 2^53.
+module Descriptive {
+  import mathlang_dsn.JuniorHigh
+
+  struct Rational {
+    numerator: int
+    denominator: int
+  }
+
+  fn Fraction(numerator: int, denominator: int) -> Rational {
+    let value = JuniorHigh::Fraction(numerator, denominator)
+    return Rational { numerator: value.numerator, denominator: value.denominator }
+  }
+
+  struct Summary {
+    status: string
+    count: int
+    mean: Rational
+    median: Rational
+    lower_quartile: Rational
+    upper_quartile: Rational
+    range: int
+  }
+
+  struct Variance {
+    status: string
+    count: int
+    mean: Rational
+    population_variance: Rational
+    sample_variance: Rational
+    sample_defined: bool
+  }
+
+  fn ValidData(values: [int]) -> bool {
+    if values.length < 1 || values.length > 64 {
+      return false
+    }
+    for value in values {
+      if value < -1000000 || value > 1000000 {
+        return false
+      }
+    }
+    return true
+  }
+
+  pub fn SummaryOf(values: [int]) -> Summary {
+    let status = "UNSUPPORTED"
+    let data = JuniorHigh::JDataSummary([])
+    if ValidData(values) {
+      status = "CALCULATED"
+      if values.length == 1 {
+        // Duplicating a singleton gives its mean, median, quartiles and range.
+        data = JuniorHigh::JDataSummary([values[0], values[0]])
+      } else {
+        data = JuniorHigh::JDataSummary(values)
+      }
+    }
+    return Summary { status: status, count: values.length, mean: Fraction(data.mean.numerator, data.mean.denominator), median: Fraction(data.median.numerator, data.median.denominator), lower_quartile: Fraction(data.lower_quartile.numerator, data.lower_quartile.denominator), upper_quartile: Fraction(data.upper_quartile.numerator, data.upper_quartile.denominator), range: data.range }
+  }
+
+  pub fn VarianceOf(values: [int]) -> Variance {
+    let status = "UNSUPPORTED"
+    let mean = Fraction(0, 1)
+    let population = Fraction(0, 1)
+    let sample = Fraction(0, 1)
+    let sample_defined = false
+    if ValidData(values) {
+      status = "CALCULATED"
+      let n = values.length
+      let sum = 0
+      let squares = 0
+      for value in values {
+        sum = sum + value
+        squares = squares + value * value
+      }
+      mean = Fraction(sum, n)
+      let numerator = n * squares - sum * sum
+      population = Fraction(numerator, n * n)
+      if n > 1 {
+        sample_defined = true
+        sample = Fraction(numerator, n * (n - 1))
+      }
+    }
+    return Variance { status: status, count: values.length, mean: mean, population_variance: population, sample_variance: sample, sample_defined: sample_defined }
+  }
+}

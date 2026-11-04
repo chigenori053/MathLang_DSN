@@ -14,6 +14,20 @@ fn main() {
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("compute") {
+        if args.len() != 3 && args.len() != 4 {
+            return Err("usage: mirp compute <request.json> [memory.json]".into());
+        }
+        let request = serde_json::from_str(&std::fs::read_to_string(&args[2])?)?;
+        let result = if let Some(path) = args.get(3) {
+            let memory = MemorySpace::load(path)?;
+            mathlang_mirp::calculation::compute_with_knowledge(&request, memory.knowledge_space())?
+        } else {
+            mathlang_mirp::calculation::compute(&request)?
+        };
+        println!("{}", serde_json::to_string(&result)?);
+        return Ok(());
+    }
     if args.get(1).map(String::as_str) == Some("gke-infer") {
         if args.len() != 5 {
             return Err("usage: mirp gke-infer <state.mirp> <knowledge.json> <goal>".into());

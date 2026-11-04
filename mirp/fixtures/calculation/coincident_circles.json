@@ -1,0 +1,35 @@
+{
+  "operation": "CIRCLE_CIRCLE_INTERSECTIONS",
+  "first": {
+    "center": [
+      {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      {
+        "numerator": "-2",
+        "denominator": "1"
+      }
+    ],
+    "radius": {
+      "numerator": "3",
+      "denominator": "1"
+    }
+  },
+  "second": {
+    "center": [
+      {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      {
+        "numerator": "-2",
+        "denominator": "1"
+      }
+    ],
+    "radius": {
+      "numerator": "3",
+      "denominator": "1"
+    }
+  }
+}

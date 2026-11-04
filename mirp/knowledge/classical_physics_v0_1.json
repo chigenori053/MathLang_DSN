@@ -1,0 +1,260 @@
+[
+  {
+    "knowledge_id": "PHYSICS_CONSTANT_ACCELERATION",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "一定加速度の運動を同一慣性系で計算し、速度と変位の恒等式を検証する。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "CONSTANT_ACCELERATION"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "CONSTANT_ACCELERATION"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "PHYSICS_NEWTON_FORCE",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "一定質量の粒子の合力はF=ma。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "NEWTON_FORCE"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "NEWTON_FORCE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "PHYSICS_NEWTON_ACCELERATION",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "同一慣性系の合力からa=F/mを計算する。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "NEWTON_ACCELERATION"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "NEWTON_ACCELERATION"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "PHYSICS_CONSTANT_FORCE_WORK",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "一定力の仕事は同一座標系のFと変位の内積。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "CONSTANT_FORCE_WORK"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "CONSTANT_FORCE_WORK"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "PHYSICS_KINETIC_ENERGY",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "Newtonian粒子の運動エネルギーはK=m||v||²/2。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "KINETIC_ENERGY"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "KINETIC_ENERGY"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "PHYSICS_WORK_ENERGY",
+    "category": "CLASSICAL_PHYSICS",
+    "subcategory": "UNIT_AWARE_NEWTONIAN_PARTICLE",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "physical_quantity"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "合力による総仕事と運動エネルギー変化を比較し、残差と整合判定を返す。",
+    "constraints": [
+      "VALID_CLASSICAL_PHYSICS_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "WORK_ENERGY"
+    ],
+    "applicable_rus": [
+      "ClassicalPhysicsRUS"
+    ],
+    "capabilities": [
+      "WORK_ENERGY"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/physics.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "explicit SI-compatible units, 1..3 dimensional inertial orthonormal frame, Newtonian point particle and required assumptions",
+      "verification": "exact SI conversion and algebraic residual checks; conditional physical applicability; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  }
+]

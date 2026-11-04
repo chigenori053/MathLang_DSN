@@ -5,6 +5,7 @@ module main {
   import mathlang_dsn.Polynomial
   import mathlang_dsn.Knowledge
   import mathlang_dsn.JuniorHigh
+  import mathlang_dsn.Descriptive
   import mathlang_dsn.Japanese_semantic_adapter
   import mathlang_dsn.Memory_codec_f4
   import mathlang_dsn.Math_adapter_stage2a
@@ -57,6 +58,15 @@ module main {
     let frequency = JuniorHigh::JRelativeFrequency(3, 12)
     let circle = JuniorHigh::JCircleAngle(90)
     result = factors.factors.length == 6 && radical.outside == 6 && radical.inside == 2 && quadratic.status == "SOLVED" && quadratic.roots.length == 2 && quadratic.roots[0].radicand == 2 && system.x.numerator == 3 && system.y.numerator == 2 && function_value.value.numerator == 9 && polygon.angle_sum == 540 && triangle.length_outside == 5 && data.median.numerator == 7 && data.median.denominator == 2 && probability.value.numerator == 1 && probability.value.denominator == 3 && inverse.value.numerator == 3 && similarity.area_ratio.numerator == 4 && similarity.volume_ratio.denominator == 27 && frequency.value.denominator == 4 && circle.value.numerator == 45
+  }
+
+  calculation DescriptiveSelfCheck {
+    let summary = Descriptive::SummaryOf([3, 1, 2])
+    let singleton = Descriptive::SummaryOf([-7])
+    let variance = Descriptive::VarianceOf([1, 2, 3])
+    let single_variance = Descriptive::VarianceOf([7])
+    let empty = Descriptive::VarianceOf([])
+    result = summary.status == "CALCULATED" && summary.mean.numerator == 2 && summary.median.numerator == 2 && summary.lower_quartile.numerator == 1 && summary.upper_quartile.numerator == 3 && singleton.count == 1 && singleton.mean.numerator == -7 && singleton.range == 0 && variance.population_variance.numerator == 2 && variance.population_variance.denominator == 3 && variance.sample_variance.numerator == 1 && variance.sample_defined && single_variance.population_variance.numerator == 0 && !single_variance.sample_defined && empty.status == "UNSUPPORTED"
   }
 
   calculation MirpSelfCheck {

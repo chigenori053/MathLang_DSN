@@ -208,13 +208,7 @@ fn conflicts_and_limits() {
 }
 #[test]
 fn four_domain_patterns_use_same_executor() {
-    let mut cases: Vec<(
-        &str,
-        KnowledgeUnit,
-        Vec<(&str, Vec<RuleTerm>)>,
-        &str,
-        Vec<RuleTerm>,
-    )> = vec![];
+    let mut cases = vec![];
     let mut logic = transitive("LOGIC_TRANSITIVE", "EQUAL");
     logic.category = "LOGIC".into();
     cases.push((
@@ -609,7 +603,7 @@ fn formal_1300_scenario_matrix() {
                 ..pred("R", vec![variable("a")])
             }],
         );
-        no.priority = yes.priority - (i % 2) as i32;
+        no.priority = yes.priority - (i % 2);
         let mut space = KnowledgeSpace::empty();
         space.register_batch(vec![yes, no]).unwrap();
         let mut state = SemanticState::default();

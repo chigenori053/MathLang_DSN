@@ -64,6 +64,10 @@ pub enum Command {
     Solve {
         problem: String,
     },
+    /// Exact expressions, statistics, geometry and unit-aware classical physics from JSON.
+    Compute {
+        input: PathBuf,
+    },
     Doctor,
 }
 #[derive(Subcommand, Debug)]

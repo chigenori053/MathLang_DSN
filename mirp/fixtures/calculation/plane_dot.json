@@ -1,0 +1,23 @@
+{
+  "operation": "PLANE_DOT_PRODUCT",
+  "u": [
+    {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    {
+      "numerator": "2",
+      "denominator": "1"
+    }
+  ],
+  "v": [
+    {
+      "numerator": "3",
+      "denominator": "1"
+    },
+    {
+      "numerator": "4",
+      "denominator": "1"
+    }
+  ]
+}

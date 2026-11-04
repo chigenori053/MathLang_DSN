@@ -1,0 +1,40 @@
+{
+  "operation": "CONSTANT_FORCE_WORK",
+  "context": {
+    "model": "NEWTONIAN_POINT_PARTICLE",
+    "frame": {
+      "id": "lab",
+      "origin": "fixed laboratory origin",
+      "dimension": 1,
+      "axes": [
+        "x"
+      ],
+      "kind": "INERTIAL",
+      "basis": "ORTHONORMAL_CARTESIAN"
+    },
+    "assumptions": [
+      "NONRELATIVISTIC",
+      "CONSTANT_FORCE"
+    ]
+  },
+  "force": {
+    "values": [
+      {
+        "numerator": 3,
+        "denominator": 1
+      }
+    ],
+    "unit": "kg*m/s^2",
+    "frame_id": "lab"
+  },
+  "displacement": {
+    "values": [
+      {
+        "numerator": 2400,
+        "denominator": 1
+      }
+    ],
+    "unit": "cm",
+    "frame_id": "lab"
+  }
+}

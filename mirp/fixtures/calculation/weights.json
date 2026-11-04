@@ -1,0 +1,17 @@
+{
+  "operation": "NORMALIZE_WEIGHTS",
+  "weights": [
+    {
+      "numerator": "2",
+      "denominator": "1"
+    },
+    {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    {
+      "numerator": "1",
+      "denominator": "1"
+    }
+  ]
+}

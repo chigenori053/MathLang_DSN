@@ -4,6 +4,33 @@ use serde_json::json;
 use std::io::{self, Write};
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).is_some_and(|s| s == "__compute-worker") {
+        let outcome = args
+            .get(2)
+            .ok_or("missing calculation request".to_owned())
+            .and_then(|s| {
+                serde_json::from_str::<mathlang_mirp::calculation::CalculationRequest>(s)
+                    .map_err(|e| e.to_string())
+            })
+            .and_then(|request| mathlang_mirp::calculation::compute(&request));
+        let (value, code) = match outcome {
+            Ok(result) => (json!(result), 0),
+            Err(message) => (
+                json!({"diagnostic":message}),
+                if message.starts_with("CAPABILITY_EXECUTION_FAILED") {
+                    5
+                } else if message.starts_with("RESOURCE_LIMIT") {
+                    6
+                } else if message.starts_with("CAPABILITY_INPUT_INVALID") {
+                    4
+                } else {
+                    9
+                },
+            ),
+        };
+        println!("{value}");
+        std::process::exit(code);
+    }
     if args.get(1).is_some_and(|s| s == "__solve-worker") {
         if args.len() != 3 {
             std::process::exit(2);
@@ -64,6 +91,7 @@ fn main() {
         Command::Compare { .. } => "compare",
         Command::Evidence { .. } => "evidence",
         Command::Solve { .. } => "solve",
+        Command::Compute { .. } => "compute",
         Command::Doctor => "doctor",
     };
     let mut e = envelope(command, &run_id());

@@ -1,0 +1,32 @@
+{
+  "operation": "DISCRETE_EXPECTATION",
+  "values": [
+    {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    {
+      "numerator": "2",
+      "denominator": "1"
+    },
+    {
+      "numerator": "3",
+      "denominator": "1"
+    }
+  ],
+  "weights": [
+    {
+      "numerator": "2",
+      "denominator": "1"
+    },
+    {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    {
+      "numerator": "1",
+      "denominator": "1"
+    }
+  ],
+  "normalize_weights": true
+}

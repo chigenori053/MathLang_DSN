@@ -1,0 +1,33 @@
+{
+  "operation": "LINE_CIRCLE_INTERSECTIONS",
+  "line": {
+    "a": {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    "b": {
+      "numerator": "-1",
+      "denominator": "1"
+    },
+    "c": {
+      "numerator": "0",
+      "denominator": "1"
+    }
+  },
+  "circle": {
+    "center": [
+      {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      {
+        "numerator": "0",
+        "denominator": "1"
+      }
+    ],
+    "radius": {
+      "numerator": "1",
+      "denominator": "1"
+    }
+  }
+}

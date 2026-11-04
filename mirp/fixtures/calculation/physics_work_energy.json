@@ -1,0 +1,56 @@
+{
+  "operation": "WORK_ENERGY",
+  "context": {
+    "model": "NEWTONIAN_POINT_PARTICLE",
+    "frame": {
+      "id": "lab",
+      "origin": "fixed laboratory origin",
+      "dimension": 1,
+      "axes": [
+        "x"
+      ],
+      "kind": "INERTIAL",
+      "basis": "ORTHONORMAL_CARTESIAN"
+    },
+    "assumptions": [
+      "NONRELATIVISTIC",
+      "CONSTANT_MASS",
+      "NET_WORK"
+    ]
+  },
+  "mass": {
+    "value": {
+      "numerator": 1500,
+      "denominator": 1
+    },
+    "unit": "g"
+  },
+  "initial_velocity": {
+    "values": [
+      {
+        "numerator": 10,
+        "denominator": 1
+      }
+    ],
+    "unit": "m/s",
+    "frame_id": "lab"
+  },
+  "final_velocity": {
+    "values": [
+      {
+        "numerator": 14,
+        "denominator": 1
+      }
+    ],
+    "unit": "m/s",
+    "frame_id": "lab"
+  },
+  "net_work": {
+    "value": {
+      "numerator": 72,
+      "denominator": 1
+    },
+    "unit": "N*m",
+    "frame_id": "lab"
+  }
+}

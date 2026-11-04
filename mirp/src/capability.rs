@@ -70,6 +70,7 @@ pub struct CapabilityResult {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CapabilityStatus {
+    Calculated,
     Factored,
     Solved,
     NoRealRoots,
@@ -99,6 +100,16 @@ pub struct RuntimeCapabilityRegistry {
 }
 
 impl RuntimeCapabilityRegistry {
+    /// Staged exact-number and descriptive-statistics executors.
+    pub fn calculation() -> Self {
+        let mut registry = Self::quadratic();
+        for operation in crate::calculation::Operation::ALL {
+            registry
+                .register(Box::new(crate::calculation::CalculationExecutor(operation)))
+                .unwrap();
+        }
+        registry
+    }
     pub fn new() -> Self {
         Self::default()
     }

@@ -1,0 +1,25 @@
+{
+  "operation": "EXACT_EQUAL",
+  "left": {
+    "terms": [
+      {
+        "coefficient": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "radicand": 8
+      }
+    ]
+  },
+  "right": {
+    "terms": [
+      {
+        "coefficient": {
+          "numerator": "2",
+          "denominator": "1"
+        },
+        "radicand": 2
+      }
+    ]
+  }
+}

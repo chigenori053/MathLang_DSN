@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 const CATEGORIES: &[&str] = &[
+    "CLASSICAL_PHYSICS",
     "FOUNDATION",
     "ARITHMETIC",
     "NUMBER_SYSTEM",
@@ -580,6 +581,98 @@ impl KnowledgeActivation {
             result_state: None,
             legacy_runtime_rule_id: unit.runtime_rule_id,
         })
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct KnowledgeDecision {
+    pub query: KnowledgeQuery,
+    pub retrieval: KnowledgeQueryResult,
+    pub applicability: Vec<(String, Applicability)>,
+    pub activation: Option<KnowledgeActivation>,
+}
+
+impl KnowledgeDecision {
+    pub(crate) fn query(
+        space: &KnowledgeSpace,
+        state: &SemanticState,
+        query: KnowledgeQuery,
+    ) -> Self {
+        let retrieval = space.query(&query);
+        let applicability = retrieval
+            .candidates
+            .iter()
+            .map(|candidate| {
+                let unit = space
+                    .get(&candidate.knowledge_id)
+                    .expect("retrieved knowledge exists");
+                (
+                    candidate.knowledge_id.clone(),
+                    ApplicabilityEngine::evaluate(unit, candidate, &query, state, |id| {
+                        space.get(id).is_some()
+                    }),
+                )
+            })
+            .collect();
+        Self {
+            query,
+            retrieval,
+            applicability,
+            activation: None,
+        }
+    }
+
+    pub(crate) fn activate(
+        &mut self,
+        space: &KnowledgeSpace,
+        state: &SemanticState,
+        registry: &crate::capability::RuntimeCapabilityRegistry,
+    ) -> Result<Option<KnowledgeActivation>, String> {
+        // query() records applicability in candidate order; traverse both together.
+        let selected = self
+            .applicability
+            .iter()
+            .zip(&self.retrieval.candidates)
+            .find(|((id, verdict), _)| {
+                *verdict == Applicability::Applicable
+                    && space.get(id).is_some_and(|u| !u.capabilities.is_empty())
+            });
+        let Some(((selected_id, _), selected_candidate)) = selected else {
+            return Ok(None);
+        };
+        let unit = space.get(selected_id).ok_or("KNOWLEDGE_NOT_FOUND")?;
+        let conflicts = |a: &KnowledgeUnit, b: &str| {
+            a.activation_metadata
+                .get("conflicts_with")
+                .and_then(serde_json::Value::as_array)
+                .is_some_and(|ids| ids.iter().any(|id| id.as_str() == Some(b)))
+        };
+        for ((id, verdict), candidate) in self.applicability.iter().zip(&self.retrieval.candidates)
+        {
+            if *verdict != Applicability::Applicable || id == selected_id {
+                continue;
+            }
+            let other = space.get(id).ok_or("KNOWLEDGE_NOT_FOUND")?;
+            if other.priority == unit.priority
+                && candidate.activation_class == selected_candidate.activation_class
+                && (conflicts(unit, id) || conflicts(other, selected_id))
+            {
+                return Err("KNOWLEDGE_CONFLICT".into());
+            }
+        }
+        let capability = unit
+            .capabilities
+            .iter()
+            .find(|id| {
+                registry
+                    .get(id)
+                    .is_some_and(|executor| executor.supports_goal(&self.query.goal))
+            })
+            .ok_or_else(|| format!("CAPABILITY_NOT_FOUND: {}", unit.capabilities.join(",")))?;
+        let activation = KnowledgeActivation::for_capability(unit, state, capability)
+            .ok_or("RUS_NOT_AVAILABLE")?;
+        self.activation = Some(activation.clone());
+        Ok(Some(activation))
     }
 }
 

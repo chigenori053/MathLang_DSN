@@ -1,0 +1,318 @@
+[
+  {
+    "knowledge_id": "GEOMETRY_PLANE_DISTANCE",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "2次元座標の距離は差ベクトルのノルム。非負の主平方根を厳密値で保持する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [
+      "JH_PYTHAGOREAN"
+    ],
+    "applicable_goals": [
+      "PLANE_DISTANCE"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "PLANE_DISTANCE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_PLANE_DOT_PRODUCT",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "2次元の内積はuₓvₓ+uᵧvᵧ。偏極恒等式で検算する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "PLANE_DOT_PRODUCT"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "PLANE_DOT_PRODUCT"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_PLANE_ORTHOGONAL",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "代数的な直交条件は内積0。零ベクトルの角は未定義として区別する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [
+      "GEOMETRY_PLANE_DOT_PRODUCT"
+    ],
+    "applicable_goals": [
+      "PLANE_ORTHOGONAL"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "PLANE_ORTHOGONAL"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_TRIANGLE_AREA",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "三角形の面積は辺ベクトルの行列式の絶対値の半分。重複頂点と共線を検査する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "TRIANGLE_AREA"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "TRIANGLE_AREA"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_LINE_LINE_INTERSECTIONS",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "有効な2直線の階数と整合性から交点1点・平行・一致を判定する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "LINE_LINE_INTERSECTIONS"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "LINE_LINE_INTERSECTIONS"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_LINE_CIRCLE_INTERSECTIONS",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "射影と判別式から直線・円の実交点を全列挙する。接点・点円も区別する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [
+      "GEOMETRY_PLANE_DISTANCE"
+    ],
+    "applicable_goals": [
+      "LINE_CIRCLE_INTERSECTIONS"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "LINE_CIRCLE_INTERSECTIONS"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "GEOMETRY_CIRCLE_CIRCLE_INTERSECTIONS",
+    "category": "COORDINATE_GEOMETRY",
+    "subcategory": "EXACT_PLANE_GEOMETRY",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "plane2"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "根軸で2円の全交点を求め、中心間距離から個数を検証する。同心・一致・点円も区別する。",
+    "constraints": [
+      "VALID_RATIONAL_PLANE_GEOMETRY"
+    ],
+    "dependencies": [
+      "GEOMETRY_LINE_CIRCLE_INTERSECTIONS"
+    ],
+    "applicable_goals": [
+      "CIRCLE_CIRCLE_INTERSECTIONS"
+    ],
+    "applicable_rus": [
+      "ExactPlaneGeometryRUS"
+    ],
+    "capabilities": [
+      "CIRCLE_CIRCLE_INTERSECTIONS"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/geometry.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "dimension": 2,
+      "input_contract": "two rational coordinates; valid lines; nonnegative circle radii",
+      "verification": "exact membership plus independent root count; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  }
+]

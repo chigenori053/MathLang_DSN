@@ -4,6 +4,7 @@
 
 ```sh
 cd formal
+mkdir -p verification
 lake exe cache get
 lake build
 lake env lean -DwarningAsError=true AuditKnowledge.lean

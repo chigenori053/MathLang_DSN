@@ -19,6 +19,7 @@
 | `evidence show DIR` | IDを名前とする既存Evidenceディレクトリ。整合性検査後に生情報を表示 |
 | `evidence validate DIR` | 同じ読み取り専用検査。任意 `--obligation FILE`、`--registry FILE` |
 | `solve TEXT` | 既存MIRP native solver/ReasonScript。結果・計画・SemanticStateを返す |
+| `compute FILE` | 平方根式の簡約・等値・大小比較、記述統計・分散・共分散・重み正規化・離散期待値・座標平面の幾何計算と全交点・単位付き古典物理計算をKnowledgeから実行し、独立検算・説明・SemanticStateを返す。[入力と契約](EXACT_CALCULATIONS.md) |
 | `doctor` | 固定版、ReasonScript、Lean、Mathlib全package revision/cache、offline Cargo、sandbox、必要ファイル、設定を検査 |
 
 モデル・義務の入力形式は既存契約を維持する。未知のfieldは終了2、未知の型/演算enumは終了4。
@@ -40,5 +41,5 @@ verifyは新規出力先のみ。既定は設定の `evidence.directory/<run-id>
 
 設定は明示CLI > `--config` > カレントの `mathlang.toml` > 既定値。
 既存runner固定のRSS=2048 MiB、timeout=300秒、parallelism=1以外の指定は終了4。小さい値も黙って無視しない。
-solve外部プロセス群も300秒、doctorの各probeは30秒で停止する。
+solve・compute外部プロセス群も300秒、doctorの各probeは30秒で停止する。
 出力/Evidenceパスのsymlinkおよび `..` を拒否する。macOSの `/tmp`・`/var` 等のsymlinkは `/private/tmp`・`/private/var` 等の実パスを指定する。

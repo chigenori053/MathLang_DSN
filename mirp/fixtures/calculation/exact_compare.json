@@ -1,0 +1,25 @@
+{
+  "operation": "EXACT_COMPARE",
+  "left": {
+    "terms": [
+      {
+        "coefficient": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "radicand": 2
+      }
+    ]
+  },
+  "right": {
+    "terms": [
+      {
+        "coefficient": {
+          "numerator": "1414213562373095",
+          "denominator": "1000000000000000"
+        },
+        "radicand": 1
+      }
+    ]
+  }
+}

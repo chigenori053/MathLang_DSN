@@ -1,0 +1,57 @@
+{
+  "operation": "CONSTANT_ACCELERATION",
+  "context": {
+    "model": "NEWTONIAN_POINT_PARTICLE",
+    "frame": {
+      "id": "lab",
+      "origin": "fixed laboratory origin",
+      "dimension": 1,
+      "axes": [
+        "x"
+      ],
+      "kind": "INERTIAL",
+      "basis": "ORTHONORMAL_CARTESIAN"
+    },
+    "assumptions": [
+      "NONRELATIVISTIC",
+      "CONSTANT_ACCELERATION"
+    ]
+  },
+  "initial_position": {
+    "values": [
+      {
+        "numerator": 100,
+        "denominator": 1
+      }
+    ],
+    "unit": "cm",
+    "frame_id": "lab"
+  },
+  "initial_velocity": {
+    "values": [
+      {
+        "numerator": 36,
+        "denominator": 1
+      }
+    ],
+    "unit": "km/h",
+    "frame_id": "lab"
+  },
+  "acceleration": {
+    "values": [
+      {
+        "numerator": 200,
+        "denominator": 1
+      }
+    ],
+    "unit": "cm/s^2",
+    "frame_id": "lab"
+  },
+  "duration": {
+    "value": {
+      "numerator": 2000,
+      "denominator": 1
+    },
+    "unit": "ms"
+  }
+}

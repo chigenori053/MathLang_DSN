@@ -1,9 +1,7 @@
 //! ProblemIntent to native ReasonScript reasoning, with MIRP as mathematical state.
 use crate::capability::{CapabilityRequest, RuntimeCapabilityRegistry};
 use crate::intent::{ConstraintKind, Method, Polynomial};
-use crate::knowledge::{
-    Applicability, ApplicabilityEngine, KnowledgeActivation, KnowledgeQuery, KnowledgeQueryResult,
-};
+use crate::knowledge::{KnowledgeActivation, KnowledgeQuery};
 use crate::memory::MemorySpace;
 use crate::pif::{
     parse_problem, CriterionKind, CriterionStatus, GoalKind, GoalStatus, IntentRuntimeState,
@@ -100,13 +98,7 @@ pub struct MathLangResult {
     pub knowledge_decisions: Vec<KnowledgeDecision>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct KnowledgeDecision {
-    pub query: KnowledgeQuery,
-    pub retrieval: KnowledgeQueryResult,
-    pub applicability: Vec<(String, Applicability)>,
-    pub activation: Option<KnowledgeActivation>,
-}
+pub use crate::knowledge::KnowledgeDecision;
 
 pub struct MathProblemContext {
     definition: ProblemDefinition,
@@ -333,97 +325,15 @@ impl MathProblemContext {
             semantic_state_refs: vec![equation_id],
             limit: 8,
         };
-        let retrieval = self.memory.query_knowledge(&query);
-        let mut applicability = vec![];
-        for candidate in &retrieval.candidates {
-            let unit = self
-                .memory
-                .get_knowledge(&candidate.knowledge_id)
-                .ok_or("KNOWLEDGE_NOT_FOUND")?;
-            let verdict = ApplicabilityEngine::evaluate(
-                unit,
-                candidate,
-                &query,
-                &self.semantic_state,
-                |id| self.memory.get_knowledge(id).is_some(),
-            );
-            applicability.push((candidate.knowledge_id.clone(), verdict));
-        }
-        let selected_id = applicability
-            .iter()
-            .find(|(id, verdict)| {
-                *verdict == Applicability::Applicable
-                    && self
-                        .memory
-                        .get_knowledge(id)
-                        .is_some_and(|unit| !unit.capabilities.is_empty())
-            })
-            .map(|(id, _)| id.clone());
-        self.knowledge_decisions.push(KnowledgeDecision {
-            query: query.clone(),
-            retrieval,
-            applicability,
-            activation: None,
-        });
-        let Some(selected_id) = selected_id else {
-            return Ok(None);
-        };
-        let unit = self
-            .memory
-            .get_knowledge(&selected_id)
-            .ok_or("KNOWLEDGE_NOT_FOUND")?;
-        let decision = self.knowledge_decisions.last().unwrap();
-        let selected_class = decision
-            .retrieval
-            .candidates
-            .iter()
-            .find(|candidate| candidate.knowledge_id == selected_id)
-            .unwrap()
-            .activation_class
-            .clone();
-        for (other_id, verdict) in &decision.applicability {
-            if *verdict != Applicability::Applicable || *other_id == selected_id {
-                continue;
-            }
-            let other = self
-                .memory
-                .get_knowledge(other_id)
-                .ok_or("KNOWLEDGE_NOT_FOUND")?;
-            let other_class = decision
-                .retrieval
-                .candidates
-                .iter()
-                .find(|candidate| candidate.knowledge_id == *other_id)
-                .unwrap()
-                .activation_class
-                .clone();
-            let conflicts = |a: &crate::knowledge::KnowledgeUnit, b: &str| {
-                a.activation_metadata
-                    .get("conflicts_with")
-                    .and_then(Json::as_array)
-                    .is_some_and(|ids| ids.iter().any(|id| id.as_str() == Some(b)))
-            };
-            if other.priority == unit.priority
-                && other_class == selected_class
-                && (conflicts(unit, other_id) || conflicts(other, &selected_id))
-            {
-                return Err("KNOWLEDGE_CONFLICT".into());
-            }
-        }
-        let capability_id = unit
-            .capabilities
-            .iter()
-            .find(|id| {
-                self.capabilities
-                    .get(id)
-                    .is_some_and(|executor| executor.supports_goal(&query.goal))
-            })
-            .ok_or_else(|| format!("CAPABILITY_NOT_FOUND: {}", unit.capabilities.join(",")))?;
-        let activation =
-            KnowledgeActivation::for_capability(unit, &self.semantic_state, capability_id)
-                .ok_or("RUS_NOT_AVAILABLE")?;
-        self.knowledge_decisions.last_mut().unwrap().activation = Some(activation.clone());
-        Ok(Some(activation))
+        let mut decision =
+            KnowledgeDecision::query(self.memory.knowledge_space(), &self.semantic_state, query);
+        let result = decision.activate(
+            self.memory.knowledge_space(),
+            &self.semantic_state,
+            &self.capabilities,
+        );
+        self.knowledge_decisions.push(decision);
+        result
     }
 
     fn native_step(&mut self, ru: &str, rus: &str, output: Json) -> NativeTrace {

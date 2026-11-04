@@ -29,6 +29,203 @@ fn write(p: &std::path::Path, v: &impl serde::Serialize) {
     fs::write(p, serde_json::to_vec_pretty(v).unwrap()).unwrap();
 }
 #[test]
+fn exact_calculations_use_knowledge_and_preserve_error_contracts() {
+    let directory = temp();
+    let input = directory.join("request.json");
+    for (request, expected) in [
+        (
+            json!({"operation":"SIMPLIFY_SQRT","radicand":72}),
+            json!({"kind":"RADICAL","coefficient":6,"radicand":2}),
+        ),
+        (
+            json!({"operation":"DESCRIBE_DATA","values":[3,1,2]}),
+            json!({"kind":"SUMMARY","count":3,"mean":{"numerator":2,"denominator":1},"median":{"numerator":2,"denominator":1},"lower_quartile":{"numerator":1,"denominator":1},"upper_quartile":{"numerator":3,"denominator":1},"range":2}),
+        ),
+        (
+            json!({"operation":"DATA_VARIANCE","values":[1,2,3]}),
+            json!({"kind":"VARIANCE","count":3,"mean":{"numerator":2,"denominator":1},"population_variance":{"numerator":2,"denominator":3},"sample_variance":{"numerator":1,"denominator":1}}),
+        ),
+    ] {
+        write(&input, &request);
+        let response = run(&["compute", input.to_str().unwrap()], 0);
+        assert_eq!(response["result"]["answer"], expected);
+        assert_eq!(response["result"]["verification"]["status"], "VERIFIED");
+        assert_eq!(
+            response["result"]["verification"]["formal_status"],
+            "NOT_CHECKED"
+        );
+        assert!(response["result"]["explanation"].as_array().unwrap().len() >= 3);
+        assert!(response["formal_status"].is_null());
+    }
+    for request in [
+        json!({"operation":"SIMPLIFY_SQRT","radicand":-1}),
+        json!({"operation":"DESCRIBE_DATA","values":[]}),
+    ] {
+        write(&input, &request);
+        let response = run(&["compute", input.to_str().unwrap()], 4);
+        assert!(response["result"].get("answer").is_none());
+    }
+    write(
+        &input,
+        &json!({"operation":"SIMPLIFY_SQRT","radicand":72,"source":"injected"}),
+    );
+    run(&["compute", input.to_str().unwrap()], 2);
+    fs::remove_dir_all(directory).unwrap();
+}
+
+#[test]
+fn rational_statistics_and_radical_operations_have_cli_evidence() {
+    let fixtures = std::path::Path::new(mathlang_cli::ROOT).join("mirp/fixtures/calculation");
+    for (file, id, kind) in [
+        ("covariance.json", "EXACT_DATA_COVARIANCE", "COVARIANCE"),
+        ("weights.json", "EXACT_WEIGHT_NORMALIZATION", "WEIGHTS"),
+        (
+            "expectation.json",
+            "EXACT_DISCRETE_EXPECTATION",
+            "EXPECTATION",
+        ),
+        (
+            "exact_expression.json",
+            "EXACT_RADICAL_NORMAL_FORM",
+            "EXACT_EXPRESSION",
+        ),
+        (
+            "exact_equal.json",
+            "EXACT_RADICAL_EQUALITY",
+            "EXACT_COMPARISON",
+        ),
+        (
+            "exact_compare.json",
+            "EXACT_RADICAL_COMPARISON",
+            "EXACT_COMPARISON",
+        ),
+    ] {
+        let path = fixtures.join(file);
+        let response = run(&["compute", path.to_str().unwrap()], 0);
+        let result = &response["result"];
+        assert_eq!(result["trace"]["knowledge_id"], id);
+        assert_eq!(
+            result["knowledge_decision"]["activation"]["knowledge_id"],
+            id
+        );
+        assert_eq!(result["answer"]["kind"], kind);
+        assert_eq!(result["verification"]["status"], "VERIFIED");
+        assert_eq!(result["verification"]["formal_status"], "NOT_CHECKED");
+        assert!(result["explanation"][0].as_str().unwrap().contains(id));
+        assert!(response["formal_status"].is_null());
+    }
+    let path = fixtures.join("comparison_limit.json");
+    let limited = run(&["compute", path.to_str().unwrap()], 6);
+    assert!(limited["result"].get("answer").is_none());
+    assert!(limited["result"]["diagnostic"]
+        .as_str()
+        .unwrap()
+        .starts_with("RESOURCE_LIMIT"));
+    let directory = temp();
+    let path = directory.join("invalid.json");
+    for request in [
+        json!({"operation":"DATA_COVARIANCE","x":[],"y":[]}),
+        json!({"operation":"NORMALIZE_WEIGHTS","weights":[{"numerator":-1,"denominator":1}]}),
+        json!({"operation":"DISCRETE_EXPECTATION","values":[{"numerator":1,"denominator":1}],"weights":[{"numerator":2,"denominator":1}]}),
+        json!({"operation":"NORMALIZE_EXACT","expression":{"terms":[{"coefficient":{"numerator":1,"denominator":1},"radicand":-1}]}}),
+    ] {
+        write(&path, &request);
+        run(&["compute", path.to_str().unwrap()], 4);
+    }
+    fs::remove_dir_all(directory).unwrap();
+}
+
+#[test]
+fn exact_plane_geometry_has_cli_results_degeneracy_and_evidence() {
+    let fixtures = std::path::Path::new(mathlang_cli::ROOT).join("mirp/fixtures/calculation");
+    for (file, id, kind) in [
+        (
+            "plane_distance.json",
+            "GEOMETRY_PLANE_DISTANCE",
+            "PLANE_DISTANCE",
+        ),
+        (
+            "plane_dot.json",
+            "GEOMETRY_PLANE_DOT_PRODUCT",
+            "PLANE_DOT_PRODUCT",
+        ),
+        (
+            "plane_orthogonal.json",
+            "GEOMETRY_PLANE_ORTHOGONAL",
+            "PLANE_ORTHOGONALITY",
+        ),
+        (
+            "triangle_area.json",
+            "GEOMETRY_TRIANGLE_AREA",
+            "TRIANGLE_AREA",
+        ),
+        (
+            "line_line.json",
+            "GEOMETRY_LINE_LINE_INTERSECTIONS",
+            "GEOMETRY_INTERSECTIONS",
+        ),
+        (
+            "line_circle.json",
+            "GEOMETRY_LINE_CIRCLE_INTERSECTIONS",
+            "GEOMETRY_INTERSECTIONS",
+        ),
+        (
+            "circle_circle.json",
+            "GEOMETRY_CIRCLE_CIRCLE_INTERSECTIONS",
+            "GEOMETRY_INTERSECTIONS",
+        ),
+    ] {
+        let path = fixtures.join(file);
+        let response = run(&["compute", path.to_str().unwrap()], 0);
+        let result = &response["result"];
+        assert_eq!(result["trace"]["knowledge_id"], id);
+        assert_eq!(
+            result["knowledge_decision"]["activation"]["knowledge_id"],
+            id
+        );
+        assert_eq!(result["answer"]["kind"], kind);
+        assert_eq!(result["verification"]["status"], "VERIFIED");
+        assert_eq!(result["verification"]["formal_status"], "NOT_CHECKED");
+        assert!(result["explanation"][0].as_str().unwrap().contains(id));
+        assert!(response["formal_status"].is_null());
+    }
+    let path = fixtures.join("coincident_circles.json");
+    let infinite = run(&["compute", path.to_str().unwrap()], 0);
+    assert_eq!(
+        infinite["result"]["answer"]["intersection"]["infinite"],
+        true
+    );
+    assert_eq!(
+        infinite["result"]["answer"]["intersection"]["relation"],
+        "COINCIDENT"
+    );
+    assert!(infinite["result"]["explanation"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|v| v.as_str().unwrap().contains("交点は無限個")));
+    let path = fixtures.join("point_circles.json");
+    let point = run(&["compute", path.to_str().unwrap()], 0);
+    assert_eq!(point["result"]["answer"]["intersection"]["infinite"], false);
+    assert_eq!(
+        point["result"]["answer"]["intersection"]["points"]
+            .as_array()
+            .unwrap()
+            .len(),
+        1
+    );
+    let directory = temp();
+    let path = directory.join("invalid.json");
+    for request in [
+        serde_json::json!({"operation":"PLANE_DISTANCE","a":[],"b":[]}),
+        serde_json::json!({"operation":"LINE_LINE_INTERSECTIONS","first":{"a":{"numerator":0,"denominator":1},"b":{"numerator":0,"denominator":1},"c":{"numerator":0,"denominator":1}},"second":{"a":{"numerator":1,"denominator":1},"b":{"numerator":0,"denominator":1},"c":{"numerator":0,"denominator":1}}}),
+    ] {
+        write(&path, &request);
+        run(&["compute", path.to_str().unwrap()], 4);
+    }
+    fs::remove_dir_all(directory).unwrap();
+}
+#[test]
 fn arguments_and_output_contract() {
     for flag in ["--help", "--version"] {
         assert!(Command::new(env!("CARGO_BIN_EXE_mathlang"))
@@ -295,4 +492,90 @@ fn config_and_paths() {
         fs::set_permissions(&directory, fs::Permissions::from_mode(0o700)).unwrap();
     }
     assert!(mathlang_cli::safe_path(&p.join("../outside")).is_err());
+}
+
+#[test]
+fn classical_physics_cli_preserves_units_context_and_conditional_evidence() {
+    let fixtures = std::path::Path::new(mathlang_cli::ROOT).join("mirp/fixtures/calculation");
+    for op in [
+        "constant_acceleration",
+        "newton_force",
+        "newton_acceleration",
+        "constant_force_work",
+        "kinetic_energy",
+        "work_energy",
+    ] {
+        let file = fixtures.join(format!("physics_{op}.json"));
+        let response = run(&["compute", file.to_str().unwrap()], 0);
+        assert_eq!(
+            response["result"]["trace"]["knowledge_id"],
+            format!("PHYSICS_{}", op.to_uppercase())
+        );
+        assert_eq!(response["result"]["answer"]["kind"], "PHYSICS");
+        assert_eq!(
+            response["result"]["answer"]["result"]["context"]["frame"]["id"],
+            "lab"
+        );
+        assert_eq!(
+            response["result"]["answer"]["result"]["applicability"],
+            "CONDITIONAL_ON_DECLARED_ASSUMPTIONS"
+        );
+        assert_eq!(response["result"]["verification"]["status"], "VERIFIED");
+        assert_eq!(
+            response["result"]["verification"]["formal_status"],
+            "NOT_CHECKED"
+        );
+    }
+    let dir = temp();
+    let path = dir.join("request.json");
+    let base: Value =
+        serde_json::from_slice(&fs::read(fixtures.join("physics_work_energy.json")).unwrap())
+            .unwrap();
+    let mut v = base.clone();
+    v["net_work"]["value"]["numerator"] = json!(71);
+    write(&path, &v);
+    let response = run(&["compute", path.to_str().unwrap()], 0);
+    assert_eq!(
+        response["result"]["answer"]["result"]["outcome"]["consistent"],
+        false
+    );
+    assert_eq!(
+        response["result"]["answer"]["result"]["outcome"]["residual"]["value"]["numerator"],
+        "-1"
+    );
+    for v in [
+        {
+            let mut v = base.clone();
+            v["net_work"]["unit"] = json!("N");
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["final_velocity"]["frame_id"] = json!("other");
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["context"]["assumptions"] = json!([]);
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["context"]["frame"]["kind"] = json!("ROTATING");
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["context"]["model"] = json!("RELATIVISTIC_PARTICLE");
+            v
+        },
+    ] {
+        write(&path, &v);
+        run(&["compute", path.to_str().unwrap()], 4);
+    }
+    let mut v = base;
+    v["context"]["injected"] = json!(true);
+    write(&path, &v);
+    run(&["compute", path.to_str().unwrap()], 2);
+    fs::remove_dir_all(dir).unwrap();
 }
