@@ -4,6 +4,24 @@ use serde_json::json;
 use std::io::{self, Write};
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).is_some_and(|s| s == "__numerical-worker") {
+        let result = args
+            .get(2)
+            .ok_or("missing numerical request".to_string())
+            .and_then(|s| {
+                serde_json::from_str::<mathlang_verification::numerical::Request>(s)
+                    .map_err(|e| e.to_string())
+            })
+            .and_then(|r| mathlang_verification::numerical::execute(&r));
+        match result {
+            Ok(v) => println!("{v}"),
+            Err(e) => {
+                println!("{}", json!({"diagnostic":e}));
+                std::process::exit(9);
+            }
+        }
+        return;
+    }
     if args.get(1).is_some_and(|s| s == "__compute-worker") {
         let outcome = args
             .get(2)
@@ -92,6 +110,7 @@ fn main() {
         Command::Evidence { .. } => "evidence",
         Command::Solve { .. } => "solve",
         Command::Compute { .. } => "compute",
+        Command::Numerical { .. } => "numerical",
         Command::Doctor => "doctor",
     };
     let mut e = envelope(command, &run_id());

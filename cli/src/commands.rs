@@ -143,6 +143,23 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
                 ));
             }
         }
+        Command::Numerical { input } => {
+            let request: mathlang_verification::numerical::Request = read(input)?;
+            request.validate().map_err(|e| Error::new(4, e))?;
+            let mut child = Process::new(std::env::current_exe().map_err(|e| Error::new(5, e))?);
+            child.args([
+                "__numerical-worker",
+                &serde_json::to_string(&request).map_err(|e| Error::new(9, e))?,
+            ]);
+            let output = crate::process::capture(&mut child, std::time::Duration::from_secs(300))?;
+            e["result"] = serde_json::from_slice(&output.stdout).map_err(|e| Error::new(5, e))?;
+            if !output.status.success() {
+                return Err(Error::new(
+                    9,
+                    "independent floating-point calculation check failed",
+                ));
+            }
+        }
         Command::Compute { input } => {
             let request: mathlang_mirp::calculation::CalculationRequest = read(input)?;
             request.validate().map_err(|e| Error::new(4, e))?;

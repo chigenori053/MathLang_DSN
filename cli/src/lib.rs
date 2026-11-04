@@ -68,6 +68,10 @@ pub enum Command {
     Compute {
         input: PathBuf,
     },
+    /// Verification-only binary64 density arithmetic; no inference or formal proof.
+    Numerical {
+        input: PathBuf,
+    },
     Doctor,
 }
 #[derive(Subcommand, Debug)]

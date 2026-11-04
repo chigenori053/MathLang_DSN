@@ -1,0 +1,10 @@
+
+running 5 tests
+test rejects_altered_matrix_and_inconsistent_summary ... ok
+test tolerance_boundary_and_formal_separation ... ok
+test rejects_wrong_shape_precision_and_extra_fields ... ok
+test rejects_zero_nonfinite_inputs_and_invalid_tolerances ... ok
+test floating_density_extreme_scales_and_complex_states ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

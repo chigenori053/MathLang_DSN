@@ -1,0 +1,3 @@
+   Compiling mathlang-cli v0.1.0 (/Users/chigenori/development/MathLang_DSN/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running tests/contracts.rs (/private/tmp/qmo-cargo-target/debug/deps/contracts-df932d31518dbf81)

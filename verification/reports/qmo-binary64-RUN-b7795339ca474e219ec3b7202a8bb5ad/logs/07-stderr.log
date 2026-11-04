@@ -1,0 +1,34 @@
+test_float_exact_oracle_and_extreme_inputs (test_floating.FloatingTests.test_float_exact_oracle_and_extreme_inputs) ... ok
+test_float_foundation_requires_complete_actual_evidence (test_floating.FloatingTests.test_float_foundation_requires_complete_actual_evidence) ... ok
+test_float_invalid_tolerance_never_accepts (test_floating.FloatingTests.test_float_invalid_tolerance_never_accepts) ... ok
+test_float_negative_controls_are_frozen (test_floating.FloatingTests.test_float_negative_controls_are_frozen) ... ok
+test_float_nonfinite_and_structural_rejection (test_floating.FloatingTests.test_float_nonfinite_and_structural_rejection) ... ok
+test_float_summary_tampering (test_floating.FloatingTests.test_float_summary_tampering) ... ok
+test_float_threshold_and_provenance_drift (test_floating.FloatingTests.test_float_threshold_and_provenance_drift) ... ok
+test_float_within_and_outside_tolerance (test_floating.FloatingTests.test_float_within_and_outside_tolerance) ... ok
+test_altered_numerical_outputs (test_foundation.FoundationTests.test_altered_numerical_outputs) ... ok
+test_artifact_paths_and_cycles (test_foundation.FoundationTests.test_artifact_paths_and_cycles) ... ok
+test_artifact_tampering (test_foundation.FoundationTests.test_artifact_tampering) ... ok
+test_deleted_registry_history (test_foundation.FoundationTests.test_deleted_registry_history) ... ok
+test_evidence_status_tampering (test_foundation.FoundationTests.test_evidence_status_tampering) ... ok
+test_gate_tampering (test_foundation.FoundationTests.test_gate_tampering) ... ok
+test_immutable (test_foundation.FoundationTests.test_immutable) ... ok
+test_inconsistent_numerical_summary (test_foundation.FoundationTests.test_inconsistent_numerical_summary) ... ok
+test_jcs (test_foundation.FoundationTests.test_jcs) ... ok
+test_knowledge_history_deletion (test_foundation.FoundationTests.test_knowledge_history_deletion) ... ok
+test_missing_artifact (test_foundation.FoundationTests.test_missing_artifact) ... ok
+test_missing_required_evidence (test_foundation.FoundationTests.test_missing_required_evidence) ... ok
+test_proof_placeholders (test_foundation.FoundationTests.test_proof_placeholders) ... ok
+test_registry_truncation (test_foundation.FoundationTests.test_registry_truncation) ... ok
+test_schemas (test_foundation.FoundationTests.test_schemas) ... ok
+test_specialized_schemas (test_foundation.FoundationTests.test_specialized_schemas) ... ok
+test_stale_model_revision (test_foundation.FoundationTests.test_stale_model_revision) ... ok
+test_stale_revisions (test_foundation.FoundationTests.test_stale_revisions) ... ok
+test_tolerance_replay (test_foundation.FoundationTests.test_tolerance_replay) ... ok
+test_unsupported_adoption (test_foundation.FoundationTests.test_unsupported_adoption) ... ok
+test_unverified_semantic_claims (test_foundation.FoundationTests.test_unverified_semantic_claims) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.502s
+
+OK

@@ -1,0 +1,178 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "RUN-b7795339ca474e219ec3b7202a8bb5ad",
+  "mra_repository": "https://github.com/chigenori053/MRA_Test",
+  "mra_commit": "536e780ef20f00ad6cc597d1fd8274c73c34c293",
+  "source_run_url": "https://github.com/chigenori053/MRA_Test/tree/536e780ef20f00ad6cc597d1fd8274c73c34c293/USM_QMO_Evidence/runs/RUN-b7795339ca474e219ec3b7202a8bb5ad",
+  "source_anchor_url": "https://github.com/chigenori053/MRA_Test/blob/536e780ef20f00ad6cc597d1fd8274c73c34c293/USM_QMO_Evidence/anchors/RUN-b7795339ca474e219ec3b7202a8bb5ad.json",
+  "source_anchor_sha256": "d36f6b78c842c5486b5b206af276ffbe3ac2a6c1fe4b6c9dbd8093bc57c95d11",
+  "mathlang_base_commit": "1b5e0ff363fd437203ab751bacd7a2dc65c2c078",
+  "source_identification": "The execution predates the publication commit; exact source and binary bytes are pinned in the source run environment lock and artifact manifest.",
+  "stage_a": "PASS",
+  "stage_b": "NOT_VERIFIED",
+  "commands": [
+    {
+      "argv": [
+        "cargo",
+        "build",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/cli/Cargo.toml",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 1.0399795830016956,
+      "exit_code": 0,
+      "stderr_artifact": "ART-f9915abd5e18388c3b01f2c337f65b0014a7b6fd2905caee5819cdfa620bbcb1",
+      "stdout_artifact": "ART-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_command_artifact_id": "ART-34abfa6b9a962c723d9015720398adfe50805243f9491af2dd22b38319de8062",
+      "stdout_path": "logs/00-stdout.log",
+      "stderr_path": "logs/00-stderr.log"
+    },
+    {
+      "argv": [
+        "/Users/chigenori/.elan/bin/lake",
+        "build"
+      ],
+      "cwd": "/Users/chigenori/development/MRA_Test/USM_QSMV",
+      "duration_seconds": 1.6800460830017983,
+      "exit_code": 0,
+      "stderr_artifact": "ART-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": "ART-8e85c7bec76b5c37da2a652b009ff724b2ab824b8dbb86780431d19199249c77",
+      "source_command_artifact_id": "ART-513fcf15f90dc479c36f08806866b42913eeda956d024518ed2ff5adcb94fea7",
+      "stdout_path": "logs/01-stdout.log",
+      "stderr_path": "logs/01-stderr.log"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/mirp/Cargo.toml",
+        "--test",
+        "quantum",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 3.2222212079977908,
+      "exit_code": 0,
+      "stderr_artifact": "ART-a9277beedeb5f9de18c680493f7b4692f21dd5ed5414974737df086562cee193",
+      "stdout_artifact": "ART-62b0558a5fdeea715a5a55952d37b02685e2d4794efc29ff0f0d85263f745143",
+      "source_command_artifact_id": "ART-f15ce3d2306e7cfa09b454642fd553062cd22d74e4a8a2db03bb193e878f5e3f",
+      "stdout_path": "logs/02-stdout.log",
+      "stderr_path": "logs/02-stderr.log"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/cli/Cargo.toml",
+        "--test",
+        "contracts",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 4.888509415999579,
+      "exit_code": 0,
+      "stderr_artifact": "ART-1fd0fafd37b578da55a2b4c6026bdddeca8a84a5b5a6cb13d29928259a8a5384",
+      "stdout_artifact": "ART-828f47427a64cb94578408c3b8157a4e5391aae3bb39f0c83de43433c46c296f",
+      "source_command_artifact_id": "ART-1f0a321c0a8d4033997cb8ec3b85299308e7c7d3454ab13f2204a5f06e62da92",
+      "stdout_path": "logs/03-stdout.log",
+      "stderr_path": "logs/03-stderr.log"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/cli/Cargo.toml",
+        "--test",
+        "numerical",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 0.8658003750024363,
+      "exit_code": 0,
+      "stderr_artifact": "ART-9e4b2acd4d914983fb68bfb32ab99b78c402fc6b485dda5ea87691d658fd25f7",
+      "stdout_artifact": "ART-8a7f6d7226043073f2c15b8fbd1a5d2740df31469867b4347d56b05d0c015de9",
+      "source_command_artifact_id": "ART-52a315f9b19d4c2088ccb1c95acdf131d45c360b033ceeea905dc57ec5ee517a",
+      "stdout_path": "logs/04-stdout.log",
+      "stderr_path": "logs/04-stderr.log"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/verification/Cargo.toml",
+        "--test",
+        "numerical",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 5.575232917002722,
+      "exit_code": 0,
+      "stderr_artifact": "ART-ffd9555c7623f80d03f994643a61e832a0652848db61d57ef28e390a77a2b269",
+      "stdout_artifact": "ART-3cfec64d20dce905a8725f3eb10b1f27c6654330148b447b96c8b9c197cbcc26",
+      "source_command_artifact_id": "ART-4e6b7fcfd62ba96dd202a0f440fe3e476306b27bc25ed2a51b914ae1aec3c02f",
+      "stdout_path": "logs/05-stdout.log",
+      "stderr_path": "logs/05-stderr.log"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/chigenori/development/MathLang_DSN/verification/Cargo.toml",
+        "--test",
+        "foundation",
+        "--target-dir",
+        "/private/tmp/qmo-cargo-target"
+      ],
+      "cwd": "/Users/chigenori/development/MathLang_DSN",
+      "duration_seconds": 1.1141270830012218,
+      "exit_code": 0,
+      "stderr_artifact": "ART-c933905f4fe34aeba8f617992180e0c99fba3571b153b7da779f3109ad4ea3ce",
+      "stdout_artifact": "ART-80533c53fa30b3c5d0afee4ff74c521defa1f2906aa377c390ec8cf4e99fa729",
+      "source_command_artifact_id": "ART-577e1946ea8931c6edb61c588d37f059daf4cfb525733b9f9f438abb516960fd",
+      "stdout_path": "logs/06-stdout.log",
+      "stderr_path": "logs/06-stderr.log"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/Users/chigenori/development/MRA_Test/USM_QMO_Evidence/tests",
+        "-v"
+      ],
+      "cwd": "/Users/chigenori/development/MRA_Test/USM_QMO_Evidence",
+      "duration_seconds": 1.0389419999992242,
+      "exit_code": 0,
+      "stderr_artifact": "ART-09f89a0da32baaa4808a36496848c792d2df34d0266a299943140114f99f3bb8",
+      "stdout_artifact": "ART-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_command_artifact_id": "ART-42eac9e12b03d58980c6d5a6b464bfac0a79b93ca7f7df2ed8067c99cc475f35",
+      "stdout_path": "logs/07-stdout.log",
+      "stderr_path": "logs/07-stderr.log"
+    }
+  ]
+}

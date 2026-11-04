@@ -1,0 +1,20 @@
+
+running 15 tests
+test hermitian_expectations_are_real_for_pure_and_mixed_states ... ok
+test born_probabilities_cover_complex_measurement_bases_and_mixed_states ... ok
+test inner_product_conjugates_the_first_argument_and_keeps_exact_root_scales ... ok
+test quantum_candidates_scale_and_concurrent_states_do_not_interfere ... ignored, explicit 100k same-goal quantum candidate, concurrent computation and conflict gate
+test densities_use_conjugate_outer_products_and_certify_singular_psd_matrices ... ok
+test invalid_measurements_observables_and_unitaries_are_rejected ... ok
+test normalization_preserves_complex_phase_and_feeds_other_operations ... ok
+test invalid_density_matrices_fail_beyond_diagonal_and_trace_checks ... ok
+test full_rank_complex_densities_and_maximally_mixed_boundary_are_certified ... ok
+test unitary_hadamard_and_complex_nonsymmetric_maps_preserve_states_and_purity ... ok
+test all_six_knowledge_units_select_verify_explain_and_persist_evidence ... ok
+test verification_detects_altered_numbers_phases_probabilities_and_psd_certificates ... ok
+test normalization_basis_shape_and_numeric_contracts_are_enforced ... ok
+test dimensions_one_through_eight_and_degenerate_measurements_are_exact ... ok
+test pure_and_density_routes_agree_across_phases_measurements_and_observables ... ok
+
+test result: ok. 14 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.12s
+

@@ -1,0 +1,5 @@
+   Compiling serde_json v1.0.154
+   Compiling mathlang-mirp v0.1.0 (/Users/chigenori/development/MathLang_DSN/mirp)
+   Compiling mathlang-verification v0.1.0 (/Users/chigenori/development/MathLang_DSN/verification)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.21s
+     Running tests/numerical.rs (/private/tmp/qmo-cargo-target/debug/deps/numerical-205124804d3f917b)

@@ -1,0 +1,41 @@
+
+running 10 tests
+Unified MathLang CLI; existing mathematical engines and immutable evidence
+
+Usage: mathlang [OPTIONS] <COMMAND>
+
+Commands:
+  model      
+  verify     
+  proof      
+  knowledge  
+  compare    
+  evidence   
+  solve      
+  compute    Exact expressions, statistics, geometry, classical physics and finite quantum states from JSON
+  numerical  Verification-only binary64 density arithmetic; no inference or formal proof
+  doctor     
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --format <FORMAT>  [possible values: text, json]
+      --output <OUTPUT>  
+      --config <CONFIG>  
+      --quiet            
+      --verbose          
+  -h, --help             Print help
+  -V, --version          Print version
+mathlang 0.1.0
+test config_and_paths ... ok
+test arguments_and_output_contract ... ok
+test plan_and_candidates_never_prove ... ok
+test models_normalization_and_comparison ... ok
+test evidence_integrity_and_stale_revision ... ok
+test classical_physics_cli_preserves_units_context_and_conditional_evidence ... ok
+test finite_quantum_cli_preserves_exact_complex_states_and_error_contracts ... ok
+test exact_plane_geometry_has_cli_results_degeneracy_and_evidence ... ok
+test exact_calculations_use_knowledge_and_preserve_error_contracts ... ok
+test rational_statistics_and_radical_operations_have_cli_evidence ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.80s
+

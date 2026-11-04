@@ -1,0 +1,3 @@
+   Compiling mathlang-verification v0.1.0 (/Users/chigenori/development/MathLang_DSN/verification)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.29s
+     Running tests/foundation.rs (/private/tmp/qmo-cargo-target/debug/deps/foundation-a4fc7f4d453567c5)
