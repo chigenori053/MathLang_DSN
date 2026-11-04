@@ -5,6 +5,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 const CATEGORIES: &[&str] = &[
     "CLASSICAL_PHYSICS",
+    "QUANTUM_MECHANICS",
     "FOUNDATION",
     "ARITHMETIC",
     "NUMBER_SYSTEM",

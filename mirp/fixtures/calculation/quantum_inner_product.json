@@ -1,0 +1,68 @@
+{
+  "operation": "QUANTUM_INNER_PRODUCT",
+  "basis": {
+    "id": "qubit_z",
+    "labels": [
+      "0",
+      "1"
+    ]
+  },
+  "left": {
+    "basis_id": "qubit_z",
+    "amplitudes": [
+      {
+        "real": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 0,
+          "denominator": 1
+        }
+      },
+      {
+        "real": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 0,
+          "denominator": 1
+        }
+      }
+    ],
+    "squared_scale": {
+      "numerator": 1,
+      "denominator": 2
+    }
+  },
+  "right": {
+    "basis_id": "qubit_z",
+    "amplitudes": [
+      {
+        "real": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 0,
+          "denominator": 1
+        }
+      },
+      {
+        "real": {
+          "numerator": 0,
+          "denominator": 1
+        },
+        "imaginary": {
+          "numerator": 1,
+          "denominator": 1
+        }
+      }
+    ],
+    "squared_scale": {
+      "numerator": 1,
+      "denominator": 2
+    }
+  }
+}

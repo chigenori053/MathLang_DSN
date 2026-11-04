@@ -64,7 +64,7 @@ pub enum Command {
     Solve {
         problem: String,
     },
-    /// Exact expressions, statistics, geometry and unit-aware classical physics from JSON.
+    /// Exact expressions, statistics, geometry, classical physics and finite quantum states from JSON.
     Compute {
         input: PathBuf,
     },

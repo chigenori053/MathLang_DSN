@@ -1,6 +1,6 @@
 # MathLang_DSN
 
-MathLang_DSN is a bounded mathematical reasoning model for MathLang. ReasonScript provides the existing mathematical rules, calculations, and quadratic answer checks. Exact rational statistics, certified finite radical-sum comparisons, plane geometry, and unit-aware classical physics also use registered Rust executors with independent arithmetic checks. Rust provides MIRP's typed semantic state, persistence, provenance, problem parsing, planning, capability dispatch, and the command-line bridge to ReasonScript. The project follows the state and rule model explored in [DSN_Test](https://github.com/chigenori053/DSN_Test); imported modules are listed in [mirp/DSN_TEST_IMPORTS.md](mirp/DSN_TEST_IMPORTS.md).
+MathLang_DSN is a bounded mathematical reasoning model for MathLang. ReasonScript provides the existing mathematical rules, calculations, and quadratic answer checks. Exact rational statistics, certified finite radical-sum comparisons, plane geometry, unit-aware classical physics, and finite-dimensional quantum mechanics also use registered Rust executors with independent arithmetic checks. Rust provides MIRP's typed semantic state, persistence, provenance, problem parsing, planning, capability dispatch, and the command-line bridge to ReasonScript. The project follows the state and rule model explored in [DSN_Test](https://github.com/chigenori053/DSN_Test); imported modules are listed in [mirp/DSN_TEST_IMPORTS.md](mirp/DSN_TEST_IMPORTS.md).
 
 ## Run
 
@@ -59,4 +59,5 @@ Rust製 `mathlang` CLIの実装・インストール・検証結果は [docs/cli
 
 座標平面の距離・内積・直交・三角形の面積、直線同士・直線と円・円同士の全交点も同じ `compute` 経路で利用できる。
 単位付きの等加速度運動、合力と加速度、一定力の仕事、運動エネルギー、仕事と運動エネルギーの整合判定も利用できる。1〜3次元の慣性系・直交Cartesian座標とNewtonian質点モデルを要求し、単位・座標系・必要な仮定を検査する。
+量子力学は1〜8次元の純粋状態・混合状態、正規化、内積、射影測定のBorn則、期待値、密度行列、ユニタリ変換を扱う。複素有理数と正の共通平方根係数で厳密計算し、共役・エルミート性・半正定値性・確率総和・トレースを検査する。
 座標の次元・退化・接触・一致を検査し、交点の完全性を元の方程式への代入と個数判定で確認する。

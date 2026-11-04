@@ -100,7 +100,7 @@ pub struct RuntimeCapabilityRegistry {
 }
 
 impl RuntimeCapabilityRegistry {
-    /// Staged exact-number and descriptive-statistics executors.
+    /// Bounded exact mathematics, classical physics and finite quantum executors.
     pub fn calculation() -> Self {
         let mut registry = Self::quadratic();
         for operation in crate::calculation::Operation::ALL {

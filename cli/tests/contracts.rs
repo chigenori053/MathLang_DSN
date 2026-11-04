@@ -579,3 +579,92 @@ fn classical_physics_cli_preserves_units_context_and_conditional_evidence() {
     run(&["compute", path.to_str().unwrap()], 2);
     fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn finite_quantum_cli_preserves_exact_complex_states_and_error_contracts() {
+    let fixtures = std::path::Path::new(mathlang_cli::ROOT).join("mirp/fixtures/calculation");
+    for op in [
+        "normalize",
+        "inner_product",
+        "born",
+        "expectation",
+        "density_matrix",
+        "unitary",
+    ] {
+        let file = fixtures.join(format!("quantum_{op}.json"));
+        let response = run(&["compute", file.to_str().unwrap()], 0);
+        assert_eq!(
+            response["result"]["trace"]["knowledge_id"],
+            format!("QUANTUM_{}", op.to_uppercase())
+        );
+        assert_eq!(response["result"]["answer"]["kind"], "QUANTUM");
+        assert_eq!(
+            response["result"]["answer"]["result"]["basis"]["id"],
+            "qubit_z"
+        );
+        assert_eq!(response["result"]["verification"]["status"], "VERIFIED");
+        assert_eq!(
+            response["result"]["verification"]["method"],
+            "EXACT_COMPLEX_IDENTITY_CHECK"
+        );
+        assert_eq!(
+            response["result"]["verification"]["formal_status"],
+            "NOT_CHECKED"
+        );
+    }
+    let dir = temp();
+    let path = dir.join("request.json");
+    let base: Value =
+        serde_json::from_slice(&fs::read(fixtures.join("quantum_born.json")).unwrap()).unwrap();
+    let normalize = run(
+        &[
+            "compute",
+            fixtures.join("quantum_normalize.json").to_str().unwrap(),
+        ],
+        0,
+    );
+    let mut v = base.clone();
+    v["state"] = normalize["result"]["answer"]["result"]["outcome"]["state"].clone();
+    v["state"]["kind"] = json!("PURE");
+    write(&path, &v);
+    let response = run(&["compute", path.to_str().unwrap()], 0);
+    assert_eq!(
+        response["result"]["answer"]["result"]["outcome"]["probabilities"],
+        json!([{"numerator":"1","denominator":"2"},{"numerator":"1","denominator":"2"}])
+    );
+    for v in [
+        {
+            let mut v = base.clone();
+            v["state"]["squared_scale"] = json!({"numerator":1,"denominator":1});
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["state"]["basis_id"] = json!("other");
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["projectors"].as_array_mut().unwrap().pop();
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["state"]["amplitudes"] = json!([]);
+            v
+        },
+        {
+            let mut v = base.clone();
+            v["state"]["amplitudes"][0]["real"]["denominator"] = json!(0);
+            v
+        },
+    ] {
+        write(&path, &v);
+        run(&["compute", path.to_str().unwrap()], 4);
+    }
+    let mut v = base;
+    v["state"]["unexamined"] = json!(true);
+    write(&path, &v);
+    run(&["compute", path.to_str().unwrap()], 2);
+    fs::remove_dir_all(dir).unwrap();
+}
