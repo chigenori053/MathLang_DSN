@@ -50,6 +50,10 @@ git diff --check
 
 The MIRP foundation, ProblemIntent validation, and knowledge-native runtime contracts are documented in [mirp/STATUS.md](mirp/STATUS.md), [mirp/PIF_REPORT.md](mirp/PIF_REPORT.md), and [mirp/KNOWLEDGE_RUNTIME_VALIDATION.md](mirp/KNOWLEDGE_RUNTIME_VALIDATION.md). Their historical validation figures describe the versions tested at the time. The project is licensed under Apache-2.0.
 
+## Quantum mechanics Knowledge
+
+[mirp/knowledge/qm_v0_1](mirp/knowledge/qm_v0_1/README.md) adds 60 quantum-mechanics KnowledgeUnits in the `PHYSICS` category on top of the USM mathematical pack. Concrete matrix and state claims are checked with exact rational arithmetic by `cargo test --manifest-path mirp/Cargo.toml --test quantum_knowledge`; general results are either anchored to kernel-checked USM propositions or recorded as `UNKNOWN`.
+
 ## Unified CLI v0.1
 
 Rust製 `mathlang` CLIの実装・インストール・検証結果は [docs/cli/README.md](docs/cli/README.md) を参照。

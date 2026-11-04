@@ -1,0 +1,10 @@
+{
+  "version": "QM-KNOWLEDGE/0.1",
+  "files": {
+    "README.md": "5332b2296325894749480e63d2067a0449686ac988ca1c7522c7ee2f30c457a6",
+    "catalogue/INDEX.ja.md": "ce9abb6a659f87f9b5f7ec1b410a96bc7b490a907bf31ccfc2bdd86ebe819b89",
+    "catalogue/quantum_mechanics.json": "70dbea5f9241c9036553bff6db901ee87317e72d78dff0319766ea9138d102c6",
+    "reports/knowledge_preparation.ja.md": "60687829835058b997b3d2cb3b94a37a9e6a01968569b1bcf4736ad83da66f8f",
+    "tools/build_catalogue.py": "99dbf455e25b9225b3f09173a11147aa394920fb74bfb16527a27784add3c537"
+  }
+}

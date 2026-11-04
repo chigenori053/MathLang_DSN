@@ -1,0 +1,3479 @@
+[
+ {
+  "knowledge_id": "QM_POSTULATE_STATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "ket",
+    "hilbert_space"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "孤立系の純粋状態は複素Hilbert空間 H の単位ベクトル ψ（‖ψ‖ = 1）で表され、ψ と e^{iθ}ψ は同じ物理状態を表す。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_STATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "状態公理。大域位相の同一視の数学的部分は QM_GLOBAL_PHASE_SAME_DENSITY を参照。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_OBSERVABLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "observable",
+    "self_adjoint"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "観測可能量は H 上の自己共役作用素 A で表され、測定値は A のスペクトルの元である。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "OBSERVABLE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_OBSERVABLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "有限次元ではエルミート行列。測定値が実数である数学的根拠は QM_HERMITIAN_REAL_SPECTRUM。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_BORN_RULE",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "born_rule",
+    "projector",
+    "probability"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [
+   "‖ψ‖ = 1",
+   "P_a = P_a† = P_a²",
+   "Σ_a P_a = I"
+  ],
+  "conclusion": "固有値 a に対応する射影を P_a とすると、状態 ψ で a を得る確率は p(a) = ⟨ψ|P_a|ψ⟩ = ‖P_a ψ‖²。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PROBABILITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 10,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_BORN_RULE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Born則。確率の総和が1になることは QM_BORN_PROBABILITIES_SUM_TO_ONE。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_PROJECTION",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "measurement",
+    "collapse"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [
+   "p(a) = ‖P_a ψ‖² > 0"
+  ],
+  "conclusion": "射影測定で a を得た直後の状態は P_a ψ / ‖P_a ψ‖。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_BORN_RULE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "MEASUREMENT"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_PROJECTION",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "射影仮説（Lüders則）。p(a)=0 の結果には条件付き状態を定義しない。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_SCHRODINGER",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "schrodinger_equation",
+    "hamiltonian"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "閉じた系の状態は iħ dψ/dt = H ψ に従う。H はハミルトニアン（自己共役）。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_SCHRODINGER",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "時間に依存しない H では ψ(t) = e^{-iHt/ħ} ψ(0)（QM_TIME_EVOLUTION_UNITARY）。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_COMPOSITE",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "tensor_product",
+    "composite_system"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "部分系 A, B からなる合成系の状態空間はテンソル積 H_A ⊗ H_B。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_COMPOSITE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "積状態の正規化は QM_PRODUCT_STATE_NORMALIZED（カーネル検査済みアンカー）。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_DENSITY",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "density_operator",
+    "mixed_state"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "一般の（混合）状態は密度作用素 ρ（ρ ⪰ 0, tr ρ = 1）で表され、p(a) = tr(ρ P_a)。純粋状態は ρ = |ψ⟩⟨ψ|。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_BORN_RULE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE",
+   "PROBABILITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_DENSITY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "純粋状態の密度行列の正値性・トレースは QM_PURE_STATE_DENSITY。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_POSTULATE_SYMMETRIZATION",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "identical_particles",
+    "pauli_exclusion"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "同種粒子の状態はボソンなら交換で対称、フェルミオンなら反対称。反対称性から2個のフェルミオンは同じ1粒子状態を占有できない（Pauli排他律）。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_POSTULATE_SYMMETRIZATION",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "スピン統計定理は相対論的場の理論の結果であり、ここでは公理として扱う。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CANONICAL_COMMUTATION",
+  "category": "PHYSICS",
+  "subcategory": "QM_POSTULATES",
+  "knowledge_type": "AXIOM",
+  "pattern": {
+   "symbols": [
+    "position",
+    "momentum",
+    "commutator"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "位置と運動量は正準交換関係 [x̂, p̂] = iħ を満たす。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_CANONICAL_COMMUTATION",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "有限次元行列では実現できない（QM_CCR_NO_FINITE_DIMENSION）。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CONST_PLANCK",
+  "category": "PHYSICS",
+  "subcategory": "QM_CONSTANTS",
+  "knowledge_type": "DEFINITION",
+  "pattern": {
+   "symbols": [
+    "planck_constant"
+   ],
+   "relations": [],
+   "properties": [
+    "SI_DEFINITION"
+   ]
+  },
+  "premises": [],
+  "conclusion": "Planck定数 h = 6.62607015 × 10⁻³⁴ J·s（2019年SI改定以降、定義値で不確かさなし）。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PHYSICAL_CONSTANT"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "si_definition",
+   "source_id": "QMKnowledge.QM_CONST_PLANCK",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "DEFINITION",
+   "verification_status": "SI_DEFINITION",
+   "formal_status": "UNKNOWN",
+   "interpretation": "SIの定義定数。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "BIPM, The International System of Units (SI), 9th edition (2019)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CONST_REDUCED_PLANCK",
+  "category": "PHYSICS",
+  "subcategory": "QM_CONSTANTS",
+  "knowledge_type": "DEFINITION",
+  "pattern": {
+   "symbols": [
+    "reduced_planck_constant"
+   ],
+   "relations": [],
+   "properties": [
+    "SI_DEFINITION"
+   ]
+  },
+  "premises": [],
+  "conclusion": "換算Planck定数 ħ = h / (2π) ≈ 1.054571817 × 10⁻³⁴ J·s。",
+  "constraints": [],
+  "dependencies": [
+   "QM_CONST_PLANCK"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PHYSICAL_CONSTANT"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "si_definition",
+   "source_id": "QMKnowledge.QM_CONST_REDUCED_PLANCK",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "DEFINITION",
+   "verification_status": "SI_DEFINITION",
+   "formal_status": "UNKNOWN",
+   "interpretation": "h から定義される。十進表示は丸め値。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "CODATA 2018"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PLANCK_EINSTEIN",
+  "category": "PHYSICS",
+  "subcategory": "QM_CONSTANTS",
+  "knowledge_type": "RULE",
+  "pattern": {
+   "symbols": [
+    "photon",
+    "energy",
+    "frequency"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "光子のエネルギーと振動数の関係 E = hν = ħω。",
+  "constraints": [],
+  "dependencies": [
+   "QM_CONST_PLANCK",
+   "QM_CONST_REDUCED_PLANCK"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PHYSICAL_CONSTANT"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_PLANCK_EINSTEIN",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Planck–Einstein関係。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_DE_BROGLIE",
+  "category": "PHYSICS",
+  "subcategory": "QM_CONSTANTS",
+  "knowledge_type": "RULE",
+  "pattern": {
+   "symbols": [
+    "de_broglie_wavelength",
+    "momentum"
+   ],
+   "relations": [],
+   "properties": [
+    "POSTULATE"
+   ]
+  },
+  "premises": [],
+  "conclusion": "運動量 p の粒子のde Broglie波長は λ = h / p（波数 k = p/ħ）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_CONST_PLANCK"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PHYSICAL_CONSTANT"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "physical_postulate",
+   "source_id": "QMKnowledge.QM_DE_BROGLIE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "POSTULATE",
+   "verification_status": "POSTULATE",
+   "formal_status": "UNKNOWN",
+   "interpretation": "物質波の関係式。",
+   "qm_stage": 1,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_GLOBAL_PHASE_SAME_DENSITY",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "global_phase",
+    "density_operator"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "∃ z : ℂ, |z| = 1 ∧ φ = z ψ"
+  ],
+  "conclusion": "ψ と φ = zψ（|z| = 1）が位相同値なら |ψ⟩⟨ψ| = |φ⟩⟨φ|。したがって大域位相はどの測定確率にも現れない。",
+  "constraints": [],
+  "dependencies": [
+   "USM_RAY_OUTER",
+   "USM_P0_06",
+   "QM_POSTULATE_DENSITY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE",
+   "SAME_DENSITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_GLOBAL_PHASE_SAME_DENSITY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "数学的内容は USM_RAY_OUTER（Lean検査済み）。確率への帰結は QM_POSTULATE_DENSITY による。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_RAY_OUTER",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   },
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "psi",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "phi",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "PHASE_EQUIVALENT",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "SAME_DENSITY",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_GLOBAL_PHASE_BORN_WEIGHTS",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "global_phase",
+    "born_rule"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "|z| = 1"
+  ],
+  "conclusion": "|z| = 1 なら各基底成分の確率重み |(zψ)_i|² = |ψ_i|² は不変。",
+  "constraints": [],
+  "dependencies": [
+   "USM_PHASE_WEIGHT",
+   "QM_POSTULATE_BORN_RULE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PROBABILITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_GLOBAL_PHASE_BORN_WEIGHTS",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "計算基底での測定確率が大域位相に依存しないことの数学的部分。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_PHASE_WEIGHT",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PURE_STATE_DENSITY",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "density_operator",
+    "pure_state"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "任意の ψ について |ψ⟩⟨ψ| は半正定値で tr |ψ⟩⟨ψ| = ‖ψ‖²。‖ψ‖ = 1 なら密度行列である。",
+  "constraints": [],
+  "dependencies": [
+   "USM_OUTER_POSITIVE",
+   "USM_OUTER_TRACE",
+   "QM_POSTULATE_DENSITY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_PURE_STATE_DENSITY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "正値性は USM_OUTER_POSITIVE、トレースは USM_OUTER_TRACE（いずれもLean検査済み）。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_OUTER_POSITIVE",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_MIXTURE_IS_DENSITY",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "mixed_state",
+    "convexity"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "0 ≤ a",
+   "a ≤ 1"
+  ],
+  "conclusion": "密度行列 ρ, σ と 0 ≤ a ≤ 1 について aρ + (1−a)σ も密度行列（混合状態の凸性）。",
+  "constraints": [],
+  "dependencies": [
+   "USM_P0_04"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_MIXTURE_IS_DENSITY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "確率的混合が状態であることの数学的部分。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_P0_04",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_MAXIMALLY_MIXED_NOT_PURE",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "mixed_state",
+    "pure_state"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "量子ビットの最大混合状態 I/2 はどの純粋状態 |ψ⟩⟨ψ| とも等しくない。",
+  "constraints": [],
+  "dependencies": [
+   "USM_C07_NOT_PURE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_MAXIMALLY_MIXED_NOT_PURE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "混合状態が純粋状態の集合より真に大きいことの最小例。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_C07_NOT_PURE",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_ENSEMBLE_NOT_UNIQUE",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "ensemble",
+    "density_operator"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "異なる純粋状態の集団（{|0⟩,|1⟩} と {|+⟩,|−⟩} の等確率混合）が同じ密度行列 I/2 を与える。",
+  "constraints": [],
+  "dependencies": [
+   "USM_ENSEMBLE_AMBIGUITY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_ENSEMBLE_NOT_UNIQUE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "密度行列から集団の分解は一意に決まらない。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_ENSEMBLE_AMBIGUITY",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BLOCH_PURE_STATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "bloch_vector",
+    "pauli_matrix"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "ψ = (3/5, 4i/5) について ρ = |ψ⟩⟨ψ| = (I + r·σ)/2、r = (⟨σx⟩, ⟨σy⟩, ⟨σz⟩) = (0, 24/25, −7/25)、|r|² = 1、tr ρ² = 1。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PURE_STATE_DENSITY",
+   "QM_PAULI_HERMITIAN_UNITARY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_BLOCH_PURE_STATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Bloch表現の厳密な具体例。一般に量子ビットの密度行列は (I + r·σ)/2（|r| ≤ 1、純粋 ⇔ |r| = 1）。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "bloch_pure_state",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BLOCH_GENERAL",
+  "category": "PHYSICS",
+  "subcategory": "QM_STATES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "bloch_vector"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "任意の量子ビット密度行列は ρ = (I + r·σ)/2（r ∈ ℝ³, |r| ≤ 1）と一意に書け、純粋 ⇔ |r| = 1 ⇔ tr ρ² = 1。",
+  "constraints": [],
+  "dependencies": [
+   "QM_BLOCH_PURE_STATE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "STATE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_BLOCH_GENERAL",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "一般形はこのパックでは未検査。具体例は QM_BLOCH_PURE_STATE。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_HERMITIAN_REAL_SPECTRUM",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "hermitian",
+    "eigenvalue",
+    "spectral_theorem"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "A† = A"
+  ],
+  "conclusion": "有限次元のエルミート行列 A（A† = A）の固有値はすべて実数で、異なる固有値の固有ベクトルは直交し、A は正規直交固有基底で対角化できる（スペクトル定理）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_OBSERVABLE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "OBSERVABLE",
+   "EIGENVALUE",
+   "REAL_SPECTRUM"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_HERMITIAN_REAL_SPECTRUM",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Mathlib には Matrix.IsHermitian.eigenvalues があるが、このパックではLean検査を実行していない。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)",
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "A",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "HERMITIAN",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "REAL_SPECTRUM",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_EXPECTATION_REAL",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "expectation_value",
+    "hermitian"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "A† = A"
+  ],
+  "conclusion": "A† = A なら期待値 ⟨ψ|A|ψ⟩ は実数。",
+  "constraints": [],
+  "dependencies": [
+   "QM_HERMITIAN_REAL_SPECTRUM"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "OBSERVABLE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_EXPECTATION_REAL",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "⟨ψ|Aψ⟩ = ⟨Aψ|ψ⟩ = conj⟨ψ|Aψ⟩ による。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BORN_PROBABILITIES_SUM_TO_ONE",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "born_rule",
+    "completeness"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "Σ_a P_a = I",
+   "tr ρ = 1"
+  ],
+  "conclusion": "Σ_a P_a = I かつ tr ρ = 1 なら Σ_a tr(ρ P_a) = tr(ρ) = 1。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_DENSITY",
+   "UNI_TRACE_ADD"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PROBABILITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_BORN_PROBABILITIES_SUM_TO_ONE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "トレースの線形性による。数値例は QM_BORN_RULE_EXAMPLE。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BORN_RULE_EXAMPLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "born_rule",
+    "projector"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "ψ = (3/5, 4i/5) を σz 基底で測ると p(+1) = 9/25, p(−1) = 16/25（和 1）。|+⟩ = (1,1)/√2 では p(±1) = 1/2。射影 |0⟩⟨0|, |+⟩⟨+| は冪等かつエルミートで、|0⟩⟨0| + |1⟩⟨1| = I。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_BORN_RULE",
+   "QM_BORN_PROBABILITIES_SUM_TO_ONE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "PROBABILITY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_BORN_RULE_EXAMPLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Born則と射影の厳密な具体例。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "born_rule_example",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_EXPECTATION_VALUES_EXAMPLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "expectation_value"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "⟨+|σx|+⟩ = 1, ⟨+|σz|+⟩ = 0, ⟨0|σz|0⟩ = 1。ψ = (3/5, 4i/5) では ⟨σz⟩ = −7/25 = 9/25 − 16/25（Born確率による平均と一致）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_EXPECTATION_REAL",
+   "QM_BORN_RULE_EXAMPLE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "OBSERVABLE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_EXPECTATION_VALUES_EXAMPLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "期待値 = Σ a p(a) の具体例。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "expectation_values_example",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_COMMUTING_OBSERVABLES_COMPATIBLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "commutator",
+    "compatible_observables"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "A† = A",
+   "B† = B",
+   "AB = BA"
+  ],
+  "conclusion": "有限次元で A, B がエルミートかつ [A, B] = 0 なら、共通の正規直交固有基底が存在し同時測定可能。",
+  "constraints": [],
+  "dependencies": [
+   "QM_HERMITIAN_REAL_SPECTRUM"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "OBSERVABLE",
+   "COMPATIBLE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_COMMUTING_OBSERVABLES_COMPATIBLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "同時対角化定理。このパックでは未検査。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)",
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "A",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "B",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "COMMUTE",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "B"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "HERMITIAN",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "HERMITIAN",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "B"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "COMPATIBLE",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "B"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_ORTHOGONAL_STATES_DISTINGUISHABLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_OBSERVABLES",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "distinguishability",
+    "orthogonality"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "直交する状態 ⟨ψ|φ⟩ = 0 は射影測定 {|ψ⟩⟨ψ|, I − |ψ⟩⟨ψ|} で確実に区別でき、非直交状態は単一測定で誤りなく区別できない。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_BORN_RULE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "MEASUREMENT",
+   "PERFECTLY_DISTINGUISHABLE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_ORTHOGONAL_STATES_DISTINGUISHABLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "遷移確率 |⟨ψ|φ⟩|² による。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)",
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "psi",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "phi",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "ORTHOGONAL",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "PERFECTLY_DISTINGUISHABLE",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_PAULI_HERMITIAN_UNITARY",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "pauli_matrix"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "Pauli行列 σx = [[0,1],[1,0]], σy = [[0,−i],[i,0]], σz = [[1,0],[0,−1]] はエルミートかつユニタリで、σ_k² = I, tr σ_k = 0, det σ_k = −1。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_PAULI_HERMITIAN_UNITARY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Pauli行列の基本性質。固有値は ±1。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "pauli_hermitian_unitary",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PAULI_PRODUCT",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "pauli_matrix",
+    "levi_civita"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "σ_j σ_k = δ_jk I + i ε_jkl σ_l。特に σxσy = iσz, σyσz = iσx, σzσx = iσy。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_HERMITIAN_UNITARY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_PAULI_PRODUCT",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "9通りすべての積を厳密に検査。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "pauli_product",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PAULI_COMMUTATOR",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "pauli_matrix",
+    "commutator",
+    "anticommutator"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "[σ_j, σ_k] = 2i ε_jkl σ_l、{σ_j, σ_k} = 2 δ_jk I。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_PRODUCT"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_PAULI_COMMUTATOR",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "9通りすべての組を厳密に検査。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "pauli_commutator",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_SPIN_HALF_ALGEBRA",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "spin_half",
+    "angular_momentum"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "S = σ/2 は [S_x, S_y] = iS_z（巡回）を満たし、S² = S_x² + S_y² + S_z² = (3/4) I = s(s+1) I（s = 1/2）。S_z の固有値は ±1/2。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_COMMUTATOR"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_SPIN_HALF_ALGEBRA",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "スピン1/2表現。ħ を戻すと [S_x,S_y] = iħS_z, S² = (3/4)ħ²。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "spin_half_algebra",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   },
+   "units": "ħ = 1 (spin and angular-momentum matrices are in units of ħ)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_SPIN_ONE_ALGEBRA",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "spin_one",
+    "angular_momentum"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "スピン1行列 S_x = (1/√2)[[0,1,0],[1,0,1],[0,1,0]], S_y = (1/√2)[[0,−i,0],[i,0,−i],[0,i,0]], S_z = diag(1,0,−1) は [S_x,S_y] = iS_z（巡回）、S² = 2I = s(s+1)I（s = 1）を満たしエルミート。",
+  "constraints": [],
+  "dependencies": [
+   "QM_ANGULAR_MOMENTUM_ALGEBRA"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_SPIN_ONE_ALGEBRA",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "1/√2 の因子は M = √2·S を有理行列として持ち運び、積で 1/2 に戻して厳密に検査。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "spin_one_algebra",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   },
+   "units": "ħ = 1 (spin and angular-momentum matrices are in units of ħ)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_ANGULAR_MOMENTUM_ALGEBRA",
+  "category": "PHYSICS",
+  "subcategory": "QM_SPIN",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "angular_momentum",
+    "casimir"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "[J_x, J_y] = iħJ_z（巡回）を満たす有限次元既約表現は j = 0, 1/2, 1, … で次元 2j+1、J² = j(j+1)ħ²、J_z の固有値は mħ（m = −j, …, j）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_OBSERVABLE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPIN"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_ANGULAR_MOMENTUM_ALGEBRA",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "一般論は未検査。j = 1/2, 1 は厳密検査済みの具体例あり。",
+   "qm_stage": 2,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_UNITARY_PRESERVES_NORM",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "unitary",
+    "time_evolution",
+    "normalization"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "U†U = I",
+   "φ = U ψ",
+   "‖ψ‖ = r"
+  ],
+  "conclusion": "U†U = I かつ φ = Uψ なら ‖φ‖ = ‖ψ‖。ユニタリ時間発展は正規化（確率の総和 1）を保存する。",
+  "constraints": [],
+  "dependencies": [
+   "SP_UNITARY_NORM_FORM",
+   "QM_POSTULATE_SCHRODINGER"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "NORM",
+   "NORMALIZED"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 10,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_UNITARY_PRESERVES_NORM",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "数学的内容は SP_UNITARY_NORM_FORM（Lean検査済み）。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "SP_UNITARY_NORM_FORM",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   },
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "U",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "psi",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "phi",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "UNITARY",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "U"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "EVOLVES",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "U"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "NORMALIZED",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "psi"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "NORMALIZED",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "phi"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_UNITARY_DENSITY_UPDATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "unitary",
+    "density_operator",
+    "time_evolution"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "U†U = I"
+  ],
+  "conclusion": "密度行列 ρ とユニタリ U について UρU† は密度行列（半正定値・トレース1）。",
+  "constraints": [],
+  "dependencies": [
+   "USM_DENSITY_CONJUGATION_POSITIVE",
+   "USM_DENSITYUPDATE_TRACE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_UNITARY_DENSITY_UPDATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "von Neumann方程式の解 ρ(t) = U(t)ρU(t)† が状態であることの数学的部分。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_DENSITYUPDATE_TRACE",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_TIME_EVOLUTION_UNITARY",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "time_evolution",
+    "hamiltonian",
+    "unitary"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "H† = H"
+  ],
+  "conclusion": "H が自己共役で時間に依存しなければ U(t) = exp(−iHt/ħ) はユニタリで ψ(t) = U(t)ψ(0) はSchrödinger方程式を解く。U(t)U(s) = U(t+s)。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_SCHRODINGER",
+   "QM_HERMITIAN_REAL_SPECTRUM"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "UNITARY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_TIME_EVOLUTION_UNITARY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "有限次元では行列指数関数とスペクトル分解による。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)",
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "H",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "U",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "HAMILTONIAN",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "H"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "GENERATES",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "H"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "U"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "UNITARY",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "U"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_STATIONARY_STATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "stationary_state",
+    "energy_eigenstate"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "H ψ = E ψ"
+  ],
+  "conclusion": "Hψ = Eψ なら ψ(t) = e^{−iEt/ħ}ψ で、あらゆる測定確率は時間に依存しない（定常状態）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_TIME_EVOLUTION_UNITARY",
+   "QM_GLOBAL_PHASE_SAME_DENSITY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_STATIONARY_STATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "時間依存性は大域位相だけなので密度行列が不変。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_EHRENFEST",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "ehrenfest",
+    "commutator",
+    "expectation_value"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "時間に陽に依存しない観測量 A について d⟨A⟩/dt = (i/ħ)⟨[H, A]⟩。",
+  "constraints": [],
+  "dependencies": [
+   "QM_TIME_EVOLUTION_UNITARY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_EHRENFEST",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Heisenberg描像の運動方程式の期待値版。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CONSERVED_QUANTITY",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "conserved_quantity",
+    "commutator",
+    "hamiltonian"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "[H, A] = 0"
+  ],
+  "conclusion": "[H, A] = 0 で A が時間に陽に依存しなければ ⟨A⟩ と A の測定確率分布は保存される。",
+  "constraints": [],
+  "dependencies": [
+   "QM_EHRENFEST",
+   "QM_COMMUTING_OBSERVABLES_COMPATIBLE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "CONSERVED"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_CONSERVED_QUANTITY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Ehrenfestの定理の帰結。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)",
+   "generic_rule_contract": {
+    "status": "CONDITIONAL_ON_TYPED_FACT_INTERPRETATION",
+    "runtime_rule_does_not_verify_input_facts": true,
+    "native_gke_result_is_not_lean_PROVED": true
+   }
+  },
+  "runtime_rule_id": null,
+  "generic_rule": {
+   "variables": [
+    {
+     "name": "H",
+     "value_type": "SYMBOL"
+    },
+    {
+     "name": "A",
+     "value_type": "SYMBOL"
+    }
+   ],
+   "premises": [
+    {
+     "predicate": "HAMILTONIAN",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "H"
+      }
+     ],
+     "negated": false
+    },
+    {
+     "predicate": "COMMUTE",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "H"
+      },
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      }
+     ],
+     "negated": false
+    }
+   ],
+   "constraints": [],
+   "conclusions": [
+    {
+     "predicate": "CONSERVED",
+     "arguments": [
+      {
+       "type": "VARIABLE",
+       "value": "A"
+      }
+     ],
+     "negated": false
+    }
+   ]
+  }
+ },
+ {
+  "knowledge_id": "QM_RATIONAL_UNITARY_EXAMPLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "unitary",
+    "normalization"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "U = (1/5)[[3, 4i],[4i, 3]] は U†U = UU† = I を満たし、ψ = (3/5, 4i/5) に作用させると Uψ = (−7/25, 24i/25) で ‖Uψ‖² = 1。",
+  "constraints": [],
+  "dependencies": [
+   "QM_UNITARY_PRESERVES_NORM"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_RATIONAL_UNITARY_EXAMPLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "ユニタリ性とノルム保存の厳密な具体例。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "rational_unitary_example",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_HADAMARD_GATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "hadamard",
+    "quantum_gate"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "H = (1/√2)[[1,1],[1,−1]] は H† = H, H² = I、H|0⟩ = |+⟩、H σx H = σz、H σz H = σx。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_HERMITIAN_UNITARY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_HADAMARD_GATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "√2 因子は H' = √2 H を有理行列で持ち、H'² = 2I などで厳密に検査。USM_U06_FORWARD とも整合。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "hadamard_gate",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PHASE_GATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "phase_gate",
+    "quantum_gate"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "位相ゲート S = diag(1, i) はユニタリで S² = σz、S σx S† = σy。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_PRODUCT"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_PHASE_GATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Clifford群の生成元の1つ。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "phase_gate",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CNOT_GATE",
+  "category": "PHYSICS",
+  "subcategory": "QM_DYNAMICS",
+  "knowledge_type": "IDENTITY",
+  "pattern": {
+   "symbols": [
+    "cnot",
+    "quantum_gate"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "CNOT = |0⟩⟨0| ⊗ I + |1⟩⟨1| ⊗ σx はエルミートかつユニタリで CNOT² = I。",
+  "constraints": [],
+  "dependencies": [
+   "QM_PAULI_HERMITIAN_UNITARY"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "DYNAMICS",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_CNOT_GATE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "2量子ビットのエンタングリングゲート。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "cnot_gate",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_ROBERTSON_UNCERTAINTY",
+  "category": "PHYSICS",
+  "subcategory": "QM_UNCERTAINTY",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "uncertainty",
+    "standard_deviation",
+    "commutator"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "A† = A",
+   "B† = B",
+   "‖ψ‖ = 1"
+  ],
+  "conclusion": "エルミートな A, B と正規化された ψ について σ_A σ_B ≥ |⟨[A, B]⟩| / 2（Robertsonの不確定性関係）。",
+  "constraints": [],
+  "dependencies": [
+   "UNI_CAUCHY_SCHWARZ",
+   "QM_EXPECTATION_REAL"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_ROBERTSON_UNCERTAINTY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Cauchy–Schwarz（UNI_CAUCHY_SCHWARZ はLean検査済み）からの標準的導出。全体はこのパックでは未検査。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_ROBERTSON_PAULI_EXAMPLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_UNCERTAINTY",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "uncertainty",
+    "pauli_matrix"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "A = σx, B = σy で、検査した各有理純粋状態について Var(σx)·Var(σy) ≥ |⟨[σx, σy]⟩|²/4 = ⟨σz⟩²。例: ψ = (3/5, 4i/5) では Var(σx) = 1, Var(σy) = 49/625 で等号成立。",
+  "constraints": [],
+  "dependencies": [
+   "QM_ROBERTSON_UNCERTAINTY",
+   "QM_PAULI_COMMUTATOR"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_ROBERTSON_PAULI_EXAMPLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "2乗形で有限個の状態について厳密に検査。一般証明の代用ではない。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "robertson_pauli_example",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_HEISENBERG_UNCERTAINTY",
+  "category": "PHYSICS",
+  "subcategory": "QM_UNCERTAINTY",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "uncertainty",
+    "position",
+    "momentum"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "位置と運動量について σ_x σ_p ≥ ħ/2。",
+  "constraints": [],
+  "dependencies": [
+   "QM_ROBERTSON_UNCERTAINTY",
+   "QM_CANONICAL_COMMUTATION"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_HEISENBERG_UNCERTAINTY",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "Robertson関係に [x̂, p̂] = iħ を代入。非有界作用素の定義域の扱いは省略している。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CCR_NO_FINITE_DIMENSION",
+  "category": "PHYSICS",
+  "subcategory": "QM_UNCERTAINTY",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "commutator",
+    "trace",
+    "canonical_commutation"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [
+   "n ≥ 1",
+   "c ≠ 0"
+  ],
+  "conclusion": "n ≥ 1 の n×n 行列 X, P で XP − PX = cI（c ≠ 0）となるものは存在しない。tr(XP − PX) = 0 だが tr(cI) = cn ≠ 0。",
+  "constraints": [],
+  "dependencies": [
+   "UNI_TRACE_CYCLIC",
+   "QM_CANONICAL_COMMUTATION"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "UNCERTAINTY"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_CCR_NO_FINITE_DIMENSION",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "証明はトレースの巡回性（UNI_TRACE_CYCLIC はLean検査済み）の1行の帰結だが、本命題自体はLean未検査。正準交換関係には無限次元が必要。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_PRODUCT_STATE_NORMALIZED",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "tensor_product",
+    "product_state"
+   ],
+   "relations": [],
+   "properties": [
+    "ANCHORED_TO_KERNEL_CHECKED"
+   ]
+  },
+  "premises": [
+   "‖x‖ = 1",
+   "‖y‖ = 1"
+  ],
+  "conclusion": "‖x‖ = ‖y‖ = 1 なら ‖x ⊗ y‖ = 1（一般に ‖x ⊗ y‖ = ‖x‖‖y‖）。",
+  "constraints": [],
+  "dependencies": [
+   "USM_R01",
+   "USM_P0_05",
+   "QM_POSTULATE_COMPOSITE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "kernel_checked_anchor",
+   "source_id": "QMKnowledge.QM_PRODUCT_STATE_NORMALIZED",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "PROVED_BY_ANCHOR",
+   "verification_status": "ANCHORED_TO_KERNEL_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "数学的内容は USM_R01, USM_P0_05（Lean検査済み）。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "formal_anchor": {
+    "knowledge_id": "USM_R01",
+    "anchor_formal_status": "KERNEL_CHECKED",
+    "scope": "the mathematical statement only; the physical reading is a postulate"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BELL_BASIS",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "bell_state",
+    "entanglement"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "Bell状態 Φ± = (|00⟩ ± |11⟩)/√2, Ψ± = (|01⟩ ± |10⟩)/√2 は C²⊗C² の正規直交基底をなす。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_COMPOSITE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_BELL_BASIS",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "√2 倍したベクトルの内積が 2δ になることを厳密に検査。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "bell_basis",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BELL_CIRCUIT",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "bell_state",
+    "quantum_circuit"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "CNOT (H ⊗ I) |00⟩ = Φ+。",
+  "constraints": [],
+  "dependencies": [
+   "QM_HADAMARD_GATE",
+   "QM_CNOT_GATE",
+   "QM_BELL_BASIS"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_BELL_CIRCUIT",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "エンタングル状態の標準的な生成回路。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "bell_circuit",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_BELL_ENTANGLED",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "entanglement",
+    "partial_trace",
+    "purity"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "ρ = |Φ+⟩⟨Φ+| は tr ρ² = 1（全体は純粋）だが、部分トレース tr_B ρ = I/2 で tr(ρ_A²) = 1/2。係数行列の行列式は 1/2 ≠ 0 なので Φ+ は積状態 a ⊗ b ではない。",
+  "constraints": [],
+  "dependencies": [
+   "QM_BELL_BASIS",
+   "QM_MAXIMALLY_MIXED_NOT_PURE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_BELL_ENTANGLED",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "2量子ビット純粋状態 Σ c_ij|ij⟩ は det(c) = 0 ⇔ 積状態（Schmidt階数1）という標準的判定を使う。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "bell_entangled",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_SUPERDENSE_CODING",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "superdense_coding",
+    "bell_state"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "(σ ⊗ I)Φ+ は σ = I, σx, iσy, σz に対してそれぞれ Φ+, Ψ+, Ψ−, Φ−（符号は大域位相）を与え、4状態は直交する（超高密度符号化）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_BELL_BASIS",
+   "QM_PAULI_HERMITIAN_UNITARY",
+   "QM_ORTHOGONAL_STATES_DISTINGUISHABLE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_SUPERDENSE_CODING",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "局所操作で4つの直交Bell状態を作れることの厳密な検査。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "superdense_coding",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_NO_CLONING",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "no_cloning"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "任意の未知状態 ψ に対し U(ψ ⊗ e) = ψ ⊗ ψ となるユニタリ U は存在しない（ψ が2つ以上の非直交・非同一状態を含む集合を動く場合）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_UNITARY_PRESERVES_NORM",
+   "QM_POSTULATE_COMPOSITE"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_NO_CLONING",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "内積の保存 ⟨ψ|φ⟩ = ⟨ψ|φ⟩² から ⟨ψ|φ⟩ ∈ {0, 1}。具体例は QM_NO_CLONING_CNOT_EXAMPLE。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_NO_CLONING_CNOT_EXAMPLE",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "no_cloning",
+    "cnot"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "CNOT は |0⟩|0⟩ → |0⟩|0⟩, |1⟩|0⟩ → |1⟩|1⟩ と基底状態を複製するが、|+⟩|0⟩ は Φ+ に写り |+⟩|+⟩ にならない（密度行列が異なる）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_NO_CLONING",
+   "QM_BELL_CIRCUIT"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE",
+   "QUANTUM_COMPUTING"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_NO_CLONING_CNOT_EXAMPLE",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "線形性により複製は基底状態でしか成り立たない具体例。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "no_cloning_cnot_example",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CHSH_LOCAL_BOUND",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "chsh",
+    "bell_inequality",
+    "local_hidden_variable"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "±1 の決定論的な値 a0, a1, b0, b1 について S = a0b0 + a0b1 + a1b0 − a1b1 ∈ {−2, 2}。したがって局所隠れた変数模型では |⟨S⟩| ≤ 2。",
+  "constraints": [],
+  "dependencies": [],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_CHSH_LOCAL_BOUND",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "16通りを全数検査。確率混合への拡張は凸性による。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "chsh_local_bound",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_CHSH_QUANTUM_VIOLATION",
+  "category": "PHYSICS",
+  "subcategory": "QM_COMPOSITE",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "chsh",
+    "bell_inequality",
+    "tsirelson_bound"
+   ],
+   "relations": [],
+   "properties": [
+    "EXACT_FINITE_CHECKED"
+   ]
+  },
+  "premises": [],
+  "conclusion": "Φ+ と A0 = σz, A1 = σx, B0 = (σz + σx)/√2, B1 = (σz − σx)/√2 で ⟨S⟩ = 2√2 > 2（⟨S⟩² = 8 を厳密に検査）。2√2 はTsirelson限界。",
+  "constraints": [],
+  "dependencies": [
+   "QM_CHSH_LOCAL_BOUND",
+   "QM_BELL_ENTANGLED"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "COMPOSITE"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "exact_finite_computation",
+   "source_id": "QMKnowledge.QM_CHSH_QUANTUM_VIOLATION",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "EXACT_COMPUTATION_PASSED",
+   "verification_status": "EXACT_FINITE_CHECKED",
+   "formal_status": "UNKNOWN",
+   "interpretation": "量子力学は局所隠れた変数模型で再現できない相関を予言する。Tsirelson限界の最適性自体は未検査。",
+   "qm_stage": 3,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "exact_check": {
+    "check_id": "chsh_quantum_violation",
+    "checker": "mirp/tests/quantum_knowledge.rs",
+    "arithmetic": "exact Gaussian rationals (i128); no floating point"
+   }
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_HARMONIC_OSCILLATOR",
+  "category": "PHYSICS",
+  "subcategory": "QM_MODELS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "harmonic_oscillator",
+    "ladder_operator",
+    "energy_level"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "H = p²/(2m) + mω²x²/2 の固有値は E_n = ħω(n + 1/2)（n = 0, 1, 2, …）。a = √(mω/2ħ)(x + ip/(mω)) について [a, a†] = 1, H = ħω(a†a + 1/2)。",
+  "constraints": [],
+  "dependencies": [
+   "QM_CANONICAL_COMMUTATION"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPECTRUM"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_HARMONIC_OSCILLATOR",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "零点エネルギー ħω/2 を持つ。",
+   "qm_stage": 4,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_INFINITE_SQUARE_WELL",
+  "category": "PHYSICS",
+  "subcategory": "QM_MODELS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "particle_in_box",
+    "energy_level"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "幅 L の無限井戸型ポテンシャル中の粒子は E_n = n²π²ħ²/(2mL²)、ψ_n(x) = √(2/L) sin(nπx/L)（n = 1, 2, …）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_SCHRODINGER"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPECTRUM"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_INFINITE_SQUARE_WELL",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "境界条件 ψ(0) = ψ(L) = 0 による量子化。",
+   "qm_stage": 4,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ },
+ {
+  "knowledge_id": "QM_HYDROGEN_SPECTRUM",
+  "category": "PHYSICS",
+  "subcategory": "QM_MODELS",
+  "knowledge_type": "THEOREM",
+  "pattern": {
+   "symbols": [
+    "hydrogen_atom",
+    "energy_level"
+   ],
+   "relations": [],
+   "properties": [
+    "STANDARD_RESULT"
+   ]
+  },
+  "premises": [],
+  "conclusion": "非相対論的水素原子の束縛状態のエネルギーは E_n = −m_e e⁴ / (2(4πε₀)²ħ² n²) ≈ −13.6057 eV / n²、縮退度 n²（スピンを除く）。",
+  "constraints": [],
+  "dependencies": [
+   "QM_POSTULATE_SCHRODINGER",
+   "QM_ANGULAR_MOMENTUM_ALGEBRA"
+  ],
+  "applicable_goals": [
+   "QUANTUM_MECHANICS",
+   "SPECTRUM"
+  ],
+  "applicable_rus": [],
+  "capabilities": [],
+  "priority": 0,
+  "provenance": {
+   "source_type": "standard_reference",
+   "source_id": "QMKnowledge.QM_HYDROGEN_SPECTRUM",
+   "source_span": null,
+   "parent_occurrence_ids": [],
+   "transformation": [],
+   "memory_id": null
+  },
+  "curriculum_level": "UNIVERSITY_QUANTUM_MECHANICS",
+  "activation_metadata": {
+   "mathematical_result": "UNKNOWN",
+   "verification_status": "STANDARD_RESULT",
+   "formal_status": "UNKNOWN",
+   "interpretation": "微細構造・Lamb シフト・換算質量補正は含まない。",
+   "qm_stage": 4,
+   "pack_version": "QM-KNOWLEDGE/0.1",
+   "reference": "standard textbook result (e.g. Sakurai & Napolitano, Modern Quantum Mechanics; Nielsen & Chuang, Quantum Computation and Quantum Information)"
+  },
+  "runtime_rule_id": null
+ }
+]

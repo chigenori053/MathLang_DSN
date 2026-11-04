@@ -19,6 +19,7 @@ const CATEGORIES: &[&str] = &[
     "PROBABILITY",
     "STATISTICS",
     "LOGIC",
+    "PHYSICS",
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
