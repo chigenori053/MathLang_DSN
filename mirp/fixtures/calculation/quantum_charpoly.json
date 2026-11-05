@@ -1,0 +1,60 @@
+{
+  "operation": "QUANTUM_CHARPOLY",
+  "basis": {
+    "id": "qubit_z",
+    "labels": [
+      "0",
+      "1"
+    ]
+  },
+  "state": {
+    "kind": "MIXED",
+    "basis_id": "qubit_z",
+    "entries": [
+      [
+        {
+          "real": {
+            "numerator": 1,
+            "denominator": 4
+          },
+          "imaginary": {
+            "numerator": 0,
+            "denominator": 4
+          }
+        },
+        {
+          "real": {
+            "numerator": 0,
+            "denominator": 1
+          },
+          "imaginary": {
+            "numerator": 0,
+            "denominator": 1
+          }
+        }
+      ],
+      [
+        {
+          "real": {
+            "numerator": 0,
+            "denominator": 1
+          },
+          "imaginary": {
+            "numerator": 0,
+            "denominator": 1
+          }
+        },
+        {
+          "real": {
+            "numerator": 3,
+            "denominator": 4
+          },
+          "imaginary": {
+            "numerator": 0,
+            "denominator": 4
+          }
+        }
+      ]
+    ]
+  }
+}

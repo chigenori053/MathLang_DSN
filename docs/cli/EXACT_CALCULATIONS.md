@@ -50,6 +50,9 @@ cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calc
 | 8 | `QUANTUM_EXPECTATION` | 基底・純粋/混合状態・エルミート観測量 | 実数の期待値 |
 | 8 | `QUANTUM_DENSITY_MATRIX` | 基底・純粋/混合状態 | 密度行列・トレース・純度・半正定値の証明書 |
 | 8 | `QUANTUM_UNITARY` | 基底・純粋/混合状態・ユニタリ作用素 | 変換後の状態・正規化・純度 |
+| 8 | `QUANTUM_MIX` | 基底・2状態・α∈[0,1]・効果演算子（任意） | 凸混合状態・PSD証明書・各効果のスコア変化と上界 |
+| 8 | `QUANTUM_EFFECT_SCORE` | 基底・純粋/混合状態・効果演算子0⪯E⪯I | Tr(Eρ)・EとI−EのPSD証明書 |
+| 8 | `QUANTUM_CHARPOLY` | 基底・純粋/混合状態 | 特性多項式係数・トレース・行列式 |
 
 入力JSONは `operation` と上表の入力フィールドを持つ。未知のフィールド・浮動小数・自由記述の数式文字列は受け付けない。
 有理数は `{"numerator":2,"denominator":3}` のような既約分数で表す。
@@ -279,7 +282,7 @@ cargo test --manifest-path mirp/Cargo.toml --offline --test physics -- --include
 ### 基底・複素数・状態の表現
 
 全操作で `basis={"id":"qubit_z","labels":["0","1"]}` を指定する。
-これは指定順の正規直交複素基底を表す。次元はラベル数で1〜8、IDとラベルは非空・各128文字まで、ラベル重複は拒否する。
+これは指定順の正規直交複素基底を表す。次元はラベル数で1〜32（USM-QRM-001拡張で8から拡大）、IDとラベルは非空・各128文字まで、ラベル重複は拒否する。
 全状態・作用素の `basis_id` はこのIDと一致し、ベクトル長・正方行列の行数・列数も次元と一致する必要がある。
 異なる基底の自動変換はしない。指定された基底の物理的な意味は呼出側の宣言である。
 
@@ -376,7 +379,7 @@ cargo run --manifest-path cli/Cargo.toml --offline -- compute mirp/fixtures/calc
 cargo test --manifest-path mirp/Cargo.toml --offline --test quantum -- --include-ignored --nocapture
 ```
 
-計算対象は1〜8次元、複素有理数の行列・振幅と、純粋状態/ユニタリ全体の正の共通平方根係数。
+計算対象は1〜32次元、複素有理数の行列・振幅と、純粋状態/ユニタリ全体の正の共通平方根係数。
 任意の複素数や成分ごとに異なる無理数は受理しない。例えばT=diag(1,(1+i)/√2)は、この共通係数の形式では表せない。
 一般POVM・測定後状態・連続系・Schrödinger方程式の積分・任意角の回転・一般量子チャネルは未対応。
 再入力にも80桁の入力上限が適用される。上限を超えて成長した結果に暗黙の近似は行わない。
@@ -423,3 +426,29 @@ cargo test --manifest-path mirp/Cargo.toml --offline --test calculation dense_ca
 
 一般の無理数全体、入れ子の根号、無理数根への `solve` 拡張、標準偏差、重み付き分散・共分散、統計的推定は未対応。
 幾何学は上記の座標平面の範囲に対応する。幾何学の3次元、線分・半直線、任意曲線は未対応。
+
+
+## USM-QRM-001拡張（量子推論メモリ検証用）
+
+`mirp/knowledge/finite_quantum_qrm_v0_1.json` の3件を追加し、KnowledgeSpaceは計60件、計算operationは31件になった。
+既存6件の量子Knowledge（`finite_quantum_v0_1.json`）の内容は変更していない。
+
+- 次元の上限を8から32へ拡張した（`quantum::MAX_DIMENSION`）。33以上は拒否する。全operationに適用される。
+- `QUANTUM_MIX`: ρ'=(1−α)ρ+ασ。`alpha` は有理数で0≤α≤1を要求する（範囲外は入力エラー）。
+  `effects` に0⪯E⪯Iの効果演算子を最大64個渡すと、各Eについて更新前後のTr(Eρ)、Tr(Eσ)、|ΔTr(Eρ)|と `bound_holds` を返す。
+  検算は成分ごとの再計算、エルミート性・トレース1・LDL†証明書、恒等式Tr(E(ρ'−ρ))=α(Tr(Eσ)−Tr(Eρ))と|Δ|≤α。
+- `QUANTUM_EFFECT_SCORE`: Eが0⪯E⪯Iであることを、EとI−Eそれぞれの厳密LDL†証明書で示し、Tr(Eρ)∈[0,1]を返す。
+  `QUANTUM_EXPECTATION` はエルミート性しか要求しないため、意味観測スコアにはこちらを使う。
+- `QUANTUM_CHARPOLY`: Faddeev–LeVerrier法でdet(xI−ρ)の係数c₀..cₙ（昇順、cₙ=1）を返す。
+  Cayley–Hamilton p(ρ)=0、トレース、独立なGauss消去による行列式で検算する。
+  ユニタリ前後で係数が一致すれば、固有値の多重集合が一致する。したがってvon Neumannエントロピーを含む全スペクトル関数が一致する（この帰結はLean側の定理であり、本operationの検算範囲ではない）。
+  固有値やエントロピーの値そのものは一般に無理数・超越数となるため計算しない。忠実度・トレース距離も未対応。
+
+```sh
+cargo run --manifest-path cli/Cargo.toml -- compute mirp/fixtures/calculation/quantum_mix.json --format json
+cargo run --manifest-path cli/Cargo.toml -- compute mirp/fixtures/calculation/quantum_effect_score.json --format json
+cargo run --manifest-path cli/Cargo.toml -- compute mirp/fixtures/calculation/quantum_charpoly.json --format json
+cargo test --manifest-path mirp/Cargo.toml --test quantum_qrm
+```
+
+既存テストの変更: `mirp/tests/quantum.rs` の基底検査で「9ラベルは拒否」を「33ラベルは拒否」に変更した（上限拡張に伴う仕様変更）。

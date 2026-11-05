@@ -439,7 +439,7 @@ fn normalization_basis_shape_and_numeric_contracts_are_enforced() {
             json!({"id":"qubit_z","labels":[]}),
             json!({"id":"qubit_z","labels":["0","0"]}),
             json!({"id":"qubit_z","labels":["0",""]}),
-            json!({"id":"qubit_z","labels":["0","1","2","3","4","5","6","7","8"]}),
+            json!({"id":"qubit_z","labels":(0..33).map(|i| i.to_string()).collect::<Vec<_>>()}),
         ] {
             let mut v = base.clone();
             v["basis"] = basis;

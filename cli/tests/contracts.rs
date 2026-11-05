@@ -668,3 +668,49 @@ fn finite_quantum_cli_preserves_exact_complex_states_and_error_contracts() {
     run(&["compute", path.to_str().unwrap()], 2);
     fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn qrm_quantum_extension_runs_through_cli_including_requests_larger_than_argv_limit() {
+    let fixtures = std::path::Path::new(mathlang_cli::ROOT).join("mirp/fixtures/calculation");
+    for op in ["mix", "effect_score", "charpoly"] {
+        let file = fixtures.join(format!("quantum_{op}.json"));
+        let response = run(&["compute", file.to_str().unwrap()], 0);
+        assert_eq!(
+            response["result"]["trace"]["knowledge_id"],
+            format!("QUANTUM_{}", op.to_uppercase())
+        );
+        assert_eq!(response["result"]["verification"]["status"], "VERIFIED");
+    }
+    // 32-dimensional maximally mixed state with zero entries written as 0/10^40:
+    // the JSON request exceeds Linux's 128 KiB single-argument limit.
+    let n = 32;
+    let big = format!("1{}", "0".repeat(40));
+    let entries: Vec<Vec<Value>> = (0..n)
+        .map(|i| {
+            (0..n)
+                .map(|j| {
+                    let (num, den) = if i == j {
+                        ("1".to_string(), "32".to_string())
+                    } else {
+                        ("0".to_string(), big.clone())
+                    };
+                    json!({"real":{"numerator":num,"denominator":den},
+                           "imaginary":{"numerator":"0","denominator":big}})
+                })
+                .collect()
+        })
+        .collect();
+    let request = json!({"operation":"QUANTUM_DENSITY_MATRIX",
+        "basis":{"id":"b","labels":(0..n).map(|i| format!("e{i}")).collect::<Vec<_>>()},
+        "state":{"kind":"MIXED","basis_id":"b","entries":entries}});
+    let body = serde_json::to_vec(&request).unwrap();
+    assert!(body.len() > 131_072, "request must exceed argv limit");
+    let directory = temp();
+    let input = directory.join("large.json");
+    fs::write(&input, body).unwrap();
+    let response = run(&["compute", input.to_str().unwrap()], 0);
+    assert_eq!(
+        response["result"]["answer"]["result"]["outcome"]["purity"],
+        json!({"numerator":"1","denominator":"32"})
+    );
+}

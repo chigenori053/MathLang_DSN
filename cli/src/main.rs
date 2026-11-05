@@ -9,7 +9,17 @@ fn main() {
             .get(2)
             .ok_or("missing calculation request".to_owned())
             .and_then(|s| {
-                serde_json::from_str::<mathlang_mirp::calculation::CalculationRequest>(s)
+                if s == "-" {
+                    let mut body = String::new();
+                    io::Read::read_to_string(&mut io::stdin(), &mut body)
+                        .map_err(|e| e.to_string())?;
+                    Ok(body)
+                } else {
+                    Ok(s.clone())
+                }
+            })
+            .and_then(|s| {
+                serde_json::from_str::<mathlang_mirp::calculation::CalculationRequest>(&s)
                     .map_err(|e| e.to_string())
             })
             .and_then(|request| mathlang_mirp::calculation::compute(&request));

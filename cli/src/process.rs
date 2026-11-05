@@ -1,11 +1,22 @@
 //! Bound external diagnostics and the unchanged MIRP runtime in a child process group.
 use crate::{Error, Result};
 use std::{
-    io::Read,
+    io::{Read, Write},
     process::{Command, Output, Stdio},
     time::{Duration, Instant},
 };
 pub fn capture(command: &mut Command, limit: Duration) -> Result<Output> {
+    capture_with_input(command, limit, None)
+}
+/// As `capture`, optionally streaming `input` to the child's stdin (avoids argv size limits).
+pub fn capture_with_input(
+    command: &mut Command,
+    limit: Duration,
+    input: Option<Vec<u8>>,
+) -> Result<Output> {
+    if input.is_some() {
+        command.stdin(Stdio::piped());
+    }
     #[cfg(unix)]
     {
         use std::os::unix::process::CommandExt;
@@ -16,6 +27,14 @@ pub fn capture(command: &mut Command, limit: Duration) -> Result<Output> {
         .stderr(Stdio::piped())
         .spawn()
         .map_err(|x| Error::new(5, x))?;
+    let writer = input.map(|bytes| {
+        let stdin = child.stdin.take();
+        std::thread::spawn(move || {
+            if let Some(mut stdin) = stdin {
+                let _ = stdin.write_all(&bytes);
+            }
+        })
+    });
     let mut stdout = child
         .stdout
         .take()
@@ -53,6 +72,11 @@ pub fn capture(command: &mut Command, limit: Duration) -> Result<Output> {
             }
         }
     };
+    if let Some(writer) = writer {
+        writer
+            .join()
+            .map_err(|_| Error::new(9, "stdin writer failed"))?;
+    }
     let stdout = out
         .join()
         .map_err(|_| Error::new(9, "stdout reader failed"))?

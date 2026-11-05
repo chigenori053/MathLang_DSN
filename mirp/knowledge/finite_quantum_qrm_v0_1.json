@@ -1,0 +1,131 @@
+[
+  {
+    "knowledge_id": "QUANTUM_MIX",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "凸混合 ρ'=(1-α)ρ+ασ（0≤α≤1）で密度行列を更新し、妥当性と効果演算子のスコア変化上界 |ΔTr(Eρ)|≤α を厳密検査する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_MIX"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_MIX"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "valid densities rho and sigma, exact rational alpha in [0,1], optional effects 0<=E<=I; dimensions 1..32",
+      "verification": "output Hermitian, trace one, LDL-adjoint PSD certificate; recomputed convex combination; per-effect identity Tr(E(rho'-rho)) = alpha (Tr(E sigma) - Tr(E rho)) and bound; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_EFFECT_SCORE",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "効果演算子 0⪯E⪯I を2つのPSD証明書で検査し、意味観測スコア Tr(Eρ)∈[0,1] を厳密計算する。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_EFFECT_SCORE"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_EFFECT_SCORE"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "valid density or pure state, Hermitian effect with E and I-E PSD; dimensions 1..32",
+      "verification": "two LDL-adjoint certificates (E and I-E) reconstructed; score recomputed by ket or density route; unit interval; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  },
+  {
+    "knowledge_id": "QUANTUM_CHARPOLY",
+    "category": "QUANTUM_MECHANICS",
+    "subcategory": "EXACT_FINITE_DIMENSIONAL_QUANTUM",
+    "knowledge_type": "RULE",
+    "pattern": {
+      "symbols": [
+        "finite_quantum"
+      ],
+      "relations": [],
+      "properties": []
+    },
+    "premises": [],
+    "conclusion": "密度行列の特性多項式（固有値の重複込み対称関数）を厳密計算する。ユニタリ前後の一致で全スペクトル関数（エントロピー等）の不変性を示す。",
+    "constraints": [
+      "VALID_FINITE_QUANTUM_INPUT"
+    ],
+    "dependencies": [],
+    "applicable_goals": [
+      "QUANTUM_CHARPOLY"
+    ],
+    "applicable_rus": [
+      "FiniteQuantumRUS"
+    ],
+    "capabilities": [
+      "QUANTUM_CHARPOLY"
+    ],
+    "priority": 10,
+    "provenance": {
+      "source_type": "runtime_knowledge",
+      "source_id": "mirp/src/quantum.rs",
+      "source_span": null,
+      "parent_occurrence_ids": [],
+      "transformation": [],
+      "memory_id": null
+    },
+    "curriculum_level": "FOUNDATION",
+    "activation_metadata": {
+      "input_contract": "valid density or pure state; dimensions 1..32; eigenvalues and entropy themselves are NOT computed (generally irrational)",
+      "verification": "Faddeev-LeVerrier coefficients checked by exact Cayley-Hamilton p(A)=0, trace identity and an independent Gaussian-elimination determinant; not a Lean proof"
+    },
+    "runtime_rule_id": null
+  }
+]

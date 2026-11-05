@@ -98,6 +98,34 @@ pub enum QuantumOutcome {
         normalization: R,
         purity: R,
     },
+    Mix {
+        state: QuantumOperator,
+        alpha: R,
+        trace: R,
+        purity: R,
+        psd_certificate: PsdCertificate,
+        effect_changes: Vec<EffectChange>,
+    },
+    EffectScore {
+        value: R,
+        effect_certificate: PsdCertificate,
+        complement_certificate: PsdCertificate,
+    },
+    Charpoly {
+        coefficients: Vec<R>,
+        trace: R,
+        determinant: R,
+    },
+}
+/// Score change of one effect E under a QUANTUM_MIX update (Tr(E rho) before and after).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct EffectChange {
+    pub before: R,
+    pub after: R,
+    pub new_state_score: R,
+    pub absolute_change: R,
+    pub bound_holds: bool,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -154,7 +182,16 @@ impl C {
     fn is_zero(&self) -> bool {
         self.re.is_zero() && self.im.is_zero()
     }
+    fn inv(&self) -> Self {
+        let n = self.abs2().recip();
+        Self {
+            re: &self.re * &n,
+            im: -(&self.im * &n),
+        }
+    }
 }
+/// Maximum supported Hilbert-space dimension (extended from 8 to 32 for USM-QRM-001).
+pub const MAX_DIMENSION: usize = 32;
 type M = Vec<Vec<C>>;
 fn invalid(message: &str) -> String {
     format!("CAPABILITY_INPUT_INVALID: {message}")
@@ -226,13 +263,13 @@ fn label(s: &str) -> bool {
 }
 fn check_basis(b: &QuantumBasis) -> Result<usize, String> {
     let n = b.labels.len();
-    if !(1..=8).contains(&n)
+    if !(1..=MAX_DIMENSION).contains(&n)
         || !label(&b.id)
         || b.labels.iter().any(|s| !label(s))
         || b.labels.iter().collect::<BTreeSet<_>>().len() != n
     {
         return Err(invalid(
-            "require a named orthonormal complex basis with 1..=8 distinct nonempty labels",
+            "require a named orthonormal complex basis with 1..=32 distinct nonempty labels",
         ));
     }
     Ok(n)
@@ -441,7 +478,10 @@ fn basis(request: &Request) -> Result<&QuantumBasis, String> {
         | Request::QuantumBorn { basis, .. }
         | Request::QuantumExpectation { basis, .. }
         | Request::QuantumDensityMatrix { basis, .. }
-        | Request::QuantumUnitary { basis, .. } => Ok(basis),
+        | Request::QuantumUnitary { basis, .. }
+        | Request::QuantumMix { basis, .. }
+        | Request::QuantumEffectScore { basis, .. }
+        | Request::QuantumCharpoly { basis, .. } => Ok(basis),
         _ => Err(invalid("not a quantum operation")),
     }
 }
@@ -472,6 +512,103 @@ enum Data {
         operator: M,
         scale: Q,
     },
+    Mix {
+        state: State,
+        new_state: State,
+        alpha: Q,
+        effects: Vec<M>,
+    },
+    EffectScore {
+        state: State,
+        effect: M,
+    },
+    Charpoly {
+        a: M,
+    },
+}
+fn sub_m(a: &M, b: &M) -> M {
+    a.iter()
+        .zip(b)
+        .map(|(r, s)| r.iter().zip(s).map(|(x, y)| x.sub(y)).collect())
+        .collect()
+}
+fn add_m(a: &M, b: &M) -> M {
+    a.iter()
+        .zip(b)
+        .map(|(r, s)| r.iter().zip(s).map(|(x, y)| x.add(y)).collect())
+        .collect()
+}
+/// An effect satisfies 0 <= E <= I: Hermitian, E PSD and I - E PSD (both by exact LDL).
+fn read_effect(e: &QuantumOperator, b: &QuantumBasis) -> Result<M, String> {
+    let a = read_operator(e, b, false)?;
+    hermitian(&a)?;
+    if ldl(&a).is_err() || ldl(&sub_m(&identity(a.len()), &a)).is_err() {
+        return Err(invalid(
+            "effect must satisfy 0 <= E <= I (E and I-E positive semidefinite)",
+        ));
+    }
+    Ok(a)
+}
+fn mix(rho: &M, sigma: &M, alpha: &Q) -> M {
+    add_m(&scaled(rho, &(Q::one() - alpha)), &scaled(sigma, alpha))
+}
+/// Faddeev-LeVerrier: coefficients c_0..c_n of det(xI - A), c_n = 1.
+fn charpoly(a: &M) -> Vec<C> {
+    let n = a.len();
+    let mut c = vec![C::default(); n + 1];
+    c[n] = C::one();
+    let mut mk = vec![vec![C::default(); n]; n];
+    for k in 1..=n {
+        let mut next = matmul(a, &mk);
+        for (i, row) in next.iter_mut().enumerate() {
+            row[i] = row[i].add(&c[n - k + 1]);
+        }
+        mk = next;
+        let t = trace(&matmul(a, &mk));
+        c[n - k] = t.scale(&-Q::from_integer((k as i64).into()).recip());
+    }
+    c
+}
+/// Determinant by exact Gaussian elimination (independent of Faddeev-LeVerrier).
+fn determinant(a: &M) -> C {
+    let n = a.len();
+    let mut m = a.clone();
+    let mut det = C::one();
+    for k in 0..n {
+        let Some(p) = (k..n).find(|&i| !m[i][k].is_zero()) else {
+            return C::default();
+        };
+        if p != k {
+            m.swap(p, k);
+            det = det.scale(&-Q::one());
+        }
+        det = det.mul(&m[k][k]);
+        let inv = m[k][k].inv();
+        for i in k + 1..n {
+            let f = m[i][k].mul(&inv);
+            if f.is_zero() {
+                continue;
+            }
+            let pivot_row = m[k].clone();
+            for (x, p) in m[i].iter_mut().zip(&pivot_row).skip(k) {
+                *x = x.sub(&f.mul(p));
+            }
+        }
+    }
+    det
+}
+fn out_certificate(a: &M) -> Result<PsdCertificate, String> {
+    let (lower, diagonal) = ldl(a)?;
+    Ok(PsdCertificate {
+        lower_triangular: out_m(&lower),
+        diagonal: diagonal.iter().map(R::from).collect(),
+    })
+}
+fn score(state: &State, e: &M) -> Result<Q, String> {
+    match state {
+        State::Pure { a, scale } => Ok(real(inner(a, &matvec(e, a)))? * scale),
+        State::Mixed { rho } => real(trace_product(e, rho)),
+    }
 }
 fn prepare(request: &Request) -> Result<(&QuantumBasis, Data), String> {
     let b = basis(request)?;
@@ -515,6 +652,37 @@ fn prepare(request: &Request) -> Result<(&QuantumBasis, Data), String> {
                 scale,
             }
         }
+        Request::QuantumMix {
+            state,
+            new_state,
+            alpha,
+            effects,
+            ..
+        } => {
+            let alpha = alpha.read(80)?;
+            if alpha.is_negative() || alpha > Q::one() {
+                return Err(invalid("mixing weight alpha must satisfy 0 <= alpha <= 1"));
+            }
+            if effects.len() > 64 {
+                return Err(invalid("at most 64 effects per QUANTUM_MIX request"));
+            }
+            Data::Mix {
+                state: read_state(state, b, false)?,
+                new_state: read_state(new_state, b, false)?,
+                alpha,
+                effects: effects
+                    .iter()
+                    .map(|e| read_effect(e, b))
+                    .collect::<Result<_, _>>()?,
+            }
+        }
+        Request::QuantumEffectScore { state, effect, .. } => Data::EffectScore {
+            state: read_state(state, b, false)?,
+            effect: read_effect(effect, b)?,
+        },
+        Request::QuantumCharpoly { state, .. } => Data::Charpoly {
+            a: read_state(state, b, false)?.density(),
+        },
         _ => return Err(invalid("not a quantum operation")),
     };
     Ok((b, data))
@@ -638,6 +806,58 @@ pub(crate) fn execute(request: &Request) -> Result<(Answer, Json), String> {
                 state: transformed,
                 normalization: (&Q::one()).into(),
                 purity: (&purity).into(),
+            }
+        }
+        Data::Mix {
+            state,
+            new_state,
+            alpha,
+            effects,
+        } => {
+            let rho = state.density();
+            let sigma = new_state.density();
+            let out = mix(&rho, &sigma, &alpha);
+            let psd_certificate = out_certificate(&out)?;
+            let mut effect_changes = vec![];
+            for e in &effects {
+                let before = real(trace_product(e, &rho))?;
+                let after = real(trace_product(e, &out))?;
+                let new_score = real(trace_product(e, &sigma))?;
+                let change = (&after - &before).abs();
+                effect_changes.push(EffectChange {
+                    before: (&before).into(),
+                    after: (&after).into(),
+                    new_state_score: (&new_score).into(),
+                    bound_holds: change <= alpha,
+                    absolute_change: (&change).into(),
+                });
+            }
+            QuantumOutcome::Mix {
+                trace: (&real(trace(&out))?).into(),
+                purity: (&real(trace_product(&out, &out))?).into(),
+                state: out_operator(&out, basis),
+                alpha: (&alpha).into(),
+                psd_certificate,
+                effect_changes,
+            }
+        }
+        Data::EffectScore { state, effect } => QuantumOutcome::EffectScore {
+            value: (&score(&state, &effect)?).into(),
+            effect_certificate: out_certificate(&effect)?,
+            complement_certificate: out_certificate(&sub_m(&identity(effect.len()), &effect))?,
+        },
+        Data::Charpoly { a } => {
+            let c = charpoly(&a);
+            let n = a.len();
+            let coefficients = c.iter().cloned().map(real).collect::<Result<Vec<_>, _>>()?;
+            let mut det = coefficients[0].clone();
+            if n % 2 == 1 {
+                det = -det;
+            }
+            QuantumOutcome::Charpoly {
+                trace: (&-coefficients[n - 1].clone()).into(),
+                determinant: (&det).into(),
+                coefficients: coefficients.iter().map(R::from).collect(),
             }
         }
     };
@@ -872,6 +1092,149 @@ pub(crate) fn verify(request: &Request, answer: &Answer) -> Result<Vec<String>, 
                     "STATE_NORMALIZATION_TRACE_PSD_AND_PURITY_PRESERVED",
                 ]);
             }
+            (
+                Data::Mix {
+                    state: input,
+                    new_state,
+                    alpha,
+                    effects,
+                },
+                QuantumOutcome::Mix {
+                    state,
+                    alpha: a_out,
+                    trace: t,
+                    purity,
+                    psd_certificate,
+                    effect_changes,
+                },
+            ) => {
+                let rho = input.density();
+                let sigma = new_state.density();
+                let out = read_operator(state, basis, true)?;
+                // independent recomputation entrywise: rho'_ij = rho_ij + alpha (sigma_ij - rho_ij)
+                for i in 0..out.len() {
+                    for j in 0..out.len() {
+                        let expected = rho[i][j].add(&sigma[i][j].sub(&rho[i][j]).scale(&alpha));
+                        if out[i][j] != expected {
+                            return Err(bad());
+                        }
+                    }
+                }
+                hermitian(&out)?;
+                certify_psd(&out, psd_certificate)?;
+                let tr = real(trace(&out))?;
+                let pu = real(trace_product(&out, &out))?;
+                probability(&pu)?;
+                if tr != Q::one()
+                    || t.canonical()? != tr
+                    || purity.canonical()? != pu
+                    || a_out.canonical()? != alpha
+                    || effect_changes.len() != effects.len()
+                {
+                    return Err(bad());
+                }
+                for (e, ch) in effects.iter().zip(effect_changes) {
+                    let before = score(&input, e)?;
+                    let new_score = score(&new_state, e)?;
+                    let after = real(trace_product(e, &out))?;
+                    let change = ch.absolute_change.canonical()?;
+                    probability(&before)?;
+                    probability(&after)?;
+                    probability(&new_score)?;
+                    if ch.before.canonical()? != before
+                        || ch.after.canonical()? != after
+                        || ch.new_state_score.canonical()? != new_score
+                        || &after - &before != (&new_score - &before) * &alpha
+                        || change != (&after - &before).abs()
+                        || !ch.bound_holds
+                        || change > alpha
+                    {
+                        return Err(bad());
+                    }
+                }
+                checks.extend([
+                    "ALPHA_IN_UNIT_INTERVAL_AND_EFFECTS_BETWEEN_ZERO_AND_IDENTITY",
+                    "CONVEX_COMBINATION_RECOMPUTED_ENTRYWISE",
+                    "MIXED_STATE_HERMITIAN_TRACE_ONE_PSD_CERTIFICATE",
+                    "EFFECT_SCORE_CHANGE_IDENTITY_AND_ALPHA_BOUND",
+                ]);
+            }
+            (
+                Data::EffectScore { state, effect },
+                QuantumOutcome::EffectScore {
+                    value,
+                    effect_certificate,
+                    complement_certificate,
+                },
+            ) => {
+                certify_psd(&effect, effect_certificate)?;
+                certify_psd(
+                    &sub_m(&identity(effect.len()), &effect),
+                    complement_certificate,
+                )?;
+                let v = value.canonical()?;
+                probability(&v)?;
+                let expected = match &state {
+                    State::Pure { a, scale } => real(inner(a, &matvec(&effect, a)))? * scale,
+                    State::Mixed { rho } => real(trace(&matmul(rho, &effect)))?,
+                };
+                if v != expected {
+                    return Err(bad());
+                }
+                checks.extend([
+                    "EFFECT_AND_COMPLEMENT_PSD_CERTIFICATES",
+                    "SCORE_KET_OR_DENSITY_TRACE_IN_UNIT_INTERVAL",
+                ]);
+            }
+            (
+                Data::Charpoly { a },
+                QuantumOutcome::Charpoly {
+                    coefficients,
+                    trace: t,
+                    determinant: d,
+                },
+            ) => {
+                let n = a.len();
+                let c = coefficients
+                    .iter()
+                    .map(R::canonical)
+                    .collect::<Result<Vec<_>, _>>()?;
+                if c.len() != n + 1 || c[n] != Q::one() {
+                    return Err(bad());
+                }
+                // Cayley-Hamilton: sum_k c_k A^k = 0 (Horner)
+                let mut acc = vec![vec![C::default(); n]; n];
+                for k in (0..=n).rev() {
+                    acc = matmul(&acc, &a);
+                    for (i, row) in acc.iter_mut().enumerate() {
+                        row[i] = row[i].add(&C {
+                            re: c[k].clone(),
+                            im: Q::zero(),
+                        });
+                    }
+                }
+                if acc.iter().flatten().any(|x| !x.is_zero()) {
+                    return Err(bad());
+                }
+                let tr = real(trace(&a))?;
+                let mut det = real(determinant(&a))?;
+                if t.canonical()? != tr || c[n - 1] != -tr.clone() {
+                    return Err(bad());
+                }
+                if d.canonical()? != det {
+                    return Err(bad());
+                }
+                if n % 2 == 1 {
+                    det = -det;
+                }
+                if c[0] != det {
+                    return Err(bad());
+                }
+                checks.extend([
+                    "CAYLEY_HAMILTON_EXACT",
+                    "TRACE_AND_INDEPENDENT_GAUSSIAN_DETERMINANT_MATCH_COEFFICIENTS",
+                ]);
+            }
             _ => return Err(bad()),
         }
         Ok(())
@@ -891,6 +1254,9 @@ pub(crate) fn explain(request: &Request, answer: &Answer) -> Vec<String> {
         Request::QuantumExpectation{..}=>"観測量A=A†を検査し、期待値Tr(ρA)を求めました。純粋状態では⟨ψ|A|ψ⟩、混合状態では成分の縮約で照合し、虚部が厳密に0であることを検査しました。".into(),
         Request::QuantumDensityMatrix{..}=>"純粋状態はρ=|ψ⟩⟨ψ|から構成し、混合状態は入力密度行列を検査しました。ρ=ρ†、Trρ=1、ρ=LDL†かつD≥0の証明書、純度Trρ²を検算しました。対角成分の非負性だけでは半正定値と判定しません。".into(),
         Request::QuantumUnitary{..}=>"U†U=UU†=Iを検査し、純粋状態にはU|ψ⟩、混合状態にはUρU†を適用しました。U†による逆変換と正規化・トレース・半正定値性・純度の保存を検算しました。".into(),
+        Request::QuantumMix{..}=>"0≤α≤1と各効果演算子0⪯E⪯Iを検査し、ρ'=(1-α)ρ+ασを厳密計算しました。成分ごとの再計算、ρ'=ρ†・Trρ'=1・LDL†証明書、各EについてTr(E(ρ'-ρ))=α(Tr(Eσ)-Tr(Eρ))と|ΔTr(Eρ)|≤αを検算しました。".into(),
+        Request::QuantumEffectScore{..}=>"EとI-Eの両方にLDL†証明書を構成して0⪯E⪯Iを検査し、意味観測スコアTr(Eρ)を計算しました。純粋状態では⟨ψ|E|ψ⟩、混合状態では別の積順序で照合し、0〜1であることを確認しました。".into(),
+        Request::QuantumCharpoly{..}=>"Faddeev–LeVerrier法で特性多項式det(xI-ρ)の係数を厳密計算し、Cayley–Hamiltonの恒等式p(ρ)=0、トレース、独立なGauss消去による行列式で検算しました。固有値・エントロピー自体は無理数となり得るため計算しません。".into(),
         _=>unreachable!(),
     });
     steps.push("これは有限次元モデル内の厳密算術の検算です。入力された状態・観測量が現実の系を表すことの検証は含みません。".into());

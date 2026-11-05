@@ -147,11 +147,14 @@ pub fn execute(cli: &Cli, config: &Config, e: &mut Value) -> Result<()> {
             let request: mathlang_mirp::calculation::CalculationRequest = read(input)?;
             request.validate().map_err(|e| Error::new(4, e))?;
             let mut child = Process::new(std::env::current_exe().map_err(|e| Error::new(5, e))?);
-            child.args([
-                "__compute-worker",
-                &serde_json::to_string(&request).map_err(|e| Error::new(9, e))?,
-            ]);
-            let output = crate::process::capture(&mut child, std::time::Duration::from_secs(300))?;
+            // The request travels over stdin: large matrices exceed the per-argument argv limit.
+            child.args(["__compute-worker", "-"]);
+            let body = serde_json::to_vec(&request).map_err(|e| Error::new(9, e))?;
+            let output = crate::process::capture_with_input(
+                &mut child,
+                std::time::Duration::from_secs(300),
+                Some(body),
+            )?;
             e["result"] = serde_json::from_slice(&output.stdout).map_err(|e| Error::new(5, e))?;
             if !output.status.success() {
                 return Err(Error::new(

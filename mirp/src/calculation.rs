@@ -54,10 +54,13 @@ pub(crate) enum Operation {
     QuantumExpectation,
     QuantumDensityMatrix,
     QuantumUnitary,
+    QuantumMix,
+    QuantumEffectScore,
+    QuantumCharpoly,
 }
 
 impl Operation {
-    pub(crate) const ALL: [Self; 28] = [
+    pub(crate) const ALL: [Self; 31] = [
         Self::SimplifySqrt,
         Self::DescribeData,
         Self::DataVariance,
@@ -86,6 +89,9 @@ impl Operation {
         Self::QuantumExpectation,
         Self::QuantumDensityMatrix,
         Self::QuantumUnitary,
+        Self::QuantumMix,
+        Self::QuantumEffectScore,
+        Self::QuantumCharpoly,
     ];
     fn quantum(self) -> bool {
         matches!(
@@ -96,6 +102,9 @@ impl Operation {
                 | Self::QuantumExpectation
                 | Self::QuantumDensityMatrix
                 | Self::QuantumUnitary
+                | Self::QuantumMix
+                | Self::QuantumEffectScore
+                | Self::QuantumCharpoly
         )
     }
     fn physical(self) -> bool {
@@ -157,6 +166,9 @@ impl Operation {
             Self::QuantumExpectation => "QUANTUM_EXPECTATION",
             Self::QuantumDensityMatrix => "QUANTUM_DENSITY_MATRIX",
             Self::QuantumUnitary => "QUANTUM_UNITARY",
+            Self::QuantumMix => "QUANTUM_MIX",
+            Self::QuantumEffectScore => "QUANTUM_EFFECT_SCORE",
+            Self::QuantumCharpoly => "QUANTUM_CHARPOLY",
         }
     }
     fn domain(self) -> &'static str {
@@ -343,6 +355,26 @@ pub enum CalculationRequest {
         state: QuantumState,
         unitary: UnitaryOperator,
     },
+    /// Convex knowledge update rho' = (1 - alpha) rho + alpha sigma, alpha in [0, 1].
+    QuantumMix {
+        basis: QuantumBasis,
+        state: QuantumState,
+        new_state: QuantumState,
+        alpha: ExactRational,
+        #[serde(default)]
+        effects: Vec<QuantumOperator>,
+    },
+    /// Semantic observation score Tr(E rho) for an effect 0 <= E <= I.
+    QuantumEffectScore {
+        basis: QuantumBasis,
+        state: QuantumState,
+        effect: QuantumOperator,
+    },
+    /// Exact characteristic polynomial (spectral invariants) of a Hermitian operator or state.
+    QuantumCharpoly {
+        basis: QuantumBasis,
+        state: QuantumState,
+    },
 }
 
 impl CalculationRequest {
@@ -376,6 +408,9 @@ impl CalculationRequest {
             Self::QuantumExpectation { .. } => Operation::QuantumExpectation,
             Self::QuantumDensityMatrix { .. } => Operation::QuantumDensityMatrix,
             Self::QuantumUnitary { .. } => Operation::QuantumUnitary,
+            Self::QuantumMix { .. } => Operation::QuantumMix,
+            Self::QuantumEffectScore { .. } => Operation::QuantumEffectScore,
+            Self::QuantumCharpoly { .. } => Operation::QuantumCharpoly,
         }
     }
     fn value(&self) -> Value {
@@ -823,6 +858,11 @@ pub fn calculation_knowledge() -> KnowledgeSpace {
     space
         .register_batch(units)
         .expect("bundled quantum validates");
+    let units = serde_json::from_str(include_str!("../knowledge/finite_quantum_qrm_v0_1.json"))
+        .expect("bundled quantum QRM JSON");
+    space
+        .register_batch(units)
+        .expect("bundled quantum QRM validates");
     space
 }
 
